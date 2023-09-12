@@ -1,0 +1,10 @@
+21373302
+21373302
+21373302
+21373302
+21373302
+ConstDef:a=2
+VarDef:a=4
+normal FuncFParam:4
+normal FuncRParams:4
+++Var LVal:5

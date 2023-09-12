@@ -1,0 +1,11 @@
+21373302
+1 Dim ConstDef:a[0]=1,a[1]=2,a[2]=3,6422028
+2 Dim ConstDef:a[0][0]=1,a[0][1]=2,a[1][0]=3,a[1][1]=4,6422000
+1 Dim VarDef:a[0]=4,a[1]=5,a[2]=7,6421988
+2 Dim VarDef:a[0][0]=4,a[0][1]=5,a[1][0],a[1][1]=6,7
+part of 2 FuncFParam:a[0]=4,a[1]=5,a[2]=6,
+part of 2 Dim FuncFParam:6421988
+2 Dim FuncFParam:a[0][0]=4,a[0][1]=5,a[0][0]=6,a[0][1]=7,
+2 Dim FuncFParam:6421968
+++oneDimVarArray[Var] 1 Dim LVal:4
+++twoDimVarArray[Var][Var] 2 Dim LVal:2

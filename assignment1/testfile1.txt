@@ -1,0 +1,7 @@
+printf (21373302)
+int main(){
+    int a;
+    a=getint();
+    printf("a=%d",a);
+    return 0;
+}
