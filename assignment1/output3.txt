@@ -1,10 +1,10 @@
 21373302
-const int b = 2 * func0() * func1(a[1], 6) + func1(2, a[2]);
-int c = 2 * func0() * func1(a[1], 2) + func1(2, 4);
-c = 1;
-d = (c >= a[2]);
-d = (c <= a[2]);
-d = (c == a[2]);
-d = (c > a[2]);
-d = (c < a[2]);
-int e = func0();
+const int oneDimConstArray[3] = {1, 2 * func0(), 3};
+towDimConstArray[2][2] = {1, 2 * 9, 3, 4 * func0()};
+int oneDimVarArray[3] = {2 * Const, 2 * Const + 1, 2 * Const + 3 * func0()};
+int twoDimVarArray[2][2] = {2 mol Const, 2 * Const + 1, 2 * Const + 2, 2 * Const + 3 / func0()};
+int t = function2(twoDimVarArray);
+int ti = func1(oneDimVarArray);
+for loop break continue
+int f = (1 != oneDimConstArray[2]);
+a void function

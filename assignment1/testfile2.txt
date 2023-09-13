@@ -1,3 +1,14 @@
+int g_v = 0, g_v1 = 0;
+int g_va[4] = {1,1,1,1};
+int g_vaa[2][2] = {{1,1},{1,1}};
+const int g_cv = 0, g_cv1 = 1;
+const int g_cva[4] = {1,1,1,1}, g_cva1[4] = {1,1,1,1};
+const int g_cvaa[2][2] = {{1,1},{1,1}}, g_cvaa2[2][2] = {{1,1},{1,1}};
+
+int f() {
+    g_v = g_v + 1;
+    return 1;
+}
 int func2(int a[][2]) {
     return a[1][2];
 }
@@ -11,16 +22,28 @@ int func1(int a[]) {
 
 void funcx() {
     printf("a void function\n");
+    return;
 }
 
 int funcz(int a1, int a2) {
     return a1 + a2;
 }
 
+int funcy(int a[], int b[]) {
+    return a[0] + b[0];
+}
+
+int funca(int a) {
+    return a;
+}
+
+
+
 int main() {
     printf("21373302\n");
-    const int a1 = 0, a2 = 0;
-    const int a3[3] = {0,0,0};
+    funca(4);
+    const int a1 = 0, a2 = 0, a3[3] = {0,0,0};
+    const int a4[3] = {0,0,0};
     int v1, v2, v3[3];
     v3[0] = 2;
     const int Const = 2;
@@ -37,26 +60,62 @@ int main() {
     printf("int t = function2(twoDimVarArray);\n");
     int ti = func1(oneDimVarArray);
     printf("int ti = func1(oneDimVarArray);\n");
-    int i;
-    for (i = 0; i < 5; i = i + 1) {
-        int inner;
-        if (i == 4) {
-            break;
-        } else {
-            continue;
+    if (0 && f()) {
+        ;
+    }
+    if (1 && f()) {
+        ;
+    }
+    ti + 1;
+    {int i;
+        ;
+        {}
+        for (i = 0; i < 5; i = i + 1) {
+            int inner;
+            if (i == 4) {
+                break;
+            } else {
+                continue;
+            }
+
         }
+        if (i != 0) {
 
-    }
-    if (i != 0) {
+        }
+        if (!(i == 2)) {
 
-    }
-    if (!(i == 2)) {
+        }
+        for (i = 0; ;i = i + 1) {
+            if (i == 1) {
+                break;
+            }
+        }
+        for (i = 0; i < 5; ) {
+            if ( i == 0) {
+                break;
+            }
+        }
+        for (;i<5;i=i+1) {
 
-    }
+        }
+        for(;;){
+            break;
+        }
+        int j;
+        j=getint();
+        for (i = 0, j = 0; i < 5 && j < 9; i = i + 1, j = j + 1) {
+
+        }}
     printf("for loop break continue\n");
     int f = (1 != oneDimConstArray[2]);
     printf("int f = (1 != oneDimConstArray[2]);\n");
     funcx();
     funcz(2, oneDimVarArray[0]);
+    int e1 = v3[0] * 2, e2 = v3[0] / 2, e3 = v3[0] % 3;
+    func1(twoDimVarArray[0]);
+    int b = funcy(twoDimVarArray[0], twoDimVarArray[1]);
+    b = !(((funca(4) + 7) * 6 >= funca(4)) && ((funca(4) + 10) * funca(4) > 12));
+    int arr[2][2] = {{1,2},{3,4}};
     return 0;
 }
+
