@@ -9,9 +9,13 @@ int func1(int a, int b) {
 int main() {
     printf("21373302\n");
     printf("21373302\n");
-    printf("21373302\n");
-    int a[3] = {1, 2 * 2, 3};
-    printf("int a[3] = {1, 2 * 2, 3};\n");
+    printf("21373302\n");;
+    {}
+    int i;
+    for (i = 0; i < 5; i = i + 1) { ;
+    }
+    int a[3] = {1, 2 * func1(2, 2), 3};
+    printf("int a[3] = {1, 2 * func1(2, 2), 3};\n");
     const int b = 2 * func0() * func1(a[1], 6) + func1(2, a[2]) * a[2] + a[2];
     printf("const int b = 2 * func0() * func1(a[1], 6) + func1(2, a[2]) * a[2] + a[2];\n");
     int c = 2 * func0() * func1(a[1], 2) + func1(2, 4);
@@ -26,3 +30,4 @@ int main() {
     printf("int f = (c * 2 == a[2]);\n");
     return 0;
 }
+
