@@ -1,51 +1,62 @@
-void function0(int a) {
-    printf("normal FuncFParam:%d\n", a);
+int func2(int a[][2]) {
+    return a[1][2];
+}
+int func0() {
+    return 1;
 }
 
-void function1(int a[2]) {
-    printf("part of 2 FuncFParam:");
-    for (int i = 0; i < 3; i = i + 1) {
-        printf("a[%d]=%d,", i, a[i]);
-    }
-    printf("\n");
+int func1(int a[]) {
+    return a[0] * 2;
 }
 
-void function2(int a[][2]) {
-    printf("2 Dim FuncFParam:");
-    for (int i = 0; i < 2; i = i + 1) {
-        for (int j = 0; j < 2; ++j) {
-            printf("a[0][%d]=%d,", j, a[i][j]);
-        }
-    }
-    printf("\n");
+void funcx() {
+    printf("a void function\n");
 }
 
+int funcz(int a1, int a2) {
+    return a1 + a2;
+}
 
 int main() {
     printf("21373302\n");
+    const int a1 = 0, a2 = 0;
+    const int a3[3] = {0,0,0};
+    int v1, v2, v3[3];
+    v3[0] = 2;
     const int Const = 2;
-    const int oneDimConstArray[3] = {1, 2, 3};
-    printf("1 Dim ConstDef:a[0]=%d,a[1]=%d,a[2]=%d,%d\n", oneDimConstArray[0], oneDimConstArray[1], oneDimConstArray[2],
-           oneDimConstArray);
-    const int towDimConstArray[2][2] = {1, 2, 3, 4};
-    printf("2 Dim ConstDef:a[0][0]=%d,a[0][1]=%d,a[1][0]=%d,a[1][1]=%d,%d\n", towDimConstArray[0][0],
-           towDimConstArray[0][1],
-           towDimConstArray[1][0], towDimConstArray[1][1], towDimConstArray);
+    const int oneDimConstArray[3] = {1, 2 * func0(), 3};
+    printf("const int oneDimConstArray[3] = {1, 2 * func0(), 3};\n");
+    const int towDimConstArray[2][2] = {1, 2 * 9, 3, 4 * func0()};
+    printf("towDimConstArray[2][2] = {1, 2 * 9, 3, 4 * func0()};\n");
     int Var = 2 * Const;
-    int oneDimVarArray[3] = {2 * Const, 2 * Const + 1, 2 * Const + 3};
-    printf("1 Dim VarDef:a[0]=%d,a[1]=%d,a[2]=%d,%d\n", oneDimVarArray[0], oneDimVarArray[1], oneDimVarArray[2],
-           oneDimVarArray);
-    int twoDimVarArray[2][2] = {2 * Const, 2 * Const + 1, 2 * Const + 2, 2 * Const + 3};
-    printf("2 Dim VarDef:a[0][0]=%d,a[0][1]=%d,a[1][0],a[1][1]=%d,%d\n", twoDimVarArray[0][0], twoDimVarArray[0][1],
-           twoDimVarArray[1][0], twoDimVarArray[1][1], twoDimVarArray);
-    function1(twoDimVarArray[0]);
-    printf("part of 2 Dim FuncFParam:%d\n", oneDimVarArray);
-    function2(twoDimVarArray);
-    printf("2 Dim FuncFParam:%d\n", twoDimVarArray);
-    ++Var;
-    ++oneDimVarArray[Var];
-    printf("++oneDimVarArray[%d] 1 Dim LVal:%d\n", Var, oneDimVarArray[Var]);
-    ++twoDimVarArray[Var][Var];
-    printf("++twoDimVarArray[%d][%d] 2 Dim LVal:%d\n", Var, Var, twoDimVarArray[Var][Var]);
+    int oneDimVarArray[3] = {2 * Const, 2 * Const - 1, 2 * Const + 3 * func0()};
+    printf("int oneDimVarArray[3] = {2 * Const, 2 * Const + 1, 2 * Const + 3 * func0()};\n");
+    int twoDimVarArray[2][2] = {2 % Const, 2 * Const + 1, 2 * Const + 2, 2 * Const + 3 / func0()};
+    printf("int twoDimVarArray[2][2] = {2 mol Const, 2 * Const + 1, 2 * Const + 2, 2 * Const + 3 / func0()};\n");
+    int t = func2(twoDimVarArray);
+    printf("int t = function2(twoDimVarArray);\n");
+    int ti = func1(oneDimVarArray);
+    printf("int ti = func1(oneDimVarArray);\n");
+    int i;
+    for (i = 0; i < 5; i = i + 1) {
+        int inner;
+        if (i == 4) {
+            break;
+        } else {
+            continue;
+        }
+
+    }
+    if (i != 0) {
+
+    }
+    if (!(i == 2)) {
+
+    }
+    printf("for loop break continue\n");
+    int f = (1 != oneDimConstArray[2]);
+    printf("int f = (1 != oneDimConstArray[2]);\n");
+    funcx();
+    funcz(2, oneDimVarArray[0]);
     return 0;
 }

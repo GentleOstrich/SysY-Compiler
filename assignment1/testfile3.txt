@@ -1,46 +1,31 @@
-void function0(int a) {
-    printf("normal FuncFParam:%d\n", a);
+int func0() {
+    return 2;
 }
 
-void function1(int a[2]) {
-    printf("part of 2 FuncFParam:");
-    for (int i = 0; i < 3; ++i) {
-        printf("a[%d]=%d,", i, a[i]);
-    }
-    printf("\n");
+int func1(int a, int b) {
+    return a * b;
 }
-
-void function2(int a[][2]) {
-    printf("2 Dim FuncFParam:");
-    for (int i = 0; i < 2; ++i) {
-        for (int j = 0; j < 2; ++j) {
-            printf("a[0][%d]=%d,", j, a[i][j]);
-        }
-    }
-    printf("\n");
-}
-
 
 int main() {
     printf("21373302\n");
-    printf("21373302\n");
-    printf("21373302\n");
-    printf("21373302\n");
-    printf("21373302\n");
-    const int Const = 2;
-    printf("ConstDef:a=%d\n", Const);
-    const int oneDimConstArray[3] = {1, 2, 3};
-    const int towDimConstArray[2][2] = {1, 2, 3, 4};
-    int Var = 2 * Const;
-    printf("VarDef:a=%d\n", Var);
-    int oneDimVarArray[3] = {2 * Const, 2 * Const + 1, 2 * Const + 3};
-    int twoDimVarArray[2][2] = {2 * Const, 2 * Const + 1, 2 * Const + 2, 2 * Const + 3};
-
-    function0(Var);
-    printf("normal FuncRParams:%d\n", Var);
-
-    ++Var;
-    printf("++Var LVal:%d\n", Var);
-
+    int a[3] = {1, 2, 3};
+    const int b = 2 * func0() * func1(a[1], 6) + func1(2, a[2]);
+    printf("const int b = 2 * func0() * func1(a[1], 6) + func1(2, a[2]);\n");
+    int c = 2 * func0() * func1(a[1], 2) + func1(2, 4);
+    printf("int c = 2 * func0() * func1(a[1], 2) + func1(2, 4);\n");
+    c = 1;
+    printf("c = 1;\n");
+    int d = (c >= a[2]);
+    printf("d = (c >= a[2]);\n");
+    d = (c <= a[2]);
+    printf("d = (c <= a[2]);\n");
+    d = (c == a[2]);
+    printf("d = (c == a[2]);\n");
+    d = (c > a[2]);
+    printf("d = (c > a[2]);\n");
+    d = (c < a[2]);
+    printf("d = (c < a[2]);\n");
+    int e = func0();
+    printf("int e = func0();\n");
     return 0;
 }

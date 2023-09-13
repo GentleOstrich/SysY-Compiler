@@ -1,0 +1,16 @@
+int main() {
+    int a;
+    a = getint();
+    printf("21373302\n");
+    printf("21373302\n");
+    printf("21373302\n");
+    printf("21373302\n");
+    printf("21373302\n");
+    printf("21373302\n");
+    printf("21373302\n");
+    printf("21373302\n");
+    printf("21373302\n");
+    printf("%d\n", a);
+    return 0;
+}
+

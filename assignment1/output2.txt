@@ -1,11 +1,10 @@
 21373302
-1 Dim ConstDef:a[0]=1,a[1]=2,a[2]=3,6422028
-2 Dim ConstDef:a[0][0]=1,a[0][1]=2,a[1][0]=3,a[1][1]=4,6422000
-1 Dim VarDef:a[0]=4,a[1]=5,a[2]=7,6421988
-2 Dim VarDef:a[0][0]=4,a[0][1]=5,a[1][0],a[1][1]=6,7
-part of 2 FuncFParam:a[0]=4,a[1]=5,a[2]=6,
-part of 2 Dim FuncFParam:6421988
-2 Dim FuncFParam:a[0][0]=4,a[0][1]=5,a[0][0]=6,a[0][1]=7,
-2 Dim FuncFParam:6421968
-++oneDimVarArray[Var] 1 Dim LVal:4
-++twoDimVarArray[Var][Var] 2 Dim LVal:2
+const int oneDimConstArray[3] = {1, 2 * func0(), 3};
+towDimConstArray[2][2] = {1, 2 * 9, 3, 4 * func0()};
+int oneDimVarArray[3] = {2 * Const, 2 * Const + 1, 2 * Const + 3 * func0()};
+int twoDimVarArray[2][2] = {2 mol Const, 2 * Const + 1, 2 * Const + 2, 2 * Const + 3 / func0()};
+int t = function2(twoDimVarArray);
+int ti = func1(oneDimVarArray);
+for loop break continue
+int f = (1 != oneDimConstArray[2]);
+a void function
