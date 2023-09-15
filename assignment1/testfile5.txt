@@ -1,6 +1,8 @@
 int main() {
     int a;
+    int b[5];
     a = getint();
+    b[0] = getint();
     printf("21373302\n");
     printf("21373302\n");
     printf("21373302\n");

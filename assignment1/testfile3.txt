@@ -44,7 +44,7 @@ int main() {
     printf("int twoDimVarArray[2][2] = {2 mol Const, 2 * Const + 1, 2 * Const + 2, 2 * Const + 3 / func0()};\n");
     int t = func2(twoDimVarArray);
     printf("int t = function2(twoDimVarArray);\n");
-    int ti = func1(oneDimVarArray);
+    int ti = -func1(oneDimVarArray);
     printf("int ti = func1(oneDimVarArray);\n");
     ti + 1;
     int i;
@@ -76,13 +76,24 @@ int main() {
         }
     }
     for (;i<5;i=i+1) {
-
+        if ( i == 0) {
+                    break;
+                }
     }
     int j;
     j=getint();
     for (i = 0, j = 0; i < 5, j < 5; i = i + 1, j = j + 1) {
-
+        if ( i == 0) {
+                    break;
+                }
     }
+    if (i >= 0) {
+        i=i+0;
+    }
+    if (i > 0) {
+        i=i+0;
+    }
+    i = (5*1);
     printf("for loop break continue\n");
     int f = (1 != oneDimConstArray[2]);
     printf("int f = (1 != oneDimConstArray[2]);\n");

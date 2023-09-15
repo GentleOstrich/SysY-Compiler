@@ -1,0 +1,66 @@
+int f(int a, int b) {
+    return a * b;
+}
+int main() {
+    printf("21373302\n");
+    printf("21373302\n");
+    printf("21373302\n");
+    printf("21373302\n");
+    printf("21373302\n");
+    printf("21373302\n");
+    printf("21373302\n");
+    printf("21373302\n");
+    printf("21373302\n");
+    printf("21373302\n");
+    int i;
+    int a = 1;
+    for (i = 0; i < 1; i = i + 1) {
+        if (a) {
+            break;
+        }
+    }
+    for (i = 0; i < 1;) {
+        if (a) {
+            break;
+        }
+    }
+    for (i = 0;; i = i + 1) {
+        if (a) {
+            break;
+        }
+    }
+    for (; i < 1; i = i + 1) {
+        if (a) {
+            break;
+        }
+    }
+    for (;; i = i + 1) {
+        if (a) {
+            break;
+        }
+    }
+    for (i = 0;;) {
+        if (a) {
+            break;
+        }
+    }
+    for (; i < 1;) {
+        if (a) {
+            break;
+        }
+    }
+    for (;;) {
+        if (a) {
+            break;
+        }
+    }
+    if (2 >= 1) {
+        a = 0;
+    }
+    if (2 > 1) {
+        a = 2;
+    }
+    a = (2 * a);
+    a = f(a, a);
+    return 0;
+}
