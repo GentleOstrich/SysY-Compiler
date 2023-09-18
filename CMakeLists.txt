@@ -3,4 +3,4 @@ project(SysY-Compiler)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(SysY-Compiler main.cpp)
+add_executable(SysY-Compiler Scanner.cpp)
