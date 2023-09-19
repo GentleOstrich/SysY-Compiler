@@ -56,40 +56,52 @@ public:
                 curPos++;
             }
             int reserveValue = isReserveWord(token);
-            cout << reserveValue << endl;
             switch (reserveValue) {
                 case 0:
                     lexType = LexType::IDENFR;
+                    break;
                 case 1:
                     lexType = LexType::MAINTK;
+                    break;
                 case 2:
                     lexType = LexType::CONSTTK;
+                    break;
                 case 3:
                     lexType = LexType::INTTK;
+                    break;
                 case 4:
                     lexType = LexType::BREAKTK;
+                    break;
                 case 5:
                     lexType = LexType::CONTINUETK;
+                    break;
                 case 6:
                     lexType = LexType::IFTK;
+                    break;
                 case 7:
                     lexType = LexType::ELSETK;
+                    break;
                 case 8:
                     lexType = LexType::FORTK;
+                    break;
                 case 9:
                     lexType = LexType::GETINTTK;
+                    break;
                 case 10:
                     lexType = LexType::PRINTFTK;
+                    break;
                 case 11:
                     lexType = LexType::RETURNTK;
+                    break;
                 case 12:
                     lexType = LexType::VOIDTK;
+                    break;
                 default:
                     lexType = LexType::ERROR;
             }
-//            if (lexType == LexType::ERROR) {
-//                return -1;
-//            }
+            if (lexType == LexType::ERROR) {
+                return -1;
+            }
             return 0;
         }
 

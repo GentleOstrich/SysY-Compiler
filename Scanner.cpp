@@ -6,7 +6,7 @@
 #include "Lexer.h"
 
 using namespace std;
-#define FILEPATH "D:\\University\\Study\\2023fall\\compiler\\SysY-Compiler\\testfile.txt"
+#define FILEPATH "/home/yh/SysY-Compiler/testfile.txt"
 
 string LexType2String(LexType lexType) {
     switch (lexType) {
