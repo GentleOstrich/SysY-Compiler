@@ -36,7 +36,9 @@ private:
 
 public:
     int next() {
+        cout << curPos << endl;
         token.clear();
+        lexType = LexType::NONE;
         //处理完毕
         if (curPos >= source.length()) {
             return 1;
@@ -97,9 +99,9 @@ public:
                     lexType = LexType::VOIDTK;
                     break;
                 default:
-                    lexType = LexType::ERROR;
+                    lexType = LexType::NONE;
             }
-            if (lexType == LexType::ERROR) {
+            if (lexType == LexType::NONE) {
                 return -1;
             }
             return 0;
@@ -131,12 +133,6 @@ public:
         }
 
         //  ! && || + - * / %  < <= > >= == != = ; , ( ) [ ] { }
-        if (source[curPos] == '!') {
-            token += '!';
-            lexType = LexType::NOT;
-            curPos++;
-            return 0;
-        }
         if (source[curPos] == '&' && source[curPos + 1] == '&') {
             token += "&&";
             lexType = LexType::AND;
@@ -147,6 +143,36 @@ public:
             token += "||";
             lexType = LexType::OR;
             curPos += 2;
+            return 0;
+        }
+        if (source[curPos] == '!' && source[curPos + 1] == '=') {
+            token += "!=";
+            lexType = LexType::NEQ;
+            curPos += 2;
+            return 0;
+        }
+        if (source[curPos] == '<' && source[curPos + 1] == '=') {
+            token += "<=";
+            lexType = LexType::LEQ;
+            curPos += 2;
+            return 0;
+        }
+        if (source[curPos] == '>' && source[curPos + 1] == '=') {
+            token += ">=";
+            lexType = LexType::GEQ;
+            curPos += 2;
+            return 0;
+        }
+        if (source[curPos] == '=' && source[curPos + 1] == '=') {
+            token += "==";
+            lexType = LexType::EQL;
+            curPos += 2;
+            return 0;
+        }
+        if (source[curPos] == '!') {
+            token += '!';
+            lexType = LexType::NOT;
+            curPos++;
             return 0;
         }
         if (source[curPos] == '+') {
@@ -173,22 +199,10 @@ public:
             curPos++;
             return 0;
         }
-        if (source[curPos] == '<' && source[curPos + 1] == '=') {
-            token += "<=";
-            lexType = LexType::LEQ;
-            curPos += 2;
-            return 0;
-        }
         if (source[curPos] == '<') {
             token += '<';
             lexType = LexType::LSS;
             curPos++;
-            return 0;
-        }
-        if (source[curPos] == '>' && source[curPos + 1] == '=') {
-            token += ">=";
-            lexType = LexType::GEQ;
-            curPos += 2;
             return 0;
         }
         if (source[curPos] == '>') {
@@ -197,18 +211,7 @@ public:
             curPos += 1;
             return 0;
         }
-        if (source[curPos] == '=' && source[curPos + 1] == '=') {
-            token += "==";
-            lexType = LexType::EQL;
-            curPos += 2;
-            return 0;
-        }
-        if (source[curPos] == '!' && source[curPos + 1] == '=') {
-            token += "==";
-            lexType = LexType::NEQ;
-            curPos += 2;
-            return 0;
-        }
+
         if (source[curPos] == '=') {
             token += '=';
             lexType = LexType::ASSIGN;

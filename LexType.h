@@ -45,7 +45,7 @@ enum class LexType {
     RBRACK,
     LBRACE,
     RBRACE,
-    ERROR
+    NONE
 };
 
 

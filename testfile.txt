@@ -1,8 +1,10 @@
-const int array[2] = {1,2};
-
-int main(){
-    int c;
-    c = getint();
-    printf("output is %d",c);
-    return c;
+int main() {
+    int var = 8+2;
+    if (var != 10) {
+        printf("error!");
+    }
+    else {
+        printf("correct!");
+    }
+    return 0;
 }

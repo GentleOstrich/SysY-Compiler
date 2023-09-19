@@ -4,15 +4,15 @@
 #include <iostream>
 #include <fstream>
 #include "Lexer.h"
-//#define TEST
+#define TEST
 using namespace std;
 
 #ifdef TEST
-string INFILEPATH = "D:\\University\\Study\\2023fall\\compiler\\SysY-Compiler\\testfile.txt";//
-string OUTFILEPATH = "D:\\University\\Study\\2023fall\\compiler\\SysY-Compiler\\output.txt";//
+string INFILEPATH = R"(D:\University\Study\2023fall\compiler\SysY-Compiler\testfile.txt)";//
+string OUTFILEPATH = R"(D:\University\Study\2023fall\compiler\SysY-Compiler\output.txt)";//
 #else
-string INFILEPATH = "testfile.txt"; //
-string OUTFILEPATH = "output.txt"; //
+string INFILEPATH = "testfile.txt";
+string OUTFILEPATH = "output.txt";
 #endif
 
 string LexType2String(LexType lexType) {
@@ -93,10 +93,10 @@ string LexType2String(LexType lexType) {
             return "LBRACE";
         case LexType::RBRACE:
             return "RBRACE";
-        case LexType::ERROR:
-            return "ERROR";
+        case LexType::NONE:
+            return "NONE";
         default:
-            return "ERROR";
+            return "NONE";
     }
 }
 
@@ -116,7 +116,9 @@ int main() {
             string token = lexer.getToken();
             LexType lexType = lexer.getLexType();
             //cout << LexType2String(lexType) << " " << token << endl;
-            ofs << LexType2String(lexType) << " " << token << endl;
+            if (lexType != LexType::NONE) {
+                ofs << LexType2String(lexType) << " " << token << endl;
+            }
         }
     }
 
