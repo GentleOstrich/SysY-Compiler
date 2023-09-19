@@ -4,7 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include "Lexer.h"
-#define TEST
+//#define TEST
 using namespace std;
 
 #ifdef TEST

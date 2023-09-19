@@ -294,6 +294,7 @@ public:
                 }
                 return next();
             } else {
+                token += '/';
                 lexType = LexType::DIV;
                 curPos++;
             }
