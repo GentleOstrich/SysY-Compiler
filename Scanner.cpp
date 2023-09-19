@@ -4,9 +4,16 @@
 #include <iostream>
 #include <fstream>
 #include "Lexer.h"
-
+//#define TEST
 using namespace std;
-#define FILEPATH "/home/yh/SysY-Compiler/testfile.txt"
+
+#ifdef TEST
+string INFILEPATH = "D:\\University\\Study\\2023fall\\compiler\\SysY-Compiler\\testfile.txt";//
+string OUTFILEPATH = "D:\\University\\Study\\2023fall\\compiler\\SysY-Compiler\\output.txt";//
+#else
+string INFILEPATH = "testfile.txt"; //
+string OUTFILEPATH = "output.txt"; //
+#endif
 
 string LexType2String(LexType lexType) {
     switch (lexType) {
@@ -95,8 +102,8 @@ string LexType2String(LexType lexType) {
 
 int main() {
     Lexer lexer;
-    ifstream ifs(FILEPATH);
-    ofstream ofs("output.txt");
+    ifstream ifs(INFILEPATH);
+    ofstream ofs(OUTFILEPATH);
     string source;
     if (ifs.is_open() && ofs.is_open()) {
         source = string((istreambuf_iterator<char>(ifs)), istreambuf_iterator<char>());
@@ -108,7 +115,8 @@ int main() {
             }
             string token = lexer.getToken();
             LexType lexType = lexer.getLexType();
-            cout << LexType2String(lexType) << " " << token << endl;
+            //cout << LexType2String(lexType) << " " << token << endl;
+            ofs << LexType2String(lexType) << " " << token << endl;
         }
     }
 
