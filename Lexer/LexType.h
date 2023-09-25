@@ -6,7 +6,6 @@ using namespace std;
 #ifndef SYSY_COMPILER_LEXTYPE_H
 #define SYSY_COMPILER_LEXTYPE_H
 
-
 enum class LexType {
     IDENFR,
     MAINTK,

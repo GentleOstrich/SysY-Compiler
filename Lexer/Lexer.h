@@ -10,18 +10,14 @@
 #include "LexType.h"
 
 #define RESERVEWORDS_NUM 12
-#define Token pair<string, LexType>
+#define Token pair<LexType, string>
 
 using namespace std;
 
 class Lexer {
 private:
-    string source;
     int curPos = 0;
     string word;
-    string reserveWords[RESERVEWORDS_NUM] = {
-            "main", "const", "int", "break", "continue", "if", "else", "for", "getint", "printf", "return", "void"
-    };
     LexType lexType;
     int lineNum = 1;
     int number;
@@ -33,11 +29,7 @@ public:
 
     Token getToken();
 
-    int getLineNum();
-
-    void setSource(string source);
-
-    void scan(string source);
+    void scan();
 };
 
 

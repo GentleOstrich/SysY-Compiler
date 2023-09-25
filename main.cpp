@@ -7,7 +7,7 @@
 #include "Lexer/Lexer.h"
 #include "Lexer/LexType.h"
 
-#define TEST
+//#define TEST
 using namespace std;
 
 #ifdef TEST
@@ -18,19 +18,17 @@ string INFILEPATH = "testfile.txt";
 string OUTFILEPATH = "output.txt";
 #endif
 extern vector<pair<Token, int>> tokenVec;
+extern string source;
 int main() {
     Lexer lexer;
     ifstream ifs(INFILEPATH);
     ofstream ofs(OUTFILEPATH);
-    string source;
     if (ifs.is_open() && ofs.is_open()) {
         source = string((istreambuf_iterator<char>(ifs)), istreambuf_iterator<char>());
-        lexer.scan(source);
+        lexer.scan();
         for (auto &i : tokenVec) {
-            cout << i.first.first << " " << LexType2String(i.first.second) << " " << i.second << endl;
+            ofs << LexType2String(i.first.first) << " " <<  i.first.second << /*" " << i.second << */endl;
         }
     }
-
-
     return 0;
 }

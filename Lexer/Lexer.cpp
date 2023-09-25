@@ -3,13 +3,21 @@
 //
 #include "Lexer.h"
 vector<pair<Token, int>> tokenVec;
+string source;
+string reserveWords[RESERVEWORDS_NUM] = {
+        "main", "const", "int", "break", "continue", "if", "else", "for", "getint", "printf", "return", "void"
+};
 
 int Lexer::isReserveWord(const string &word) {
+    for(int i = 0; i < RESERVEWORDS_NUM; ++i) {
+        if (reserveWords[i] == word) {
+            return i + 1;
+        }
+    }
     return 0;
 }
 
 int Lexer::next() {
-    //cout << curPos << endl;
     word.clear();
     lexType = LexType::NONE;
     //处理完毕
@@ -276,27 +284,19 @@ int Lexer::next() {
 }
 
 Token Lexer::getToken()  {
-    return Token(word, lexType);
+    return Token(lexType, word);
 }
 
-int Lexer::getLineNum()  {
-    return lineNum;
-}
-
-void Lexer::setSource(string source)  {
-    this->source = source;
-}
-
-void Lexer::scan(string source) {
-    setSource(source);
+void Lexer::scan() {
     while (true) {
         bool isEnd = next();
         if (isEnd) {
             break;
         }
         Token token = getToken();
-        int lineNum = getLineNum();
-        tokenVec.emplace_back(token, lineNum);
+        if (token.first != LexType::NONE) {
+            tokenVec.emplace_back(token, lineNum);
+        }
     }
 }
 
