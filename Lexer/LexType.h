@@ -1,21 +1,55 @@
 //
-// Created by yh on 2023/9/18.
+// Created by lyh on 9/19/2023.
 //
-#include <iostream>
-#include <fstream>
-#include "Lexer.h"
-//#define TEST
+#include <string>
 using namespace std;
+#ifndef SYSY_COMPILER_LEXTYPE_H
+#define SYSY_COMPILER_LEXTYPE_H
 
-#ifdef TEST
-string INFILEPATH = R"(D:\University\Study\2023fall\compiler\SysY-Compiler\testfile.txt)";//
-string OUTFILEPATH = R"(D:\University\Study\2023fall\compiler\SysY-Compiler\output.txt)";//
-#else
-string INFILEPATH = "testfile.txt";
-string OUTFILEPATH = "output.txt";
-#endif
 
-string LexType2String(LexType lexType) {
+enum class LexType {
+    IDENFR,
+    MAINTK,
+    CONSTTK,
+    INTTK,
+    BREAKTK,
+    CONTINUETK,
+    IFTK,
+    ELSETK,
+    FORTK,
+    GETINTTK,
+    PRINTFTK,
+    RETURNTK,
+    VOIDTK,
+    INTCON,
+    STRCON,
+    NOT,
+    AND,
+    OR,
+    PLUS,
+    MINU,
+    MULT,
+    DIV,
+    MOD,
+    LSS,
+    LEQ,
+    GRE,
+    GEQ,
+    EQL,
+    NEQ,
+    ASSIGN,
+    SEMICN,
+    COMMA,
+    LPARENT,
+    RPARENT,
+    LBRACK,
+    RBRACK,
+    LBRACE,
+    RBRACE,
+    NONE
+};
+
+static string LexType2String(LexType lexType) {
     switch (lexType) {
         case LexType::IDENFR:
             return "IDENFR";
@@ -100,28 +134,4 @@ string LexType2String(LexType lexType) {
     }
 }
 
-int main() {
-    Lexer lexer;
-    ifstream ifs(INFILEPATH);
-    ofstream ofs(OUTFILEPATH);
-    string source;
-    if (ifs.is_open() && ofs.is_open()) {
-        source = string((istreambuf_iterator<char>(ifs)), istreambuf_iterator<char>());
-        lexer.setSource(source);
-        while (1) {
-            bool isEnd = lexer.next();
-            if (isEnd) {
-                break;
-            }
-            string token = lexer.getToken();
-            LexType lexType = lexer.getLexType();
-            //cout << LexType2String(lexType) << " " << token << endl;
-            if (lexType != LexType::NONE) {
-                ofs << LexType2String(lexType) << " " << token << endl;
-            }
-        }
-    }
-
-
-    return 0;
-}
+#endif //SYSY_COMPILER_LEXTYPE_H
