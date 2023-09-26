@@ -9,8 +9,6 @@
 
 class Parser {
 public:
-    LexType next();
-
     int parseCompUnit();
 
     int parseDecl();

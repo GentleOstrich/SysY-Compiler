@@ -3,6 +3,7 @@
 //
 #include "Parser.h"
 #include <iostream>
+
 #define readToken token = (lexer.next() == 0) ? lexer.getToken() : make_pair(LexType::NONE, nullptr);
 #define LEXTYPE token.first
 using namespace std;
@@ -11,7 +12,8 @@ Token token = make_pair(LexType::NONE, nullptr);
 
 // 正常返回 0 错误返回 -1
 int Parser::parseCompUnit() {
-    while(true) {
+    readToken;
+    while (LEXTYPE != LexType::NONE) {
         if (LEXTYPE == LexType::CONSTTK) {
             int Decl = parseDecl();
             if (Decl == 0) {
@@ -38,12 +40,12 @@ int Parser::parseCompUnit() {
                     } else {
                         return FuncDef;
                     }
-                } else if (nnnextType == LexType::EQL) {
+                } else if (nnnextType == LexType::ASSIGN) {
                     int Decl = parseDecl();
                     if (Decl == 0) {
                         cout << "<Decl>" << endl;
                     } else {
-                        return Decl;    
+                        return Decl;
                     }
                 } else {
                     return -1;
@@ -53,7 +55,7 @@ int Parser::parseCompUnit() {
             }
         } else {
             return -1;
-        }        
+        }
     }
 }
 
@@ -63,14 +65,12 @@ int Parser::parseDecl() {
         if (ConstDecl == 0) {
             cout << "<ConstDecl>" << endl;
         }
-        readToken;
         return ConstDecl;
     } else if (LEXTYPE == LexType::INTTK) {
         int VarDecl = parseVarDecl();
         if (VarDecl == 0) {
             cout << "<VarDecl>" << endl;
         }
-        readToken;
         return VarDecl;
     }
     return 0;
@@ -84,13 +84,11 @@ int Parser::parseConstDecl() {
             int ConstDef = parseConstDef();
             if (ConstDef == 0) {
                 cout << "<ConstDef>" << endl;
-                readToken;
-                if (LEXTYPE == LexType::COMMA) {
+                while (LEXTYPE == LexType::COMMA) {
                     readToken;
                     int ConstDef = parseConstDef();
                     if (ConstDef == 0) {
                         cout << "<ConstDef>" << endl;
-                        readToken;
                     } else {
                         return ConstDef;
                     }
@@ -98,6 +96,8 @@ int Parser::parseConstDecl() {
             } else {
                 return ConstDef;
             }
+        } else {
+            return -1;
         }
         if (LEXTYPE == LexType::SEMICN) {
             readToken;
@@ -120,7 +120,7 @@ int Parser::parseBType() {
 int Parser::parseConstDef() {
     if (LEXTYPE == LexType::IDENFR) {
         readToken;
-        if (LEXTYPE == LexType::LBRACK) {
+        while (LEXTYPE == LexType::LBRACK) {
             readToken;
             int ConstExp = parseConstExp();
             if (ConstExp == 0) {
@@ -139,7 +139,6 @@ int Parser::parseConstDef() {
             int ConstInitVal = parseConstInitVal();
             if (ConstInitVal == 0) {
                 cout << "<ConstInitVal>" << endl;
-                readToken;
                 return 0;
             } else {
                 return ConstInitVal;
@@ -162,18 +161,16 @@ int Parser::parseConstInitVal() {
         int ConstInitVal = parseConstInitVal();
         if (ConstInitVal == 0) {
             cout << "<ConstInitVal>" << endl;
-            readToken;
-            if (LEXTYPE == LexType::COMMA) {
+            while (LEXTYPE == LexType::COMMA) {
                 readToken;
                 int ConstInitVal = parseConstInitVal();
                 if (ConstInitVal == 0) {
                     cout << "<ConstInitVal>" << endl;
-                    readToken;
-                    return 0;
                 } else {
                     return ConstInitVal;
                 }
-            } else if (LEXTYPE == LexType::RBRACE) {
+            }
+            if (LEXTYPE == LexType::RBRACE) {
                 readToken;
                 return 0;
             } else {
@@ -186,7 +183,6 @@ int Parser::parseConstInitVal() {
         int ConstExp = parseConstExp();
         if (ConstExp == 0) {
             cout << "<ConstExp>" << endl;
-            readToken;
             return 0;
         } else {
             return ConstExp;
@@ -205,7 +201,6 @@ int Parser::parseVarDecl() {
                 int VarDef = parseVarDef();
                 if (VarDef == 0) {
                     cout << "<VarDef>" << endl;
-                    readToken;
                 } else {
                     return VarDef;
                 }
@@ -232,7 +227,6 @@ int Parser::parseVarDef() {
             int ConstExp = parseConstExp();
             if (ConstExp == 0) {
                 cout << "<ConstExp>" << endl;
-                readToken;
                 if (LEXTYPE == LexType::RBRACK) {
                     readToken;
                 } else {
@@ -247,7 +241,6 @@ int Parser::parseVarDef() {
             int InitVal = parseInitVal();
             if (InitVal == 0) {
                 cout << "<InitVal>" << endl;
-                readToken;
                 return 0;
             } else {
                 return InitVal;
@@ -270,17 +263,15 @@ int Parser::parseInitVal() {
         int InitVal = parseInitVal();
         if (InitVal == 0) {
             cout << "<InitVal>" << endl;
-            readToken;
-            if (LEXTYPE == LexType::COMMA) {
+            while (LEXTYPE == LexType::COMMA) {
                 int InitVal = parseInitVal();
                 if (InitVal == 0) {
                     cout << "<InitVal>" << endl;
-                    readToken;
-                    return 0;
                 } else {
                     return InitVal;
                 }
-            } else if (LEXTYPE == LexType::RBRACE) {
+            }
+            if (LEXTYPE == LexType::RBRACE) {
                 return 0;
             } else {
                 return -1;
@@ -292,20 +283,17 @@ int Parser::parseInitVal() {
         int Exp = parseExp();
         if (Exp == 0) {
             cout << "<Exp>" << endl;
-            readToken;
             return 0;
         } else {
             return Exp;
         }
     }
-    return 0;
 }
 
 int Parser::parseFuncDef() {
     int FuncType = parseFuncType();
     if (FuncType == 0) {
         cout << "<FuncType>" << endl;
-        readToken;
         if (LEXTYPE == LexType::IDENFR) {
             readToken;
             if (LEXTYPE == LexType::LPARENT) {
@@ -316,7 +304,6 @@ int Parser::parseFuncDef() {
                     int FuncFParams = parseFuncFParams();
                     if (FuncFParams == 0) {
                         cout << "<FuncFParams>" << endl;
-                        readToken;
                         if (LEXTYPE == LexType::RPARENT) {
                             readToken;
                         } else {
@@ -329,7 +316,6 @@ int Parser::parseFuncDef() {
                 int Block = parseBlock();
                 if (Block == 0) {
                     cout << "<Block>" << endl;
-                    readToken;
                     return 0;
                 } else {
                     return Block;
@@ -338,7 +324,7 @@ int Parser::parseFuncDef() {
                 return -1;
             }
         } else {
-            return -1;  
+            return -1;
         }
     } else {
         return -1;
@@ -358,7 +344,6 @@ int Parser::parseMainFuncDef() {
                     int Block = parseBlock();
                     if (Block == 0) {
                         cout << "<Block>" << endl;
-                        readToken;
                         return 0;
                     } else {
                         return Block;
@@ -418,12 +403,11 @@ int Parser::parseFuncFParam() {
                 } else {
                     return -1;
                 }
-                if (LEXTYPE == LexType::LBRACK) {
+                while (LEXTYPE == LexType::LBRACK) {
                     readToken;
                     int ConstExp = parseConstExp();
                     if (ConstExp == 0) {
                         cout << "<ConstExp>" << endl;
-                        readToken;
                         if (LEXTYPE == LexType::RBRACK) {
                             readToken;
                         } else {
@@ -433,8 +417,10 @@ int Parser::parseFuncFParam() {
                         return ConstExp;
                     }
                 }
+                return 0;
+            } else {
+                return 0;
             }
-            return 0;
         } else {
             return -1;
         }
@@ -470,13 +456,11 @@ int Parser::parseBlockItem() {
     int Decl = parseDecl();
     if (Decl == 0) {
         cout << "<Decl>" << endl;
-        readToken;
         return 0;
     } else {
         int Stmt = parseStmt();
         if (Stmt == 0) {
             cout << "<Stmt>" << endl;
-            readToken;
             return 0;
         } else {
             return -1;
@@ -491,13 +475,11 @@ int Parser::parseStmt() {
             readToken;
             int Cond = parseCond();
             if (Cond == 0) {
-                readToken;
                 if (LEXTYPE == LexType::RPARENT) {
                     readToken;
                     int Stmt = parseStmt();
                     if (Stmt == 0) {
                         cout << "<Stmt>" << endl;
-                        readToken;
                         if (LEXTYPE == LexType::ELSETK) {
                             readToken;
                             int Stmt = parseStmt();
@@ -508,12 +490,11 @@ int Parser::parseStmt() {
                                 return Stmt;
                             }
                         }
-                        return 0;
                     } else {
                         return Stmt;
                     }
                 } else {
-                    return -1;  
+                    return -1;
                 }
             } else {
                 return -1;
@@ -528,37 +509,34 @@ int Parser::parseStmt() {
             int ForStmt = parseForStmt();
             if (ForStmt == 0) {
                 cout << "<ForStmt>" << endl;
-                readToken;
             }
             if (LEXTYPE == LexType::SEMICN) {
                 readToken;
                 int Cond = parseCond();
                 if (Cond == 0) {
                     cout << "<Cond>" << endl;
-                    readToken;
                 }
                 if (LEXTYPE == LexType::SEMICN) {
+                    readToken;
+                    int ForStmt = parseForStmt();
+                    if (ForStmt == 0) {
+                        cout << "<ForStmt>" << endl;
+                    }
+                    if (LEXTYPE == LexType::RPARENT) {
                         readToken;
-                        int ForStmt = parseForStmt();
-                        if (ForStmt == 0) {
-                            cout << "<ForStmt>" << endl;
-                            readToken;
-                        }
-                        if (LEXTYPE == LexType::RPARENT) {
-                            readToken;
-                            int Stmt = parseStmt();
-                            if (Stmt == 0) {
-                                cout << "<Stmt>" << endl;
-                                return 0;
-                            } else {
-                                return Stmt;
-                            }
+                        int Stmt = parseStmt();
+                        if (Stmt == 0) {
+                            cout << "<Stmt>" << endl;
+                            return 0;
                         } else {
-                            return -1;
+                            return Stmt;
                         }
                     } else {
                         return -1;
                     }
+                } else {
+                    return -1;
+                }
             } else {
                 return -1;
             }
@@ -566,92 +544,453 @@ int Parser::parseStmt() {
             return -1;
         }
     } else if (LEXTYPE == LexType::BREAKTK) {
-        
+        readToken;
+        if (LEXTYPE == LexType::SEMICN) {
+            readToken;
+            return 0;
+        } else {
+            return -1;
+        }
     } else if (LEXTYPE == LexType::CONTINUETK) {
-        
+        readToken;
+        if (LEXTYPE == LexType::SEMICN) {
+            readToken;
+            return 0;
+        } else {
+            return -1;
+        }
     } else if (LEXTYPE == LexType::RETURNTK) {
+        readToken;
+        if (LEXTYPE == LexType::SEMICN) {
+            readToken;
+            return 0;
+        } else {
+            int Exp = parseExp();
+            if (Exp == 0) {
+                if (LEXTYPE == LexType::SEMICN) {
+                    readToken;
+                    return 0;
+                } else {
+                    return -1;
+                }
+            } else {
+                return Exp;
+            }
+        }
     } else if (LEXTYPE == LexType::PRINTFTK) {
+        readToken;
+        if (LEXTYPE == LexType::LPARENT) {
+            readToken;
+            if (LEXTYPE == LexType::STRCON) {
+                readToken;
+                while (LEXTYPE == LexType::COMMA) {
+                    readToken;
+                    int Exp = parseExp();
+                    if (Exp == 0) {
+                        cout << "<Exp>" << endl;
+                    } else {
+                        return -1;
+                    }
+                }
+                if (LEXTYPE == LexType::RPARENT) {
+                    readToken;
+                    if (LEXTYPE == LexType::SEMICN) {
+                        readToken;
+                        return 0;
+                    } else {
+                        return -1;
+                    }
+                } else {
+                    return -1;
+                }
+            } else {
+                return -1;
+            }
+        } else {
+            return -1;
+        }
+    } else {
+        int LVal = parseLVal();
+        if (LVal == 0) {
+            if (LEXTYPE == LexType::ASSIGN) {
+                readToken;
+                if (LEXTYPE == LexType::GETINTTK) {
+                    readToken;
+                    if (LEXTYPE == LexType::LPARENT) {
+                        readToken;
+                        if (LEXTYPE == LexType::RPARENT) {
+                            readToken;
+                            if (LEXTYPE == LexType::SEMICN) {
+                                readToken;
+                                return 0;
+                            } else {
+                                return -1;
+                            }
+                        } else {
+                            return -1;
+                        }
+                    } else {
+                        return -1;
+                    }
+                } else {
+                    int Exp = parseExp();
+                    if (Exp == 0) {
+                        cout << "<Exp>" << endl;
+                        if (LEXTYPE == LexType::SEMICN) {
+                            readToken;
+                            return 0;
+                        } else {
+                            return -1;
+                        }
+                    } else {
+                        return -1;
+                    }
+                }
+            } else {
+                return -1;
+            }
+        } else {
+            if (LEXTYPE == LexType::LBRACE) {
+                int Block = parseBlock();
+                if (Block == 0) {
+                    cout << "<Block>" << endl;
+                    return 0;
+                } else {
+                    return Block;
+                }
+            } else {
+                if (LEXTYPE == LexType::SEMICN) {
+                    readToken;
+                    return 0;
+                } else {
+                    int Exp = parseExp();
+                    if (Exp == 0) {
+                        cout << "<Exp>" << endl;
+                        if (LEXTYPE == LexType::SEMICN) {
+                            readToken;
+                            return 0;
+                        } else {
+                            return -1;
+                        }
+                    } else {
+                        return -1;
+                    }
+                }
+            }
+        }
 
-    } else 
+    }
     return 0;
 }
 
 int Parser::parseForStmt() {
-
-    return 0;
+    int LVal = parseLVal();
+    if (LVal == 0) {
+        cout << "<LVal>" << endl;
+        if (LEXTYPE == LexType::ASSIGN) {
+            readToken;
+            int Exp = parseExp();
+            if (Exp == 0) {
+                cout << "<Exp>" << endl;
+                return 0;
+            } else {
+                return Exp;
+            }
+        } else {
+            return -1;
+        }
+    } else {
+        return -1;
+    }
 }
 
 int Parser::parseExp() {
-
-    return 0;
+    int AddExp = parseAddExp();
+    if (AddExp == 0) {
+        cout << "<AddExp>" << endl;
+        return 0;
+    } else {
+        return -1;
+    }
 }
 
 int Parser::parseCond() {
-
-    return 0;
+    int LOrExp = parseLOrExp();
+    if (LOrExp == 0) {
+        cout << "<LOrExp>" << endl;
+        return 0;
+    } else {
+        return -1;
+    }
 }
 
 int Parser::parseLVal() {
-
-    return 0;
+    if (LEXTYPE == LexType::IDENFR) {
+        readToken;
+        while (LEXTYPE == LexType::LBRACK) {
+            readToken;
+            int Exp = parseExp();
+            if (Exp == 0) {
+                cout << "<Exp>" << endl;
+            } else {
+                return Exp;
+            }
+            if (LEXTYPE == LexType::RBRACK) {
+                readToken;
+            } else {
+                return -1;
+            }
+        }
+        return 0;
+    } else {
+        return -1;
+    }
 }
 
 int Parser::parsePrimaryExp() {
-
-    return 0;
+    if (LEXTYPE == LexType::LPARENT) {
+        int Exp = parseExp();
+        if (Exp == 0) {
+            cout << "<Exp>" << endl;
+            if (LEXTYPE == LexType::RPARENT) {
+                readToken;
+                return 0;
+            } else {
+                return -1;
+            }
+        } else {
+            return -1;
+        }
+    } else {
+        int Number = parseNumber();
+        if (Number == 0) {
+            cout << "<Number>" << endl;
+            return 0;
+        } else {
+            int LVal = parseLVal();
+            if (LVal == 0) {
+                cout << "<LVal>" << endl;
+                return 0;
+            } else {
+                return -1;
+            }
+        }
+    }
 }
 
 int Parser::parseNumber() {
-
-    return 0;
+    if (LEXTYPE == LexType::INTCON) {
+        readToken;
+        return 0;
+    } else {
+        return -1;
+    }
 }
 
 int Parser::parseUnaryExp() {
-
-    return 0;
+    int UnaryOp = parseUnaryOp();
+    if (UnaryOp == 0) {
+        cout << "<UnaryOp>" << endl;
+        int UnaryExp = parseUnaryExp();
+        if (UnaryExp == 0) {
+            cout << "<UnaryExp>" << endl;
+            return 0;
+        } else {
+            return -1;
+        }
+    } else {
+        LexType nnType = lexer.nnnext();
+        if (LEXTYPE == LexType::IDENFR && nnType == LexType::LPARENT) {
+            readToken;
+            readToken;
+            if (LEXTYPE == LexType::RPARENT) {
+                return 0;
+            } else {
+                int FuncRParams = parseFuncRParams();
+                if (FuncRParams == 0) {
+                    cout << "<FuncRParams>" << endl;
+                    readToken;
+                    if (LEXTYPE == LexType::RPARENT) {
+                        return 0;
+                    } else {
+                        return -1;
+                    }
+                } else {
+                    return -1;
+                }
+            }
+        } else {
+            int PrimaryExp = parsePrimaryExp();
+            if (PrimaryExp == 0) {
+                cout << "<PrimaryExp>" << endl;
+                return 0;
+            } else {
+                return PrimaryExp;
+            }
+        }
+    }
 }
 
 int Parser::parseUnaryOp() {
-
-    return 0;
+    if (LEXTYPE == LexType::PLUS || LEXTYPE == LexType::MINU || LEXTYPE == LexType::NOT) {
+        return 0;
+    } else {
+        return -1;
+    }
 }
 
 int Parser::parseFuncRParams() {
-
-    return 0;
+    int Exp = parseExp();
+    if (Exp == 0) {
+        cout << "<Exp>" << endl;
+        while (LEXTYPE == LexType::COMMA) {
+            readToken;
+            int Exp = parseExp();
+            if (Exp == 0) {
+                cout << "<Exp>" << endl;
+            } else {
+                return -1;
+            }
+        }
+        return 0;
+    } else {
+        return -1;
+    }
 }
 
 int Parser::parseMulExp() {
-
-    return 0;
+    int UnaryExp = parseUnaryExp();
+    if (UnaryExp == 0) {
+        cout << "<UnaryExp>" << endl;
+        if (LEXTYPE == LexType::MULT || LEXTYPE == LexType::DIV || LEXTYPE == LexType::MOD) {
+            readToken;
+            int MulExp = parseMulExp();
+            if (MulExp == 0) {
+                cout << "<MulExp>" << endl;
+                return 0;
+            } else {
+                return -1;
+            }
+        } else {
+            return 0;
+        }
+    } else {
+        return -1;
+    }
 }
 
 int Parser::parseAddExp() {
-
-    return 0;
+    int MulExp = parseMulExp();
+    if (MulExp == 0) {
+        cout << "<MulExp>" << endl;
+        if (LEXTYPE == LexType::PLUS || LEXTYPE == LexType::MINU) {
+            readToken;
+            int AddExp = parseAddExp();
+            if (AddExp == 0) {
+                cout << "<AddExp>" << endl;
+                return 0;
+            } else {
+                return -1;
+            }
+        } else {
+            return 0;
+        }
+    } else {
+        return -1;
+    }
 }
 
 int Parser::parseRelExp() {
-
-    return 0;
+    int AddExp = parseAddExp();
+    if (AddExp == 0) {
+        cout << "<AddExp>" << endl;
+        if (LEXTYPE == LexType::GRE || LEXTYPE == LexType::GEQ ||
+            LEXTYPE == LexType::LSS || LEXTYPE == LexType::LEQ) {
+            readToken;
+            int RelExp = parseRelExp();
+            if (RelExp == 0) {
+                cout << "<RelExp>" << endl;
+                return 0;
+            } else {
+                return -1;
+            }
+        } else {
+            return 0;
+        }
+    } else {
+        return -1;
+    }
 }
 
 int Parser::parseEqExp() {
-
-    return 0;
+    int RelExp = parseRelExp();
+    if (RelExp == 0) {
+        cout << "<RelExp>" << endl;
+        if (LEXTYPE == LexType::EQL || LEXTYPE == LexType::NEQ) {
+            readToken;
+            int EqExp = parseEqExp();
+            if (EqExp == 0) {
+                cout << "<EqExp>" << endl;
+                return 0;
+            } else {
+                return -1;
+            }
+        } else {
+            return 0;
+        }
+    } else {
+        return -1;
+    }
 }
 
 int Parser::parseLAndExp() {
-
-    return 0;
+    int EqExp = parseEqExp();
+    if (EqExp == 0) {
+        cout << "<EqExp>" << endl;
+        if (LEXTYPE == LexType::AND) {
+            readToken;
+            int LAndExp = parseLAndExp();
+            if (LAndExp == 0) {
+                cout << "<LAndExp>" << endl;
+                return 0;
+            } else {
+                return -1;
+            }
+        } else {
+            return 0;
+        }
+    } else {
+        return -1;
+    }
 }
 
 int Parser::parseLOrExp() {
-
-    return 0;
+    int LAndExp = parseLAndExp();
+    if (LAndExp == 0) {
+        cout << "<LAndExp>" << endl;
+        if (LEXTYPE == LexType::OR) {
+            readToken;
+            int LOrExp = parseLOrExp();
+            if (LOrExp == 0) {
+                cout << "<LOrExp>" << endl;
+                return 0;
+            } else {
+                return -1;
+            }
+        } else {
+            return 0;
+        }
+    } else {
+        return -1;
+    }
 }
 
 int Parser::parseConstExp() {
-    
-    return 0;
+    int AddExp = parseAddExp();
+    if (AddExp == 0) {
+        cout << "<AddExp>" << endl;
+        return 0;
+    } else {
+        return -1;
+    }
 }

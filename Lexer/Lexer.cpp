@@ -4,6 +4,7 @@
 #include "Lexer.h"
 
 extern string source;
+
 string reserveWords[RESERVEWORDS_NUM] = {
         "main", "const", "int", "break", "continue", "if", "else", "for", "getint", "printf", "return", "void"
 };
@@ -338,17 +339,6 @@ LexType Lexer::nnnext() {
     number = nowNumber;
     return resLexType;
 }
-
-//void Lexer::scan() {
-//    while (true) {
-//        bool isEnd = next();
-//        if (isEnd) {
-//            break;
-//        }
-//        Token token = getToken();
-//
-//    }
-//}
 
 
 

@@ -29,8 +29,7 @@ int main() {
     ofstream ofs(OUTFILEPATH);
     if (ifs.is_open() && ofs.is_open()) {
         source = string((istreambuf_iterator<char>(ifs)), istreambuf_iterator<char>());
-
-
+        parser.parseCompUnit();
     }
     return 0;
 }
