@@ -9,71 +9,73 @@
 
 class Parser {
 public:
-    int CompUnit();
+    LexType next();
 
-    int Decl();
+    int parseCompUnit();
 
-    int ConstDecl();
+    int parseDecl();
 
-    int BType();
+    int parseConstDecl();
 
-    int ConstDef();
+    int parseBType();
 
-    int ConstInitVal();
+    int parseConstDef();
 
-    int VarDecl();
+    int parseConstInitVal();
 
-    int VarDef();
+    int parseVarDecl();
 
-    int InitVal();
+    int parseVarDef();
 
-    int FuncDef();
+    int parseInitVal();
 
-    int MainFuncDef();
+    int parseFuncDef();
 
-    int FuncType();
+    int parseMainFuncDef();
 
-    int FuncFParams();
+    int parseFuncType();
 
-    int FuncFParam();
+    int parseFuncFParams();
 
-    int Block();
+    int parseFuncFParam();
 
-    int BlockItem();
+    int parseBlock();
 
-    int Stmt();
+    int parseBlockItem();
 
-    int ForStmt();
+    int parseStmt();
 
-    int Exp();
+    int parseForStmt();
 
-    int Cond();
+    int parseExp();
 
-    int LVal();
+    int parseCond();
 
-    int PrimaryExp();
+    int parseLVal();
 
-    int Number();
+    int parsePrimaryExp();
 
-    int UnaryExp();
+    int parseNumber();
 
-    int UnaryOp();
+    int parseUnaryExp();
 
-    int FuncRParams();
+    int parseUnaryOp();
 
-    int MulExp();
+    int parseFuncRParams();
 
-    int AddExp();
+    int parseMulExp();
 
-    int RelExp();
+    int parseAddExp();
 
-    int EqExp();
+    int parseRelExp();
 
-    int LAndExp();
+    int parseEqExp();
 
-    int LOrExp();
+    int parseLAndExp();
 
-    int ConstExp();
+    int parseLOrExp();
+
+    int parseConstExp();
 
 };
 

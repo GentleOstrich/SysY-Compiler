@@ -27,9 +27,11 @@ private:
 public:
     int next();
 
-    Token getToken();
+    LexType nnext();
 
-    void scan();
+    LexType nnnext();
+
+    Token getToken();
 };
 
 

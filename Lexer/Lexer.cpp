@@ -2,8 +2,8 @@
 // Created by yh on 2023/9/25.
 //
 #include "Lexer.h"
-vector<pair<Token, int>> tokenVec;
-string source;
+
+extern string source;
 string reserveWords[RESERVEWORDS_NUM] = {
         "main", "const", "int", "break", "continue", "if", "else", "for", "getint", "printf", "return", "void"
 };
@@ -280,25 +280,75 @@ int Lexer::next() {
             curPos++;
         }
     }
+    if (lexType == LexType::NONE) {
+        return -1;
+    }
     return 0;
 }
 
 Token Lexer::getToken()  {
-    return Token(lexType, word);
+    return make_pair(lexType, word);
 }
 
-void Lexer::scan() {
-    while (true) {
-        bool isEnd = next();
-        if (isEnd) {
-            break;
-        }
-        Token token = getToken();
-        if (token.first != LexType::NONE) {
-            tokenVec.emplace_back(token, lineNum);
+LexType Lexer::nnext() {
+    int nowPos = curPos;
+    int nowLineNum = lineNum;
+    string nowWord = word;
+    LexType nowLexType = lexType;
+    int nowNumber = number;
+    bool flag = false;
+    int res = next();
+    if (res == 0) {
+        flag = true;
+    }
+    LexType resLexType = LexType::NONE;
+    if (flag) {
+        resLexType = lexType;
+    }
+    curPos = nowPos;
+    lineNum = nowLineNum;
+    word = nowWord;
+    lexType = nowLexType;
+    number = nowNumber;
+    return resLexType;
+}
+
+LexType Lexer::nnnext() {
+    int nowPos = curPos;
+    int nowLineNum = lineNum;
+    string nowWord = word;
+    LexType nowLexType = lexType;
+    int nowNumber = number;
+    bool flag = false;
+    int res = next();
+    if (res == 0) {
+        res = next();
+        if (res == 0) {
+            flag = true;
         }
     }
+    LexType resLexType = LexType::NONE;
+    if (flag) {
+        resLexType = lexType;
+    }
+    curPos = nowPos;
+    lineNum = nowLineNum;
+    word = nowWord;
+    lexType = nowLexType;
+    number = nowNumber;
+    return resLexType;
 }
+
+//void Lexer::scan() {
+//    while (true) {
+//        bool isEnd = next();
+//        if (isEnd) {
+//            break;
+//        }
+//        Token token = getToken();
+//
+//    }
+//}
 
 
 
