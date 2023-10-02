@@ -48,6 +48,7 @@ enum class LexType {
     NONE
 };
 
+
 static string LexType2String(LexType lexType) {
     switch (lexType) {
         case LexType::IDENFR:

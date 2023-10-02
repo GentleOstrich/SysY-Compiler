@@ -3,49 +3,47 @@
 //
 #include "Parser.h"
 #include <iostream>
+#include <fstream>
 
-#define readToken token = (lexer.next() == 0) ? lexer.getToken() : make_pair(LexType::NONE, nullptr);
-#define LEXTYPE token.first
+#define tkType token.first
+#define tkWord token.second
+#define readTk token = (lexer.next() == 0) ? lexer.getToken() : make_pair(LexType::NONE, "")
+#define printTk ofs << LexType2String(tkType) << " " << tkWord << endl
+#define preRead lexer.nnext()
+#define prePreRead lexer.nnnext()
+
 using namespace std;
+
 extern Lexer lexer;
-Token token = make_pair(LexType::NONE, nullptr);
+extern ifstream ifs;
+extern ofstream ofs;
+Token token = make_pair(LexType::NONE, "");
 
 // 正常返回 0 错误返回 -1
 int Parser::parseCompUnit() {
-    readToken;
-    while (LEXTYPE != LexType::NONE) {
-        if (LEXTYPE == LexType::CONSTTK) {
+    readTk;
+    while (tkType != LexType::NONE) {
+        if (tkType == LexType::CONSTTK) {
             int Decl = parseDecl();
-            if (Decl == 0) {
-                cout << "<Decl>" << endl;
-            } else {
-                return Decl;
+            if (Decl != 0) {
+                return -1;
             }
-        } else if (LEXTYPE == LexType::INTTK) {
-            LexType nnextType = lexer.nnext();
-            if (nnextType == LexType::MAINTK) {
+        } else if (tkType == LexType::INTTK) {
+            if (preRead == LexType::MAINTK) {
                 int MainFuncDef = parseMainFuncDef();
-                if (MainFuncDef == 0) {
-                    cout << "<MainFuncDef>" << endl;
-                    return 0;
-                } else {
-                    return MainFuncDef;
+                if (MainFuncDef != 0) {
+                    return -1;
                 }
-            } else if (nnextType == LexType::IDENFR) {
-                LexType nnnextType = lexer.nnnext();
-                if (nnnextType == LexType::LPARENT) {
+            } else if (preRead == LexType::IDENFR) {
+                if (prePreRead == LexType::LPARENT) {
                     int FuncDef = parseFuncDef();
-                    if (FuncDef == 0) {
-                        cout << "<FuncDef" << endl;
-                    } else {
-                        return FuncDef;
+                    if (FuncDef != 0) {
+                        return -1;
                     }
-                } else if (nnnextType == LexType::ASSIGN) {
+                } else if (prePreRead == LexType::ASSIGN) {
                     int Decl = parseDecl();
-                    if (Decl == 0) {
-                        cout << "<Decl>" << endl;
-                    } else {
-                        return Decl;
+                    if (Decl != 0) {
+                        return -1;
                     }
                 } else {
                     return -1;
@@ -53,54 +51,32 @@ int Parser::parseCompUnit() {
             } else {
                 return -1;
             }
-        } else {
-            return -1;
-        }
-    }
-}
-
-int Parser::parseDecl() {
-    if (LEXTYPE == LexType::CONSTTK) {
-        int ConstDecl = parseConstDecl();
-        if (ConstDecl == 0) {
-            cout << "<ConstDecl>" << endl;
-        }
-        return ConstDecl;
-    } else if (LEXTYPE == LexType::INTTK) {
-        int VarDecl = parseVarDecl();
-        if (VarDecl == 0) {
-            cout << "<VarDecl>" << endl;
-        }
-        return VarDecl;
-    }
-    return 0;
-}
-
-int Parser::parseConstDecl() {
-    if (LEXTYPE == LexType::CONSTTK) {
-        readToken;
-        if (LEXTYPE == LexType::INTTK) {
-            readToken;
-            int ConstDef = parseConstDef();
-            if (ConstDef == 0) {
-                cout << "<ConstDef>" << endl;
-                while (LEXTYPE == LexType::COMMA) {
-                    readToken;
-                    int ConstDef = parseConstDef();
-                    if (ConstDef == 0) {
-                        cout << "<ConstDef>" << endl;
-                    } else {
-                        return ConstDef;
-                    }
-                }
-            } else {
-                return ConstDef;
+        } else if (tkType == LexType::VOIDTK) {
+            int FuncDef = parseFuncDef();
+            if (FuncDef != 0) {
+                return -1;
             }
         } else {
             return -1;
         }
-        if (LEXTYPE == LexType::SEMICN) {
-            readToken;
+    }
+    ofs << "<CompUnit>" << endl;
+    return 0;
+}
+
+int Parser::parseDecl() {
+    if (tkType == LexType::CONSTTK) {
+        int ConstDecl = parseConstDecl();
+        if (ConstDecl != 0) {
+            return -1;
+        } else {
+            return 0;
+        }
+    } else if (tkType == LexType::INTTK) {
+        int VarDecl = parseVarDecl();
+        if (VarDecl != 0) {
+            return -1;
+        } else {
             return 0;
         }
     } else {
@@ -108,9 +84,46 @@ int Parser::parseConstDecl() {
     }
 }
 
+int Parser::parseConstDecl() {
+    if (tkType == LexType::CONSTTK) {
+        printTk;
+        readTk;
+        if (tkType == LexType::INTTK) {
+            printTk;
+            readTk;
+            int ConstDef = parseConstDef();
+            if (ConstDef != 0) {
+                return -1;
+            } else {
+                while (tkType == LexType::COMMA) {
+                    printTk;
+                    readTk;
+                    int ConstDef = parseConstDef();
+                    if (ConstDef != 0) {
+                        return -1;
+                    }
+                }
+            }
+        } else {
+            return -1;
+        }
+        if (tkType == LexType::SEMICN) {
+            printTk;
+            ofs << "<ConstDecl>" << endl;
+            readTk;
+            return 0;
+        } else {
+            return -1;
+        }
+    } else {
+        return -1;
+    }
+}
+
 int Parser::parseBType() {
-    if (LEXTYPE == LexType::INTTK) {
-        readToken;
+    if (tkType == LexType::INTTK) {
+        printTk;
+        readTk;
         return 0;
     } else {
         return -1;
@@ -118,30 +131,33 @@ int Parser::parseBType() {
 }
 
 int Parser::parseConstDef() {
-    if (LEXTYPE == LexType::IDENFR) {
-        readToken;
-        while (LEXTYPE == LexType::LBRACK) {
-            readToken;
+    if (tkType == LexType::IDENFR) {
+        printTk;
+        readTk;
+        while (tkType == LexType::LBRACK) {
+            printTk;
+            readTk;
             int ConstExp = parseConstExp();
-            if (ConstExp == 0) {
-                cout << "<ConstExp>" << endl;
-                if (LEXTYPE == LexType::RBRACK) {
-                    readToken;
+            if (ConstExp != 0) {
+                return -1;
+            } else {
+                if (tkType == LexType::RBRACK) {
+                    printTk;
+                    readTk;
                 } else {
                     return -1;
                 }
-            } else {
-                return ConstExp;
             }
         }
-        if (LEXTYPE == LexType::ASSIGN) {
-            readToken;
+        if (tkType == LexType::ASSIGN) {
+            printTk;
+            readTk;
             int ConstInitVal = parseConstInitVal();
-            if (ConstInitVal == 0) {
-                cout << "<ConstInitVal>" << endl;
-                return 0;
+            if (ConstInitVal != 0) {
+                return -1;
             } else {
-                return ConstInitVal;
+                ofs << "<ConstDef>" << endl;
+                return 0;
             }
         } else {
             return -1;
@@ -152,100 +168,107 @@ int Parser::parseConstDef() {
 }
 
 int Parser::parseConstInitVal() {
-    if (LEXTYPE == LexType::LBRACE) {
-        readToken;
-        if (LEXTYPE == LexType::RBRACE) {
-            readToken;
+    if (tkType == LexType::LBRACE) {
+        printTk;
+        readTk;
+        if (tkType == LexType::RBRACE) {
+            printTk;
+            ofs << "<ConstInitVal>" << endl;
+            readTk;
             return 0;
         }
         int ConstInitVal = parseConstInitVal();
-        if (ConstInitVal == 0) {
-            cout << "<ConstInitVal>" << endl;
-            while (LEXTYPE == LexType::COMMA) {
-                readToken;
+        if (ConstInitVal != 0) {
+            return -1;
+        } else {
+            while (tkType == LexType::COMMA) {
+                printTk;
+                readTk;
                 int ConstInitVal = parseConstInitVal();
-                if (ConstInitVal == 0) {
-                    cout << "<ConstInitVal>" << endl;
-                } else {
-                    return ConstInitVal;
+                if (ConstInitVal != 0) {
+                    return -1;
                 }
             }
-            if (LEXTYPE == LexType::RBRACE) {
-                readToken;
+            if (tkType == LexType::RBRACE) {
+                printTk;
+                ofs << "<ConstInitVal>" << endl;
+                readTk;
                 return 0;
             } else {
                 return -1;
             }
-        } else {
-            return ConstInitVal;
         }
     } else {
         int ConstExp = parseConstExp();
-        if (ConstExp == 0) {
-            cout << "<ConstExp>" << endl;
-            return 0;
+        if (ConstExp != 0) {
+            return -1;
         } else {
-            return ConstExp;
+            ofs << "<ConstInitVal>" << endl;
+            return 0;
         }
     }
 }
 
 int Parser::parseVarDecl() {
     int BType = parseBType();
-    if (BType == 0) {
+    if (BType != 0) {
+        return -1;
+    } else {
         int VarDef = parseVarDef();
-        if (VarDef == 0) {
-            cout << "<VarDef>" << endl;
-            while (LEXTYPE == LexType::COMMA) {
-                readToken;
+        if (VarDef != 0) {
+            return -1;
+        } else {
+            while (tkType == LexType::COMMA) {
+                printTk;
+                readTk;
                 int VarDef = parseVarDef();
-                if (VarDef == 0) {
-                    cout << "<VarDef>" << endl;
-                } else {
-                    return VarDef;
+                if (VarDef != 0) {
+                    return -1;
                 }
             }
-            if (LEXTYPE == LexType::SEMICN) {
-                readToken;
+            if (tkType == LexType::SEMICN) {
+                printTk;
+                ofs << "<VarDecl>" << endl;
+                readTk;
                 return 0;
             } else {
                 return -1;
             }
-        } else {
-            return VarDef;
         }
-    } else {
-        return BType;
     }
 }
 
 int Parser::parseVarDef() {
-    if (LEXTYPE == LexType::IDENFR) {
-        readToken;
-        while (LEXTYPE == LexType::LBRACK) {
-            readToken;
+    if (tkType == LexType::IDENFR) {
+        printTk;
+        readTk;
+        while (tkType == LexType::LBRACK) {
+            printTk;
+            readTk;
             int ConstExp = parseConstExp();
-            if (ConstExp == 0) {
-                cout << "<ConstExp>" << endl;
-                if (LEXTYPE == LexType::RBRACK) {
-                    readToken;
+            if (ConstExp != 0) {
+                return -1;
+            } else {
+                if (tkType == LexType::RBRACK) {
+                    printTk;
+                    readTk;
                 } else {
                     return -1;
                 }
-            } else {
-                return ConstExp;
             }
         }
-        if (LEXTYPE == LexType::ASSIGN) {
-            readToken;
+        if (tkType == LexType::ASSIGN) {
+            printTk;
+            readTk;
             int InitVal = parseInitVal();
-            if (InitVal == 0) {
-                cout << "<InitVal>" << endl;
-                return 0;
+            if (InitVal != 0) {
+                return -1;
             } else {
-                return InitVal;
+                ofs << "<VarDef>" << endl;
+                return 0;
             }
         } else {
+            ofs << "<VarDef>" << endl;
             return 0;
         }
     } else {
@@ -254,100 +277,78 @@ int Parser::parseVarDef() {
 }
 
 int Parser::parseInitVal() {
-    if (LEXTYPE == LexType::LBRACE) {
-        readToken;
-        if (LEXTYPE == LexType::RBRACE) {
-            readToken;
+    if (tkType == LexType::LBRACE) {
+        printTk;
+        readTk;
+        if (tkType == LexType::RBRACE) {
+            printTk;
+            ofs << "<InitVal>" << endl;
+            readTk;
             return 0;
         }
         int InitVal = parseInitVal();
-        if (InitVal == 0) {
-            cout << "<InitVal>" << endl;
-            while (LEXTYPE == LexType::COMMA) {
+        if (InitVal != 0) {
+            return -1;
+        } else {
+            while (tkType == LexType::COMMA) {
+                printTk;
+                readTk;
                 int InitVal = parseInitVal();
-                if (InitVal == 0) {
-                    cout << "<InitVal>" << endl;
-                } else {
-                    return InitVal;
+                if (InitVal != 0) {
+                    return -1;
                 }
             }
-            if (LEXTYPE == LexType::RBRACE) {
+            if (tkType == LexType::RBRACE) {
+                printTk;
+                ofs << "<InitVal>" << endl;
+                readTk;
                 return 0;
             } else {
                 return -1;
             }
-        } else {
-            return InitVal;
         }
     } else {
         int Exp = parseExp();
-        if (Exp == 0) {
-            cout << "<Exp>" << endl;
-            return 0;
+        if (Exp != 0) {
+            return -1;
         } else {
-            return Exp;
+            ofs << "<InitVal>" << endl;
+            return 0;
         }
     }
 }
 
 int Parser::parseFuncDef() {
     int FuncType = parseFuncType();
-    if (FuncType == 0) {
-        cout << "<FuncType>" << endl;
-        if (LEXTYPE == LexType::IDENFR) {
-            readToken;
-            if (LEXTYPE == LexType::LPARENT) {
-                readToken;
-                if (LEXTYPE == LexType::RPARENT) {
-                    readToken;
+    if (FuncType != 0) {
+        return -1;
+    } else {
+        if (tkType == LexType::IDENFR) {
+            printTk;
+            readTk;
+            if (tkType == LexType::LPARENT) {
+                printTk;
+                readTk;
+                if (tkType == LexType::RPARENT) {
+                    printTk;
+                    readTk;
                 } else {
                     int FuncFParams = parseFuncFParams();
-                    if (FuncFParams == 0) {
-                        cout << "<FuncFParams>" << endl;
-                        if (LEXTYPE == LexType::RPARENT) {
-                            readToken;
+                    if (FuncFParams != 0) {
+                        return FuncFParams;
+                    } else {
+                        if (tkType == LexType::RPARENT) {
+                            printTk;
+                            readTk;
                         } else {
                             return -1;
                         }
-                    } else {
-                        return FuncFParams;
                     }
                 }
                 int Block = parseBlock();
                 if (Block == 0) {
-                    cout << "<Block>" << endl;
+                    ofs << "<FuncDef>" << endl;
                     return 0;
-                } else {
-                    return Block;
-                }
-            } else {
-                return -1;
-            }
-        } else {
-            return -1;
-        }
-    } else {
-        return -1;
-    }
-
-}
-
-int Parser::parseMainFuncDef() {
-    if (LEXTYPE == LexType::INTTK) {
-        readToken;
-        if (LEXTYPE == LexType::MAINTK) {
-            readToken;
-            if (LEXTYPE == LexType::LPARENT) {
-                readToken;
-                if (LEXTYPE == LexType::RPARENT) {
-                    readToken;
-                    int Block = parseBlock();
-                    if (Block == 0) {
-                        cout << "<Block>" << endl;
-                        return 0;
-                    } else {
-                        return Block;
-                    }
                 } else {
                     return -1;
                 }
@@ -360,12 +361,50 @@ int Parser::parseMainFuncDef() {
     }
 }
 
+int Parser::parseMainFuncDef() {
+    if (tkType == LexType::INTTK) {
+        printTk;
+        readTk;
+        if (tkType == LexType::MAINTK) {
+            printTk;
+            readTk;
+            if (tkType == LexType::LPARENT) {
+                printTk;
+                readTk;
+                if (tkType == LexType::RPARENT) {
+                    printTk;
+                    readTk;
+                    int Block = parseBlock();
+                    if (Block != 0) {
+                        return -1;
+                    } else {
+                        ofs << "<MainFuncDef>" << endl;
+                        return 0;
+                    }
+                } else {
+                    return -1;
+                }
+            } else {
+                return -1;
+            }
+        } else {
+            return -1;
+        }
+    } else {
+        return -1;
+    }
+}
+
 int Parser::parseFuncType() {
-    if (LEXTYPE == LexType::INTTK) {
-        readToken;
+    if (tkType == LexType::INTTK) {
+        printTk;
+        ofs << "<FuncType>" << endl;
+        readTk;
         return 0;
-    } else if (LEXTYPE == LexType::VOIDTK) {
-        readToken;
+    } else if (tkType == LexType::VOIDTK) {
+        printTk;
+        ofs << "<FuncType>" << endl;
+        readTk;
         return 0;
     } else {
         return -1;
@@ -374,51 +413,56 @@ int Parser::parseFuncType() {
 
 int Parser::parseFuncFParams() {
     int FuncFParam = parseFuncFParam();
-    if (FuncFParam == 0) {
-        cout << "<FuncFParam>" << endl;
-    } else {
-        return FuncFParam;
+    if (FuncFParam != 0) {
+        return -1;
     }
-    while (LEXTYPE == LexType::COMMA) {
-        readToken;
+    while (tkType == LexType::COMMA) {
+        printTk;
+        readTk;
         int FuncFParam = parseFuncFParam();
-        if (FuncFParam == 0) {
-            cout << "<FuncFParam>" << endl;
-        } else {
-            return FuncFParam;
+        if (FuncFParam != 0) {
+            return -1;
         }
     }
+    ofs << "<FuncFParams>" << endl;
     return 0;
 }
 
 int Parser::parseFuncFParam() {
-    if (LEXTYPE == LexType::INTTK) {
-        readToken;
-        if (LEXTYPE == LexType::IDENFR) {
-            readToken;
-            if (LEXTYPE == LexType::LBRACK) {
-                readToken;
-                if (LEXTYPE == LexType::RBRACK) {
-                    readToken;
+    if (tkType == LexType::INTTK) {
+        printTk;
+        readTk;
+        if (tkType == LexType::IDENFR) {
+            printTk;
+            readTk;
+            if (tkType == LexType::LBRACK) {
+                printTk;
+                readTk;
+                if (tkType == LexType::RBRACK) {
+                    printTk;
+                    readTk;
                 } else {
                     return -1;
                 }
-                while (LEXTYPE == LexType::LBRACK) {
-                    readToken;
+                while (tkType == LexType::LBRACK) {
+                    printTk;
+                    readTk;
                     int ConstExp = parseConstExp();
-                    if (ConstExp == 0) {
-                        cout << "<ConstExp>" << endl;
-                        if (LEXTYPE == LexType::RBRACK) {
-                            readToken;
+                    if (ConstExp != 0) {
+                        return -1;
+                    } else {
+                        if (tkType == LexType::RBRACK) {
+                            printTk;
+                            readTk;
                         } else {
                             return -1;
                         }
-                    } else {
-                        return ConstExp;
                     }
                 }
+                ofs << "<FuncFParam>" << endl;
                 return 0;
             } else {
+                ofs << "<FuncFParam>" << endl;
                 return 0;
             }
         } else {
@@ -430,22 +474,22 @@ int Parser::parseFuncFParam() {
 }
 
 int Parser::parseBlock() {
-    if (LEXTYPE == LexType::LBRACE) {
-        readToken;
-        if (LEXTYPE == LexType::RBRACE) {
-            readToken;
-            return 0;
-        }
-        int BlockItem = parseBlockItem();
-        if (BlockItem == 0) {
-            if (LEXTYPE == LexType::RBRACE) {
-                readToken;
-                return 0;
-            } else {
+    if (tkType == LexType::LBRACE) {
+        printTk;
+        readTk;
+        while (tkType != LexType::RBRACE) {
+            int BlockItem = parseBlockItem();
+            if (BlockItem != 0) {
                 return -1;
             }
+        }
+        if (tkType == LexType::RBRACE) {
+            printTk;
+            ofs << "<Block>" << endl;
+            readTk;
+            return 0;
         } else {
-            return BlockItem;
+            return -1;
         }
     } else {
         return -1;
@@ -455,81 +499,81 @@ int Parser::parseBlock() {
 int Parser::parseBlockItem() {
     int Decl = parseDecl();
     if (Decl == 0) {
-        cout << "<Decl>" << endl;
         return 0;
     } else {
         int Stmt = parseStmt();
-        if (Stmt == 0) {
-            cout << "<Stmt>" << endl;
-            return 0;
-        } else {
+        if (Stmt != 0) {
             return -1;
+        } else {
+            return 0;
         }
     }
 }
 
 int Parser::parseStmt() {
-    if (LEXTYPE == LexType::IFTK) {
-        readToken;
-        if (LEXTYPE == LexType::LPARENT) {
-            readToken;
+    if (tkType == LexType::IFTK) {
+        printTk;
+        readTk;
+        if (tkType == LexType::LPARENT) {
+            printTk;
+            readTk;
             int Cond = parseCond();
-            if (Cond == 0) {
-                if (LEXTYPE == LexType::RPARENT) {
-                    readToken;
+            if (Cond != 0) {
+                return -1;
+            } else {
+                if (tkType == LexType::RPARENT) {
+                    printTk;
+                    readTk;
                     int Stmt = parseStmt();
-                    if (Stmt == 0) {
-                        cout << "<Stmt>" << endl;
-                        if (LEXTYPE == LexType::ELSETK) {
-                            readToken;
-                            int Stmt = parseStmt();
-                            if (Stmt == 0) {
-                                cout << "<Stmt>" << endl;
-                                return 0;
-                            } else {
-                                return Stmt;
-                            }
-                        }
+                    if (Stmt != 0) {
+                        return -1;
                     } else {
-                        return Stmt;
+                        if (tkType == LexType::ELSETK) {
+                            printTk;
+                            readTk;
+                            int Stmt = parseStmt();
+                            if (Stmt != 0) {
+                                return -1;
+                            } else {
+                                ofs << "<Stmt>" << endl;
+                                return 0;
+                            }
+                        } else {
+                            ofs << "<Stmt>" << endl;
+                            return 0;
+                        }
                     }
                 } else {
                     return -1;
                 }
-            } else {
-                return -1;
             }
         } else {
             return -1;
         }
-    } else if (LEXTYPE == LexType::FORTK) {
-        readToken;
-        if (LEXTYPE == LexType::LPARENT) {
-            readToken;
+    } else if (tkType == LexType::FORTK) {
+        printTk;
+        readTk;
+        if (tkType == LexType::LPARENT) {
+            printTk;
+            readTk;
             int ForStmt = parseForStmt();
-            if (ForStmt == 0) {
-                cout << "<ForStmt>" << endl;
-            }
-            if (LEXTYPE == LexType::SEMICN) {
-                readToken;
+            if (tkType == LexType::SEMICN) {
+                printTk;
+                readTk;
                 int Cond = parseCond();
-                if (Cond == 0) {
-                    cout << "<Cond>" << endl;
-                }
-                if (LEXTYPE == LexType::SEMICN) {
-                    readToken;
+                if (tkType == LexType::SEMICN) {
+                    printTk;
+                    readTk;
                     int ForStmt = parseForStmt();
-                    if (ForStmt == 0) {
-                        cout << "<ForStmt>" << endl;
-                    }
-                    if (LEXTYPE == LexType::RPARENT) {
-                        readToken;
+                    if (tkType == LexType::RPARENT) {
+                        printTk;
+                        readTk;
                         int Stmt = parseStmt();
-                        if (Stmt == 0) {
-                            cout << "<Stmt>" << endl;
-                            return 0;
+                        if (Stmt != 0) {
+                            return -1;
                         } else {
-                            return Stmt;
+                            ofs << "<Stmt>" << endl;
+                            return 0;
                         }
                     } else {
                         return -1;
@@ -543,59 +587,75 @@ int Parser::parseStmt() {
         } else {
             return -1;
         }
-    } else if (LEXTYPE == LexType::BREAKTK) {
-        readToken;
-        if (LEXTYPE == LexType::SEMICN) {
-            readToken;
+    } else if (tkType == LexType::BREAKTK) {
+        printTk;
+        readTk;
+        if (tkType == LexType::SEMICN) {
+            printTk;
+            ofs << "<Stmt>" << endl;
+            readTk;
             return 0;
         } else {
             return -1;
         }
-    } else if (LEXTYPE == LexType::CONTINUETK) {
-        readToken;
-        if (LEXTYPE == LexType::SEMICN) {
-            readToken;
+    } else if (tkType == LexType::CONTINUETK) {
+        printTk;
+        readTk;
+        if (tkType == LexType::SEMICN) {
+            printTk;
+            ofs << "<Stmt>" << endl;
+            readTk;
             return 0;
         } else {
             return -1;
         }
-    } else if (LEXTYPE == LexType::RETURNTK) {
-        readToken;
-        if (LEXTYPE == LexType::SEMICN) {
-            readToken;
+    } else if (tkType == LexType::RETURNTK) {
+        printTk;
+        readTk;
+        if (tkType == LexType::SEMICN) {
+            printTk;
+            ofs << "<Stmt>" << endl;
+            readTk;
             return 0;
         } else {
             int Exp = parseExp();
-            if (Exp == 0) {
-                if (LEXTYPE == LexType::SEMICN) {
-                    readToken;
+            if (Exp != 0) {
+                return -1;
+            } else {
+                if (tkType == LexType::SEMICN) {
+                    printTk;
+                    ofs << "<Stmt>" << endl;
+                    readTk;
                     return 0;
                 } else {
                     return -1;
                 }
-            } else {
-                return Exp;
             }
         }
-    } else if (LEXTYPE == LexType::PRINTFTK) {
-        readToken;
-        if (LEXTYPE == LexType::LPARENT) {
-            readToken;
-            if (LEXTYPE == LexType::STRCON) {
-                readToken;
-                while (LEXTYPE == LexType::COMMA) {
-                    readToken;
+    } else if (tkType == LexType::PRINTFTK) {
+        printTk;
+        readTk;
+        if (tkType == LexType::LPARENT) {
+            printTk;
+            readTk;
+            if (tkType == LexType::STRCON) {
+                printTk;
+                readTk;
+                while (tkType == LexType::COMMA) {
+                    printTk;
+                    readTk;
                     int Exp = parseExp();
-                    if (Exp == 0) {
-                        cout << "<Exp>" << endl;
-                    } else {
+                    if (Exp != 0) {
                         return -1;
                     }
                 }
-                if (LEXTYPE == LexType::RPARENT) {
-                    readToken;
-                    if (LEXTYPE == LexType::SEMICN) {
-                        readToken;
+                if (tkType == LexType::RPARENT) {
+                    printTk;
+                    readTk;
+                    if (tkType == LexType::SEMICN) {
+                        printTk;
+                        ofs << "<Stmt>" << endl;
+                        readTk;
                         return 0;
                     } else {
                         return -1;
@@ -612,16 +672,22 @@ int Parser::parseStmt() {
     } else {
         int LVal = parseLVal();
         if (LVal == 0) {
-            if (LEXTYPE == LexType::ASSIGN) {
-                readToken;
-                if (LEXTYPE == LexType::GETINTTK) {
-                    readToken;
-                    if (LEXTYPE == LexType::LPARENT) {
-                        readToken;
-                        if (LEXTYPE == LexType::RPARENT) {
-                            readToken;
-                            if (LEXTYPE == LexType::SEMICN) {
-                                readToken;
+            if (tkType == LexType::ASSIGN) {
+                printTk;
+                readTk;
+                if (tkType == LexType::GETINTTK) {
+                    printTk;
+                    readTk;
+                    if (tkType == LexType::LPARENT) {
+                        printTk;
+                        readTk;
+                        if (tkType == LexType::RPARENT) {
+                            printTk;
+                            readTk;
+                            if (tkType == LexType::SEMICN) {
+                                printTk;
+                                ofs << "<Stmt>" << endl;
+                                readTk;
                                 return 0;
                             } else {
                                 return -1;
@@ -634,46 +700,50 @@ int Parser::parseStmt() {
                     }
                 } else {
                     int Exp = parseExp();
-                    if (Exp == 0) {
-                        cout << "<Exp>" << endl;
-                        if (LEXTYPE == LexType::SEMICN) {
-                            readToken;
+                    if (Exp != 0) {
+                        return -1;
+                    } else {
+                        if (tkType == LexType::SEMICN) {
+                            printTk;
+                            ofs << "<Stmt>" << endl;
+                            readTk;
                             return 0;
                         } else {
                             return -1;
                         }
-                    } else {
-                        return -1;
                     }
                 }
             } else {
                 return -1;
             }
         } else {
-            if (LEXTYPE == LexType::LBRACE) {
+            if (tkType == LexType::LBRACE) {
                 int Block = parseBlock();
-                if (Block == 0) {
-                    cout << "<Block>" << endl;
-                    return 0;
+                if (Block != 0) {
+                    return -1;
                 } else {
-                    return Block;
+                    ofs << "<Stmt>" << endl;
+                    return 0;
                 }
             } else {
-                if (LEXTYPE == LexType::SEMICN) {
-                    readToken;
+                if (tkType == LexType::SEMICN) {
+                    printTk;
+                    ofs << "<Stmt>" << endl;
+                    readTk;
                     return 0;
                 } else {
                     int Exp = parseExp();
-                    if (Exp == 0) {
-                        cout << "<Exp>" << endl;
-                        if (LEXTYPE == LexType::SEMICN) {
-                            readToken;
+                    if (Exp != 0) {
+                        return -1;
+                    } else {
+                        if (tkType == LexType::SEMICN) {
+                            printTk;
+                            ofs << "<Stmt>" << endl;
+                            readTk;
                             return 0;
                         } else {
                             return -1;
                         }
-                    } else {
-                        return -1;
                     }
                 }
             }
@@ -686,15 +756,15 @@ int Parser::parseStmt() {
 int Parser::parseForStmt() {
     int LVal = parseLVal();
     if (LVal == 0) {
-        cout << "<LVal>" << endl;
-        if (LEXTYPE == LexType::ASSIGN) {
-            readToken;
+        if (tkType == LexType::ASSIGN) {
+            printTk;
+            readTk;
             int Exp = parseExp();
             if (Exp == 0) {
-                cout << "<Exp>" << endl;
+                ofs << "<ForStmt>" << endl;
                 return 0;
             } else {
-                return Exp;
+                return -1;
             }
         } else {
             return -1;
@@ -707,7 +777,7 @@ int Parser::parseForStmt() {
 int Parser::parseExp() {
     int AddExp = parseAddExp();
     if (AddExp == 0) {
-        cout << "<AddExp>" << endl;
+        ofs << "<Exp>" << endl;
         return 0;
     } else {
         return -1;
@@ -717,7 +787,7 @@ int Parser::parseExp() {
 int Parser::parseCond() {
     int LOrExp = parseLOrExp();
     if (LOrExp == 0) {
-        cout << "<LOrExp>" << endl;
+        ofs << "<Cond>" << endl;
         return 0;
     } else {
         return -1;
@@ -725,22 +795,24 @@ int Parser::parseCond() {
 }
 
 int Parser::parseLVal() {
-    if (LEXTYPE == LexType::IDENFR) {
-        readToken;
-        while (LEXTYPE == LexType::LBRACK) {
-            readToken;
+    if (tkType == LexType::IDENFR) {
+        printTk;
+        readTk;
+        while (tkType == LexType::LBRACK) {
+            printTk;
+            readTk;
             int Exp = parseExp();
-            if (Exp == 0) {
-                cout << "<Exp>" << endl;
-            } else {
-                return Exp;
+            if (Exp != 0) {
+                return -1;
             }
-            if (LEXTYPE == LexType::RBRACK) {
-                readToken;
+            if (tkType == LexType::RBRACK) {
+                printTk;
+                readTk;
             } else {
                 return -1;
             }
         }
+        ofs << "<LVal>" << endl;
         return 0;
     } else {
         return -1;
@@ -748,12 +820,15 @@ int Parser::parseLVal() {
 }
 
 int Parser::parsePrimaryExp() {
-    if (LEXTYPE == LexType::LPARENT) {
+    if (tkType == LexType::LPARENT) {
+        printTk;
+        readTk;
         int Exp = parseExp();
         if (Exp == 0) {
-            cout << "<Exp>" << endl;
-            if (LEXTYPE == LexType::RPARENT) {
-                readToken;
+            if (tkType == LexType::RPARENT) {
+                printTk;
+                ofs << "<PrimaryExp>" << endl;
+                readTk;
                 return 0;
             } else {
                 return -1;
@@ -764,12 +839,12 @@ int Parser::parsePrimaryExp() {
     } else {
         int Number = parseNumber();
         if (Number == 0) {
-            cout << "<Number>" << endl;
+            ofs << "<PrimaryExp>" << endl;
             return 0;
         } else {
             int LVal = parseLVal();
             if (LVal == 0) {
-                cout << "<LVal>" << endl;
+                ofs << "<PrimaryExp>" << endl;
                 return 0;
             } else {
                 return -1;
@@ -779,8 +854,10 @@ int Parser::parsePrimaryExp() {
 }
 
 int Parser::parseNumber() {
-    if (LEXTYPE == LexType::INTCON) {
-        readToken;
+    if (tkType == LexType::INTCON) {
+        printTk;
+        ofs << "<Number>" << endl;
+        readTk;
         return 0;
     } else {
         return -1;
@@ -790,27 +867,31 @@ int Parser::parseNumber() {
 int Parser::parseUnaryExp() {
     int UnaryOp = parseUnaryOp();
     if (UnaryOp == 0) {
-        cout << "<UnaryOp>" << endl;
         int UnaryExp = parseUnaryExp();
         if (UnaryExp == 0) {
-            cout << "<UnaryExp>" << endl;
+            ofs << "<UnaryExp>" << endl;
             return 0;
         } else {
             return -1;
         }
     } else {
-        LexType nnType = lexer.nnnext();
-        if (LEXTYPE == LexType::IDENFR && nnType == LexType::LPARENT) {
-            readToken;
-            readToken;
-            if (LEXTYPE == LexType::RPARENT) {
+        if (tkType == LexType::IDENFR && preRead == LexType::LPARENT) {
+            printTk;
+            readTk;
+            printTk;
+            readTk;
+            if (tkType == LexType::RPARENT) {
+                printTk;
+                ofs << "<UnaryExp>" << endl;
+                readTk;
                 return 0;
             } else {
                 int FuncRParams = parseFuncRParams();
                 if (FuncRParams == 0) {
-                    cout << "<FuncRParams>" << endl;
-                    readToken;
-                    if (LEXTYPE == LexType::RPARENT) {
+                    if (tkType == LexType::RPARENT) {
+                        printTk;
+                        ofs << "<UnaryExp>" << endl;
+                        readTk;
                         return 0;
                     } else {
                         return -1;
@@ -822,17 +903,20 @@ int Parser::parseUnaryExp() {
         } else {
             int PrimaryExp = parsePrimaryExp();
             if (PrimaryExp == 0) {
-                cout << "<PrimaryExp>" << endl;
+                ofs << "<UnaryExp>" << endl;
                 return 0;
             } else {
-                return PrimaryExp;
+                return -1;
             }
         }
     }
 }
 
 int Parser::parseUnaryOp() {
-    if (LEXTYPE == LexType::PLUS || LEXTYPE == LexType::MINU || LEXTYPE == LexType::NOT) {
+    if (tkType == LexType::PLUS || tkType == LexType::MINU || tkType == LexType::NOT) {
+        printTk;
+        ofs << "<UnaryOp>" << endl;
+        readTk;
         return 0;
     } else {
         return -1;
@@ -842,144 +926,137 @@ int Parser::parseUnaryOp() {
 int Parser::parseFuncRParams() {
     int Exp = parseExp();
     if (Exp == 0) {
-        cout << "<Exp>" << endl;
-        while (LEXTYPE == LexType::COMMA) {
-            readToken;
+        while (tkType == LexType::COMMA) {
+            printTk;
+            readTk;
             int Exp = parseExp();
-            if (Exp == 0) {
-                cout << "<Exp>" << endl;
-            } else {
+            if (Exp != 0) {
                 return -1;
             }
         }
+        ofs << "<FuncRParams>" << endl;
         return 0;
     } else {
         return -1;
     }
 }
 
+//TODO
 int Parser::parseMulExp() {
     int UnaryExp = parseUnaryExp();
     if (UnaryExp == 0) {
-        cout << "<UnaryExp>" << endl;
-        if (LEXTYPE == LexType::MULT || LEXTYPE == LexType::DIV || LEXTYPE == LexType::MOD) {
-            readToken;
-            int MulExp = parseMulExp();
-            if (MulExp == 0) {
-                cout << "<MulExp>" << endl;
-                return 0;
-            } else {
+        while (tkType == LexType::MULT || tkType == LexType::DIV || tkType == LexType::MOD) {
+            ofs << "<MulExp>" << endl;
+            printTk;
+            readTk;
+            int UnaryExp = parseUnaryExp();
+            if (UnaryExp != 0) {
                 return -1;
             }
-        } else {
-            return 0;
         }
+        ofs << "<MulExp>" << endl;
+        return 0;
     } else {
         return -1;
     }
 }
 
+//TODO
 int Parser::parseAddExp() {
     int MulExp = parseMulExp();
     if (MulExp == 0) {
-        cout << "<MulExp>" << endl;
-        if (LEXTYPE == LexType::PLUS || LEXTYPE == LexType::MINU) {
-            readToken;
-            int AddExp = parseAddExp();
-            if (AddExp == 0) {
-                cout << "<AddExp>" << endl;
-                return 0;
-            } else {
+        while (tkType == LexType::PLUS || tkType == LexType::MINU) {
+            ofs << "<AddExp>" << endl;
+            printTk;
+            readTk;
+            int MulExp = parseMulExp();
+            if (MulExp != 0) {
                 return -1;
             }
-        } else {
-            return 0;
         }
+        ofs << "<AddExp>" << endl;
+        return 0;
     } else {
         return -1;
     }
 }
 
+//TODO
 int Parser::parseRelExp() {
     int AddExp = parseAddExp();
     if (AddExp == 0) {
-        cout << "<AddExp>" << endl;
-        if (LEXTYPE == LexType::GRE || LEXTYPE == LexType::GEQ ||
-            LEXTYPE == LexType::LSS || LEXTYPE == LexType::LEQ) {
-            readToken;
-            int RelExp = parseRelExp();
-            if (RelExp == 0) {
-                cout << "<RelExp>" << endl;
-                return 0;
-            } else {
+        while (tkType == LexType::GRE || tkType == LexType::GEQ ||
+            tkType == LexType::LSS || tkType == LexType::LEQ) {
+            ofs << "<RelExp>" << endl;
+            printTk;
+            readTk;
+            int AddExp = parseAddExp();
+            if (AddExp != 0) {
                 return -1;
             }
-        } else {
-            return 0;
         }
+        ofs << "<RelExp>" << endl;
+        return 0;
     } else {
         return -1;
     }
 }
 
+//TODO
 int Parser::parseEqExp() {
     int RelExp = parseRelExp();
     if (RelExp == 0) {
-        cout << "<RelExp>" << endl;
-        if (LEXTYPE == LexType::EQL || LEXTYPE == LexType::NEQ) {
-            readToken;
-            int EqExp = parseEqExp();
-            if (EqExp == 0) {
-                cout << "<EqExp>" << endl;
-                return 0;
-            } else {
+        while (tkType == LexType::EQL || tkType == LexType::NEQ) {
+            ofs << "<EqExp>" << endl;
+            printTk;
+            readTk;
+            int RelExp = parseRelExp();
+            if (RelExp != 0) {
                 return -1;
             }
-        } else {
-            return 0;
         }
+        ofs << "<EqExp>" << endl;
+        return 0;
     } else {
         return -1;
     }
 }
 
+//TODO
 int Parser::parseLAndExp() {
     int EqExp = parseEqExp();
     if (EqExp == 0) {
-        cout << "<EqExp>" << endl;
-        if (LEXTYPE == LexType::AND) {
-            readToken;
-            int LAndExp = parseLAndExp();
-            if (LAndExp == 0) {
-                cout << "<LAndExp>" << endl;
-                return 0;
-            } else {
+        while (tkType == LexType::AND) {
+            ofs << "<LAndExp>" << endl;
+            printTk;
+            readTk;
+            int EqExp = parseEqExp();
+            if (EqExp != 0) {
                 return -1;
             }
-        } else {
-            return 0;
-        }
+        } 
+        ofs << "<LAndExp>" << endl;
+        return 0;
     } else {
         return -1;
     }
 }
 
+//TODO
 int Parser::parseLOrExp() {
     int LAndExp = parseLAndExp();
     if (LAndExp == 0) {
-        cout << "<LAndExp>" << endl;
-        if (LEXTYPE == LexType::OR) {
-            readToken;
-            int LOrExp = parseLOrExp();
-            if (LOrExp == 0) {
-                cout << "<LOrExp>" << endl;
-                return 0;
-            } else {
+        while (tkType == LexType::OR) {
+            ofs << "<LOrExp>" << endl;
+            printTk;
+            readTk;
+            int LAndExp = parseLAndExp();
+            if (LAndExp != 0) {
                 return -1;
             }
-        } else {
-            return 0;
         }
+        ofs << "<LOrExp>" << endl;
+        return 0;
     } else {
         return -1;
     }
@@ -988,7 +1065,7 @@ int Parser::parseLOrExp() {
 int Parser::parseConstExp() {
     int AddExp = parseAddExp();
     if (AddExp == 0) {
-        cout << "<AddExp>" << endl;
+        ofs << "<ConstExp>" << endl;
         return 0;
     } else {
         return -1;
