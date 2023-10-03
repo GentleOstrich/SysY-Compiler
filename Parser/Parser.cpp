@@ -40,13 +40,11 @@ int Parser::parseCompUnit() {
                     if (FuncDef != 0) {
                         return -1;
                     }
-                } else if (prePreRead == LexType::ASSIGN) {
+                } else {
                     int Decl = parseDecl();
                     if (Decl != 0) {
                         return -1;
                     }
-                } else {
-                    return -1;
                 }
             } else {
                 return -1;
@@ -986,7 +984,7 @@ int Parser::parseRelExp() {
     int AddExp = parseAddExp();
     if (AddExp == 0) {
         while (tkType == LexType::GRE || tkType == LexType::GEQ ||
-            tkType == LexType::LSS || tkType == LexType::LEQ) {
+               tkType == LexType::LSS || tkType == LexType::LEQ) {
             ofs << "<RelExp>" << endl;
             printTk;
             readTk;
@@ -1034,7 +1032,7 @@ int Parser::parseLAndExp() {
             if (EqExp != 0) {
                 return -1;
             }
-        } 
+        }
         ofs << "<LAndExp>" << endl;
         return 0;
     } else {
