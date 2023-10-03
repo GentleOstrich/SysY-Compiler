@@ -340,6 +340,18 @@ LexType Lexer::nnnext() {
     return resLexType;
 }
 
+bool Lexer::hasAUntilB(char A, char B) {
+    int i = curPos;
+    char c;
+    do {
+        c = source[i];
+        if (c == A) {
+            return true;
+        }
+        i++;
+    } while (c != B && i < source.length());
+    return false;
+}
 
 
 

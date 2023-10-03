@@ -667,85 +667,89 @@ int Parser::parseStmt() {
         } else {
             return -1;
         }
+    } else if (tkType == LexType::LBRACE) {
+        int Block = parseBlock();
+        if (Block != 0) {
+            return -1;
+        } else {
+            ofs << "<Stmt>" << endl;
+            return 0;
+        }
     } else {
-        int LVal = parseLVal();
-        if (LVal == 0) {
-            if (tkType == LexType::ASSIGN) {
-                printTk;
-                readTk;
-                if (tkType == LexType::GETINTTK) {
-                    printTk;
-                    readTk;
-                    if (tkType == LexType::LPARENT) {
+        if (tkType == LexType::SEMICN) {
+            printTk;
+            ofs << "<Stmt>" << endl;
+            readTk;
+            return 0;
+        } else {
+            if (lexer.hasAUntilB('=', ';')) {
+                int LVal = parseLVal();
+                if (LVal == 0) {
+                    if (tkType == LexType::ASSIGN) {
                         printTk;
                         readTk;
-                        if (tkType == LexType::RPARENT) {
+                        if (tkType == LexType::GETINTTK) {
                             printTk;
                             readTk;
-                            if (tkType == LexType::SEMICN) {
+                            if (tkType == LexType::LPARENT) {
                                 printTk;
-                                ofs << "<Stmt>" << endl;
                                 readTk;
-                                return 0;
+                                if (tkType == LexType::RPARENT) {
+                                    printTk;
+                                    readTk;
+                                    if (tkType == LexType::SEMICN) {
+                                        printTk;
+                                        ofs << "<Stmt>" << endl;
+                                        readTk;
+                                        return 0;
+                                    } else {
+                                        return -1;
+                                    }
+                                } else {
+                                    return -1;
+                                }
                             } else {
                                 return -1;
                             }
                         } else {
-                            return -1;
+                            int Exp = parseExp();
+                            if (Exp != 0) {
+                                return -1;
+                            } else {
+                                if (tkType == LexType::SEMICN) {
+                                    printTk;
+                                    ofs << "<Stmt>" << endl;
+                                    readTk;
+                                    return 0;
+                                } else {
+                                    return -1;
+                                }
+                            }
                         }
                     } else {
                         return -1;
                     }
                 } else {
-                    int Exp = parseExp();
-                    if (Exp != 0) {
-                        return -1;
-                    } else {
-                        if (tkType == LexType::SEMICN) {
-                            printTk;
-                            ofs << "<Stmt>" << endl;
-                            readTk;
-                            return 0;
-                        } else {
-                            return -1;
-                        }
-                    }
+                    return -1;
                 }
             } else {
-                return -1;
-            }
-        } else {
-            if (tkType == LexType::LBRACE) {
-                int Block = parseBlock();
-                if (Block != 0) {
+                int Exp = parseExp();
+                if (Exp != 0) {
                     return -1;
                 } else {
-                    ofs << "<Stmt>" << endl;
-                    return 0;
-                }
-            } else {
-                if (tkType == LexType::SEMICN) {
-                    printTk;
-                    ofs << "<Stmt>" << endl;
-                    readTk;
-                    return 0;
-                } else {
-                    int Exp = parseExp();
-                    if (Exp != 0) {
-                        return -1;
+                    if (tkType == LexType::SEMICN) {
+                        printTk;
+                        ofs << "<Stmt>" << endl;
+                        readTk;
+                        return 0;
                     } else {
-                        if (tkType == LexType::SEMICN) {
-                            printTk;
-                            ofs << "<Stmt>" << endl;
-                            readTk;
-                            return 0;
-                        } else {
-                            return -1;
-                        }
+                        return -1;
                     }
                 }
             }
+
         }
+
 
     }
     return 0;
@@ -939,7 +943,6 @@ int Parser::parseFuncRParams() {
     }
 }
 
-//TODO
 int Parser::parseMulExp() {
     int UnaryExp = parseUnaryExp();
     if (UnaryExp == 0) {
@@ -959,7 +962,6 @@ int Parser::parseMulExp() {
     }
 }
 
-//TODO
 int Parser::parseAddExp() {
     int MulExp = parseMulExp();
     if (MulExp == 0) {
@@ -979,7 +981,6 @@ int Parser::parseAddExp() {
     }
 }
 
-//TODO
 int Parser::parseRelExp() {
     int AddExp = parseAddExp();
     if (AddExp == 0) {
@@ -1020,7 +1021,6 @@ int Parser::parseEqExp() {
     }
 }
 
-//TODO
 int Parser::parseLAndExp() {
     int EqExp = parseEqExp();
     if (EqExp == 0) {
@@ -1040,7 +1040,6 @@ int Parser::parseLAndExp() {
     }
 }
 
-//TODO
 int Parser::parseLOrExp() {
     int LAndExp = parseLAndExp();
     if (LAndExp == 0) {

@@ -32,6 +32,8 @@ public:
     LexType nnnext();
 
     Token getToken();
+
+    bool hasAUntilB(char A, char B);
 };
 
 

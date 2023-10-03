@@ -7,7 +7,7 @@
 #include "Lexer/LexType.h"
 #include "Parser/Parser.h"
 
-#define TEST
+//#define TEST
 using namespace std;
 
 #ifdef TEST
