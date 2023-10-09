@@ -26,7 +26,7 @@ int Lexer::next() {
         return 1;
     }
     // 空格 制表符 回车
-    while (source[curPos] == '\t' || source[curPos] == ' ' || source[curPos] == '\n') {
+    while (source[curPos] == '\t' || source[curPos] == ' ' || source[curPos] == '\n' || source[curPos] == '\r') {
         if (source[curPos] == '\n') {
             lineNum++;
         }
