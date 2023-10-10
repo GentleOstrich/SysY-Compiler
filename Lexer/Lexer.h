@@ -34,6 +34,8 @@ public:
     Token getToken();
 
     bool hasAUntilB(char A, char B);
+
+    int getLineNum();
 };
 
 

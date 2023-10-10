@@ -353,6 +353,10 @@ bool Lexer::hasAUntilB(char A, char B) {
     return false;
 }
 
+int Lexer::getLineNum() {
+    return lineNum;
+}
+
 
 
 

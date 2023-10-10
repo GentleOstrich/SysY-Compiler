@@ -11,12 +11,14 @@
 #define printTk ofs << LexType2String(tkType) << " " << tkWord << endl
 #define preRead lexer.nnext()
 #define prePreRead lexer.nnnext()
+#define printError(lineNum, errorType) e_ofs << lineNum << errorType << endl;
 
 using namespace std;
 
 extern Lexer lexer;
 extern ifstream ifs;
 extern ofstream ofs;
+extern ofstream e_ofs;
 Token token = make_pair(LexType::NONE, "");
 
 // 正常返回 0 错误返回 -1
