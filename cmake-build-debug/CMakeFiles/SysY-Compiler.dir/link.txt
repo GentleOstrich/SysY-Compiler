@@ -1,0 +1,1 @@
+/usr/bin/clang++  -g   CMakeFiles/SysY-Compiler.dir/main.cpp.o CMakeFiles/SysY-Compiler.dir/Lexer/Lexer.cpp.o CMakeFiles/SysY-Compiler.dir/Parser/Parser.cpp.o  -o SysY-Compiler 

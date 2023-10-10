@@ -1,0 +1,3 @@
+/home/yh/SysY-Compiler/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/yh/SysY-Compiler/cmake-build-debug/CMakeFiles/SysY-Compiler.dir
+/home/yh/SysY-Compiler/cmake-build-debug/CMakeFiles/edit_cache.dir
