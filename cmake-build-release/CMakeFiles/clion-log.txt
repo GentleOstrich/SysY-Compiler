@@ -1,0 +1,4 @@
+"D:\Program Files\JetBrains\CLion 2019.3.6\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Release "-DCMAKE_C_COMPILER=D:/Program Files/LLVM/bin/clang.exe" "-DCMAKE_CXX_COMPILER=D:/Program Files/LLVM/bin/clang++.exe" -G "CodeBlocks - MinGW Makefiles" D:\University\Study\2023fall\compiler\SysY-Compiler
+-- Configuring done
+-- Generating done
+-- Build files have been written to: D:/University/Study/2023fall/Compiler/SysY-Compiler/cmake-build-release

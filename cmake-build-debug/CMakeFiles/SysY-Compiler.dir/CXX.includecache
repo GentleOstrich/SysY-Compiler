@@ -6,39 +6,39 @@
 
 #IncludeRegexTransform: 
 
-/home/yh/SysY-Compiler/Lexer/LexType.h
+D:/University/Study/2023fall/Compiler/SysY-Compiler/Lexer/LexType.h
 string
 -
 
-/home/yh/SysY-Compiler/Lexer/Lexer.cpp
-Lexer.h
-/home/yh/SysY-Compiler/Lexer/Lexer.h
-
-/home/yh/SysY-Compiler/Lexer/Lexer.h
+D:/University/Study/2023fall/Compiler/SysY-Compiler/Lexer/Lexer.h
 string
 -
 vector
 -
 LexType.h
-/home/yh/SysY-Compiler/Lexer/LexType.h
+D:/University/Study/2023fall/Compiler/SysY-Compiler/Lexer/LexType.h
 
-/home/yh/SysY-Compiler/Parser/Parser.cpp
+D:/University/Study/2023fall/Compiler/SysY-Compiler/Parser/Parser.cpp
 Parser.h
-/home/yh/SysY-Compiler/Parser/Parser.h
-
-/home/yh/SysY-Compiler/Parser/Parser.h
-../Lexer/Lexer.h
-/home/yh/SysY-Compiler/Lexer/Lexer.h
-
-/home/yh/SysY-Compiler/main.cpp
+D:/University/Study/2023fall/Compiler/SysY-Compiler/Parser/Parser.h
 iostream
 -
 fstream
 -
-vector
+
+D:/University/Study/2023fall/Compiler/SysY-Compiler/Parser/Parser.h
+../Lexer/Lexer.h
+D:/University/Study/2023fall/Compiler/SysY-Compiler/Lexer/Lexer.h
+
+D:/University/Study/2023fall/Compiler/SysY-Compiler/main.cpp
+iostream
+-
+fstream
 -
 Lexer/Lexer.h
-/home/yh/SysY-Compiler/Lexer/Lexer.h
+D:/University/Study/2023fall/Compiler/SysY-Compiler/Lexer/Lexer.h
 Lexer/LexType.h
-/home/yh/SysY-Compiler/Lexer/LexType.h
+D:/University/Study/2023fall/Compiler/SysY-Compiler/Lexer/LexType.h
+Parser/Parser.h
+D:/University/Study/2023fall/Compiler/SysY-Compiler/Parser/Parser.h
 

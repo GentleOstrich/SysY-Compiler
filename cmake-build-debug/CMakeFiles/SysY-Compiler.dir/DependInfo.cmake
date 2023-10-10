@@ -4,11 +4,11 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/yh/SysY-Compiler/Lexer/Lexer.cpp" "/home/yh/SysY-Compiler/cmake-build-debug/CMakeFiles/SysY-Compiler.dir/Lexer/Lexer.cpp.o"
-  "/home/yh/SysY-Compiler/Parser/Parser.cpp" "/home/yh/SysY-Compiler/cmake-build-debug/CMakeFiles/SysY-Compiler.dir/Parser/Parser.cpp.o"
-  "/home/yh/SysY-Compiler/main.cpp" "/home/yh/SysY-Compiler/cmake-build-debug/CMakeFiles/SysY-Compiler.dir/main.cpp.o"
+  "D:/University/Study/2023fall/Compiler/SysY-Compiler/Lexer/Lexer.cpp" "D:/University/Study/2023fall/Compiler/SysY-Compiler/cmake-build-debug/CMakeFiles/SysY-Compiler.dir/Lexer/Lexer.cpp.obj"
+  "D:/University/Study/2023fall/Compiler/SysY-Compiler/Parser/Parser.cpp" "D:/University/Study/2023fall/Compiler/SysY-Compiler/cmake-build-debug/CMakeFiles/SysY-Compiler.dir/Parser/Parser.cpp.obj"
+  "D:/University/Study/2023fall/Compiler/SysY-Compiler/main.cpp" "D:/University/Study/2023fall/Compiler/SysY-Compiler/cmake-build-debug/CMakeFiles/SysY-Compiler.dir/main.cpp.obj"
   )
-set(CMAKE_CXX_COMPILER_ID "Clang")
+set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH

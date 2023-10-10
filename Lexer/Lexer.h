@@ -17,8 +17,8 @@ using namespace std;
 class Lexer {
 private:
     int curPos = 0;
-    string word;
-    LexType lexType;
+    string word = "";
+    LexType lexType = LexType::NONE;
     int lineNum = 1;
     int number;
 
@@ -32,6 +32,8 @@ public:
     LexType nnnext();
 
     Token getToken();
+
+    bool hasAUntilB(char A, char B);
 };
 
 

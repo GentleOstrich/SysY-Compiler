@@ -3,12 +3,11 @@
 //
 #include <iostream>
 #include <fstream>
-#include <vector>
 #include "Lexer/Lexer.h"
 #include "Lexer/LexType.h"
 #include "Parser/Parser.h"
 
-#define TEST
+//#define TEST
 using namespace std;
 
 #ifdef TEST
@@ -19,14 +18,13 @@ string INFILEPATH = "testfile.txt";
 string OUTFILEPATH = "output.txt";
 #endif
 
-string source;
+string source = "";
 Lexer lexer;
 Parser parser;
+ifstream ifs(INFILEPATH);
+ofstream ofs(OUTFILEPATH);
 
 int main() {
-
-    ifstream ifs(INFILEPATH);
-    ofstream ofs(OUTFILEPATH);
     if (ifs.is_open() && ofs.is_open()) {
         source = string((istreambuf_iterator<char>(ifs)), istreambuf_iterator<char>());
         parser.parseCompUnit();
