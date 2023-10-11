@@ -11,7 +11,7 @@
 #define printTk ofs << LexType2String(tkType) << " " << tkWord << endl
 #define preRead lexer.nnext()
 #define prePreRead lexer.nnnext()
-#define printError(lineNum, errorType) e_ofs << lineNum << errorType << endl;
+#define printError(lineNum, type, info) e_ofs << lineNum << " " << type << " " << info << endl
 
 using namespace std;
 
@@ -113,7 +113,8 @@ int Parser::parseConstDecl() {
             readTk;
             return 0;
         } else {
-            return -1;
+            printError(lexer.getLineNum(), "i", "缺少分号");
+            return 0;
         }
     } else {
         return -1;
@@ -145,7 +146,8 @@ int Parser::parseConstDef() {
                     printTk;
                     readTk;
                 } else {
-                    return -1;
+                    printError(lexer.getLineNum(), "k", "缺少右中括号");
+                    return 0;
                 }
             }
         }
@@ -232,7 +234,8 @@ int Parser::parseVarDecl() {
                 readTk;
                 return 0;
             } else {
-                return -1;
+                printError(lexer.getLineNum(), "i", "缺少分号");
+                return 0;
             }
         }
     }
@@ -253,7 +256,8 @@ int Parser::parseVarDef() {
                     printTk;
                     readTk;
                 } else {
-                    return -1;
+                    printError(lexer.getLineNum(), "k", "缺少右中括号");
+                    return 0;
                 }
             }
         }
@@ -341,7 +345,8 @@ int Parser::parseFuncDef() {
                             printTk;
                             readTk;
                         } else {
-                            return -1;
+                            printError(lexer.getLineNum(), "j", "缺少右小括号");
+                            return 0;
                         }
                     }
                 }
@@ -442,7 +447,8 @@ int Parser::parseFuncFParam() {
                     printTk;
                     readTk;
                 } else {
-                    return -1;
+                    printError(lexer.getLineNum(), "k", "缺少右中括号");
+                    return 0;
                 }
                 while (tkType == LexType::LBRACK) {
                     printTk;
@@ -455,7 +461,8 @@ int Parser::parseFuncFParam() {
                             printTk;
                             readTk;
                         } else {
-                            return -1;
+                            printError(lexer.getLineNum(), "k", "缺少右中括号");
+                            return 0;
                         }
                     }
                 }
@@ -544,7 +551,8 @@ int Parser::parseStmt() {
                         }
                     }
                 } else {
-                    return -1;
+                    printError(lexer.getLineNum(), "j", "缺少右小括号");
+                    return 0;
                 }
             }
         } else {
@@ -576,7 +584,8 @@ int Parser::parseStmt() {
                             return 0;
                         }
                     } else {
-                        return -1;
+                        printError(lexer.getLineNum(), "j", "缺少右小括号");
+                        return 0;
                     }
                 } else {
                     return -1;
@@ -596,7 +605,8 @@ int Parser::parseStmt() {
             readTk;
             return 0;
         } else {
-            return -1;
+            printError(lexer.getLineNum(), "i", "缺少分号");
+            return 0;
         }
     } else if (tkType == LexType::CONTINUETK) {
         printTk;
@@ -607,7 +617,8 @@ int Parser::parseStmt() {
             readTk;
             return 0;
         } else {
-            return -1;
+            printError(lexer.getLineNum(), "i", "缺少分号");
+            return 0;
         }
     } else if (tkType == LexType::RETURNTK) {
         printTk;
@@ -628,7 +639,8 @@ int Parser::parseStmt() {
                     readTk;
                     return 0;
                 } else {
-                    return -1;
+                    printError(lexer.getLineNum(), "i", "缺少分号");
+                    return 0;
                 }
             }
         }
@@ -658,10 +670,12 @@ int Parser::parseStmt() {
                         readTk;
                         return 0;
                     } else {
-                        return -1;
+                        printError(lexer.getLineNum(), "i", "缺少分号");
+                        return 0;
                     }
                 } else {
-                    return -1;
+                    printError(lexer.getLineNum(), "j", "缺少右小括号");
+                    return 0;
                 }
             } else {
                 return -1;
@@ -705,10 +719,12 @@ int Parser::parseStmt() {
                                         readTk;
                                         return 0;
                                     } else {
-                                        return -1;
+                                        printError(lexer.getLineNum(), "i", "缺少分号");
+                                        return 0;
                                     }
                                 } else {
-                                    return -1;
+                                    printError(lexer.getLineNum(), "j", "缺少右小括号");
+                                    return 0;
                                 }
                             } else {
                                 return -1;
@@ -724,7 +740,8 @@ int Parser::parseStmt() {
                                     readTk;
                                     return 0;
                                 } else {
-                                    return -1;
+                                    printError(lexer.getLineNum(), "i", "缺少分号");
+                                    return 0;
                                 }
                             }
                         }
@@ -745,7 +762,8 @@ int Parser::parseStmt() {
                         readTk;
                         return 0;
                     } else {
-                        return -1;
+                        printError(lexer.getLineNum(), "i", "缺少分号");
+                        return 0;
                     }
                 }
             }
@@ -813,7 +831,8 @@ int Parser::parseLVal() {
                 printTk;
                 readTk;
             } else {
-                return -1;
+                printError(lexer.getLineNum(), "k", "缺少右中括号");
+                return 0;
             }
         }
         ofs << "<LVal>" << endl;
@@ -898,7 +917,8 @@ int Parser::parseUnaryExp() {
                         readTk;
                         return 0;
                     } else {
-                        return -1;
+                        printError(lexer.getLineNum(), "j", "缺少右小括号");
+                        return 0;
                     }
                 } else {
                     return -1;
@@ -1070,3 +1090,4 @@ int Parser::parseConstExp() {
         return -1;
     }
 }
+

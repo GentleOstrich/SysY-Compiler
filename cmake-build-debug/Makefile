@@ -177,6 +177,60 @@ Parser/Parser.cpp.s:
 	$(MAKE) -f CMakeFiles/SysY-Compiler.dir/build.make CMakeFiles/SysY-Compiler.dir/Parser/Parser.cpp.s
 .PHONY : Parser/Parser.cpp.s
 
+SymbolManager/Symbol.o: SymbolManager/Symbol.cpp.o
+
+.PHONY : SymbolManager/Symbol.o
+
+# target to build an object file
+SymbolManager/Symbol.cpp.o:
+	$(MAKE) -f CMakeFiles/SysY-Compiler.dir/build.make CMakeFiles/SysY-Compiler.dir/SymbolManager/Symbol.cpp.o
+.PHONY : SymbolManager/Symbol.cpp.o
+
+SymbolManager/Symbol.i: SymbolManager/Symbol.cpp.i
+
+.PHONY : SymbolManager/Symbol.i
+
+# target to preprocess a source file
+SymbolManager/Symbol.cpp.i:
+	$(MAKE) -f CMakeFiles/SysY-Compiler.dir/build.make CMakeFiles/SysY-Compiler.dir/SymbolManager/Symbol.cpp.i
+.PHONY : SymbolManager/Symbol.cpp.i
+
+SymbolManager/Symbol.s: SymbolManager/Symbol.cpp.s
+
+.PHONY : SymbolManager/Symbol.s
+
+# target to generate assembly for a file
+SymbolManager/Symbol.cpp.s:
+	$(MAKE) -f CMakeFiles/SysY-Compiler.dir/build.make CMakeFiles/SysY-Compiler.dir/SymbolManager/Symbol.cpp.s
+.PHONY : SymbolManager/Symbol.cpp.s
+
+SymbolManager/SymbolTable.o: SymbolManager/SymbolTable.cpp.o
+
+.PHONY : SymbolManager/SymbolTable.o
+
+# target to build an object file
+SymbolManager/SymbolTable.cpp.o:
+	$(MAKE) -f CMakeFiles/SysY-Compiler.dir/build.make CMakeFiles/SysY-Compiler.dir/SymbolManager/SymbolTable.cpp.o
+.PHONY : SymbolManager/SymbolTable.cpp.o
+
+SymbolManager/SymbolTable.i: SymbolManager/SymbolTable.cpp.i
+
+.PHONY : SymbolManager/SymbolTable.i
+
+# target to preprocess a source file
+SymbolManager/SymbolTable.cpp.i:
+	$(MAKE) -f CMakeFiles/SysY-Compiler.dir/build.make CMakeFiles/SysY-Compiler.dir/SymbolManager/SymbolTable.cpp.i
+.PHONY : SymbolManager/SymbolTable.cpp.i
+
+SymbolManager/SymbolTable.s: SymbolManager/SymbolTable.cpp.s
+
+.PHONY : SymbolManager/SymbolTable.s
+
+# target to generate assembly for a file
+SymbolManager/SymbolTable.cpp.s:
+	$(MAKE) -f CMakeFiles/SysY-Compiler.dir/build.make CMakeFiles/SysY-Compiler.dir/SymbolManager/SymbolTable.cpp.s
+.PHONY : SymbolManager/SymbolTable.cpp.s
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -219,6 +273,12 @@ help:
 	@echo "... Parser/Parser.o"
 	@echo "... Parser/Parser.i"
 	@echo "... Parser/Parser.s"
+	@echo "... SymbolManager/Symbol.o"
+	@echo "... SymbolManager/Symbol.i"
+	@echo "... SymbolManager/Symbol.s"
+	@echo "... SymbolManager/SymbolTable.o"
+	@echo "... SymbolManager/SymbolTable.i"
+	@echo "... SymbolManager/SymbolTable.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

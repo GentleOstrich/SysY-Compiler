@@ -7,13 +7,13 @@
 #include "Lexer/LexType.h"
 #include "Parser/Parser.h"
 
-//#define TEST
+#define TEST
 using namespace std;
 
 #ifdef TEST
-string INFILEPATH = R"(D:\University\Study\2023fall\compiler\SysY-Compiler\testfile.txt)";//
-string OUTFILEPATH = R"(D:\University\Study\2023fall\compiler\SysY-Compiler\output.txt)";//
-string ERROR_OUTFILEPATH = R"(D:\University\Study\2023fall\compiler\SysY-Compiler\error.txt)";//
+string INFILEPATH = R"(/home/yh/SysY-Compiler/testfile.txt)";//
+string OUTFILEPATH = R"(/home/yh/SysY-Compiler/output.txt)";//
+string ERROR_OUTFILEPATH = R"(/home/yh/SysY-Compiler/error.txt)";//
 #else
 string INFILEPATH = "testfile.txt";
 string OUTFILEPATH = "output.txt";

@@ -6,6 +6,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/yh/SysY-Compiler/Lexer/Lexer.cpp" "/home/yh/SysY-Compiler/cmake-build-debug/CMakeFiles/SysY-Compiler.dir/Lexer/Lexer.cpp.o"
   "/home/yh/SysY-Compiler/Parser/Parser.cpp" "/home/yh/SysY-Compiler/cmake-build-debug/CMakeFiles/SysY-Compiler.dir/Parser/Parser.cpp.o"
+  "/home/yh/SysY-Compiler/SymbolManager/Symbol.cpp" "/home/yh/SysY-Compiler/cmake-build-debug/CMakeFiles/SysY-Compiler.dir/SymbolManager/Symbol.cpp.o"
+  "/home/yh/SysY-Compiler/SymbolManager/SymbolTable.cpp" "/home/yh/SysY-Compiler/cmake-build-debug/CMakeFiles/SysY-Compiler.dir/SymbolManager/SymbolTable.cpp.o"
   "/home/yh/SysY-Compiler/main.cpp" "/home/yh/SysY-Compiler/cmake-build-debug/CMakeFiles/SysY-Compiler.dir/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "Clang")

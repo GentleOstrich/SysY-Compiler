@@ -2,8 +2,14 @@
 // Created by yh on 2023/9/25.
 //
 #include "Lexer.h"
+#include <iostream>
+#include <fstream>
+using namespace std;
 
 extern string source;
+extern ofstream e_ofs;
+
+#define printError(lineNum, type, info) e_ofs << lineNum << " " << type << " " << info << endl
 
 string reserveWords[RESERVEWORDS_NUM] = {
         "main", "const", "int", "break", "continue", "if", "else", "for", "getint", "printf", "return", "void"
@@ -110,6 +116,13 @@ int Lexer::next() {
         }
         word += source[curPos];
         curPos++;
+        for (int i = 1; i < word.length()-1; ++i) {
+            char c = word[i];
+            if (!((c == '%' && word[i+1] == 'd') || c == 32 || c == 33 || (c >= 40 && c <= 126) || c == '\n')) {
+                printError(this->lineNum, "a 非法符号", c);
+                break;
+            }
+        }
         lexType = LexType::STRCON;
         return 0;
     }

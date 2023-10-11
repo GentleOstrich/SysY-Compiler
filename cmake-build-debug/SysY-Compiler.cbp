@@ -97,6 +97,18 @@
 		<Unit filename="/home/yh/SysY-Compiler/Parser/Parser.h">
 			<Option target="SysY-Compiler"/>
 		</Unit>
+		<Unit filename="/home/yh/SysY-Compiler/SymbolManager/Symbol.cpp">
+			<Option target="SysY-Compiler"/>
+		</Unit>
+		<Unit filename="/home/yh/SysY-Compiler/SymbolManager/Symbol.h">
+			<Option target="SysY-Compiler"/>
+		</Unit>
+		<Unit filename="/home/yh/SysY-Compiler/SymbolManager/SymbolTable.cpp">
+			<Option target="SysY-Compiler"/>
+		</Unit>
+		<Unit filename="/home/yh/SysY-Compiler/SymbolManager/SymbolTable.h">
+			<Option target="SysY-Compiler"/>
+		</Unit>
 		<Unit filename="/home/yh/SysY-Compiler/main.cpp">
 			<Option target="SysY-Compiler"/>
 		</Unit>
