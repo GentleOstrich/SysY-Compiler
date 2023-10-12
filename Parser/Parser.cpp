@@ -4,6 +4,7 @@
 #include "Parser.h"
 #include <iostream>
 #include <fstream>
+#include <stack>
 #include "../ErrorCheck/ErrorCheck.h"
 
 #define tkType token.first
@@ -20,8 +21,12 @@ extern Lexer lexer;
 extern ifstream ifs;
 extern ofstream ofs;
 extern ofstream e_ofs;
-
 extern ErrorCheck errorCheck;
+
+extern vector<Symbol> symbols;
+extern stack<int> symbolTable;
+
+extern int symbolId;
 
 Token token = make_pair(LexType::NONE, "");
 
@@ -74,7 +79,6 @@ int Parser::parseDecl() {
         if (ConstDecl != 0) {
             return -1;
         } else {
-            errorCheck.bCheck();
             return 0;
         }
     } else if (tkType == LexType::INTTK) {
@@ -138,6 +142,11 @@ int Parser::parseBType() {
 
 int Parser::parseConstDef() {
     if (tkType == LexType::IDENFR) {
+        if (errorCheck.bCheck(tkWord, false)) {
+            Symbol symbol(symbolId, tkWord, true, -1, 0);
+            symbols.push_back(symbol);
+            symbolId++;
+        }
         printTk;
         readTk;
         while (tkType == LexType::LBRACK) {
@@ -156,6 +165,7 @@ int Parser::parseConstDef() {
                 }
             }
         }
+        errorCheck.bCheck(tkWord, false);
         if (tkType == LexType::ASSIGN) {
             printTk;
             readTk;
@@ -248,6 +258,11 @@ int Parser::parseVarDecl() {
 
 int Parser::parseVarDef() {
     if (tkType == LexType::IDENFR) {
+        if (errorCheck.bCheck(tkWord, false)) {
+            Symbol symbol(symbolId, tkWord, false, -1, 0);
+            symbols.push_back(symbol);
+            symbolId++;
+        }
         printTk;
         readTk;
         while (tkType == LexType::LBRACK) {
@@ -266,6 +281,7 @@ int Parser::parseVarDef() {
                 }
             }
         }
+        errorCheck.bCheck(tkWord, false);
         if (tkType == LexType::ASSIGN) {
             printTk;
             readTk;
@@ -333,6 +349,7 @@ int Parser::parseFuncDef() {
         return -1;
     } else {
         if (tkType == LexType::IDENFR) {
+            errorCheck.bCheck(tkWord, true);
             printTk;
             readTk;
             if (tkType == LexType::LPARENT) {
@@ -443,6 +460,7 @@ int Parser::parseFuncFParam() {
         printTk;
         readTk;
         if (tkType == LexType::IDENFR) {
+            errorCheck.bCheck(tkWord, false);
             printTk;
             readTk;
             if (tkType == LexType::LBRACK) {

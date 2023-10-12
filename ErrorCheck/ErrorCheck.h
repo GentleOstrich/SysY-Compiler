@@ -6,11 +6,11 @@
 #define SYSY_COMPILER_ERROR_H
 
 #include "../SymbolManager/Symbol.h"
-#include "../SymbolManager/SymbolTable.h"
+#include <string>
 
 class ErrorCheck {
 public:
-    int bCheck();
+    int bCheck(string word, bool fun);
     int cCheck();
     int dCheck();
     int eCheck();

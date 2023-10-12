@@ -15,6 +15,8 @@ string reserveWords[RESERVEWORDS_NUM] = {
         "main", "const", "int", "break", "continue", "if", "else", "for", "getint", "printf", "return", "void"
 };
 
+Lexer lexer;
+
 int Lexer::isReserveWord(const string &word) {
     for(int i = 0; i < RESERVEWORDS_NUM; ++i) {
         if (reserveWords[i] == word) {
