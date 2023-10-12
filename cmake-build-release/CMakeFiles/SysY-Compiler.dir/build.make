@@ -95,11 +95,53 @@ CMakeFiles/SysY-Compiler.dir/Parser/Parser.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SysY-Compiler.dir/Parser/Parser.cpp.s"
 	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_CXX_CREATE_ASSEMBLY_SOURCE
 
+CMakeFiles/SysY-Compiler.dir/SymbolManager/Symbol.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
+CMakeFiles/SysY-Compiler.dir/SymbolManager/Symbol.cpp.obj: ../SymbolManager/Symbol.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-release\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/SysY-Compiler.dir/SymbolManager/Symbol.cpp.obj"
+	"D:\Program Files\LLVM\bin\clang++.exe"  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\SymbolManager\Symbol.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\SymbolManager\Symbol.cpp
+
+CMakeFiles/SysY-Compiler.dir/SymbolManager/Symbol.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SysY-Compiler.dir/SymbolManager/Symbol.cpp.i"
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_CXX_CREATE_PREPROCESSED_SOURCE
+
+CMakeFiles/SysY-Compiler.dir/SymbolManager/Symbol.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SysY-Compiler.dir/SymbolManager/Symbol.cpp.s"
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_CXX_CREATE_ASSEMBLY_SOURCE
+
+CMakeFiles/SysY-Compiler.dir/SymbolManager/SymbolTable.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
+CMakeFiles/SysY-Compiler.dir/SymbolManager/SymbolTable.cpp.obj: ../SymbolManager/SymbolTable.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-release\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/SysY-Compiler.dir/SymbolManager/SymbolTable.cpp.obj"
+	"D:\Program Files\LLVM\bin\clang++.exe"  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\SymbolManager\SymbolTable.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\SymbolManager\SymbolTable.cpp
+
+CMakeFiles/SysY-Compiler.dir/SymbolManager/SymbolTable.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SysY-Compiler.dir/SymbolManager/SymbolTable.cpp.i"
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_CXX_CREATE_PREPROCESSED_SOURCE
+
+CMakeFiles/SysY-Compiler.dir/SymbolManager/SymbolTable.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SysY-Compiler.dir/SymbolManager/SymbolTable.cpp.s"
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_CXX_CREATE_ASSEMBLY_SOURCE
+
+CMakeFiles/SysY-Compiler.dir/ErrorCheck/ErrorCheck.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
+CMakeFiles/SysY-Compiler.dir/ErrorCheck/ErrorCheck.cpp.obj: ../ErrorCheck/ErrorCheck.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-release\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/SysY-Compiler.dir/ErrorCheck/ErrorCheck.cpp.obj"
+	"D:\Program Files\LLVM\bin\clang++.exe"  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\ErrorCheck\ErrorCheck.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\ErrorCheck\ErrorCheck.cpp
+
+CMakeFiles/SysY-Compiler.dir/ErrorCheck/ErrorCheck.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SysY-Compiler.dir/ErrorCheck/ErrorCheck.cpp.i"
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_CXX_CREATE_PREPROCESSED_SOURCE
+
+CMakeFiles/SysY-Compiler.dir/ErrorCheck/ErrorCheck.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SysY-Compiler.dir/ErrorCheck/ErrorCheck.cpp.s"
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_CXX_CREATE_ASSEMBLY_SOURCE
+
 # Object files for target SysY-Compiler
 SysY__Compiler_OBJECTS = \
 "CMakeFiles/SysY-Compiler.dir/main.cpp.obj" \
 "CMakeFiles/SysY-Compiler.dir/Lexer/Lexer.cpp.obj" \
-"CMakeFiles/SysY-Compiler.dir/Parser/Parser.cpp.obj"
+"CMakeFiles/SysY-Compiler.dir/Parser/Parser.cpp.obj" \
+"CMakeFiles/SysY-Compiler.dir/SymbolManager/Symbol.cpp.obj" \
+"CMakeFiles/SysY-Compiler.dir/SymbolManager/SymbolTable.cpp.obj" \
+"CMakeFiles/SysY-Compiler.dir/ErrorCheck/ErrorCheck.cpp.obj"
 
 # External object files for target SysY-Compiler
 SysY__Compiler_EXTERNAL_OBJECTS =
@@ -107,11 +149,14 @@ SysY__Compiler_EXTERNAL_OBJECTS =
 SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/main.cpp.obj
 SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/Lexer/Lexer.cpp.obj
 SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/Parser/Parser.cpp.obj
+SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/SymbolManager/Symbol.cpp.obj
+SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/SymbolManager/SymbolTable.cpp.obj
+SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/ErrorCheck/ErrorCheck.cpp.obj
 SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/build.make
 SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/linklibs.rsp
 SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/objects1.rsp
 SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-release\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable SysY-Compiler.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-release\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable SysY-Compiler.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\SysY-Compiler.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

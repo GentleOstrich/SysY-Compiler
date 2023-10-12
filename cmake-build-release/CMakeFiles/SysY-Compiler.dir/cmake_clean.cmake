@@ -1,6 +1,9 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/SysY-Compiler.dir/ErrorCheck/ErrorCheck.cpp.obj"
   "CMakeFiles/SysY-Compiler.dir/Lexer/Lexer.cpp.obj"
   "CMakeFiles/SysY-Compiler.dir/Parser/Parser.cpp.obj"
+  "CMakeFiles/SysY-Compiler.dir/SymbolManager/Symbol.cpp.obj"
+  "CMakeFiles/SysY-Compiler.dir/SymbolManager/SymbolTable.cpp.obj"
   "CMakeFiles/SysY-Compiler.dir/main.cpp.obj"
   "SysY-Compiler.exe"
   "SysY-Compiler.exe.manifest"

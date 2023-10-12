@@ -4,6 +4,7 @@
 #include "Parser.h"
 #include <iostream>
 #include <fstream>
+#include "../ErrorCheck/ErrorCheck.h"
 
 #define tkType token.first
 #define tkWord token.second
@@ -19,6 +20,9 @@ extern Lexer lexer;
 extern ifstream ifs;
 extern ofstream ofs;
 extern ofstream e_ofs;
+
+extern ErrorCheck errorCheck;
+
 Token token = make_pair(LexType::NONE, "");
 
 // 正常返回 0 错误返回 -1
@@ -70,6 +74,7 @@ int Parser::parseDecl() {
         if (ConstDecl != 0) {
             return -1;
         } else {
+            errorCheck.bCheck();
             return 0;
         }
     } else if (tkType == LexType::INTTK) {
@@ -505,6 +510,7 @@ int Parser::parseBlock() {
 
 int Parser::parseBlockItem() {
     int Decl = parseDecl();
+
     if (Decl == 0) {
         return 0;
     } else {
@@ -1023,7 +1029,6 @@ int Parser::parseRelExp() {
     }
 }
 
-//TODO
 int Parser::parseEqExp() {
     int RelExp = parseRelExp();
     if (RelExp == 0) {

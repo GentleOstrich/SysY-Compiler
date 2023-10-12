@@ -17,6 +17,8 @@ public:
     string word;
     int type; //0->a,1->a[],2->a[][],-1->func
     int con; //1->const,0->var
+    int retype;
+    int paramNum;
 };
 
 

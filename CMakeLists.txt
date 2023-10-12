@@ -5,4 +5,4 @@ set(CMAKE_CXX_STANDARD 14)
 
 set(CMAKE_BUILD_TYPE Debug)
 
-add_executable(SysY-Compiler main.cpp  Lexer/Lexer.cpp Lexer/Lexer.h Parser/Parser.cpp Parser/Parser.h Lexer/LexType.h SymbolManager/Symbol.cpp SymbolManager/Symbol.h SymbolManager/SymbolTable.cpp SymbolManager/SymbolTable.h)
+add_executable(SysY-Compiler main.cpp  Lexer/Lexer.cpp Lexer/Lexer.h Parser/Parser.cpp Parser/Parser.h Lexer/LexType.h SymbolManager/Symbol.cpp SymbolManager/Symbol.h SymbolManager/SymbolTable.cpp SymbolManager/SymbolTable.h ErrorCheck/ErrorCheck.cpp ErrorCheck/ErrorCheck.h)
