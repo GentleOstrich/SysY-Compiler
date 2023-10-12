@@ -3,18 +3,15 @@
 //
 
 #include "SymbolTable.h"
-SymbolTable::SymbolTable(int cnt, int id, SymbolTable* father) {
+
+SymbolTable::SymbolTable(int cnt, int id, int fatherId) {
     this->cnt = cnt;
     this->id = id;
-    this->father = father;
-}
-
-void SymbolTable::addSon(SymbolTable *son) {
-    this->sons.push_back(son);
+    this->fatherId = fatherId;
 }
 
 bool SymbolTable::exist(string word) {
-    return !(this->directory.find(word) == nullptr);
+    return !(this->directory.find(word) == this->directory.end());
 }
 
 void SymbolTable::addSymbol(Symbol symbol) {

@@ -16,12 +16,10 @@ class SymbolTable {
 public:
     int cnt;
     int id;
-    SymbolTable* father;
-    vector<SymbolTable*> sons;
+    int fatherId;
     unordered_map<string, Symbol> directory;
 
-    SymbolTable(int cnt, int id, SymbolTable* father);
-    void addSon(SymbolTable* son);
+    SymbolTable(int cnt, int id, int fatherId);
     bool exist(string word);
     void addSymbol(Symbol symbol);
 

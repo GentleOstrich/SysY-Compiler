@@ -80,6 +80,12 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/ErrorCheck/ErrorCheck.cpp">
+			<Option target="SysY-Compiler"/>
+		</Unit>
+		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/ErrorCheck/ErrorCheck.h">
+			<Option target="SysY-Compiler"/>
+		</Unit>
 		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/Lexer/LexType.h">
 			<Option target="SysY-Compiler"/>
 		</Unit>
@@ -93,6 +99,18 @@
 			<Option target="SysY-Compiler"/>
 		</Unit>
 		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/Parser/Parser.h">
+			<Option target="SysY-Compiler"/>
+		</Unit>
+		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/SymbolManager/Symbol.cpp">
+			<Option target="SysY-Compiler"/>
+		</Unit>
+		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/SymbolManager/Symbol.h">
+			<Option target="SysY-Compiler"/>
+		</Unit>
+		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/SymbolManager/SymbolTable.cpp">
+			<Option target="SysY-Compiler"/>
+		</Unit>
+		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/SymbolManager/SymbolTable.h">
 			<Option target="SysY-Compiler"/>
 		</Unit>
 		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/main.cpp">
