@@ -31,12 +31,28 @@ int ErrorCheck::bCheck(string word, bool fun){
     return 0;
 }
 
-int ErrorCheck::cCheck(){
-    return 0;
+int ErrorCheck::cCheck(string word, bool fun){
+    for (int i = symbolId - 1; i >= 0; i--) {
+        if (symbols[i].word == word && ((symbols[i].type != -1 && !fun) || (symbols[i].type == -1 && fun))){
+            return 0;
+        }
+    }
+    printError(LineNum, "b", "未定义的名字");
+    return 1;
 }
 
-int ErrorCheck::dCheck(){
-    return 0;
+int ErrorCheck::dCheck(string word, int num){
+    for (int i = symbolId - 1; i >= 0; i--) {
+        if (symbols[i].word == word && symbols[i].type == -1){
+            if (symbols[i].paramNum != num) {
+                printError(LineNum, "d", "函数参数个数不匹配");
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+    }
+    return -1;
 }
 
 int ErrorCheck::eCheck(){

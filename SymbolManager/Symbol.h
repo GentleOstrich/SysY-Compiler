@@ -12,13 +12,10 @@ using namespace std;
 
 class Symbol {
 public:
-    int id;
     string word;
     int type; //0->a,1->a[],2->a[][],-1->func
     bool con; //1->const,0->var
-    int retype; // 0 void 1 int -1 none
-    int paramNum;
-    Symbol(int id, const string &word, bool con, int retype, int paramNum);
+    Symbol(int type, const string &word, bool con);
 };
 
 

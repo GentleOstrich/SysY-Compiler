@@ -11,8 +11,8 @@
 class ErrorCheck {
 public:
     int bCheck(string word, bool fun);
-    int cCheck();
-    int dCheck();
+    int cCheck(string word, bool fun);
+    int dCheck(string word, int num);
     int eCheck();
     int fCheck();
     int gCheck();

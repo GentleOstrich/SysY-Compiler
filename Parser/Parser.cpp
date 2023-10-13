@@ -32,6 +32,7 @@ Token token = make_pair(LexType::NONE, "");
 
 // 正常返回 0 错误返回 -1
 int Parser::parseCompUnit() {
+    symbolTable.push(0);
     readTk;
     while (tkType != LexType::NONE) {
         if (tkType == LexType::CONSTTK) {
@@ -142,8 +143,8 @@ int Parser::parseBType() {
 
 int Parser::parseConstDef() {
     if (tkType == LexType::IDENFR) {
-        if (errorCheck.bCheck(tkWord, false)) {
-            Symbol symbol(symbolId, tkWord, true, -1, 0);
+        if (!errorCheck.bCheck(tkWord, false)) {
+            Symbol symbol(symbolId, 0, tkWord, true, -1, 0);
             symbols.push_back(symbol);
             symbolId++;
         }
@@ -161,11 +162,9 @@ int Parser::parseConstDef() {
                     readTk;
                 } else {
                     printError(lexer.getLineNum(), "k", "缺少右中括号");
-                    return 0;
                 }
             }
         }
-        errorCheck.bCheck(tkWord, false);
         if (tkType == LexType::ASSIGN) {
             printTk;
             readTk;
@@ -258,8 +257,8 @@ int Parser::parseVarDecl() {
 
 int Parser::parseVarDef() {
     if (tkType == LexType::IDENFR) {
-        if (errorCheck.bCheck(tkWord, false)) {
-            Symbol symbol(symbolId, tkWord, false, -1, 0);
+        if (!errorCheck.bCheck(tkWord, false)) {
+            Symbol symbol(symbolId, 0, tkWord, false, -1, 0);
             symbols.push_back(symbol);
             symbolId++;
         }
@@ -277,11 +276,9 @@ int Parser::parseVarDef() {
                     readTk;
                 } else {
                     printError(lexer.getLineNum(), "k", "缺少右中括号");
-                    return 0;
                 }
             }
         }
-        errorCheck.bCheck(tkWord, false);
         if (tkType == LexType::ASSIGN) {
             printTk;
             readTk;
@@ -345,11 +342,16 @@ int Parser::parseInitVal() {
 
 int Parser::parseFuncDef() {
     int FuncType = parseFuncType();
-    if (FuncType != 0) {
+    if (FuncType == -1) {
         return -1;
     } else {
         if (tkType == LexType::IDENFR) {
-            errorCheck.bCheck(tkWord, true);
+            int tempSymbolId = symbolId;
+            if (!errorCheck.bCheck(tkWord, true)) {
+                Symbol symbol(symbolId, -1, tkWord, true, FuncType, 0);
+                symbols.push_back(symbol);
+                symbolId++;
+            }
             printTk;
             readTk;
             if (tkType == LexType::LPARENT) {
@@ -359,8 +361,9 @@ int Parser::parseFuncDef() {
                     printTk;
                     readTk;
                 } else {
+                    symbolTable.push(symbolId);
                     int FuncFParams = parseFuncFParams();
-                    if (FuncFParams != 0) {
+                    if (FuncFParams == -1) {
                         return FuncFParams;
                     } else {
                         if (tkType == LexType::RPARENT) {
@@ -368,11 +371,16 @@ int Parser::parseFuncDef() {
                             readTk;
                         } else {
                             printError(lexer.getLineNum(), "j", "缺少右小括号");
-                            return 0;
+                            //return 0;
                         }
+                        symbols[tempSymbolId].paramNum = FuncFParams;
                     }
                 }
                 int Block = parseBlock();
+                
+                symbolId = symbolTable.top();
+                symbolTable.pop();
+
                 if (Block == 0) {
                     ofs << "<FuncDef>" << endl;
                     return 0;
@@ -401,6 +409,7 @@ int Parser::parseMainFuncDef() {
                 if (tkType == LexType::RPARENT) {
                     printTk;
                     readTk;
+                    symbolTable.push(symbolId);
                     int Block = parseBlock();
                     if (Block != 0) {
                         return -1;
@@ -427,7 +436,7 @@ int Parser::parseFuncType() {
         printTk;
         ofs << "<FuncType>" << endl;
         readTk;
-        return 0;
+        return 1;
     } else if (tkType == LexType::VOIDTK) {
         printTk;
         ofs << "<FuncType>" << endl;
@@ -443,16 +452,19 @@ int Parser::parseFuncFParams() {
     if (FuncFParam != 0) {
         return -1;
     }
+    int cnt = 1;
     while (tkType == LexType::COMMA) {
         printTk;
         readTk;
         int FuncFParam = parseFuncFParam();
         if (FuncFParam != 0) {
             return -1;
+        } else {
+            cnt++;
         }
     }
     ofs << "<FuncFParams>" << endl;
-    return 0;
+    return cnt;
 }
 
 int Parser::parseFuncFParam() {
@@ -460,7 +472,11 @@ int Parser::parseFuncFParam() {
         printTk;
         readTk;
         if (tkType == LexType::IDENFR) {
-            errorCheck.bCheck(tkWord, false);
+            if (!errorCheck.bCheck(tkWord, true)) {
+                Symbol symbol(symbolId, 0, tkWord, false, -1, 0);
+                symbols.push_back(symbol);
+                symbolId++;
+            }
             printTk;
             readTk;
             if (tkType == LexType::LBRACK) {
@@ -471,7 +487,7 @@ int Parser::parseFuncFParam() {
                     readTk;
                 } else {
                     printError(lexer.getLineNum(), "k", "缺少右中括号");
-                    return 0;
+                    //return 0;
                 }
                 while (tkType == LexType::LBRACK) {
                     printTk;
@@ -485,7 +501,7 @@ int Parser::parseFuncFParam() {
                             readTk;
                         } else {
                             printError(lexer.getLineNum(), "k", "缺少右中括号");
-                            return 0;
+                            //return 0;
                         }
                     }
                 }
@@ -842,6 +858,7 @@ int Parser::parseCond() {
 
 int Parser::parseLVal() {
     if (tkType == LexType::IDENFR) {
+        errorCheck.cCheck(tkWord, false);
         printTk;
         readTk;
         while (tkType == LexType::LBRACK) {
@@ -923,18 +940,28 @@ int Parser::parseUnaryExp() {
         }
     } else {
         if (tkType == LexType::IDENFR && preRead == LexType::LPARENT) {
+            errorCheck.cCheck(tkWord, true);
+            string funcName = tkWord;
             printTk;
             readTk;
             printTk;
             readTk;
             if (tkType == LexType::RPARENT) {
+                if (errorCheck.dCheck(funcName, 0) == -1) {
+                    cout << "---no this func" << endl;
+                }
                 printTk;
                 ofs << "<UnaryExp>" << endl;
                 readTk;
                 return 0;
             } else {
                 int FuncRParams = parseFuncRParams();
-                if (FuncRParams == 0) {
+                if (FuncRParams == -1) {
+                    return -1;
+                } else {
+                    if (errorCheck.dCheck(funcName, FuncRParams) == -1) {
+                        cout << "---no this func" << endl;
+                    }
                     if (tkType == LexType::RPARENT) {
                         printTk;
                         ofs << "<UnaryExp>" << endl;
@@ -944,8 +971,6 @@ int Parser::parseUnaryExp() {
                         printError(lexer.getLineNum(), "j", "缺少右小括号");
                         return 0;
                     }
-                } else {
-                    return -1;
                 }
             }
         } else {
@@ -974,6 +999,7 @@ int Parser::parseUnaryOp() {
 int Parser::parseFuncRParams() {
     int Exp = parseExp();
     if (Exp == 0) {
+        int cnt = 1;
         while (tkType == LexType::COMMA) {
             printTk;
             readTk;
@@ -983,7 +1009,7 @@ int Parser::parseFuncRParams() {
             }
         }
         ofs << "<FuncRParams>" << endl;
-        return 0;
+        return cnt;
     } else {
         return -1;
     }

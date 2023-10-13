@@ -113,13 +113,11 @@ INTCON 10
 <Exp>
 SEMICN ;
 <Stmt>
-PRINTFTK printf
+INTTK int
+IDENFR x
+ASSIGN =
+IDENFR gets1
 LPARENT (
-STRCON "Hello World$"
-RPARENT )
-SEMICN ;
-<Stmt>
-RETURNTK return
 INTCON 0
 <Number>
 <PrimaryExp>
@@ -127,9 +125,4 @@ INTCON 0
 <MulExp>
 <AddExp>
 <Exp>
-SEMICN ;
-<Stmt>
-RBRACE }
-<Block>
-<MainFuncDef>
-<CompUnit>
+<FuncRParams>

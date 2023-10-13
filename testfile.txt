@@ -6,6 +6,7 @@ int gets1(int var1,int var2){
 }
 int main(){
    change1 = 10;
+   int x = gets1(0);
    printf("Hello World$");
    return 0;
 }
