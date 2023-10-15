@@ -10,7 +10,7 @@
 using namespace std;
 
 #define tkWord token.second
-#define printError(lineNum, type, info) e_ofs << lineNum << " " << type << " " << info << endl
+#define printError(lineNum, type, info) e_ofs << lineNum << " " << type /*<< " " << info*/ << endl
 #define LineNum lexer.getLineNum()
 
 extern Lexer lexer;
@@ -37,14 +37,14 @@ int ErrorCheck::cCheck(string word, bool fun){
             return 0;
         }
     }
-    printError(LineNum, "b", "未定义的名字");
+    printError(LineNum, "c", "未定义的名字");
     return 1;
 }
 
 int ErrorCheck::dCheck(string word, int num){
     for (int i = symbolId - 1; i >= 0; i--) {
         if (symbols[i].word == word && symbols[i].type == -1){
-            if (symbols[i].paramNum != num) {
+            if (symbols[i].func->paramNum != num) {
                 printError(LineNum, "d", "函数参数个数不匹配");
                 return 1;
             } else {
@@ -56,17 +56,54 @@ int ErrorCheck::dCheck(string word, int num){
 }
 
 int ErrorCheck::eCheck(){
+
     return 0;
 }
 
-int ErrorCheck::fCheck(){
+vector<int> ErrorCheck::getParamList(string word) {
+    for (int i = symbolId - 1; i >= 0; i--) {
+        if (symbols[i].word == word && symbols[i].type == -1){
+            return symbols[i].func->paramTypeList;
+        }
+    }
+    vector<int>a;
+    return a;
+}
+
+int ErrorCheck::getType(string word) {
+    for (int i = symbolId - 1; i >= 0; i--) {
+       if (symbols[i].word == word) {
+            return symbols[i].type;
+       }
+    }
+    return -1;
+}
+
+int ErrorCheck::getFuncRet(string word) {
+    for (int i = symbolId - 1; i >= 0; i--) {
+       if (symbols[i].word == word && symbols[i].type == -1) {
+            return symbols[i].func->retype + 3; // 0 is void 1 is int
+       }
+    }
+    return -1;
+}
+
+
+int ErrorCheck::fCheck() {
     return 0;
 }
 
 int ErrorCheck::gCheck(){
     return 0;
 }
-int ErrorCheck::hCheck(){
+
+int ErrorCheck::hCheck(string word){
+    for (int i = symbolId - 1; i >= 0; i--) {
+        if (symbols[i].word == word && symbols[i].con){
+            printError(lexer.getLineNum(), "h", "不能改变常量的值");
+            return 1;
+        }
+    }
     return 0;
 }
 

@@ -9,7 +9,7 @@ using namespace std;
 extern string source;
 extern ofstream e_ofs;
 
-#define printError(lineNum, type, info) e_ofs << lineNum << " " << type << " " << info << endl
+#define printError(lineNum, type, info) e_ofs << lineNum << " " << type /*<< " " << info */<< endl
 
 string reserveWords[RESERVEWORDS_NUM] = {
         "main", "const", "int", "break", "continue", "if", "else", "for", "getint", "printf", "return", "void"
@@ -27,6 +27,7 @@ int Lexer::isReserveWord(const string &word) {
 }
 
 int Lexer::next() {
+    lastLineNum = lineNum;
     word.clear();
     lexType = LexType::NONE;
     //处理完毕
@@ -120,8 +121,8 @@ int Lexer::next() {
         curPos++;
         for (int i = 1; i < word.length()-1; ++i) {
             char c = word[i];
-            if (!((c == '%' && word[i+1] == 'd') || c == 32 || c == 33 || (c >= 40 && c <= 126) || c == '\n')) {
-                printError(this->lineNum, "a 非法符号", c);
+            if (!((c == '%' && word[i+1] == 'd') || c == 32 || c == 33 || (c >= 40 && c <= 126) || c == '\n') || (c == 92 && word[i+1] != 'n') ) {
+                printError(this->lineNum, "a", c);
                 break;
             }
         }
@@ -371,6 +372,11 @@ bool Lexer::hasAUntilB(char A, char B) {
 int Lexer::getLineNum() {
     return lineNum;
 }
+
+int Lexer::getLastLineNum() {
+    return lastLineNum;
+}
+
 
 
 

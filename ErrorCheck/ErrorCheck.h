@@ -6,7 +6,9 @@
 #define SYSY_COMPILER_ERROR_H
 
 #include "../SymbolManager/Symbol.h"
+#include "../SymbolManager/Func.h"
 #include <string>
+#include <vector>
 
 class ErrorCheck {
 public:
@@ -14,9 +16,12 @@ public:
     int cCheck(string word, bool fun);
     int dCheck(string word, int num);
     int eCheck();
+    vector<int> getParamList(string word);
+    int getType(string word);
+    int getFuncRet(string word);
     int fCheck();
     int gCheck();
-    int hCheck();
+    int hCheck(string word);
     int lCheck();
     int mCheck();
 };

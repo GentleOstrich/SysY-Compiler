@@ -5,15 +5,15 @@
 #ifndef SYSY_COMPILER_FUNC_H
 #define SYSY_COMPILER_FUNC_H
 
-#endif //SYSY_COMPILER_FUNC_H
-
 #include <vector>
-#include "Symbol.h"
 
-class Func: Symbol{
+class Func {
 public:
     int retype;
-    int paraNum;
-    vector<int> paramTypeList;
-    Func(int id, int type, const string &word, bool con, int retype, int paramNum, int paraNum);
+    int paramNum;
+    std::vector<int> paramTypeList;
+    Func(int retype, int paramNum);
 };
+
+
+#endif //SYSY_COMPILER_FUNC_H

@@ -33,15 +33,15 @@ public:
 
     int parseFuncType();
 
-    int parseFuncFParams();
+    int parseFuncFParams(int tempSymbolId);
 
     int parseFuncFParam();
 
-    int parseBlock();
+    int parseBlock(int FuncType);
 
-    int parseBlockItem();
+    int parseBlockItem(int FuncType);
 
-    int parseStmt();
+    int parseStmt(int FuncType, int isFor);
 
     int parseForStmt();
 
@@ -49,7 +49,7 @@ public:
 
     int parseCond();
 
-    int parseLVal();
+    int parseLVal(int change);
 
     int parsePrimaryExp();
 
@@ -59,7 +59,7 @@ public:
 
     int parseUnaryOp();
 
-    int parseFuncRParams();
+    int parseFuncRParams(string funcName);
 
     int parseMulExp();
 
