@@ -551,7 +551,7 @@ int Parser::parseBlock(int FuncType) {
             BlockItem = parseBlockItem(FuncType);
             if (BlockItem == -1) {
                 return -1;
-            } else if (BlockItem == 0 && flag == 1) {
+            } else if (BlockItem == 2 && flag == 1) {
                 flag = 0;
             }
         }
@@ -721,11 +721,11 @@ int Parser::parseStmt(int FuncType, int isFor) {
                      
                     ofs << "<Stmt>" << endl;
                     readTk;
-                    return 0;
+                    return 2; // return 有返回值
                 } else {
                     printError(ntLineNum, "i", "缺少分号");
                      
-                    return 0;
+                    return 2; // return 有返回值
                 }
             }
         }
@@ -783,6 +783,7 @@ int Parser::parseStmt(int FuncType, int isFor) {
             return -1;
         }
     } else if (tkType == LexType::LBRACE) {
+        symbolTable.push(symbolId);
         int Block = parseBlock(-1);
         if (Block == -1) {
             return -1;
