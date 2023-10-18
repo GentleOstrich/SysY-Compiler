@@ -59,7 +59,7 @@ public:
 
     int parseUnaryOp();
 
-    int parseFuncRParams(string funcName);
+    int parseFuncRParams(string funcName, int tempFuncLineNum);
 
     int parseMulExp();
 

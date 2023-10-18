@@ -10,7 +10,7 @@
 using namespace std;
 
 #define tkWord token.second
-#define printError(lineNum, type, info) e_ofs << lineNum << " " << type /*<< " " << info */<< endl
+#define printError(lineNum, type, info) e_ofs << lineNum << " " << type << /*" " << info <<*/ endl
 #define LineNum lexer.getLineNum()
 
 extern Lexer lexer;
@@ -25,7 +25,7 @@ int ErrorCheck::bCheck(string word, bool fun){
     for (int i = symbolId - 1 ; i >= symbolTable.top(); i-- ) {
         if (symbols[i].word == word && ((symbols[i].type != -1 && !fun) || (symbols[i].type == -1 && fun))){
             printError(LineNum, "b", "名字重定义");
-            return 1;
+            return 0;
         }
     }
     return 0;
@@ -41,11 +41,11 @@ int ErrorCheck::cCheck(string word, bool fun){
     return 1;
 }
 
-int ErrorCheck::dCheck(string word, int num){
+int ErrorCheck::dCheck(int lineNum, string word, int num){
     for (int i = symbolId - 1; i >= 0; i--) {
         if (symbols[i].word == word && symbols[i].type == -1){
             if (symbols[i].func->paramNum != num) {
-                printError(LineNum, "d", "函数参数个数不匹配");
+                printError(lineNum, "d", "函数参数个数不匹配");
                 return 1;
             } else {
                 return 0;
@@ -99,9 +99,13 @@ int ErrorCheck::gCheck(){
 
 int ErrorCheck::hCheck(string word){
     for (int i = symbolId - 1; i >= 0; i--) {
-        if (symbols[i].word == word && symbols[i].con){
-            printError(lexer.getLineNum(), "h", "不能改变常量的值");
-            return 1;
+        if (symbols[i].word == word){
+            if (symbols[i].con) {
+                printError(lexer.getLineNum(), "h", "不能改变常量的值");
+                return 1;
+            } else {
+                return 0;
+            }
         }
     }
     return 0;

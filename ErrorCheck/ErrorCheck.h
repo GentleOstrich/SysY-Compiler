@@ -14,7 +14,7 @@ class ErrorCheck {
 public:
     int bCheck(string word, bool fun);
     int cCheck(string word, bool fun);
-    int dCheck(string word, int num);
+    int dCheck(int lineNum, string word, int num);
     int eCheck();
     vector<int> getParamList(string word);
     int getType(string word);

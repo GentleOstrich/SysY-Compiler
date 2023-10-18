@@ -7,7 +7,7 @@
 
 using namespace std;
 
-//#define TEST
+#define TEST
 //#define Linux
 
 #ifdef TEST
@@ -33,6 +33,7 @@ Parser parser;
 ifstream ifs(INFILEPATH);
 ofstream ofs(OUTFILEPATH);
 ofstream e_ofs(ERROR_OUTFILEPATH);
+
 
 int main() {
     if (ifs.is_open() && ofs.is_open() && e_ofs.is_open()) {

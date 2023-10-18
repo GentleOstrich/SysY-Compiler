@@ -121,7 +121,7 @@ int Lexer::next() {
         curPos++;
         for (int i = 1; i < word.length()-1; ++i) {
             char c = word[i];
-            if (!((c == '%' && word[i+1] == 'd') || c == 32 || c == 33 || (c >= 40 && c <= 126) || c == '\n') || (c == 92 && word[i+1] != 'n') ) {
+            if (!((c == '%' && word[i+1] == 'd') || c == 32 || c == 33 || (c >= 40 && c <= 126) || c == '\n' || c == '\r') || (c == 92 && word[i+1] != 'n') ) {
                 printError(this->lineNum, "a", c);
                 break;
             }
