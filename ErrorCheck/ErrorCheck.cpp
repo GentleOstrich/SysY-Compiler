@@ -9,8 +9,15 @@
 #include <stack>
 using namespace std;
 
+struct Error {
+    int line;
+    char c;
+};
+extern Error errors[100];
+extern int e;
+
 #define tkWord token.second
-#define printError(lineNum, type, info) e_ofs << lineNum << " " << type << /*" " << info <<*/ endl
+#define printError(lineNum, type, info) errors[e++] = {lineNum, type[0]} // e_ofs << lineNum << " " << type << /*" " << info <<*/ endl
 #define LineNum lexer.getLineNum()
 
 extern Lexer lexer;

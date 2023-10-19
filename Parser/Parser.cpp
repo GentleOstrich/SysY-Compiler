@@ -7,13 +7,21 @@
 #include <stack>
 #include "../ErrorCheck/ErrorCheck.h"
 
+
+struct Error {
+    int line;
+    char c;
+};
+extern Error errors[100];
+extern int e;
+
 #define tkType token.first
 #define tkWord token.second
 #define readTk token = (lexer.next() == 0) ? lexer.getToken() : make_pair(LexType::NONE, "")
 #define printTk ofs << LexType2String(tkType) << " " << tkWord << endl
 #define preRead lexer.nnext()
 #define prePreRead lexer.nnnext()
-#define printError(lineNum, type, info) e_ofs << lineNum << " " << type <</* " " << info <<*/ endl
+#define printError(lineNum, type, info) errors[e++] = {lineNum, type[0]}
 #define ntLineNum lexer.getLastLineNum()
 
 using namespace std;
@@ -604,14 +612,25 @@ int Parser::parseStmt(int FuncType, int isFor) {
                     printTk;
                     readTk;
                 }
-                int Stmt = parseStmt(FuncType, 0);
+                 
+                int Stmt;
+                if (FuncType == 0) {
+                    Stmt = parseStmt(5, 0);
+                } else {
+                    Stmt = parseStmt(FuncType, 0);
+                }
                 if (Stmt == -1) {
                     return -1;
                 } else {
                     if (tkType == LexType::ELSETK) {
                         printTk;
                         readTk;
-                        int Stmt = parseStmt(FuncType, 0);
+                        int Stmt;
+                        if (FuncType == 0) {
+                            Stmt = parseStmt(5, 0);
+                        } else {
+                            Stmt = parseStmt(FuncType, 0);
+                        }
                         if (Stmt == -1) {
                             return -1;
                         } else {
@@ -781,7 +800,12 @@ int Parser::parseStmt(int FuncType, int isFor) {
         }
     } else if (tkType == LexType::LBRACE) {
         symbolTable.push(symbolId);
-        int Block = parseBlock(-1);
+        int Block;
+        if (FuncType == 5) {
+            Block = parseBlock(0); // 无返回值的函数
+        } else {
+            Block = parseBlock(-1);
+        }
         if (Block == -1) {
             return -1;
         } else {
@@ -954,7 +978,9 @@ int Parser::parsePrimaryExp() {
         printTk;
         readTk;
         int Exp = parseExp();
-        if (Exp == 0) {
+        if (Exp == -1) {
+            return -1;
+        } else {
             if (tkType == LexType::RPARENT) {
                 printTk;
                 ofs << "<PrimaryExp>" << endl;
@@ -963,8 +989,6 @@ int Parser::parsePrimaryExp() {
             } else {
                 return -1;
             }
-        } else {
-            return -1;
         }
     } else {
         int Number = parseNumber();
@@ -999,11 +1023,11 @@ int Parser::parseUnaryExp() {
     int UnaryOp = parseUnaryOp();
     if (UnaryOp == 0) {
         int UnaryExp = parseUnaryExp();
-        if (UnaryExp == 0) {
-            ofs << "<UnaryExp>" << endl;
-            return 0;
+        if (UnaryExp == -1) {
+            return -1 ;
         } else {
-            return -1;
+            ofs << "<UnaryExp>" << endl;
+            return UnaryExp;
         }
     } else {
         if (tkType == LexType::IDENFR && preRead == LexType::LPARENT) {

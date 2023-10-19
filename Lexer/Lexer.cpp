@@ -9,7 +9,14 @@ using namespace std;
 extern string source;
 extern ofstream e_ofs;
 
-#define printError(lineNum, type, info) e_ofs << lineNum << " " << type /*<< " " << info */<< endl
+struct Error {
+    int line;
+    char c;
+};
+extern Error errors[100];
+extern int e;
+
+#define printError(lineNum, type, info) errors[e++] = {lineNum, type[0]}
 
 string reserveWords[RESERVEWORDS_NUM] = {
         "main", "const", "int", "break", "continue", "if", "else", "for", "getint", "printf", "return", "void"
