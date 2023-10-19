@@ -1,18 +1,97 @@
-INTTK int
 <FuncType>
-IDENFR f
+INTTK int
+IDENFR f1
 LPARENT (
 INTTK int
-IDENFR a
+IDENFR x
 <FuncFParam>
 <FuncFParams>
 RPARENT )
 LBRACE {
 RETURNTK return
-IDENFR a
+IDENFR x
+<LVal>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<Stmt>
+SEMICN ;
+RBRACE }
+<Block>
+<FuncDef>
+<FuncType>
+VOIDTK void
+IDENFR f2
+LPARENT (
+INTTK int
+IDENFR x
 LBRACK [
-INTCON 1
+RBRACK ]
+<FuncFParam>
+<FuncFParams>
+RPARENT )
+LBRACE {
+RETURNTK return
+SEMICN ;
+<Stmt>
+RBRACE }
+<Block>
+<FuncDef>
+INTTK int
+MAINTK main
+LPARENT (
+RPARENT )
+LBRACE {
+INTTK int
+IDENFR arr
+LBRACK [
 <Number>
+INTCON 2
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<ConstExp>
+RBRACK ]
+LBRACK [
+<Number>
+INTCON 2
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<ConstExp>
+RBRACK ]
+<VarDef>
+<VarDecl>
+SEMICN ;
+IDENFR f2
+LPARENT (
+<Number>
+INTCON 1
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<FuncRParams>
+RPARENT )
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<Stmt>
+SEMICN ;
+IDENFR f1
+LPARENT (
+IDENFR f2
+LPARENT (
+IDENFR arr
+LBRACK [
+<Number>
+INTCON 0
 <PrimaryExp>
 <UnaryExp>
 <MulExp>
@@ -20,3 +99,36 @@ INTCON 1
 <Exp>
 RBRACK ]
 <LVal>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<FuncRParams>
+RPARENT )
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<FuncRParams>
+RPARENT )
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<Stmt>
+SEMICN ;
+RETURNTK return
+<Number>
+INTCON 0
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<Stmt>
+SEMICN ;
+RBRACE }
+<Block>
+<MainFuncDef>
+<CompUnit>

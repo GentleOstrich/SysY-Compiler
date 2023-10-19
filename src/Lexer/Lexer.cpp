@@ -8,12 +8,11 @@ using namespace std;
 
 extern string source;
 extern ofstream e_ofs;
-
 struct Error {
     int line;
     char c;
 };
-extern Error errors[100];
+extern Error errors[1000];
 extern int e;
 
 #define printError(lineNum, type, info) errors[e++] = {lineNum, type[0]}
@@ -48,7 +47,6 @@ int Lexer::next() {
         }
         curPos++;
     }
-
     // 标识符 保留字
     if (isalpha(source[curPos]) || source[curPos] == '_') {
         while (isalpha(source[curPos]) || isdigit(source[curPos]) || source[curPos] == '_') {
@@ -104,7 +102,6 @@ int Lexer::next() {
         }
         return 0;
     }
-
     // 无符号整数
     if (isdigit(source[curPos])) {
         while (isdigit(source[curPos])) {
@@ -115,7 +112,6 @@ int Lexer::next() {
         lexType = LexType::INTCON;
         return 0;
     }
-
     // 字符串
     if (source[curPos] == '\"') {
         word += source[curPos];
@@ -136,7 +132,6 @@ int Lexer::next() {
         lexType = LexType::STRCON;
         return 0;
     }
-
     //  ! && || + - * / %  < <= > >= == != = ; , ( ) [ ] { }
     if (source[curPos] == '&' && source[curPos + 1] == '&') {
         word += "&&";
@@ -216,7 +211,6 @@ int Lexer::next() {
         curPos += 1;
         return 0;
     }
-
     if (source[curPos] == '=') {
         word += '=';
         lexType = LexType::ASSIGN;
@@ -271,7 +265,6 @@ int Lexer::next() {
         curPos++;
         return 0;
     }
-
     // 注释
     if (source[curPos] == '/') {
         if (curPos < source.length() && source[curPos + 1] == '/') {

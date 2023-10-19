@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/yh/SysY-Compiler/src/Lexer/LexType.h
+string
+-
+
+/home/yh/SysY-Compiler/src/Lexer/Lexer.h
+string
+-
+vector
+-
+LexType.h
+/home/yh/SysY-Compiler/src/Lexer/LexType.h
+
+/home/yh/SysY-Compiler/src/Parser/Parser.h
+../Lexer/Lexer.h
+/home/yh/SysY-Compiler/src/Lexer/Lexer.h
+
+/home/yh/SysY-Compiler/src/main.cpp
+algorithm
+-
+iostream
+-
+fstream
+-
+Parser/Parser.h
+/home/yh/SysY-Compiler/src/Parser/Parser.h
+

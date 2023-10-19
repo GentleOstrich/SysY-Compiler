@@ -7,14 +7,6 @@
 #include <stack>
 #include "../ErrorCheck/ErrorCheck.h"
 
-
-struct Error {
-    int line;
-    char c;
-};
-extern Error errors[100];
-extern int e;
-
 #define tkType token.first
 #define tkWord token.second
 #define readTk token = (lexer.next() == 0) ? lexer.getToken() : make_pair(LexType::NONE, "")
@@ -22,7 +14,7 @@ extern int e;
 #define preRead lexer.nnext()
 #define prePreRead lexer.nnnext()
 #define printError(lineNum, type, info) errors[e++] = {lineNum, type[0]}
-#define ntLineNum lexer.getLastLineNum()
+#define lastLineNum lexer.getLastLineNum()
 
 using namespace std;
 extern Lexer lexer;
@@ -34,7 +26,15 @@ extern ErrorCheck errorCheck;
 extern vector<Symbol> symbols;
 extern stack<int> symbolTable;
 
+struct Error {
+    int line;
+    char c;
+};
+extern Error errors[100];
+extern int e;
+
 extern int symbolId;
+
 int retLineNum = 0;
 
 
@@ -46,25 +46,21 @@ int Parser::parseCompUnit() {
     readTk;
     while (tkType != LexType::NONE) {
         if (tkType == LexType::CONSTTK) {
-            int Decl = parseDecl();
-            if (Decl == -1) {
+            if (parseDecl() == -1) {
                 return -1;
             }
         } else if (tkType == LexType::INTTK) {
             if (preRead == LexType::MAINTK) {
-                int MainFuncDef = parseMainFuncDef();
-                if (MainFuncDef == -1) {
+                if (parseMainFuncDef() == -1) {
                     return -1;
                 }
             } else if (preRead == LexType::IDENFR) {
                 if (prePreRead == LexType::LPARENT) {
-                    int FuncDef = parseFuncDef();
-                    if (FuncDef == -1) {
+                    if (parseFuncDef() == -1) {
                         return -1;
                     }
                 } else {
-                    int Decl = parseDecl();
-                    if (Decl == -1) {
+                    if (parseDecl() == -1) {
                         return -1;
                     }
                 }
@@ -72,8 +68,7 @@ int Parser::parseCompUnit() {
                 return -1;
             }
         } else if (tkType == LexType::VOIDTK) {
-            int FuncDef = parseFuncDef();
-            if (FuncDef == -1) {
+            if (parseFuncDef() == -1) {
                 return -1;
             }
         } else {
@@ -86,15 +81,13 @@ int Parser::parseCompUnit() {
 
 int Parser::parseDecl() {
     if (tkType == LexType::CONSTTK) {
-        int ConstDecl = parseConstDecl();
-        if (ConstDecl == -1) {
+        if (parseConstDecl() == -1) {
             return -1;
         } else {
             return 0;
         }
     } else if (tkType == LexType::INTTK) {
-        int VarDecl = parseVarDecl();
-        if (VarDecl == -1) {
+        if (parseVarDecl() == -1) {
             return -1;
         } else {
             return 0;
@@ -111,15 +104,13 @@ int Parser::parseConstDecl() {
         if (tkType == LexType::INTTK) {
             printTk;
             readTk;
-            int ConstDef = parseConstDef();
-            if (ConstDef == -1) {
+            if (parseConstDef() == -1) {
                 return -1;
             } else {
                 while (tkType == LexType::COMMA) {
                     printTk;
                     readTk;
-                    int ConstDef = parseConstDef();
-                    if (ConstDef == -1) {
+                    if (parseConstDef() == -1) {
                         return -1;
                     }
                 }
@@ -129,13 +120,12 @@ int Parser::parseConstDecl() {
         }
         if (tkType == LexType::SEMICN) {
             printTk;
-            ofs << "<ConstDecl>" << endl;
             readTk;
-            return 0;
         } else {
-            printError(ntLineNum, "i", "缺少分号");
-            return 0;
+            printError(lastLineNum, "i", "缺少分号");
         }
+        ofs << "<ConstDecl>" << endl;
+        return 0;
     } else {
         return -1;
     }
@@ -143,7 +133,6 @@ int Parser::parseConstDecl() {
 
 int Parser::parseBType() {
     if (tkType == LexType::INTTK) {
-         
         printTk;
         readTk;
         return 0;
@@ -155,25 +144,23 @@ int Parser::parseBType() {
 int Parser::parseConstDef() {
     if (tkType == LexType::IDENFR) {
         int tempSymbolId = symbolId;
-        if (!errorCheck.bCheck(tkWord, false)) {
-            Symbol symbol(0, tkWord, true, nullptr);
-            symbols.insert(symbols.begin() + symbolId, symbol);
-            ++symbolId;
-        }
+        errorCheck.bCheck(tkWord, false);
+        Symbol symbol(0, tkWord, true, nullptr);
+        symbols.insert(symbols.begin() + symbolId, symbol);
+        ++symbolId;
         printTk;
         readTk;
         while (tkType == LexType::LBRACK) {
             printTk;
             readTk;
-            int ConstExp = parseConstExp();
-            if (ConstExp == -1) {
+            if (parseConstExp() == -1) {
                 return -1;
             } else {
                 if (tkType == LexType::RBRACK) {
                     printTk;
                     readTk;
                 } else {
-                    printError(ntLineNum, "k", "缺少右中括号");
+                    printError(lastLineNum, "k", "缺少右中括号");
                 }
                 symbols[tempSymbolId].type += 1;
             }
@@ -181,8 +168,7 @@ int Parser::parseConstDef() {
         if (tkType == LexType::ASSIGN) {
             printTk;
             readTk;
-            int ConstInitVal = parseConstInitVal();
-            if (ConstInitVal == -1) {
+            if (parseConstInitVal() == -1) {
                 return -1;
             } else {
                 ofs << "<ConstDef>" << endl;
@@ -201,28 +187,24 @@ int Parser::parseConstInitVal() {
         printTk;
         readTk;
         if (tkType == LexType::RBRACE) {
-            printTk;
-             
             ofs << "<ConstInitVal>" << endl;
+            printTk;
             readTk;
             return 0;
         }
-        int ConstInitVal = parseConstInitVal();
-        if (ConstInitVal == -1) {
+        if (parseConstInitVal() == -1) {
             return -1;
         } else {
             while (tkType == LexType::COMMA) {
                 printTk;
                 readTk;
-                int ConstInitVal = parseConstInitVal();
-                if (ConstInitVal == -1) {
+                if (parseConstInitVal() == -1) {
                     return -1;
                 }
             }
             if (tkType == LexType::RBRACE) {
-                printTk;
-                 
                 ofs << "<ConstInitVal>" << endl;
+                printTk;
                 readTk;
                 return 0;
             } else {
@@ -230,8 +212,7 @@ int Parser::parseConstInitVal() {
             }
         }
     } else {
-        int ConstExp = parseConstExp();
-        if (ConstExp == -1) {
+        if (parseConstExp() == -1) {
             return -1;
         } else {
             ofs << "<ConstInitVal>" << endl;
@@ -241,31 +222,27 @@ int Parser::parseConstInitVal() {
 }
 
 int Parser::parseVarDecl() {
-    int BType = parseBType();
-    if (BType == -1) {
+    if (parseBType() == -1) {
         return -1;
     } else {
-        int VarDef = parseVarDef();
-        if (VarDef == -1) {
+        if (parseVarDef() == -1) {
             return -1;
         } else {
             while (tkType == LexType::COMMA) {
                 printTk;
                 readTk;
-                int VarDef = parseVarDef();
-                if (VarDef == -1) {
+                if (parseVarDef() == -1) {
                     return -1;
                 }
             }
             if (tkType == LexType::SEMICN) {
-                printTk;
                 ofs << "<VarDecl>" << endl;
+                printTk;
                 readTk;
-                return 0;
             } else {
-                printError(ntLineNum, "i", "缺少分号");
-                return 0;
+                printError(lastLineNum, "i", "缺少分号");
             }
+            return 0;
         }
     }
 }
@@ -273,25 +250,23 @@ int Parser::parseVarDecl() {
 int Parser::parseVarDef() {
     if (tkType == LexType::IDENFR) {
         int tempSymbolId = symbolId;
-        if (!errorCheck.bCheck(tkWord, false)) {
-            Symbol symbol(0, tkWord, false, nullptr);
-            symbols.insert(symbols.begin() + symbolId, symbol);
-            ++symbolId;
-        }
+        errorCheck.bCheck(tkWord, false);
+        Symbol symbol(0, tkWord, false, nullptr);
+        symbols.insert(symbols.begin() + symbolId, symbol);
+        ++symbolId;
         printTk;
         readTk;
         while (tkType == LexType::LBRACK) {
             printTk;
             readTk;
-            int ConstExp = parseConstExp();
-            if (ConstExp == -1) {
+            if (parseConstExp() == -1) {
                 return -1;
             } else {
                 if (tkType == LexType::RBRACK) {
                     printTk;
                     readTk;
                 } else {
-                    printError(ntLineNum, "k", "缺少右中括号");
+                    printError(lastLineNum, "k", "缺少右中括号");
                 }
                 symbols[tempSymbolId].type += 1;
             }
@@ -299,8 +274,7 @@ int Parser::parseVarDef() {
         if (tkType == LexType::ASSIGN) {
             printTk;
             readTk;
-            int InitVal = parseInitVal();
-            if (InitVal == -1) {
+            if (parseInitVal() == -1) {
                 return -1;
             } else {
                 ofs << "<VarDef>" << endl;
@@ -320,14 +294,12 @@ int Parser::parseInitVal() {
         printTk;
         readTk;
         if (tkType == LexType::RBRACE) {
-            printTk;
-             
             ofs << "<InitVal>" << endl;
+            printTk;
             readTk;
             return 0;
         }
-        int InitVal = parseInitVal();
-        if (InitVal == -1) {
+        if (parseInitVal() == -1) {
             return -1;
         } else {
             while (tkType == LexType::COMMA) {
@@ -339,9 +311,8 @@ int Parser::parseInitVal() {
                 }
             }
             if (tkType == LexType::RBRACE) {
-                printTk;
-                 
                 ofs << "<InitVal>" << endl;
+                printTk;
                 readTk;
                 return 0;
             } else {
@@ -349,8 +320,7 @@ int Parser::parseInitVal() {
             }
         }
     } else {
-        int Exp = parseExp();
-        if (Exp == -1) {
+        if (parseExp() == -1) {
             return -1;
         } else {
             ofs << "<InitVal>" << endl;
@@ -360,17 +330,16 @@ int Parser::parseInitVal() {
 }
 
 int Parser::parseFuncDef() {
-    int FuncType = parseFuncType();
-    if (FuncType == -1) {
+    int funcType = parseFuncType();
+    if (funcType == -1) {
         return -1;
     } else {
         if (tkType == LexType::IDENFR) {
             int tempSymbolId = symbolId;
-            if (!errorCheck.bCheck(tkWord, true)) {
-                Symbol symbol(-1, tkWord, false, new Func(FuncType, 0));
-                symbols.insert(symbols.begin() + symbolId, symbol);
-                ++symbolId;
-            }
+            errorCheck.bCheck(tkWord, true);
+            Symbol symbol(-1, tkWord, false, new Func(funcType, 0));
+            symbols.insert(symbols.begin() + symbolId, symbol);
+            ++symbolId;
             printTk;
             readTk;
             if (tkType == LexType::LPARENT) {
@@ -382,32 +351,29 @@ int Parser::parseFuncDef() {
                     readTk;
                 } else {
                     if (tkType == LexType::LBRACE) {
-                        printError(ntLineNum, "j", "缺少右小括号");
+                        printError(lastLineNum, "j", "缺少右小括号");
                     } else {
-                        int FuncFParams = parseFuncFParams(tempSymbolId);
-                        if (FuncFParams == -1) {
-                            return FuncFParams;
+                        int funcFParams = parseFuncFParams(tempSymbolId);
+                        if (funcFParams == -1) {
+                            return funcFParams;
                         } else {
                             if (tkType == LexType::RPARENT) {
                                 printTk;
                                 readTk;
                             } else {
-                                printError(ntLineNum, "j", "缺少右小括号");
+                                printError(lastLineNum, "j", "缺少右小括号");
                             }
-                            symbols[tempSymbolId].func->paramNum = FuncFParams;
+                            symbols[tempSymbolId].func->paramNum = funcFParams;
                         }
                     }
                 }
-                int Block = parseBlock(FuncType);
-
-                symbolId = symbolTable.top();
-                symbolTable.pop();
-
-                if (Block == 0) {
+                if (parseBlock(funcType) == -1) {
+                    return -1;
+                } else {
+                    symbolId = symbolTable.top();
+                    symbolTable.pop();
                     ofs << "<FuncDef>" << endl;
                     return 0;
-                } else {
-                    return -1;
                 }
             } else {
                 return -1;
@@ -432,11 +398,10 @@ int Parser::parseMainFuncDef() {
                     printTk;
                     readTk;
                 } else {
-                    printError(ntLineNum, "j", "缺少右小括号");
+                    printError(lastLineNum, "j", "缺少右小括号");
                 }
                 symbolTable.push(symbolId);
-                int Block = parseBlock(1);
-                if (Block == -1) {
+                if (parseBlock(1) == -1) {
                     return -1;
                 } else {
                     ofs << "<MainFuncDef>" << endl;
@@ -455,15 +420,13 @@ int Parser::parseMainFuncDef() {
 
 int Parser::parseFuncType() {
     if (tkType == LexType::INTTK) {
-        printTk;
-         
         ofs << "<FuncType>" << endl;
+        printTk;
         readTk;
         return 1;
     } else if (tkType == LexType::VOIDTK) {
-        printTk;
-         
         ofs << "<FuncType>" << endl;
+        printTk;
         readTk;
         return 0;
     } else {
@@ -500,11 +463,10 @@ int Parser::parseFuncFParam() {
         readTk;
         if (tkType == LexType::IDENFR) {
             int tempSymbolId = symbolId;
-            if (!errorCheck.bCheck(tkWord, false)) {
-                Symbol symbol(0, tkWord, false, nullptr);
-                symbols.insert(symbols.begin() + symbolId, symbol);
-                ++symbolId;
-            }
+            errorCheck.bCheck(tkWord, false);
+            Symbol symbol(0, tkWord, false, nullptr);
+            symbols.insert(symbols.begin() + symbolId, symbol);
+            ++symbolId;
             int type = 0;
             printTk;
             readTk;
@@ -515,21 +477,20 @@ int Parser::parseFuncFParam() {
                     printTk;
                     readTk;
                 } else {
-                    printError(ntLineNum, "k", "缺少右中括号");
+                    printError(lastLineNum, "k", "缺少右中括号");
                 }
                 type++;
                 while (tkType == LexType::LBRACK) {
                     printTk;
                     readTk;
-                    int ConstExp = parseConstExp();
-                    if (ConstExp == -1) {
+                    if (parseConstExp() == -1) {
                         return -1;
                     } else {
                         if (tkType == LexType::RBRACK) {
                             printTk;
                             readTk;
                         } else {
-                            printError(ntLineNum, "k", "缺少右中括号");
+                            printError(lastLineNum, "k", "缺少右中括号");
                         }
                         type++;
                     }
@@ -549,15 +510,15 @@ int Parser::parseFuncFParam() {
     }
 }
 
-int Parser::parseBlock(int FuncType) {
+int Parser::parseBlock(int funcType) {
     if (tkType == LexType::LBRACE) {
         printTk;
         readTk;
-        // 3 没有返回值
-        int BlockItem = 3;
-        int flag = (FuncType == 1) ? 1 : 0; // 1 need return value
+        int BlockItem;
+        int flag = (funcType == 1) ? 1 : 0; // 1 need return value
         while (tkType != LexType::RBRACE) {
-            BlockItem = parseBlockItem(FuncType);
+            flag = (funcType == 1) ? 1 : 0;
+            BlockItem = parseBlockItem(funcType);
             if (BlockItem == -1) {
                 return -1;
             } else if (BlockItem == 2 && flag == 1) {
@@ -569,7 +530,6 @@ int Parser::parseBlock(int FuncType) {
                 printError(lexer.getLineNum(), "g", "有返回值的函数缺少return语句");
             }
             printTk;
-             
             ofs << "<Block>" << endl;
             readTk;
             return 0;
@@ -595,7 +555,7 @@ int Parser::parseBlockItem(int FuncType) {
     }
 }
 
-int Parser::parseStmt(int FuncType, int isFor) {
+int Parser::parseStmt(int funcType, int isFor) {
     if (tkType == LexType::IFTK) {
         printTk;
         readTk;
@@ -607,17 +567,16 @@ int Parser::parseStmt(int FuncType, int isFor) {
                 return -1;
             } else {
                 if (tkType != LexType::RPARENT) {
-                    printError(ntLineNum, "j", "缺少右小括号");
+                    printError(lastLineNum, "j", "缺少右小括号");
                 } else {
                     printTk;
                     readTk;
                 }
-                 
                 int Stmt;
-                if (FuncType == 0) {
+                if (funcType == 0) {
                     Stmt = parseStmt(5, 0);
                 } else {
-                    Stmt = parseStmt(FuncType, 0);
+                    Stmt = parseStmt(funcType, 0);
                 }
                 if (Stmt == -1) {
                     return -1;
@@ -626,10 +585,10 @@ int Parser::parseStmt(int FuncType, int isFor) {
                         printTk;
                         readTk;
                         int Stmt;
-                        if (FuncType == 0) {
+                        if (funcType == 0) {
                             Stmt = parseStmt(5, 0);
                         } else {
-                            Stmt = parseStmt(FuncType, 0);
+                            Stmt = parseStmt(funcType, 0);
                         }
                         if (Stmt == -1) {
                             return -1;
@@ -661,14 +620,13 @@ int Parser::parseStmt(int FuncType, int isFor) {
                     printTk;
                     readTk;
                     int ForStmt = parseForStmt();
-
                     if (tkType != LexType::RPARENT) {
-                        printError(ntLineNum, "j", "缺少右小括号");
+                        printError(lastLineNum, "j", "缺少右小括号");
                     } else {
                         printTk;
                         readTk;
                     }
-                    int Stmt = parseStmt(FuncType, 1);
+                    int Stmt = parseStmt(funcType, 1);
                     if (Stmt == -1) {
                         return -1;
                     } else {
@@ -696,7 +654,7 @@ int Parser::parseStmt(int FuncType, int isFor) {
             readTk;
             return 0;
         } else {
-            printError(ntLineNum, "i", "缺少分号");
+            printError(lastLineNum, "i", "缺少分号");
             return 0;
         }
     } else if (tkType == LexType::CONTINUETK) {
@@ -711,12 +669,12 @@ int Parser::parseStmt(int FuncType, int isFor) {
             readTk;
             return 0;
         } else {
-            printError(ntLineNum, "i", "缺少分号");
+            printError(lastLineNum, "i", "缺少分号");
             return 0;
         }
     } else if (tkType == LexType::RETURNTK) {
         int tempLineNum = lexer.getLineNum();
-        retLineNum = tempLineNum;
+        //retLineNum = tempLineNum;
         printTk;
         readTk;
         if (tkType == LexType::SEMICN) {
@@ -725,23 +683,23 @@ int Parser::parseStmt(int FuncType, int isFor) {
             readTk;
             return 2;
         } else if (tkType == LexType::RBRACE) {
-            printError(ntLineNum, "i", "缺少分号");
+            printError(lastLineNum, "i", "缺少分号");
             return 2;
         } else {
             int Exp = parseExp();
             if (Exp == -1) {
                 return -1;
             } else {
-                if (FuncType == 0) {
+                if (funcType == 0) {
                     printError(tempLineNum, "f", "无返回值的函数存在不匹配的return语句 ");
                 }
                 if (tkType == LexType::SEMICN) {
-                    printTk;
                     ofs << "<Stmt>" << endl;
+                    printTk;
                     readTk;
                     return 2; // return 有返回值
                 } else {
-                    printError(ntLineNum, "i", "缺少分号");
+                    printError(lastLineNum, "i", "缺少分号");
                     return 2; // return 有返回值
                 }
             }
@@ -779,13 +737,13 @@ int Parser::parseStmt(int FuncType, int isFor) {
                     printError(tempLineNum, "l", "printf中格式字符与表达式个数不匹配");
                 }
                 if (tkType != LexType::RPARENT) {
-                    printError(ntLineNum, "j", "缺少右小括号");
+                    printError(lastLineNum, "j", "缺少右小括号");
                 } else {
                     printTk;
                     readTk;
                 }
                 if (tkType != LexType::SEMICN) {
-                    printError(ntLineNum, "i", "缺少分号");
+                    printError(lastLineNum, "i", "缺少分号");
                 } else {
                     printTk;
                     readTk;
@@ -801,7 +759,7 @@ int Parser::parseStmt(int FuncType, int isFor) {
     } else if (tkType == LexType::LBRACE) {
         symbolTable.push(symbolId);
         int Block;
-        if (FuncType == 5) {
+        if (funcType == 5) {
             Block = parseBlock(0); // 无返回值的函数
         } else {
             Block = parseBlock(-1);
@@ -809,17 +767,15 @@ int Parser::parseStmt(int FuncType, int isFor) {
         if (Block == -1) {
             return -1;
         } else {
-            
             symbolId = symbolTable.top();
             symbolTable.pop();
-
             ofs << "<Stmt>" << endl;
             return 0;
         }
     } else {
         if (tkType == LexType::SEMICN) {
-            printTk;
             ofs << "<Stmt>" << endl;
+            printTk;
             readTk;
             return 0;
         } else {
@@ -836,13 +792,13 @@ int Parser::parseStmt(int FuncType, int isFor) {
                                 printTk;
                                 readTk;
                                 if (tkType != LexType::RPARENT) {
-                                    printError(ntLineNum, "j", "缺少右小括号");
+                                    printError(lastLineNum, "j", "缺少右小括号");
                                 } else {
                                     printTk;
                                     readTk;
                                 }
                                 if (tkType != LexType::SEMICN) {
-                                    printError(ntLineNum, "i", "缺少分号");
+                                    printError(lastLineNum, "i", "缺少分号");
                                 } else {
                                     printTk;
                                     readTk;
@@ -858,12 +814,12 @@ int Parser::parseStmt(int FuncType, int isFor) {
                                 return -1;
                             } else {
                                 if (tkType == LexType::SEMICN) {
-                                    printTk;
                                     ofs << "<Stmt>" << endl;
+                                    printTk;
                                     readTk;
                                     return 0;
                                 } else {
-                                    printError(ntLineNum, "i", "缺少分号");
+                                    printError(lastLineNum, "i", "缺少分号");
                                     return 0;
                                 }
                             }
@@ -880,20 +836,18 @@ int Parser::parseStmt(int FuncType, int isFor) {
                     return -1;
                 } else {
                     if (tkType == LexType::SEMICN) {
-                        printTk;
                         ofs << "<Stmt>" << endl;
+                        printTk;
                         readTk;
                         return Exp;
                     } else {
-                        printError(ntLineNum, "i", "缺少分号");
+                        printError(lastLineNum, "i", "缺少分号");
                         return Exp;
                     }
                 }
             }
-
         }
     }
-    return 0;
 }
 
 int Parser::parseForStmt() {
@@ -929,11 +883,11 @@ int Parser::parseExp() {
 
 int Parser::parseCond() {
     int LOrExp = parseLOrExp();
-    if (LOrExp == 0) {
+    if (LOrExp == -1) {
+        return -1;
+    } else {
         ofs << "<Cond>" << endl;
         return 0;
-    } else {
-        return -1;
     }
 }
 
@@ -958,7 +912,7 @@ int Parser::parseLVal(int change) {
                 printTk;
                 readTk;
             } else {
-                printError(ntLineNum, "k", "缺少右中括号");
+                printError(lastLineNum, "k", "缺少右中括号");
             }
             n++;
         }
@@ -982,8 +936,8 @@ int Parser::parsePrimaryExp() {
             return -1;
         } else {
             if (tkType == LexType::RPARENT) {
-                printTk;
                 ofs << "<PrimaryExp>" << endl;
+                printTk;
                 readTk;
                 return Exp;
             } else {
@@ -1009,9 +963,8 @@ int Parser::parsePrimaryExp() {
 
 int Parser::parseNumber() {
     if (tkType == LexType::INTCON) {
-        printTk;
-         
         ofs << "<Number>" << endl;
+        printTk;
         readTk;
         return 0;
     } else {
@@ -1024,7 +977,7 @@ int Parser::parseUnaryExp() {
     if (UnaryOp == 0) {
         int UnaryExp = parseUnaryExp();
         if (UnaryExp == -1) {
-            return -1 ;
+            return -1;
         } else {
             ofs << "<UnaryExp>" << endl;
             return UnaryExp;
@@ -1043,8 +996,8 @@ int Parser::parseUnaryExp() {
                 if (errorCheck.dCheck(tempFuncLineNum, funcName, 0) == -1) {
                     cout << "---no this func" << endl;
                 }
-                printTk;
                 ofs << "<UnaryExp>" << endl;
+                printTk;
                 readTk;
                 return funcRet;
             } else {
@@ -1056,7 +1009,7 @@ int Parser::parseUnaryExp() {
                     cout << "---no this func" << endl;
                 }
                 if (tkType != LexType::RPARENT) {
-                    printError(ntLineNum, "j", "缺少右小括号");
+                    printError(lastLineNum, "j", "缺少右小括号");
                 } else {
                     printTk;
                     readTk;
@@ -1078,9 +1031,8 @@ int Parser::parseUnaryExp() {
 
 int Parser::parseUnaryOp() {
     if (tkType == LexType::PLUS || tkType == LexType::MINU || tkType == LexType::NOT) {
-        printTk;
-         
         ofs << "<UnaryOp>" << endl;
+        printTk;
         readTk;
         return 0;
     } else {
@@ -1162,7 +1114,9 @@ int Parser::parseAddExp() {
 
 int Parser::parseRelExp() {
     int AddExp = parseAddExp();
-    if (AddExp == 0) {
+    if (AddExp == -1) {
+        return -1;
+    } else {
         while (tkType == LexType::GRE || tkType == LexType::GEQ ||
                tkType == LexType::LSS || tkType == LexType::LEQ) {
             ofs << "<RelExp>" << endl;
@@ -1175,14 +1129,14 @@ int Parser::parseRelExp() {
         }
         ofs << "<RelExp>" << endl;
         return 0;
-    } else {
-        return -1;
     }
 }
 
 int Parser::parseEqExp() {
     int RelExp = parseRelExp();
-    if (RelExp == 0) {
+    if (RelExp == -1) {
+        return -1;
+    } else {
         while (tkType == LexType::EQL || tkType == LexType::NEQ) {
             ofs << "<EqExp>" << endl;
             printTk;
@@ -1194,14 +1148,14 @@ int Parser::parseEqExp() {
         }
         ofs << "<EqExp>" << endl;
         return 0;
-    } else {
-        return -1;
     }
 }
 
 int Parser::parseLAndExp() {
     int EqExp = parseEqExp();
-    if (EqExp == 0) {
+    if (EqExp == -1) {
+        return -1;
+    } else {
         while (tkType == LexType::AND) {
             ofs << "<LAndExp>" << endl;
             printTk;
@@ -1213,14 +1167,14 @@ int Parser::parseLAndExp() {
         }
         ofs << "<LAndExp>" << endl;
         return 0;
-    } else {
-        return -1;
     }
 }
 
 int Parser::parseLOrExp() {
     int LAndExp = parseLAndExp();
-    if (LAndExp == 0) {
+    if (LAndExp == -1) {
+        return -1;
+    } else {
         while (tkType == LexType::OR) {
             ofs << "<LOrExp>" << endl;
             printTk;
@@ -1232,18 +1186,16 @@ int Parser::parseLOrExp() {
         }
         ofs << "<LOrExp>" << endl;
         return 0;
-    } else {
-        return -1;
     }
 }
 
 int Parser::parseConstExp() {
     int AddExp = parseAddExp();
-    if (AddExp == 0) {
+    if (AddExp == -1) {
+        return -1;
+    } else {
         ofs << "<ConstExp>" << endl;
         return 0;
-    } else {
-        return -1;
     }
 }
 
