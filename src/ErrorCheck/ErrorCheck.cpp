@@ -32,7 +32,7 @@ int ErrorCheck::bCheck(string word, bool fun) {
     for (int i = symbolId - 1 ; i >= symbolTable.top(); --i) {
         if (symbols[i].word == word && ((symbols[i].type != -1 && !fun) || (symbols[i].type == -1 && fun))){
             printError(LineNum, "b", "名字重定义");
-            return 0;
+            return -1;
         }
     }
     return 0;

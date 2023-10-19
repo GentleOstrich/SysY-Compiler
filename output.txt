@@ -1,40 +1,143 @@
 <FuncType>
-INTTK int
-IDENFR f1
+VOIDTK void
+IDENFR f
 LPARENT (
-INTTK int
-IDENFR x
-<FuncFParam>
-<FuncFParams>
 RPARENT )
 LBRACE {
-RETURNTK return
-IDENFR x
+INTTK int
+IDENFR i
+<VarDef>
+<VarDecl>
+SEMICN ;
+FORTK for
+LPARENT (
+IDENFR i
 <LVal>
+ASSIGN =
+<Number>
+INTCON 0
 <PrimaryExp>
 <UnaryExp>
 <MulExp>
 <AddExp>
 <Exp>
-<Stmt>
+<ForStmt>
 SEMICN ;
-RBRACE }
-<Block>
-<FuncDef>
-<FuncType>
-VOIDTK void
-IDENFR f2
-LPARENT (
-INTTK int
-IDENFR x
-LBRACK [
-RBRACK ]
-<FuncFParam>
-<FuncFParams>
+IDENFR i
+<LVal>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<RelExp>
+LSS <
+<Number>
+INTCON 10
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<RelExp>
+<EqExp>
+<LAndExp>
+<LOrExp>
+<Cond>
+SEMICN ;
+IDENFR i
+<LVal>
+ASSIGN =
+IDENFR i
+<LVal>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+PLUS +
+<Number>
+INTCON 1
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<ForStmt>
 RPARENT )
 LBRACE {
-RETURNTK return
+FORTK for
+LPARENT (
+IDENFR i
+<LVal>
+ASSIGN =
+<Number>
+INTCON 0
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<ForStmt>
 SEMICN ;
+IDENFR i
+<LVal>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<RelExp>
+LSS <
+<Number>
+INTCON 10
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<RelExp>
+<EqExp>
+<LAndExp>
+<LOrExp>
+<Cond>
+SEMICN ;
+IDENFR i
+<LVal>
+ASSIGN =
+IDENFR i
+<LVal>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+PLUS +
+<Number>
+INTCON 1
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<ForStmt>
+RPARENT )
+LBRACE {
+LBRACE {
+CONTINUETK continue
+SEMICN ;
+<Stmt>
+RBRACE }
+<Block>
+<Stmt>
+RBRACE }
+<Block>
+<Stmt>
+<Stmt>
+LBRACE {
+BREAKTK break
+SEMICN ;
+<Stmt>
+RBRACE }
+<Block>
+<Stmt>
+RBRACE }
+<Block>
+<Stmt>
 <Stmt>
 RBRACE }
 <Block>
@@ -45,30 +148,8 @@ LPARENT (
 RPARENT )
 LBRACE {
 INTTK int
-IDENFR arr
-LBRACK [
-<Number>
-INTCON 2
-<PrimaryExp>
-<UnaryExp>
-<MulExp>
-<AddExp>
-<ConstExp>
-RBRACK ]
-LBRACK [
-<Number>
-INTCON 2
-<PrimaryExp>
-<UnaryExp>
-<MulExp>
-<AddExp>
-<ConstExp>
-RBRACK ]
-<VarDef>
-<VarDecl>
-SEMICN ;
-IDENFR f2
-LPARENT (
+IDENFR b
+ASSIGN =
 <Number>
 INTCON 1
 <PrimaryExp>
@@ -76,47 +157,9 @@ INTCON 1
 <MulExp>
 <AddExp>
 <Exp>
-<FuncRParams>
-RPARENT )
-<UnaryExp>
-<MulExp>
-<AddExp>
-<Exp>
-<Stmt>
-SEMICN ;
-IDENFR f1
-LPARENT (
-IDENFR f2
-LPARENT (
-IDENFR arr
-LBRACK [
-<Number>
-INTCON 0
-<PrimaryExp>
-<UnaryExp>
-<MulExp>
-<AddExp>
-<Exp>
-RBRACK ]
-<LVal>
-<PrimaryExp>
-<UnaryExp>
-<MulExp>
-<AddExp>
-<Exp>
-<FuncRParams>
-RPARENT )
-<UnaryExp>
-<MulExp>
-<AddExp>
-<Exp>
-<FuncRParams>
-RPARENT )
-<UnaryExp>
-<MulExp>
-<AddExp>
-<Exp>
-<Stmt>
+<InitVal>
+<VarDef>
+<VarDecl>
 SEMICN ;
 RETURNTK return
 <Number>

@@ -37,9 +37,9 @@ public:
 
     int parseFuncFParam();
 
-    int parseBlock(int funcType);
+    int parseBlock(int funcType, int For);
 
-    int parseBlockItem(int FuncType);
+    int parseBlockItem(int FuncType, int For);
 
     int parseStmt(int funcType, int isFor);
 

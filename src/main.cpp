@@ -8,8 +8,8 @@
 
 using namespace std;
 
-//#define TEST
-//#define Linux
+#define TEST
+#define Linux
 
 #ifdef TEST
     #ifdef Linux

@@ -144,10 +144,11 @@ int Parser::parseBType() {
 int Parser::parseConstDef() {
     if (tkType == LexType::IDENFR) {
         int tempSymbolId = symbolId;
-        errorCheck.bCheck(tkWord, false);
-        Symbol symbol(0, tkWord, true, nullptr);
-        symbols.insert(symbols.begin() + symbolId, symbol);
-        ++symbolId;
+        if (errorCheck.bCheck(tkWord, false) == 0) {
+            Symbol symbol(0, tkWord, true, nullptr);
+            symbols.insert(symbols.begin() + symbolId, symbol);
+            ++symbolId;
+        }
         printTk;
         readTk;
         while (tkType == LexType::LBRACK) {
@@ -250,10 +251,11 @@ int Parser::parseVarDecl() {
 int Parser::parseVarDef() {
     if (tkType == LexType::IDENFR) {
         int tempSymbolId = symbolId;
-        errorCheck.bCheck(tkWord, false);
-        Symbol symbol(0, tkWord, false, nullptr);
-        symbols.insert(symbols.begin() + symbolId, symbol);
-        ++symbolId;
+        if (errorCheck.bCheck(tkWord, false) == 0) {
+            Symbol symbol(0, tkWord, false, nullptr);
+            symbols.insert(symbols.begin() + symbolId, symbol);
+            ++symbolId;
+        }
         printTk;
         readTk;
         while (tkType == LexType::LBRACK) {
@@ -336,10 +338,11 @@ int Parser::parseFuncDef() {
     } else {
         if (tkType == LexType::IDENFR) {
             int tempSymbolId = symbolId;
-            errorCheck.bCheck(tkWord, true);
-            Symbol symbol(-1, tkWord, false, new Func(funcType, 0));
-            symbols.insert(symbols.begin() + symbolId, symbol);
-            ++symbolId;
+            if (errorCheck.bCheck(tkWord, true) == 0) {
+                Symbol symbol(-1, tkWord, false, new Func(funcType, 0));
+                symbols.insert(symbols.begin() + symbolId, symbol);
+                ++symbolId;
+            }
             printTk;
             readTk;
             if (tkType == LexType::LPARENT) {
@@ -367,7 +370,7 @@ int Parser::parseFuncDef() {
                         }
                     }
                 }
-                if (parseBlock(funcType) == -1) {
+                if (parseBlock(funcType, 0) == -1) {
                     return -1;
                 } else {
                     symbolId = symbolTable.top();
@@ -401,7 +404,7 @@ int Parser::parseMainFuncDef() {
                     printError(lastLineNum, "j", "缺少右小括号");
                 }
                 symbolTable.push(symbolId);
-                if (parseBlock(1) == -1) {
+                if (parseBlock(1, 0) == -1) {
                     return -1;
                 } else {
                     ofs << "<MainFuncDef>" << endl;
@@ -463,10 +466,11 @@ int Parser::parseFuncFParam() {
         readTk;
         if (tkType == LexType::IDENFR) {
             int tempSymbolId = symbolId;
-            errorCheck.bCheck(tkWord, false);
-            Symbol symbol(0, tkWord, false, nullptr);
-            symbols.insert(symbols.begin() + symbolId, symbol);
-            ++symbolId;
+            if (errorCheck.bCheck(tkWord, false) == 0 ) {
+                Symbol symbol(0, tkWord, false, nullptr);
+                symbols.insert(symbols.begin() + symbolId, symbol);
+                ++symbolId;
+            }
             int type = 0;
             printTk;
             readTk;
@@ -510,7 +514,7 @@ int Parser::parseFuncFParam() {
     }
 }
 
-int Parser::parseBlock(int funcType) {
+int Parser::parseBlock(int funcType, int For) {
     if (tkType == LexType::LBRACE) {
         printTk;
         readTk;
@@ -518,7 +522,7 @@ int Parser::parseBlock(int funcType) {
         int flag = (funcType == 1) ? 1 : 0; // 1 need return value
         while (tkType != LexType::RBRACE) {
             flag = (funcType == 1) ? 1 : 0;
-            BlockItem = parseBlockItem(funcType);
+            BlockItem = parseBlockItem(funcType, For);
             if (BlockItem == -1) {
                 return -1;
             } else if (BlockItem == 2 && flag == 1) {
@@ -541,12 +545,12 @@ int Parser::parseBlock(int funcType) {
     }
 }
 
-int Parser::parseBlockItem(int FuncType) {
+int Parser::parseBlockItem(int FuncType, int For) {
     int Decl = parseDecl();
     if (Decl == 0) {
         return 0;
     } else {
-        int Stmt = parseStmt(FuncType, 0);
+        int Stmt = parseStmt(FuncType, For);
         if (Stmt == -1) {
             return -1;
         } else {
@@ -574,9 +578,9 @@ int Parser::parseStmt(int funcType, int isFor) {
                 }
                 int Stmt;
                 if (funcType == 0) {
-                    Stmt = parseStmt(5, 0);
+                    Stmt = parseStmt(5, isFor);
                 } else {
-                    Stmt = parseStmt(funcType, 0);
+                    Stmt = parseStmt(funcType, isFor);
                 }
                 if (Stmt == -1) {
                     return -1;
@@ -586,9 +590,9 @@ int Parser::parseStmt(int funcType, int isFor) {
                         readTk;
                         int Stmt;
                         if (funcType == 0) {
-                            Stmt = parseStmt(5, 0);
+                            Stmt = parseStmt(5, isFor);
                         } else {
-                            Stmt = parseStmt(funcType, 0);
+                            Stmt = parseStmt(funcType, isFor);
                         }
                         if (Stmt == -1) {
                             return -1;
@@ -759,10 +763,10 @@ int Parser::parseStmt(int funcType, int isFor) {
     } else if (tkType == LexType::LBRACE) {
         symbolTable.push(symbolId);
         int Block;
-        if (funcType == 5) {
-            Block = parseBlock(0); // 无返回值的函数
+        if (funcType == 5 || funcType == 0) {
+            Block = parseBlock(0, isFor); // 无返回值的函数
         } else {
-            Block = parseBlock(-1);
+            Block = parseBlock(-1, isFor);
         }
         if (Block == -1) {
             return -1;
@@ -921,7 +925,7 @@ int Parser::parseLVal(int change) {
         if (type == -1) {
             type = 0;
         }
-        return (type - n >= 0) ? (type - n) : -1;
+        return (type - n >= 0) ? (type - n) : 0;
     } else {
         return -1;
     }
