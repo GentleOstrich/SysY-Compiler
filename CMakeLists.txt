@@ -1,8 +1,8 @@
-cmake_minimum_required(VERSION 3.15)
 project(SysY-Compiler)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_BUILD_TYPE Debug)
 
-add_executable(SysY-Compiler main.cpp Lexer/Lexer.cpp Lexer/Lexer.h Parser/Parser.cpp Parser/Parser.h Lexer/LexType.h SymbolManager/Symbol.cpp SymbolManager/Symbol.h ErrorCheck/ErrorCheck.cpp ErrorCheck/ErrorCheck.h SymbolManager/Func.cpp)
+
+add_executable(SysY-Compiler src/main.cpp src/Lexer/Lexer.cpp src/Lexer/Lexer.h src/Parser/Parser.cpp src/Parser/Parser.h src/Lexer/LexType.h src/SymbolManager/Symbol.cpp src/SymbolManager/Symbol.h src/ErrorCheck/ErrorCheck.cpp src/ErrorCheck/ErrorCheck.h src/SymbolManager/Func.cpp)

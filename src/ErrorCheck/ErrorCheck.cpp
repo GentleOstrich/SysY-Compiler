@@ -9,13 +9,6 @@
 #include <stack>
 using namespace std;
 
-struct Error {
-    int line;
-    char c;
-};
-extern Error errors[100];
-extern int e;
-
 #define tkWord token.second
 #define printError(lineNum, type, info) errors[e++] = {lineNum, type[0]} // e_ofs << lineNum << " " << type << /*" " << info <<*/ endl
 #define LineNum lexer.getLineNum()
@@ -28,11 +21,18 @@ extern vector<Symbol> symbols;
 extern stack<int> symbolTable;
 ErrorCheck errorCheck;
 
-int ErrorCheck::bCheck(string word, bool fun){
-    for (int i = symbolId - 1 ; i >= symbolTable.top(); i-- ) {
+struct Error {
+    int line;
+    char c;
+};
+extern Error errors[1000];
+extern int e;
+
+int ErrorCheck::bCheck(string word, bool fun) {
+    for (int i = symbolId - 1 ; i >= symbolTable.top(); --i) {
         if (symbols[i].word == word && ((symbols[i].type != -1 && !fun) || (symbols[i].type == -1 && fun))){
             printError(LineNum, "b", "名字重定义");
-            return 0;
+            return -1;
         }
     }
     return 0;
@@ -45,7 +45,7 @@ int ErrorCheck::cCheck(string word, bool fun){
         }
     }
     printError(LineNum, "c", "未定义的名字");
-    return 1;
+    return 0;
 }
 
 int ErrorCheck::dCheck(int lineNum, string word, int num){

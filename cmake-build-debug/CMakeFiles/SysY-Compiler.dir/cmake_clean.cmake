@@ -1,14 +1,12 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/SysY-Compiler.dir/ErrorCheck/ErrorCheck.cpp.obj"
-  "CMakeFiles/SysY-Compiler.dir/Lexer/Lexer.cpp.obj"
-  "CMakeFiles/SysY-Compiler.dir/Parser/Parser.cpp.obj"
-  "CMakeFiles/SysY-Compiler.dir/SymbolManager/Func.cpp.obj"
-  "CMakeFiles/SysY-Compiler.dir/SymbolManager/Symbol.cpp.obj"
-  "CMakeFiles/SysY-Compiler.dir/main.cpp.obj"
-  "SysY-Compiler.exe"
-  "SysY-Compiler.exe.manifest"
+  "CMakeFiles/SysY-Compiler.dir/src/ErrorCheck/ErrorCheck.cpp.o"
+  "CMakeFiles/SysY-Compiler.dir/src/Lexer/Lexer.cpp.o"
+  "CMakeFiles/SysY-Compiler.dir/src/Parser/Parser.cpp.o"
+  "CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Func.cpp.o"
+  "CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Symbol.cpp.o"
+  "CMakeFiles/SysY-Compiler.dir/src/main.cpp.o"
+  "SysY-Compiler"
   "SysY-Compiler.pdb"
-  "libSysY-Compiler.dll.a"
 )
 
 # Per-language clean rules from dependency scanning.

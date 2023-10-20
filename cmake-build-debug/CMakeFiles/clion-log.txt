@@ -1,25 +1,4 @@
-"D:\Program Files\JetBrains\CLion 2019.3.6\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug "-DCMAKE_C_COMPILER=D:/Program Files/LLVM/bin/clang.exe" "-DCMAKE_CXX_COMPILER=D:/Program Files/LLVM/bin/clang++.exe" -D CMAKE_C_COMPILER= D:\Program Files\LLVM\bin\clang.exe -D CMAKE_CXX_COMPILER= D:\Program Files\LLVM\bin\clang++.exe -G "CodeBlocks - MinGW Makefiles" D:\University\Study\2023fall\compiler\SysY-Compiler
--- Configuring done
-You have changed variables that require your cache to be deleted.
-Configure will be re-run and you may have to reset some variables.
-The following variables have changed:
-CMAKE_C_COMPILER= 
-CMAKE_CXX_COMPILER= 
-
--- The C compiler identification is GNU 8.1.0
--- The CXX compiler identification is GNU 8.1.0
--- Check for working C compiler: D:/mingw64/bin/gcc.exe
--- Check for working C compiler: D:/mingw64/bin/gcc.exe -- works
--- Detecting C compiler ABI info
--- Detecting C compiler ABI info - done
--- Detecting C compile features
--- Detecting C compile features - done
--- Check for working CXX compiler: D:/mingw64/bin/g++.exe
--- Check for working CXX compiler: D:/mingw64/bin/g++.exe -- works
--- Detecting CXX compiler ABI info
--- Detecting CXX compiler ABI info - done
--- Detecting CXX compile features
--- Detecting CXX compile features - done
+/home/yh/Downloads/clion-2019.3.6/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=/usr/bin/gcc -DCMAKE_CXX_COMPILER=/usr/bin/g++ -G "CodeBlocks - Unix Makefiles" /home/yh/SysY-Compiler
 -- Configuring done
 -- Generating done
--- Build files have been written to: D:/University/Study/2023fall/Compiler/SysY-Compiler/cmake-build-debug
+-- Build files have been written to: /home/yh/SysY-Compiler/cmake-build-debug

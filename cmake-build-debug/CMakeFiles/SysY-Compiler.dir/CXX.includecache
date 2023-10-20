@@ -6,23 +6,23 @@
 
 #IncludeRegexTransform: 
 
-D:/University/Study/2023fall/Compiler/SysY-Compiler/Lexer/LexType.h
+/home/yh/SysY-Compiler/src/Lexer/LexType.h
 string
 -
 
-D:/University/Study/2023fall/Compiler/SysY-Compiler/Lexer/Lexer.h
+/home/yh/SysY-Compiler/src/Lexer/Lexer.h
 string
 -
 vector
 -
 LexType.h
-D:/University/Study/2023fall/Compiler/SysY-Compiler/Lexer/LexType.h
+/home/yh/SysY-Compiler/src/Lexer/LexType.h
 
-D:/University/Study/2023fall/Compiler/SysY-Compiler/Parser/Parser.h
+/home/yh/SysY-Compiler/src/Parser/Parser.h
 ../Lexer/Lexer.h
-D:/University/Study/2023fall/Compiler/SysY-Compiler/Lexer/Lexer.h
+/home/yh/SysY-Compiler/src/Lexer/Lexer.h
 
-D:/University/Study/2023fall/Compiler/SysY-Compiler/main.cpp
+/home/yh/SysY-Compiler/src/main.cpp
 algorithm
 -
 iostream
@@ -30,5 +30,5 @@ iostream
 fstream
 -
 Parser/Parser.h
-D:/University/Study/2023fall/Compiler/SysY-Compiler/Parser/Parser.h
+/home/yh/SysY-Compiler/src/Parser/Parser.h
 
