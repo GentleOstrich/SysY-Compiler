@@ -35,9 +35,6 @@ extern int e;
 
 extern int symbolId;
 
-int retLineNum = 0;
-
-
 Token token = make_pair(LexType::NONE, "");
 
 // 正常返回 0 错误返回 -1
@@ -144,11 +141,10 @@ int Parser::parseBType() {
 int Parser::parseConstDef() {
     if (tkType == LexType::IDENFR) {
         int tempSymbolId = symbolId;
-        if (errorCheck.bCheck(tkWord, false) == 0) {
-            Symbol symbol(0, tkWord, true, nullptr);
-            symbols.insert(symbols.begin() + symbolId, symbol);
-            ++symbolId;
-        }
+        int bCheck = errorCheck.bCheck(tkWord, false);
+        Symbol symbol(0, tkWord, true, nullptr);
+        symbols.insert(symbols.begin() + symbolId, symbol);
+        ++symbolId;
         printTk;
         readTk;
         while (tkType == LexType::LBRACK) {
@@ -173,6 +169,11 @@ int Parser::parseConstDef() {
                 return -1;
             } else {
                 ofs << "<ConstDef>" << endl;
+
+                if (bCheck == -1) {
+                    symbolId = tempSymbolId;
+                }
+
                 return 0;
             }
         } else {
@@ -251,11 +252,10 @@ int Parser::parseVarDecl() {
 int Parser::parseVarDef() {
     if (tkType == LexType::IDENFR) {
         int tempSymbolId = symbolId;
-        if (errorCheck.bCheck(tkWord, false) == 0) {
-            Symbol symbol(0, tkWord, false, nullptr);
-            symbols.insert(symbols.begin() + symbolId, symbol);
-            ++symbolId;
-        }
+        int bCheck = errorCheck.bCheck(tkWord, false);
+        Symbol symbol(0, tkWord, false, nullptr);
+        symbols.insert(symbols.begin() + symbolId, symbol);
+        ++symbolId;
         printTk;
         readTk;
         while (tkType == LexType::LBRACK) {
@@ -280,10 +280,16 @@ int Parser::parseVarDef() {
                 return -1;
             } else {
                 ofs << "<VarDef>" << endl;
+                if (bCheck == -1) {
+                    symbolId = tempSymbolId;
+                }
                 return 0;
             }
         } else {
             ofs << "<VarDef>" << endl;
+            if (bCheck == -1) {
+                symbolId = tempSymbolId;
+            }
             return 0;
         }
     } else {
@@ -338,11 +344,10 @@ int Parser::parseFuncDef() {
     } else {
         if (tkType == LexType::IDENFR) {
             int tempSymbolId = symbolId;
-            if (errorCheck.bCheck(tkWord, true) == 0) {
-                Symbol symbol(-1, tkWord, false, new Func(funcType, 0));
-                symbols.insert(symbols.begin() + symbolId, symbol);
-                ++symbolId;
-            }
+            int bCheck = errorCheck.bCheck(tkWord, true);
+            Symbol symbol(-1, tkWord, false, new Func(funcType, 0));
+            symbols.insert(symbols.begin() + symbolId, symbol);
+            ++symbolId;
             printTk;
             readTk;
             if (tkType == LexType::LPARENT) {
@@ -376,6 +381,9 @@ int Parser::parseFuncDef() {
                     symbolId = symbolTable.top();
                     symbolTable.pop();
                     ofs << "<FuncDef>" << endl;
+                    if (bCheck == -1) {
+                        symbolId = tempSymbolId;
+                    }
                     return 0;
                 }
             } else {
@@ -466,11 +474,10 @@ int Parser::parseFuncFParam() {
         readTk;
         if (tkType == LexType::IDENFR) {
             int tempSymbolId = symbolId;
-            if (errorCheck.bCheck(tkWord, false) == 0 ) {
-                Symbol symbol(0, tkWord, false, nullptr);
-                symbols.insert(symbols.begin() + symbolId, symbol);
-                ++symbolId;
-            }
+            int bCheck = errorCheck.bCheck(tkWord, false);
+            Symbol symbol(0, tkWord, false, nullptr);
+            symbols.insert(symbols.begin() + symbolId, symbol);
+            ++symbolId;
             int type = 0;
             printTk;
             readTk;
@@ -501,9 +508,15 @@ int Parser::parseFuncFParam() {
                 }
                 symbols[tempSymbolId].type = type;
                 ofs << "<FuncFParam>" << endl;
+                if (bCheck == -1) {
+                    symbolId = tempSymbolId;
+                }
                 return type;
             } else {
                 ofs << "<FuncFParam>" << endl;
+                if (bCheck == -1) {
+                    symbolId = tempSymbolId;
+                }
                 return type;
             }
         } else {
@@ -678,7 +691,6 @@ int Parser::parseStmt(int funcType, int isFor) {
         }
     } else if (tkType == LexType::RETURNTK) {
         int tempLineNum = lexer.getLineNum();
-        //retLineNum = tempLineNum;
         printTk;
         readTk;
         if (tkType == LexType::SEMICN) {

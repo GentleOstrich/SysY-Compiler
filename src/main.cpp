@@ -8,8 +8,8 @@
 
 using namespace std;
 
-#define TEST
-#define Linux
+//#define TEST
+//#define Linux
 
 #ifdef TEST
     #ifdef Linux
@@ -38,7 +38,7 @@ struct Error {
     char c;
 };
 Error errors[1000];
-int e;
+int e = 0;
 
 bool cmp(Error error1, Error error2) {
     return error1.line < error2.line;
@@ -48,8 +48,9 @@ int main() {
     if (ifs.is_open() && ofs.is_open() && e_ofs.is_open()) {
         source = string((istreambuf_iterator<char>(ifs)), istreambuf_iterator<char>());
         parser.parseCompUnit();
-        stable_sort(errors, errors+e, cmp);
-        for (int i = 0; i < e; ++ i) {
+
+        stable_sort(errors, errors + e, cmp);
+        for (int i = 0; i < e; ++i) {
             e_ofs << errors[i].line << " " << errors[i].c << endl;
         }
     }
