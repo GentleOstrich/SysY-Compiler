@@ -80,40 +80,40 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/ErrorCheck/ErrorCheck.cpp">
+		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/src/ErrorCheck/ErrorCheck.cpp">
 			<Option target="SysY-Compiler"/>
 		</Unit>
-		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/ErrorCheck/ErrorCheck.h">
+		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/src/ErrorCheck/ErrorCheck.h">
 			<Option target="SysY-Compiler"/>
 		</Unit>
-		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/Lexer/LexType.h">
+		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/src/Lexer/LexType.h">
 			<Option target="SysY-Compiler"/>
 		</Unit>
-		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/Lexer/Lexer.cpp">
+		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/src/Lexer/Lexer.cpp">
 			<Option target="SysY-Compiler"/>
 		</Unit>
-		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/Lexer/Lexer.h">
+		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/src/Lexer/Lexer.h">
 			<Option target="SysY-Compiler"/>
 		</Unit>
-		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/Parser/Parser.cpp">
+		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/src/Parser/Parser.cpp">
 			<Option target="SysY-Compiler"/>
 		</Unit>
-		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/Parser/Parser.h">
+		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/src/Parser/Parser.h">
 			<Option target="SysY-Compiler"/>
 		</Unit>
-		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/SymbolManager/Func.cpp">
+		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/src/SymbolManager/Func.cpp">
 			<Option target="SysY-Compiler"/>
 		</Unit>
-		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/SymbolManager/Func.h">
+		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/src/SymbolManager/Func.h">
 			<Option target="SysY-Compiler"/>
 		</Unit>
-		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/SymbolManager/Symbol.cpp">
+		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/src/SymbolManager/Symbol.cpp">
 			<Option target="SysY-Compiler"/>
 		</Unit>
-		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/SymbolManager/Symbol.h">
+		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/src/SymbolManager/Symbol.h">
 			<Option target="SysY-Compiler"/>
 		</Unit>
-		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/main.cpp">
+		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/src/main.cpp">
 			<Option target="SysY-Compiler"/>
 		</Unit>
 		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/CMakeLists.txt">

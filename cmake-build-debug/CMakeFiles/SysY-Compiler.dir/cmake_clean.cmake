@@ -7,8 +7,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/SysY-Compiler.dir/src/main.cpp.obj"
   "SysY-Compiler.exe"
   "SysY-Compiler.exe.manifest"
-  "SysY-Compiler.lib"
   "SysY-Compiler.pdb"
+  "libSysY-Compiler.dll.a"
 )
 
 # Per-language clean rules from dependency scanning.

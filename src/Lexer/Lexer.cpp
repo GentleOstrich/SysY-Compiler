@@ -32,8 +32,10 @@ int Lexer::isReserveWord(const string &word) {
     return 0;
 }
 
-int Lexer::next() {
-    lastLineNum = lineNum;
+int Lexer::next(int change) {
+    if (change) {
+        lastLineNum = lineNum;
+    }
     word.clear();
     lexType = LexType::NONE;
     //处理完毕
@@ -275,7 +277,7 @@ int Lexer::next() {
             while (curPos < source.length() && source[curPos] != '\n') {
                 curPos++;
             }
-            return next();
+            return next(0);
         } else if (curPos < source.length() && source[curPos + 1] == '*') {
             curPos += 2;
             while (curPos < source.length()) {
@@ -293,7 +295,7 @@ int Lexer::next() {
                     break;
                 }
             }
-            return next();
+            return next(0);
         } else {
             word += '/';
             lexType = LexType::DIV;
@@ -316,8 +318,9 @@ LexType Lexer::nnext() {
     string nowWord = word;
     LexType nowLexType = lexType;
     int nowNumber = number;
+    int nowLastLineNum = lastLineNum;
     bool flag = false;
-    int res = next();
+    int res = next(1);
     if (res == 0) {
         flag = true;
     }
@@ -325,6 +328,7 @@ LexType Lexer::nnext() {
     if (flag) {
         resLexType = lexType;
     }
+    lastLineNum = nowLastLineNum;
     curPos = nowPos;
     lineNum = nowLineNum;
     word = nowWord;
@@ -338,11 +342,12 @@ LexType Lexer::nnnext() {
     int nowLineNum = lineNum;
     string nowWord = word;
     LexType nowLexType = lexType;
+    int nowLastLineNum = lastLineNum;
     int nowNumber = number;
     bool flag = false;
-    int res = next();
+    int res = next(1);
     if (res == 0) {
-        res = next();
+        res = next(1);
         if (res == 0) {
             flag = true;
         }
@@ -351,6 +356,7 @@ LexType Lexer::nnnext() {
     if (flag) {
         resLexType = lexType;
     }
+    lastLineNum - nowLastLineNum;
     curPos = nowPos;
     lineNum = nowLineNum;
     word = nowWord;

@@ -1,11 +1,14 @@
-int f(int x){
-    return 0;
-}
-int f(int x,int y){
-}
-int main(){
-    f();
-    f(1);
-    f(1,2);
-    return 0;
+int main()
+{
+    int i;
+    for (i=0;i<2;i=i+1)
+    {
+        continue;
+    }
+    int a[4]
+
+    //
+
+    return 0
+
 }

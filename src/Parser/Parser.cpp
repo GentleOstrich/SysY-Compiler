@@ -9,7 +9,7 @@
 
 #define tkType token.first
 #define tkWord token.second
-#define readTk token = (lexer.next() == 0) ? lexer.getToken() : make_pair(LexType::NONE, "")
+#define readTk token = (lexer.next(1) == 0) ? lexer.getToken() : make_pair(LexType::NONE, ""); cout << lexer.getLastLineNum() << " " << lexer.getLineNum() << endl
 #define printTk ofs << LexType2String(tkType) << " " << tkWord << endl
 #define preRead lexer.nnext()
 #define prePreRead lexer.nnnext()

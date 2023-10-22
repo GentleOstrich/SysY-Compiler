@@ -25,7 +25,7 @@ private:
     int isReserveWord(const string &word);
 
 public:
-    int next();
+    int next(int change);
 
     LexType nnext();
 

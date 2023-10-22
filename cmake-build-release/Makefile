@@ -122,167 +122,167 @@ SysY-Compiler/fast:
 	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/build
 .PHONY : SysY-Compiler/fast
 
-ErrorCheck/ErrorCheck.obj: ErrorCheck/ErrorCheck.cpp.obj
+src/ErrorCheck/ErrorCheck.obj: src/ErrorCheck/ErrorCheck.cpp.obj
 
-.PHONY : ErrorCheck/ErrorCheck.obj
-
-# target to build an object file
-ErrorCheck/ErrorCheck.cpp.obj:
-	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/ErrorCheck/ErrorCheck.cpp.obj
-.PHONY : ErrorCheck/ErrorCheck.cpp.obj
-
-ErrorCheck/ErrorCheck.i: ErrorCheck/ErrorCheck.cpp.i
-
-.PHONY : ErrorCheck/ErrorCheck.i
-
-# target to preprocess a source file
-ErrorCheck/ErrorCheck.cpp.i:
-	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/ErrorCheck/ErrorCheck.cpp.i
-.PHONY : ErrorCheck/ErrorCheck.cpp.i
-
-ErrorCheck/ErrorCheck.s: ErrorCheck/ErrorCheck.cpp.s
-
-.PHONY : ErrorCheck/ErrorCheck.s
-
-# target to generate assembly for a file
-ErrorCheck/ErrorCheck.cpp.s:
-	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/ErrorCheck/ErrorCheck.cpp.s
-.PHONY : ErrorCheck/ErrorCheck.cpp.s
-
-Lexer/Lexer.obj: Lexer/Lexer.cpp.obj
-
-.PHONY : Lexer/Lexer.obj
+.PHONY : src/ErrorCheck/ErrorCheck.obj
 
 # target to build an object file
-Lexer/Lexer.cpp.obj:
-	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/Lexer/Lexer.cpp.obj
-.PHONY : Lexer/Lexer.cpp.obj
+src/ErrorCheck/ErrorCheck.cpp.obj:
+	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/src/ErrorCheck/ErrorCheck.cpp.obj
+.PHONY : src/ErrorCheck/ErrorCheck.cpp.obj
 
-Lexer/Lexer.i: Lexer/Lexer.cpp.i
+src/ErrorCheck/ErrorCheck.i: src/ErrorCheck/ErrorCheck.cpp.i
 
-.PHONY : Lexer/Lexer.i
+.PHONY : src/ErrorCheck/ErrorCheck.i
 
 # target to preprocess a source file
-Lexer/Lexer.cpp.i:
-	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/Lexer/Lexer.cpp.i
-.PHONY : Lexer/Lexer.cpp.i
+src/ErrorCheck/ErrorCheck.cpp.i:
+	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/src/ErrorCheck/ErrorCheck.cpp.i
+.PHONY : src/ErrorCheck/ErrorCheck.cpp.i
 
-Lexer/Lexer.s: Lexer/Lexer.cpp.s
+src/ErrorCheck/ErrorCheck.s: src/ErrorCheck/ErrorCheck.cpp.s
 
-.PHONY : Lexer/Lexer.s
+.PHONY : src/ErrorCheck/ErrorCheck.s
 
 # target to generate assembly for a file
-Lexer/Lexer.cpp.s:
-	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/Lexer/Lexer.cpp.s
-.PHONY : Lexer/Lexer.cpp.s
+src/ErrorCheck/ErrorCheck.cpp.s:
+	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/src/ErrorCheck/ErrorCheck.cpp.s
+.PHONY : src/ErrorCheck/ErrorCheck.cpp.s
 
-Parser/Parser.obj: Parser/Parser.cpp.obj
+src/Lexer/Lexer.obj: src/Lexer/Lexer.cpp.obj
 
-.PHONY : Parser/Parser.obj
+.PHONY : src/Lexer/Lexer.obj
 
 # target to build an object file
-Parser/Parser.cpp.obj:
-	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/Parser/Parser.cpp.obj
-.PHONY : Parser/Parser.cpp.obj
+src/Lexer/Lexer.cpp.obj:
+	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/src/Lexer/Lexer.cpp.obj
+.PHONY : src/Lexer/Lexer.cpp.obj
 
-Parser/Parser.i: Parser/Parser.cpp.i
+src/Lexer/Lexer.i: src/Lexer/Lexer.cpp.i
 
-.PHONY : Parser/Parser.i
+.PHONY : src/Lexer/Lexer.i
 
 # target to preprocess a source file
-Parser/Parser.cpp.i:
-	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/Parser/Parser.cpp.i
-.PHONY : Parser/Parser.cpp.i
+src/Lexer/Lexer.cpp.i:
+	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/src/Lexer/Lexer.cpp.i
+.PHONY : src/Lexer/Lexer.cpp.i
 
-Parser/Parser.s: Parser/Parser.cpp.s
+src/Lexer/Lexer.s: src/Lexer/Lexer.cpp.s
 
-.PHONY : Parser/Parser.s
+.PHONY : src/Lexer/Lexer.s
 
 # target to generate assembly for a file
-Parser/Parser.cpp.s:
-	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/Parser/Parser.cpp.s
-.PHONY : Parser/Parser.cpp.s
+src/Lexer/Lexer.cpp.s:
+	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/src/Lexer/Lexer.cpp.s
+.PHONY : src/Lexer/Lexer.cpp.s
 
-SymbolManager/Func.obj: SymbolManager/Func.cpp.obj
+src/Parser/Parser.obj: src/Parser/Parser.cpp.obj
 
-.PHONY : SymbolManager/Func.obj
+.PHONY : src/Parser/Parser.obj
 
 # target to build an object file
-SymbolManager/Func.cpp.obj:
-	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/SymbolManager/Func.cpp.obj
-.PHONY : SymbolManager/Func.cpp.obj
+src/Parser/Parser.cpp.obj:
+	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/src/Parser/Parser.cpp.obj
+.PHONY : src/Parser/Parser.cpp.obj
 
-SymbolManager/Func.i: SymbolManager/Func.cpp.i
+src/Parser/Parser.i: src/Parser/Parser.cpp.i
 
-.PHONY : SymbolManager/Func.i
+.PHONY : src/Parser/Parser.i
 
 # target to preprocess a source file
-SymbolManager/Func.cpp.i:
-	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/SymbolManager/Func.cpp.i
-.PHONY : SymbolManager/Func.cpp.i
+src/Parser/Parser.cpp.i:
+	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/src/Parser/Parser.cpp.i
+.PHONY : src/Parser/Parser.cpp.i
 
-SymbolManager/Func.s: SymbolManager/Func.cpp.s
+src/Parser/Parser.s: src/Parser/Parser.cpp.s
 
-.PHONY : SymbolManager/Func.s
+.PHONY : src/Parser/Parser.s
 
 # target to generate assembly for a file
-SymbolManager/Func.cpp.s:
-	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/SymbolManager/Func.cpp.s
-.PHONY : SymbolManager/Func.cpp.s
+src/Parser/Parser.cpp.s:
+	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/src/Parser/Parser.cpp.s
+.PHONY : src/Parser/Parser.cpp.s
 
-SymbolManager/Symbol.obj: SymbolManager/Symbol.cpp.obj
+src/SymbolManager/Func.obj: src/SymbolManager/Func.cpp.obj
 
-.PHONY : SymbolManager/Symbol.obj
+.PHONY : src/SymbolManager/Func.obj
 
 # target to build an object file
-SymbolManager/Symbol.cpp.obj:
-	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/SymbolManager/Symbol.cpp.obj
-.PHONY : SymbolManager/Symbol.cpp.obj
+src/SymbolManager/Func.cpp.obj:
+	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Func.cpp.obj
+.PHONY : src/SymbolManager/Func.cpp.obj
 
-SymbolManager/Symbol.i: SymbolManager/Symbol.cpp.i
+src/SymbolManager/Func.i: src/SymbolManager/Func.cpp.i
 
-.PHONY : SymbolManager/Symbol.i
+.PHONY : src/SymbolManager/Func.i
 
 # target to preprocess a source file
-SymbolManager/Symbol.cpp.i:
-	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/SymbolManager/Symbol.cpp.i
-.PHONY : SymbolManager/Symbol.cpp.i
+src/SymbolManager/Func.cpp.i:
+	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Func.cpp.i
+.PHONY : src/SymbolManager/Func.cpp.i
 
-SymbolManager/Symbol.s: SymbolManager/Symbol.cpp.s
+src/SymbolManager/Func.s: src/SymbolManager/Func.cpp.s
 
-.PHONY : SymbolManager/Symbol.s
+.PHONY : src/SymbolManager/Func.s
 
 # target to generate assembly for a file
-SymbolManager/Symbol.cpp.s:
-	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/SymbolManager/Symbol.cpp.s
-.PHONY : SymbolManager/Symbol.cpp.s
+src/SymbolManager/Func.cpp.s:
+	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Func.cpp.s
+.PHONY : src/SymbolManager/Func.cpp.s
 
-main.obj: main.cpp.obj
+src/SymbolManager/Symbol.obj: src/SymbolManager/Symbol.cpp.obj
 
-.PHONY : main.obj
+.PHONY : src/SymbolManager/Symbol.obj
 
 # target to build an object file
-main.cpp.obj:
-	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/main.cpp.obj
-.PHONY : main.cpp.obj
+src/SymbolManager/Symbol.cpp.obj:
+	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Symbol.cpp.obj
+.PHONY : src/SymbolManager/Symbol.cpp.obj
 
-main.i: main.cpp.i
+src/SymbolManager/Symbol.i: src/SymbolManager/Symbol.cpp.i
 
-.PHONY : main.i
+.PHONY : src/SymbolManager/Symbol.i
 
 # target to preprocess a source file
-main.cpp.i:
-	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/main.cpp.i
-.PHONY : main.cpp.i
+src/SymbolManager/Symbol.cpp.i:
+	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Symbol.cpp.i
+.PHONY : src/SymbolManager/Symbol.cpp.i
 
-main.s: main.cpp.s
+src/SymbolManager/Symbol.s: src/SymbolManager/Symbol.cpp.s
 
-.PHONY : main.s
+.PHONY : src/SymbolManager/Symbol.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/main.cpp.s
-.PHONY : main.cpp.s
+src/SymbolManager/Symbol.cpp.s:
+	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Symbol.cpp.s
+.PHONY : src/SymbolManager/Symbol.cpp.s
+
+src/main.obj: src/main.cpp.obj
+
+.PHONY : src/main.obj
+
+# target to build an object file
+src/main.cpp.obj:
+	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/src/main.cpp.obj
+.PHONY : src/main.cpp.obj
+
+src/main.i: src/main.cpp.i
+
+.PHONY : src/main.i
+
+# target to preprocess a source file
+src/main.cpp.i:
+	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/src/main.cpp.i
+.PHONY : src/main.cpp.i
+
+src/main.s: src/main.cpp.s
+
+.PHONY : src/main.s
+
+# target to generate assembly for a file
+src/main.cpp.s:
+	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/src/main.cpp.s
+.PHONY : src/main.cpp.s
 
 # Help Target
 help:
@@ -293,24 +293,24 @@ help:
 	@echo ... rebuild_cache
 	@echo ... SysY-Compiler
 	@echo ... edit_cache
-	@echo ... ErrorCheck/ErrorCheck.obj
-	@echo ... ErrorCheck/ErrorCheck.i
-	@echo ... ErrorCheck/ErrorCheck.s
-	@echo ... Lexer/Lexer.obj
-	@echo ... Lexer/Lexer.i
-	@echo ... Lexer/Lexer.s
-	@echo ... Parser/Parser.obj
-	@echo ... Parser/Parser.i
-	@echo ... Parser/Parser.s
-	@echo ... SymbolManager/Func.obj
-	@echo ... SymbolManager/Func.i
-	@echo ... SymbolManager/Func.s
-	@echo ... SymbolManager/Symbol.obj
-	@echo ... SymbolManager/Symbol.i
-	@echo ... SymbolManager/Symbol.s
-	@echo ... main.obj
-	@echo ... main.i
-	@echo ... main.s
+	@echo ... src/ErrorCheck/ErrorCheck.obj
+	@echo ... src/ErrorCheck/ErrorCheck.i
+	@echo ... src/ErrorCheck/ErrorCheck.s
+	@echo ... src/Lexer/Lexer.obj
+	@echo ... src/Lexer/Lexer.i
+	@echo ... src/Lexer/Lexer.s
+	@echo ... src/Parser/Parser.obj
+	@echo ... src/Parser/Parser.i
+	@echo ... src/Parser/Parser.s
+	@echo ... src/SymbolManager/Func.obj
+	@echo ... src/SymbolManager/Func.i
+	@echo ... src/SymbolManager/Func.s
+	@echo ... src/SymbolManager/Symbol.obj
+	@echo ... src/SymbolManager/Symbol.i
+	@echo ... src/SymbolManager/Symbol.s
+	@echo ... src/main.obj
+	@echo ... src/main.i
+	@echo ... src/main.s
 .PHONY : help
 
 
