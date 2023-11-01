@@ -32,7 +32,6 @@ struct Error {
 };
 extern Error errors[100];
 extern int e;
-
 extern int symbolId;
 
 Token token = make_pair(LexType::NONE, "");
