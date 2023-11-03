@@ -4,18 +4,19 @@
 
 #ifndef SYSY_COMPILER_FORSTMT_H
 #define SYSY_COMPILER_FORSTMT_H
-#include "Nonterminal.h"
+#include "LVal.h"
+#include "Exp.h"
 #include <vector>
 
-class ForStmt : Nonterminal{
+class ForStmt {
 public:
-    Nonterminal *LVal;
-    Nonterminal *Exp;
+    LVal *lVal;
+    Exp *exp;
     ForStmt();
 
-    void setLVal(Nonterminal *lVal);
+    void setLVal(LVal *lVal);
 
-    void setExp(Nonterminal *exp);
+    void setExp(Exp *exp);
 };
 
 

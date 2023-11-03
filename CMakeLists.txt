@@ -1,8 +1,8 @@
 project(SysY-Compiler)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 14)
 
 set(CMAKE_BUILD_TYPE Debug)
 
 
-add_executable(SysY-Compiler src/main.cpp src/Lexer/Lexer.cpp src/Lexer/Lexer.h src/Parser/Parser.cpp src/Parser/Parser.h src/Lexer/LexType.h src/SymbolManager/Symbol.cpp src/SymbolManager/Symbol.h src/ErrorCheck/ErrorCheck.cpp src/ErrorCheck/ErrorCheck.h src/SymbolManager/Func.cpp)
+add_executable(SysY-Compiler src/main.cpp src/Lexer/Lexer.cpp src/Lexer/Lexer.h src/Parser/Parser.cpp src/Parser/Parser.h src/Lexer/LexType.h src/SymbolManager/Symbol.cpp src/SymbolManager/Symbol.h src/ErrorCheck/ErrorCheck.cpp src/ErrorCheck/ErrorCheck.h src/SymbolManager/Func.cpp src/NonterminalCharacter/Number.cpp src/NonterminalCharacter/Number.h src/NonterminalCharacter/FuncDef.h src/NonterminalCharacter/FuncDef.cpp src/NonterminalCharacter/UnaryExp.cpp src/NonterminalCharacter/UnaryExp.h src/NonterminalCharacter/UnaryOp.cpp src/NonterminalCharacter/UnaryOp.h src/NonterminalCharacter/FuncRParams.cpp src/NonterminalCharacter/FuncRParams.h src/NonterminalCharacter/MulExp.cpp src/NonterminalCharacter/MulExp.h src/NonterminalCharacter/ForStmt.h src/NonterminalCharacter/ForStmt.cpp src/NonterminalCharacter/AddExp.cpp src/NonterminalCharacter/AddExp.h src/NonterminalCharacter/RelExp.cpp src/NonterminalCharacter/RelExp.h src/NonterminalCharacter/EqExp.cpp src/NonterminalCharacter/EqExp.h src/NonterminalCharacter/Decl.h src/NonterminalCharacter/Decl.cpp src/NonterminalCharacter/LAndExp.cpp src/NonterminalCharacter/LAndExp.h src/NonterminalCharacter/LOrExp.cpp src/NonterminalCharacter/LOrExp.h src/NonterminalCharacter/ConstExp.cpp src/NonterminalCharacter/ConstExp.h src/NonterminalCharacter/CompUnit.cpp src/NonterminalCharacter/CompUnit.h src/NonterminalCharacter/Ident.cpp src/NonterminalCharacter/Ident.h)

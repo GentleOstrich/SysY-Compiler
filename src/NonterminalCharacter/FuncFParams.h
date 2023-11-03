@@ -4,14 +4,14 @@
 
 #ifndef SYSY_COMPILER_FUNCFPARAMS_H
 #define SYSY_COMPILER_FUNCFPARAMS_H
-#include "Nonterminal.h"
+#include "FuncFParam.h"
 #include <vector>
 
-class FuncFParams : Nonterminal{
+class FuncFParams {
 public:
-    std::vector<Nonterminal *> FuncFParam;
+    std::vector<FuncFParam *> funcFParams;
     FuncFParams();
-    int addFuncFParam(Nonterminal *FuncFParam);
+    void addFuncFParam(FuncFParam *funcFParam);
 };
 
 

@@ -4,16 +4,17 @@
 
 #ifndef SYSY_COMPILER_CONSTDECL_H
 #define SYSY_COMPILER_CONSTDECL_H
-#include "Nonterminal.h"
+#include "Btype.h"
+#include "ConstDef.h"
 #include <vector>
 
 class ConstDecl : Nonterminal{
 public:
-    Nonterminal *Btype;
-    std::vector<Nonterminal *> ConstDefs;
+    Btype *btype;
+    std::vector<ConstDef*> ConstDefs;
     ConstDecl();
-    int setBtype(Nonterminal *Btype);
-    int addConstDef(Nonterminal *ConstDef);
+    void setBtype(Btype *btype);
+    void addConstDef(ConstDef *constDef);
 };
 
 

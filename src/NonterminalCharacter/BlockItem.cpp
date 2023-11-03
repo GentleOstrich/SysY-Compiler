@@ -5,16 +5,14 @@
 #include "BlockItem.h"
 
 BlockItem::BlockItem() {
-    this->Stmt = nullptr;
-    this->Decl = nullptr;
+    this->stmt = nullptr;
+    this->decl = nullptr;
 }
 
-int BlockItem::setDecl(Nonterminal *Decl) {
-    this->Decl = Decl;
-    return 0;
+void BlockItem::setDecl(Decl *decl) {
+    this->decl = decl;
 }
 
-int BlockItem::setStmt(Nonterminal *Stmt) {
-    this->Stmt = Stmt;
-    return 0;
+void BlockItem::setStmt(Stmt *stmt) {
+    this->stmt = stmt;
 }

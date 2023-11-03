@@ -4,10 +4,10 @@
 
 #include "Cond.h"
 
-void Cond::setLOrExp(Nonterminal *lOrExp) {
-    LOrExp = lOrExp;
+void Cond::setLOrExp(LOrExp *lOrExp) {
+    this->lOrExp = lOrExp;
 }
 
 Cond::Cond() {
-    this->LOrExp = nullptr;
+    this->lOrExp = nullptr;
 }

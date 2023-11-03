@@ -4,10 +4,10 @@
 
 #include "Exp.h"
 
-void Exp::setAddExp(Nonterminal *addExp) {
-    AddExp = addExp;
+void Exp::setAddExp(AddExp *addExp) {
+    this->addExp = addExp;
 }
 
 Exp::Exp() {
-    this->AddExp = nullptr;
+    this->addExp = nullptr;
 }

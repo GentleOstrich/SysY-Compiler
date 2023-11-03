@@ -4,15 +4,17 @@
 
 #ifndef SYSY_COMPILER_BLOCKITEM_H
 #define SYSY_COMPILER_BLOCKITEM_H
-#include "Nonterminal.h"
+
+#include "Decl.h"
+#include "Stmt.h"
 
 class BlockItem {
 public:
-    Nonterminal *Decl;
-    Nonterminal *Stmt;
+    Decl *decl;
+    Stmt *stmt;
     BlockItem();
-    int setDecl(Nonterminal *Decl);
-    int setStmt(Nonterminal *Stmt);
+    void setDecl(Decl *decl);
+    void setStmt(Stmt *stmt);
 };
 
 

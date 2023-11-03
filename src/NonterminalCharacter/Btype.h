@@ -7,7 +7,7 @@
 #include "Nonterminal.h"
 #include <string>
 
-class Btype : Nonterminal{
+class Btype {
 public:
     std::string word;
     Btype(std::string word);

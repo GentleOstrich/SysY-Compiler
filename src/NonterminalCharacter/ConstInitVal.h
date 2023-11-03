@@ -4,15 +4,17 @@
 
 #ifndef SYSY_COMPILER_CONSTINITVAL_H
 #define SYSY_COMPILER_CONSTINITVAL_H
-#include "Nonterminal.h"
+#include "ConstExp.h"
+#include "ConstInitVal.h"
 #include <vector>
+
 class ConstInitVal : Nonterminal{
 public:
-    Nonterminal *ConstExp;
-    std::vector<Nonterminal*> ConstInitVals;
+    ConstExp *constExp;
+    std::vector<ConstInitVal*> constInitVals;
     ConstInitVal();
-    int setConstExp(Nonterminal *ConstExp);
-    int addConstInitVal(Nonterminal *ConstInitVal);
+    void setConstExp(ConstExp *constExp);
+    void addConstInitVal(ConstInitVal *constInitVal);
 };
 
 

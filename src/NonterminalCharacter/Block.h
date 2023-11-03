@@ -4,13 +4,14 @@
 
 #ifndef SYSY_COMPILER_BLOCK_H
 #define SYSY_COMPILER_BLOCK_H
-#include "Nonterminal.h"
+
+#include "BlockItem.h"
 #include <vector>
 
-class Block : Nonterminal{
-    std::vector<Nonterminal *> BlockItems;
+class Block {
+    std::vector<BlockItem *> blockItems;
     Block();
-    int addBlockItem(Nonterminal *BlockItem);
+    void addBlockItem(BlockItem *blockItem);
 };
 
 

@@ -8,7 +8,6 @@ Block::Block() {
 
 }
 
-int Block::addBlockItem(Nonterminal *BlockItem) {
-    this->BlockItems.push_back(BlockItem);
-    return 0;
+void Block::addBlockItem(BlockItem *blockItem) {
+    this->blockItems.push_back(blockItem);
 }

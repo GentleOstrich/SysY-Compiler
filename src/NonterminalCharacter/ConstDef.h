@@ -4,17 +4,22 @@
 
 #ifndef SYSY_COMPILER_CONSTDEF_H
 #define SYSY_COMPILER_CONSTDEF_H
-#include "Nonterminal.h"
+#include "Ident.h"
+#include "ConstExp.h"
+#include "ConstInitVal.h"
 #include "vector"
 
 class ConstDef : Nonterminal{
 public:
-    Nonterminal *Ident;
-    std::vector<Nonterminal *> ConstExps;
-    Nonterminal *ConstInitVal;
+    Ident *ident;
+    std::vector<ConstExp*> constExps;
+    ConstInitVal *constInitVal;
     ConstDef();
-    int setIdent(Nonterminal *Ident);
+    void setIdent(Ident *ident);
 
+    void addConstExps(ConstExp *constExp);
+
+    void setConstInitVal(ConstInitVal *constInitVal);
 };
 
 

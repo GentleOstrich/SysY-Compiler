@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include "Parser/Parser.h"
+#include "NonterminalCharacter/Nonterminals.h"
 
 using namespace std;
 
@@ -14,6 +15,8 @@ string ERROR_OUTFILEPATH = "error.txt";
 
 string source = "";
 Parser parser;
+CompUnit compUnit;
+
 ifstream ifs(INFILEPATH);
 ofstream ofs(OUTFILEPATH);
 ofstream e_ofs(ERROR_OUTFILEPATH);
@@ -22,6 +25,7 @@ struct Error {
     int line;
     char c;
 };
+
 Error errors[1000];
 int e = 0;
 

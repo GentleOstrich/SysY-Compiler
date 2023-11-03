@@ -5,21 +5,18 @@
 #include "FuncFParam.h"
 
 FuncFParam::FuncFParam() {
-    this->Btype = nullptr;
-    this->Ident = nullptr;
+    this->btype = nullptr;
+    this->ident = nullptr;
 }
 
-int FuncFParam::setBtype(Nonterminal *Btype) {
-    this->Btype = Btype;
-    return 0;
+void FuncFParam::setBtype(Btype *btype) {
+    this->btype = btype;
 }
 
-int FuncFParam::setIdent(Nonterminal *Ident) {
-    this->Ident = Ident;
-    return 0;
+void FuncFParam::setIdent(Ident *ident) {
+    this->ident = ident;
 }
 
-int FuncFParam::addConstExp(Nonterminal *ConstExp) {
-    this->ConstExps.push_back(ConstExp);
-    return 0;
+void FuncFParam::addConstExp(ConstExp *constExp) {
+    this->constExps.push_back(constExp);
 }

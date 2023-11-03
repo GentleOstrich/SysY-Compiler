@@ -5,15 +5,13 @@
 #include "ConstInitVal.h"
 
 ConstInitVal::ConstInitVal() {
-    this->ConstExp = nullptr;
+    this->constExp = nullptr;
 }
 
-int ConstInitVal::setConstExp(Nonterminal *ConstExp) {
-    this->ConstExp = ConstExp;
-    return 0;
+void ConstInitVal::setConstExp(ConstExp *constExp) {
+    this->constExp = constExp;
 }
 
-int ConstInitVal::addConstInitVal(Nonterminal *ConstInitVal) {
-    this->ConstInitVals.push_back(ConstInitVal);
-    return 0;
+void ConstInitVal::addConstInitVal(ConstInitVal *ConstInitVal) {
+    this->constInitVals.push_back(ConstInitVal);
 }

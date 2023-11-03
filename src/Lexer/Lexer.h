@@ -7,7 +7,11 @@
 
 #include <string>
 #include <vector>
+#include <iostream>
+#include <fstream>
 #include "LexType.h"
+
+using namespace std;
 
 #define RESERVEWORDS_NUM 12
 #define Token pair<LexType, string>
@@ -20,12 +24,11 @@ private:
     string word = "";
     LexType lexType = LexType::NONE;
     int lineNum = 1;
-    int lastLineNum = 0;
     int number;
     int isReserveWord(const string &word);
 
 public:
-    int next(int change);
+    int next();
 
     LexType nnext();
 

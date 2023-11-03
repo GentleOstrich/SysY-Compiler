@@ -4,15 +4,16 @@
 
 #ifndef SYSY_COMPILER_DECL_H
 #define SYSY_COMPILER_DECL_H
-#include "Nonterminal.h"
+#include "ConstDecl.h"
+#include "VarDecl.h"
 
-class Decl : Nonterminal{
+class Decl {
 public:
-    Nonterminal *ConstDecl;
-    Nonterminal *VarDecl;
+    ConstDecl *constDecl;
+    VarDecl *varDecl;
     Decl();
-    int setConstDecl(Nonterminal *ConstDecl);
-    int setVarDecl(Nonterminal *VarDecl);
+    void setConstDecl(ConstDecl *constDecl);
+    void setVarDecl(VarDecl *varDecl);
 };
 
 

@@ -7,7 +7,7 @@
 #include "Nonterminal.h"
 #include <vector>
 
-class PrimaryExp {
+class PrimaryExp : Nonterminal {
 public:
     Nonterminal* Exp;
     Nonterminal* LVal;

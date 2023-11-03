@@ -8,7 +8,6 @@ FuncFParams::FuncFParams() {
 
 }
 
-int FuncFParams::addFuncFParam(Nonterminal *FuncFParam) {
-    this->FuncFParam.push_back(FuncFParam);
-    return 0;
+void FuncFParams::addFuncFParam(FuncFParam *funcFParam) {
+    this->funcFParams.push_back(funcFParam);
 }

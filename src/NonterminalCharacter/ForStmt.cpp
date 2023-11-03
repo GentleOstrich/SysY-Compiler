@@ -4,10 +4,10 @@
 
 #include "ForStmt.h"
 
-void ForStmt::setLVal(Nonterminal *lVal) {
-    LVal = lVal;
+void ForStmt::setLVal(LVal *lVal) {
+    this->lVal = lVal;
 }
 
-void ForStmt::setExp(Nonterminal *exp) {
-    Exp = exp;
+void ForStmt::setExp(Exp *exp) {
+    this->exp = exp;
 }

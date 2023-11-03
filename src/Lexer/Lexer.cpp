@@ -2,9 +2,6 @@
 // Created by yh on 2023/9/25.
 //
 #include "Lexer.h"
-#include <iostream>
-#include <fstream>
-using namespace std;
 
 extern string source;
 extern ofstream e_ofs;
@@ -32,10 +29,7 @@ int Lexer::isReserveWord(const string &word) {
     return 0;
 }
 
-int Lexer::next(int change) {
-    if (change) {
-        lastLineNum = lineNum;
-    }
+int Lexer::next() {
     word.clear();
     lexType = LexType::NONE;
     //处理完毕
@@ -277,7 +271,7 @@ int Lexer::next(int change) {
             while (curPos < source.length() && source[curPos] != '\n') {
                 curPos++;
             }
-            return next(0);
+            return next();
         } else if (curPos < source.length() && source[curPos + 1] == '*') {
             curPos += 2;
             while (curPos < source.length()) {
@@ -295,7 +289,7 @@ int Lexer::next(int change) {
                     break;
                 }
             }
-            return next(0);
+            return next();
         } else {
             word += '/';
             lexType = LexType::DIV;
@@ -318,17 +312,11 @@ LexType Lexer::nnext() {
     string nowWord = word;
     LexType nowLexType = lexType;
     int nowNumber = number;
-    int nowLastLineNum = lastLineNum;
     bool flag = false;
-    int res = next(1);
-    if (res == 0) {
-        flag = true;
-    }
     LexType resLexType = LexType::NONE;
     if (flag) {
         resLexType = lexType;
     }
-    lastLineNum = nowLastLineNum;
     curPos = nowPos;
     lineNum = nowLineNum;
     word = nowWord;
@@ -342,21 +330,12 @@ LexType Lexer::nnnext() {
     int nowLineNum = lineNum;
     string nowWord = word;
     LexType nowLexType = lexType;
-    int nowLastLineNum = lastLineNum;
     int nowNumber = number;
     bool flag = false;
-    int res = next(1);
-    if (res == 0) {
-        res = next(1);
-        if (res == 0) {
-            flag = true;
-        }
-    }
     LexType resLexType = LexType::NONE;
     if (flag) {
         resLexType = lexType;
     }
-    lastLineNum - nowLastLineNum;
     curPos = nowPos;
     lineNum = nowLineNum;
     word = nowWord;
@@ -380,10 +359,6 @@ bool Lexer::hasAUntilB(char A, char B) {
 
 int Lexer::getLineNum() {
     return lineNum;
-}
-
-int Lexer::getLastLineNum() {
-    return lastLineNum;
 }
 
 

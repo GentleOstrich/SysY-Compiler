@@ -4,15 +4,16 @@
 
 #ifndef SYSY_COMPILER_EXP_H
 #define SYSY_COMPILER_EXP_H
-#include "Nonterminal.h"
-#include <vector>
 
-class Exp : Nonterminal {
+#include <vector>
+#include "AddExp.h"
+
+class Exp {
 public:
-    Nonterminal *AddExp;
+    AddExp *addExp;
     Exp();
 
-    void setAddExp(Nonterminal *addExp);
+    void setAddExp(AddExp *addExp);
 };
 
 

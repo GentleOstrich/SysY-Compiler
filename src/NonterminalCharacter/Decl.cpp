@@ -5,17 +5,14 @@
 #include "Decl.h"
 
 Decl::Decl() {
-    this->ConstDecl = nullptr;
-    this->VarDecl = nullptr;
-
+    this->constDecl = nullptr;
+    this->varDecl = nullptr;
 }
 
-int Decl::setConstDecl(Nonterminal *ConstDecl) {
-    this->ConstDecl = ConstDecl;
-    return 0;
+void Decl::setConstDecl(ConstDecl *constDecl) {
+    this->constDecl = constDecl;
 }
 
-int Decl::setVarDecl(Nonterminal *VarDecl) {
-    this->VarDecl = VarDecl;
-    return 0;
+void Decl::setVarDecl(VarDecl *varDecl) {
+    this->varDecl = varDecl;
 }

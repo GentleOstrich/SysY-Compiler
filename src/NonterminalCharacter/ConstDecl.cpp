@@ -5,15 +5,13 @@
 #include "ConstDecl.h"
 
 ConstDecl::ConstDecl() {
-    this->Btype = nullptr;
+    this->btype = nullptr;
 }
 
-int ConstDecl::setBtype(Nonterminal *Btype) {
-    this->Btype = Btype;
-    return 0;
+void ConstDecl::setBtype(Btype *btype) {
+    this->btype = btype;
 }
 
-int ConstDecl::addConstDef(Nonterminal *ConstDef) {
-    this->ConstDefs.push_back(ConstDef);
-    return 0;
+void ConstDecl::addConstDef(ConstDef *constDef) {
+    this->ConstDefs.push_back(constDef);
 }

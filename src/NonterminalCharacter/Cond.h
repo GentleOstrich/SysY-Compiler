@@ -4,13 +4,13 @@
 
 #ifndef SYSY_COMPILER_COND_H
 #define SYSY_COMPILER_COND_H
-#include "Nonterminal.h"
+#include "LOrExp.h"
 
 class Cond : Nonterminal{
 public:
-    Nonterminal *LOrExp;
+    LOrExp *lOrExp;
     Cond();
-    void setLOrExp(Nonterminal *lOrExp);
+    void setLOrExp(LOrExp *lOrExp);
 };
 
 

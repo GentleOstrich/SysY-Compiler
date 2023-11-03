@@ -1,79 +1,84 @@
 //
 // Created by yh on 2023/9/25.
 //
-#include "../Lexer/Lexer.h"
 
 #ifndef SYSY_COMPILER_PARSER_H
 #define SYSY_COMPILER_PARSER_H
 
+#include <iostream>
+#include <fstream>
+#include "../NonterminalCharacter/Nonterminals.h"
+#include "../Lexer/Lexer.h"
+using namespace std;
+
 
 class Parser {
 public:
-    int parseCompUnit();
+    CompUnit parseCompUnit();
 
-    int parseDecl();
+    Decl parseDecl();
 
-    int parseConstDecl();
+    ConstDecl parseConstDecl();
 
-    int parseBType();
+    Btype parseBType();
 
-    int parseConstDef();
+    ConstDef parseConstDef();
 
-    int parseConstInitVal();
+    ConstInitVal parseConstInitVal();
 
-    int parseVarDecl();
+    VarDecl parseVarDecl();
 
-    int parseVarDef();
+    VarDef parseVarDef();
 
-    int parseInitVal();
+    InitVal parseInitVal();
 
-    int parseFuncDef();
+    FuncDef parseFuncDef();
 
-    int parseMainFuncDef();
+    MainFuncDef parseMainFuncDef();
 
-    int parseFuncType();
+    FuncType parseFuncType();
 
-    int parseFuncFParams(int tempSymbolId);
+    FuncFParams parseFuncFParams();
 
-    int parseFuncFParam();
+    FuncFParam parseFuncFParam();
 
-    int parseBlock(int funcType, int For);
+    Block parseBlock();
 
-    int parseBlockItem(int FuncType, int For);
+    BlockItem parseBlockItem();
 
-    int parseStmt(int funcType, int isFor);
+    Stmt parseStmt();
 
-    int parseForStmt();
+    ForStmt parseForStmt();
 
-    int parseExp();
+    Exp parseExp();
 
-    int parseCond();
+    Cond parseCond();
 
-    int parseLVal(int change);
+    LVal parseLVal();
 
-    int parsePrimaryExp();
+    PrimaryExp parsePrimaryExp();
 
-    int parseNumber();
+    Number parseNumber();
 
-    int parseUnaryExp();
+    UnaryExp parseUnaryExp();
 
-    int parseUnaryOp();
+    UnaryOp parseUnaryOp();
 
-    int parseFuncRParams(string funcName, int tempFuncLineNum);
+    FuncFParams parseFuncRParams();
 
-    int parseMulExp();
+    MulExp parseMulExp();
 
-    int parseAddExp();
+    AddExp parseAddExp();
 
-    int parseRelExp();
+    RelExp parseRelExp();
 
-    int parseEqExp();
+    EqExp parseEqExp();
 
-    int parseLAndExp();
+    LAndExp parseLAndExp();
 
-    int parseLOrExp();
+    LOrExp parseLOrExp();
 
-    int parseConstExp();
+    ConstExp parseConstExp();
 
 };
 

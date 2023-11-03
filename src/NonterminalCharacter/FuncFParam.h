@@ -4,18 +4,20 @@
 
 #ifndef SYSY_COMPILER_FUNCFPARAM_H
 #define SYSY_COMPILER_FUNCFPARAM_H
-#include "Nonterminal.h"
+#include "Btype.h"
+#include "Ident.h"
+#include "ConstExp.h"
 #include <vector>
 
-class FuncFParam : Nonterminal {
+class FuncFParam {
 public:
-    Nonterminal *Btype;
-    Nonterminal *Ident;
-    std::vector<Nonterminal *> ConstExps;
+    Btype *btype;
+    Ident *ident;
+    std::vector<ConstExp*> constExps;
     FuncFParam();
-    int setBtype(Nonterminal *Btype);
-    int setIdent(Nonterminal *Ident);
-    int addConstExp(Nonterminal *ConstExp);
+    void setBtype(Btype *btype);
+    void setIdent(Ident *ident);
+    void addConstExp(ConstExp *constExp);
 };
 
 
