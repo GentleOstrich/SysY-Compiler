@@ -5,28 +5,32 @@
 #ifndef SYSY_COMPILER_UNARYEXP_H
 #define SYSY_COMPILER_UNARYEXP_H
 
-#include "Nonterminal.h"
+#include "PrimaryExp.h"
+#include "Ident.h"
+#include "FuncRParams.h"
+#include "UnaryExp.h"
+#include "UnaryOp.h"
 #include <vector>
 
-class UnaryExp : Nonterminal {
+class UnaryExp {
 public:
-    Nonterminal *PrimaryExp;
-    Nonterminal *Ident;
-    std::vector<Nonterminal *> FuncRParamss;
-    Nonterminal *UnaryOp;
-    Nonterminal *UnaryExp1;
+    PrimaryExp *primaryExp;
+    Ident *ident;
+    std::vector<FuncRParams *> funcRParamss;
+    UnaryOp *unaryOp;
+    UnaryExp *unaryExp1;
 
     UnaryExp();
 
-    void setPrimaryExp(Nonterminal *primaryExp);
+    void setPrimaryExp(PrimaryExp *primaryExp);
 
-    void setIdent(Nonterminal *ident);
+    void setIdent(Ident *ident);
 
-    void addFuncRParams(Nonterminal *FuncRParams);
+    void addFuncRParams(FuncRParams *funcRParams);
 
-    void setUnaryOp(Nonterminal *unaryOp);
+    void setUnaryOp(UnaryOp *unaryOp);
 
-    void setUnaryExp1(Nonterminal *unaryExp1);
+    void setUnaryExp1(UnaryExp *unaryExp1);
 };
 
 

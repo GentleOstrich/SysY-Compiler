@@ -13,5 +13,5 @@ void ConstDecl::setBtype(Btype *btype) {
 }
 
 void ConstDecl::addConstDef(ConstDef *constDef) {
-    this->ConstDefs.push_back(constDef);
+    this->constDefs.push_back(constDef);
 }

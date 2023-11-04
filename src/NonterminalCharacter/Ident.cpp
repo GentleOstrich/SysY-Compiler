@@ -3,3 +3,10 @@
 //
 
 #include "Ident.h"
+Ident::Ident(std::string word) {
+    this->word = word;
+}
+
+void Ident::setWord(std::string word) {
+    this->word = word;
+}

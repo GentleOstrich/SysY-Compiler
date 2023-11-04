@@ -5,10 +5,9 @@
 #include "MainFuncDef.h"
 
 MainFuncDef::MainFuncDef() {
-    this->Block = nullptr;
+    this->block = nullptr;
 }
 
-int MainFuncDef::setBlock(Nonterminal *Block) {
-    this->Block = Block;
-    return 0;
+void MainFuncDef::setBlock(Block *block) {
+    this->block = block;
 }

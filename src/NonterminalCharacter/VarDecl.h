@@ -4,15 +4,16 @@
 
 #ifndef SYSY_COMPILER_VARDECL_H
 #define SYSY_COMPILER_VARDECL_H
-#include "Nonterminal.h"
+#include "Btype.h"
+#include "VarDef.h"
 #include <vector>
-class VarDecl : Nonterminal{
+class VarDecl {
 public:
-    Nonterminal *BType;
-    std::vector<Nonterminal*> VarDefs;
+    Btype *btype;
+    std::vector<VarDef*> varDefs;
     VarDecl();
-    int setBType(Nonterminal *BType);
-    int addVarDef(Nonterminal *VarDef);
+    void setBType(Btype *btype);
+    void  addVarDef(VarDef *varDef);
 
 };
 

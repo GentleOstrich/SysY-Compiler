@@ -1,3 +1,0 @@
-D:/University/Study/2023fall/Compiler/SysY-Compiler/cmake-build-release/CMakeFiles/rebuild_cache.dir
-D:/University/Study/2023fall/Compiler/SysY-Compiler/cmake-build-release/CMakeFiles/SysY-Compiler.dir
-D:/University/Study/2023fall/Compiler/SysY-Compiler/cmake-build-release/CMakeFiles/edit_cache.dir

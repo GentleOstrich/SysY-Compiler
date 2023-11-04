@@ -9,7 +9,7 @@
 #include "ConstInitVal.h"
 #include "vector"
 
-class ConstDef : Nonterminal{
+class ConstDef {
 public:
     Ident *ident;
     std::vector<ConstExp*> constExps;

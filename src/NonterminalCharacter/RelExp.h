@@ -4,22 +4,21 @@
 
 #ifndef SYSY_COMPILER_RELEXP_H
 #define SYSY_COMPILER_RELEXP_H
+#include "AddExp.h"
+#include "RelExp.h"
 
-#include "Nonterminal.h"
-
-
-class RelExp : Nonterminal {
+class RelExp  {
 public:
-    Nonterminal *AddExp;
-    Nonterminal *RelExp1;
-    Nonterminal *AddExp1;
+    AddExp *addExp;
+    RelExp *relExp1;
+    AddExp *addExp1;
     RelExp();
 
-    void setAddExp(Nonterminal *addExp);
+    void setAddExp(AddExp *addExp);
 
-    void setRelExp1(Nonterminal *relExp1);
+    void setRelExp1(RelExp *relExp1);
 
-    void setAddExp1(Nonterminal *addExp1);
+    void setAddExp1(AddExp *addExp1);
 };
 
 

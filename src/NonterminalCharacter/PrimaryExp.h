@@ -4,21 +4,23 @@
 
 #ifndef SYSY_COMPILER_PRIMARYEXP_H
 #define SYSY_COMPILER_PRIMARYEXP_H
-#include "Nonterminal.h"
+#include "Exp.h"
+#include "LVal.h"
+#include "Number.h"
 #include <vector>
 
-class PrimaryExp : Nonterminal {
+class PrimaryExp {
 public:
-    Nonterminal* Exp;
-    Nonterminal* LVal;
-    Nonterminal* Number;
+    Exp* exp;
+    LVal* lVal;
+    Number* number;
     PrimaryExp();
 
-    void setExp(Nonterminal *exp);
+    void setExp(Exp *exp);
 
-    void setLVal(Nonterminal *lVal);
+    void setLVal(LVal *lVal);
 
-    void setNumber(Nonterminal *number);
+    void setNumber(Number *number);
 
 };
 

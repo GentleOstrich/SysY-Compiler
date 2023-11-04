@@ -5,14 +5,12 @@
 #ifndef SYSY_COMPILER_EXP_H
 #define SYSY_COMPILER_EXP_H
 
-#include <vector>
 #include "AddExp.h"
-
+class AddExp;
 class Exp {
 public:
     AddExp *addExp;
     Exp();
-
     void setAddExp(AddExp *addExp);
 };
 

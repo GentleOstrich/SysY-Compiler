@@ -4,16 +4,20 @@
 
 #ifndef SYSY_COMPILER_VARDEF_H
 #define SYSY_COMPILER_VARDEF_H
-#include "Nonterminal.h"
+#include "Ident.h"
+#include "ConstExp.h"
+#include "InitVal.h"
 #include <vector>
 
-class VarDef : Nonterminal{
+class VarDef {
 public:
-    Nonterminal *Ident;
-    std::vector<Nonterminal*> ConstExps;
+    Ident *ident;
+    std::vector<ConstExp*> constExps;
+    InitVal *initVal;
     VarDef();
-    int setIdent(Nonterminal *Ident);
-    int addConstExp(Nonterminal *ConstExp);
+    void setIdent(Ident *ident);
+    void addConstExp(ConstExp *constExp);
+    void setInitVal(InitVal *initVal);
 };
 
 

@@ -6,7 +6,7 @@
 #define SYSY_COMPILER_COND_H
 #include "LOrExp.h"
 
-class Cond : Nonterminal{
+class Cond {
 public:
     LOrExp *lOrExp;
     Cond();

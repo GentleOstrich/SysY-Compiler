@@ -4,7 +4,7 @@
 
 #ifndef SYSY_COMPILER_BTYPE_H
 #define SYSY_COMPILER_BTYPE_H
-#include "Nonterminal.h"
+
 #include <string>
 
 class Btype {

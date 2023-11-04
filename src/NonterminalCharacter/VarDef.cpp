@@ -5,15 +5,17 @@
 #include "VarDef.h"
 
 VarDef::VarDef() {
-    this->Ident = nullptr;
+    this->ident = nullptr;
 }
 
-int VarDef::setIdent(Nonterminal *Ident) {
-    this->Ident = Ident;
-    return 0;
+void VarDef::setIdent(Ident *ident) {
+    this->ident = ident;
 }
 
-int VarDef::addConstExp(Nonterminal *ConstExp) {
-    this->ConstExps.push_back(ConstExp);
-    return 0;
+void VarDef::addConstExp(ConstExp *constExp) {
+    this->constExps.push_back(constExp);
+}
+
+void VarDef::setInitVal(InitVal *initVal) {
+    this->initVal = initVal;
 }

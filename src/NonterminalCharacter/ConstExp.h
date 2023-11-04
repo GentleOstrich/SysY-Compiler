@@ -6,7 +6,7 @@
 #define SYSY_COMPILER_CONSTEXP_H
 #include "AddExp.h"
 
-class ConstExp : Nonterminal {
+class ConstExp {
 public:
     AddExp *addExp;
     ConstExp();

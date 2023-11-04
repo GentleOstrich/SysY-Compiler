@@ -4,67 +4,74 @@
 
 #ifndef SYSY_COMPILER_STMT_H
 #define SYSY_COMPILER_STMT_H
-#include "Nonterminal.h"
+
+#include "LVal.h"
+#include "EqExp.h"
+#include "Exp.h"
+#include "Block.h"
+#include "Cond.h"
+
+
 #include <vector>
 #include <string>
-
-class Stmt : Nonterminal {
+class Block;
+class Stmt  {
 public:
-    Nonterminal *LVal1;
-    Nonterminal *equExp;
-    Nonterminal *Exp;
-    Nonterminal *Block;
-    Nonterminal *ifCond;
-    Nonterminal *ifStmt;
-    Nonterminal *elseStmt;
-    Nonterminal *ForStmt1;
-    Nonterminal *forCond;
-    Nonterminal *ForStmt2;
+    LVal *lVal1;
+    EqExp *eqExp;
+    Exp *exp;
+    Block *block;
+    Cond *ifCond;
+    Stmt *ifStmt;
+    Stmt *elseStmt;
+    Stmt *ForStmt1;
+    Cond *forCond;
+    Stmt *ForStmt2;
     bool isBreak;
     bool isContinue;
-    Nonterminal *returnExp;
+    Exp *returnExp;
     bool isReturn;
-    Nonterminal *LVal2;
+    LVal *lVal2;
     bool isGetint;
-    std::string FormatString;
-    std::vector<Nonterminal *> Exps;
+    std::string formatString;
+    std::vector<Exp *> exps;
     bool isPrintf;
 
-    void setLVal1(Nonterminal *lVal1);
+    void setLVal1(LVal *lVal1);
 
-    void setEquExp(Nonterminal *equExp);
+    void setEquExp(EqExp *eqExp);
 
-    void setExp(Nonterminal *exp);
+    void setExp(Exp *exp);
 
-    void setBlock(Nonterminal *block);
+    void setBlock(Block *block);
 
-    void setIfCond(Nonterminal *ifCond);
+    void setIfCond(Cond *ifCond);
 
-    void setIfStmt(Nonterminal *ifStmt);
+    void setIfStmt(Stmt *ifStmt);
 
-    void setElseStmt(Nonterminal *elseStmt);
+    void setElseStmt(Stmt *elseStmt);
 
-    void setForStmt1(Nonterminal *forStmt1);
+    void setForStmt1(Stmt *forStmt1);
 
-    void setForCond(Nonterminal *forCond);
+    void setForCond(Cond *forCond);
 
-    void setForStmt2(Nonterminal *forStmt2);
+    void setForStmt2(Stmt *forStmt2);
 
     void setIsBreak(bool isBreak);
 
     void setIsContinue(bool isContinue);
 
-    void setReturnExp(Nonterminal *returnExp);
+    void setReturnExp(Exp *returnExp);
 
     void setIsReturn(bool isReturn);
 
-    void setLVal2(Nonterminal *lVal2);
+    void setLVal2(LVal *lVal2);
 
     void setIsGetint(bool isGetint);
 
     void setFormatString(const std::string &formatString);
 
-    void addExps(Nonterminal *exp);
+    void addExps(Exp *exp);
 
     void setIsPrintf(bool isPrintf);
 

@@ -5,20 +5,21 @@
 #ifndef SYSY_COMPILER_LANDEXP_H
 #define SYSY_COMPILER_LANDEXP_H
 
-#include "Nonterminal.h"
+#include "EqExp.h"
+#include "LAndExp.h"
 
-class LAndExp : Nonterminal {
+class LAndExp {
 public:
-    Nonterminal *EqExp;
-    Nonterminal *LAndExp1;
-    Nonterminal *EqExp1;
+    EqExp *eqExp;
+    LAndExp *lAndExp1;
+    EqExp *eqExp1;
     LAndExp();
 
-    void setEqExp(Nonterminal *eqExp);
+    void setEqExp(EqExp *eqExp);
 
-    void setLAndExp1(Nonterminal *lAndExp1);
+    void setLAndExp1(LAndExp *lAndExp1);
 
-    void setEqExp1(Nonterminal *eqExp1);
+    void setEqExp1(EqExp *eqExp1);
 };
 
 

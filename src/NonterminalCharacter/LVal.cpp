@@ -5,15 +5,13 @@
 #include "LVal.h"
 
 LVal::LVal() {
-    this->Ident = nullptr;
+    this->ident = nullptr;
 }
 
-int LVal::setIdent(Nonterminal *Ident) {
-    this->Ident = Ident;
-    return 0;
+void LVal::setIdent(Ident *ident) {
+    this->ident = ident;
 }
 
-int LVal::addExp(Nonterminal *Exp) {
-    this->Exps.push_back(Exp);
-    return 0;
+void LVal::addExp(Exp *exp) {
+    this->exps.push_back(exp);
 }

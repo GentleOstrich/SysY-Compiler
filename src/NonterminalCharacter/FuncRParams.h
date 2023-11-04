@@ -5,14 +5,14 @@
 #ifndef SYSY_COMPILER_FUNCRPARAMS_H
 #define SYSY_COMPILER_FUNCRPARAMS_H
 
-#include "Nonterminal.h"
+#include "Exp.h"
 #include <vector>
 
-class FuncRParams : Nonterminal {
+class FuncRParams {
 public:
-    std::vector<Nonterminal *>Exps;
+    std::vector<Exp*>exps;
     FuncRParams();
-    void addExp(Nonterminal *Exp);
+    void addExp(Exp* exp);
 };
 
 

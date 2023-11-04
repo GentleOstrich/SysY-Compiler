@@ -5,10 +5,8 @@
 #ifndef SYSY_COMPILER_UNARYOP_H
 #define SYSY_COMPILER_UNARYOP_H
 
-#include "Nonterminal.h"
 
-
-class UnaryOp : Nonterminal {
+class UnaryOp {
 public:
     char op; // + - !
     UnaryOp();

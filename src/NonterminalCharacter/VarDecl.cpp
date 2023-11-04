@@ -5,15 +5,13 @@
 #include "VarDecl.h"
 
 VarDecl::VarDecl() {
-    this->BType = nullptr;
+    this->btype = nullptr;
 }
 
-int VarDecl::setBType(Nonterminal *BType) {
-    this->BType = BType;
-    return 0;
+void VarDecl::setBType(Btype *btype) {
+    this->btype = btype;
 }
 
-int VarDecl::addVarDef(Nonterminal *VarDef) {
-    this->VarDefs.push_back(VarDef);
-    return 0;
+void VarDecl::addVarDef(VarDef *varDef) {
+    this->varDefs.push_back(varDef);
 }

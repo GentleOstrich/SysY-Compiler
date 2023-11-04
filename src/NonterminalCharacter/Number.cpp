@@ -5,5 +5,5 @@
 #include "Number.h"
 
 void Number::setIntConst(int intConst) {
-    IntConst = intConst;
+    this->intConst = intConst;
 }

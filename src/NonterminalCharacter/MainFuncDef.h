@@ -4,13 +4,13 @@
 
 #ifndef SYSY_COMPILER_MAINFUNCDEF_H
 #define SYSY_COMPILER_MAINFUNCDEF_H
-#include "Nonterminal.h"
+#include "Block.h"
 
-class MainFuncDef : Nonterminal {
+class MainFuncDef {
 public:
-    Nonterminal *Block;
+    Block *block;
     MainFuncDef();
-    int setBlock(Nonterminal *Block);
+    void setBlock(Block *block);
 };
 
 

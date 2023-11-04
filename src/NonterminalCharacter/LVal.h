@@ -4,16 +4,17 @@
 
 #ifndef SYSY_COMPILER_LVAL_H
 #define SYSY_COMPILER_LVAL_H
-#include "Nonterminal.h"
+#include "Ident.h"
+#include "Exp.h"
 #include <vector>
-
-class LVal : Nonterminal {
+class Exp;
+class LVal {
 public:
-    Nonterminal *Ident;
-    std::vector<Nonterminal *> Exps;
+    Ident *ident;
+    std::vector<Exp*> exps;
     LVal();
-    int setIdent(Nonterminal *Ident);
-    int addExp(Nonterminal *Exp);
+    void setIdent(Ident *ident);
+    void addExp(Exp *exp);
 };
 
 

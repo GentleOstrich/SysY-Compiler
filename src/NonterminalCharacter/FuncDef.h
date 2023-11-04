@@ -6,20 +6,20 @@
 #define SYSY_COMPILER_FUNCDEF_H
 #include "FuncType.h"
 #include "Ident.h"
-#include "FuncFParam.h"
+#include "FuncFParams.h"
 #include "Block.h"
 #include <vector>
 
-class FuncDef : Nonterminal{
+class FuncDef {
 public:
     FuncType *funcType;
     Ident *ident;
-    std::vector<FuncFParam*> funcFParams;
+    FuncFParams *funcFParams;
     Block *block;
     FuncDef();
     void setFuncType(FuncType *funcType);
     void setIdent(Ident* ident);
-    void addFuncFParam(FuncFParam *funcFParam);
+    void setFuncFParams(FuncFParams *funcFParams);
     void setBlock(Block *block);
 };
 

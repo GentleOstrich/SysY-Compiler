@@ -5,19 +5,19 @@
 #include "PrimaryExp.h"
 
 PrimaryExp::PrimaryExp() {
-    Exp = nullptr;
-    LVal = nullptr;
-    Number = nullptr;
+    this->exp = nullptr;
+    this->lVal = nullptr;
+    this->number = nullptr;
 }
 
-void PrimaryExp::setExp(Nonterminal *exp) {
-    Exp = exp;
+void PrimaryExp::setExp(Exp *exp) {
+    this->exp = exp;
 }
 
-void PrimaryExp::setLVal(Nonterminal *lVal) {
-    LVal = lVal;
+void PrimaryExp::setLVal(LVal *lVal) {
+    this->lVal = lVal;
 }
 
-void PrimaryExp::setNumber(Nonterminal *number) {
-    Number = number;
+void PrimaryExp::setNumber(Number *number) {
+    this->number = number;
 }

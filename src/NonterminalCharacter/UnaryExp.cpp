@@ -5,27 +5,27 @@
 #include "UnaryExp.h"
 
 UnaryExp::UnaryExp() {
-    this->Ident = nullptr;
-    this->PrimaryExp = nullptr;
+    this->ident = nullptr;
+    this->primaryExp = nullptr;
 
 }
 
-void UnaryExp::setPrimaryExp(Nonterminal *primaryExp) {
-    PrimaryExp = primaryExp;
+void UnaryExp::setPrimaryExp(PrimaryExp *primaryExp) {
+    this->primaryExp = primaryExp;
 }
 
-void UnaryExp::setIdent(Nonterminal *ident) {
-    Ident = ident;
+void UnaryExp::setIdent(Ident *ident) {
+    this->ident = ident;
 }
 
-void UnaryExp::addFuncRParams(Nonterminal *FuncRParams) {
-    this->FuncRParamss.push_back(FuncRParams);
+void UnaryExp::addFuncRParams(FuncRParams *funcRParams) {
+    this->funcRParamss.push_back(funcRParams);
 }
 
-void UnaryExp::setUnaryOp(Nonterminal *unaryOp) {
-    UnaryOp = unaryOp;
+void UnaryExp::setUnaryOp(UnaryOp *unaryOp) {
+    this->unaryOp = unaryOp;
 }
 
-void UnaryExp::setUnaryExp1(Nonterminal *unaryExp1) {
-    UnaryExp1 = unaryExp1;
+void UnaryExp::setUnaryExp1(UnaryExp *unaryExp1) {
+    this->unaryExp1 = unaryExp1;
 }

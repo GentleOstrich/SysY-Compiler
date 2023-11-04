@@ -4,21 +4,21 @@
 
 #include "LOrExp.h"
 
-void LOrExp::setLAndExp(Nonterminal *lAndExp) {
-    LAndExp = lAndExp;
+void LOrExp::setLAndExp(LAndExp *lAndExp) {
+    this->lAndExp = lAndExp;
 }
 
-void LOrExp::setLOrExp1(Nonterminal *lOrExp1) {
-    LOrExp1 = lOrExp1;
+void LOrExp::setLOrExp1(LOrExp *lOrExp1) {
+    this->lOrExp1 = lOrExp1;
 }
 
-void LOrExp::setLAndExp1(Nonterminal *lAndExp1) {
-    LAndExp1 = lAndExp1;
+void LOrExp::setLAndExp1(LAndExp *lAndExp1) {
+    this->lAndExp1 = lAndExp1;
 }
 
 LOrExp::LOrExp() {
-    this->LAndExp1 = nullptr;
-    this->LAndExp = nullptr;
-    this->LOrExp1 = nullptr;
+    this->lAndExp1 = nullptr;
+    this->lAndExp = nullptr;
+    this->lOrExp1 = nullptr;
 
 }

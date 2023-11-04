@@ -4,18 +4,20 @@
 
 #include "MulExp.h"
 
-void MulExp::setUnaryExp(Nonterminal *unaryExp) {
-    UnaryExp = unaryExp;
+void MulExp::setUnaryExp(UnaryExp *unaryExp) {
+    this->unaryExp = unaryExp;
 }
 
-void MulExp::setMulExp1(Nonterminal *mulExp1) {
-    MulExp1 = mulExp1;
+void MulExp::setMulExp1(MulExp *mulExp1) {
+    this->mulExp1 = mulExp1;
 }
 
-void MulExp::setUnaryExp1(Nonterminal *unaryExp1) {
-    UnaryExp1 = unaryExp1;
+void MulExp::setUnaryExp1(UnaryExp *unaryExp1) {
+    this->unaryExp1 = unaryExp1;
 }
 
 MulExp::MulExp() {
-
+    this->mulExp1 = nullptr;
+    this->unaryExp1 = nullptr;
+    this->unaryExp = nullptr;
 }

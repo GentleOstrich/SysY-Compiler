@@ -8,10 +8,10 @@
 #include "ConstDef.h"
 #include <vector>
 
-class ConstDecl : Nonterminal{
+class ConstDecl {
 public:
     Btype *btype;
-    std::vector<ConstDef*> ConstDefs;
+    std::vector<ConstDef*> constDefs;
     ConstDecl();
     void setBtype(Btype *btype);
     void addConstDef(ConstDef *constDef);

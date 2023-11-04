@@ -13,150 +13,115 @@
 extern Lexer lexer;
 extern ifstream ifs;
 extern ofstream ofs;
-extern CompUnit compUnit;
 Token token = make_pair(LexType::NONE, "");
 
 // 正常返回 0 错误返回 -1
 CompUnit Parser::parseCompUnit() {
+    CompUnit compUnit;
     readTk;
     while (tkType != LexType::NONE) {
         if (tkType == LexType::CONSTTK) {
-            compUnit.addDecl(&parseDecl());
+            Decl decl = parseDecl();
+            compUnit.addDecl(&decl);
         } else if (tkType == LexType::INTTK) {
             if (preRead == LexType::MAINTK) {
-                compUnit.setMainFuncDef(&parseMainFuncDef());
+                MainFuncDef mainFuncDef = parseMainFuncDef();
+                compUnit.setMainFuncDef(&mainFuncDef);
             } else if (preRead == LexType::IDENFR) {
                 if (prePreRead == LexType::LPARENT) {
-                    int FuncDef = parseFuncDef();
-                    if (FuncDef != 0) {
-                        return -1;
-                    }
+                    FuncDef funcDef = parseFuncDef();
+                    compUnit.addFuncDef(&funcDef);
                 } else {
-                    int Decl = parseDecl();
-                    if (Decl != 0) {
-                        return -1;
-                    }
+                    Decl decl = parseDecl();
+                    compUnit.addDecl(&decl);
                 }
-            } else {
-                return -1;
             }
         } else if (tkType == LexType::VOIDTK) {
-            int FuncDef = parseFuncDef();
-            if (FuncDef != 0) {
-                return -1;
-            }
-        } else {
-            return -1;
+            FuncDef funcDef = parseFuncDef();
+            compUnit.addFuncDef(&funcDef);
         }
     }
     ofs << "<CompUnit>" << endl;
-    return 0;
+    return compUnit;
 }
 
 Decl Parser::parseDecl() {
+    Decl decl;
     if (tkType == LexType::CONSTTK) {
-        int ConstDecl = parseConstDecl();
-        if (ConstDecl != 0) {
-            return -1;
-        } else {
-            return 0;
-        }
+        ConstDecl constDecl = parseConstDecl();
+        decl.setConstDecl(&constDecl);
     } else if (tkType == LexType::INTTK) {
-        int VarDecl = parseVarDecl();
-        if (VarDecl != 0) {
-            return -1;
-        } else {
-            return 0;
-        }
-    } else {
-        return -1;
+        VarDecl varDecl = parseVarDecl();
+        decl.setVarDecl(&varDecl);
     }
+    return decl;
 }
 
-int Parser::parseConstDecl() {
+ConstDecl Parser::parseConstDecl() {
+    ConstDecl constDecl;
     if (tkType == LexType::CONSTTK) {
         printTk;
         readTk;
         if (tkType == LexType::INTTK) {
             printTk;
             readTk;
-            int ConstDef = parseConstDef();
-            if (ConstDef != 0) {
-                return -1;
-            } else {
-                while (tkType == LexType::COMMA) {
-                    printTk;
-                    readTk;
-                    int ConstDef = parseConstDef();
-                    if (ConstDef != 0) {
-                        return -1;
-                    }
-                }
+            ConstDef constDef = parseConstDef();
+            constDecl.addConstDef(&constDef);
+            while (tkType == LexType::COMMA) {
+                printTk;
+                readTk;
+                ConstDef constDef = parseConstDef();
+                constDecl.addConstDef(&constDef);
             }
-        } else {
-            return -1;
         }
         if (tkType == LexType::SEMICN) {
             printTk;
             ofs << "<ConstDecl>" << endl;
             readTk;
-            return 0;
-        } else {
-            return -1;
+            return constDecl;
         }
-    } else {
-        return -1;
     }
 }
 
-int Parser::parseBType() {
+Btype Parser::parseBType() {
     if (tkType == LexType::INTTK) {
+        Btype btype("int");
         printTk;
         readTk;
-        return 0;
-    } else {
-        return -1;
+        return btype;
     }
 }
 
-int Parser::parseConstDef() {
+ConstDef Parser::parseConstDef() {
+    ConstDef constDef;
     if (tkType == LexType::IDENFR) {
+        Ident ident(tkWord);
+        constDef.setIdent(&ident);
         printTk;
         readTk;
         while (tkType == LexType::LBRACK) {
             printTk;
             readTk;
-            int ConstExp = parseConstExp();
-            if (ConstExp != 0) {
-                return -1;
-            } else {
-                if (tkType == LexType::RBRACK) {
-                    printTk;
-                    readTk;
-                } else {
-                    return -1;
-                }
+            ConstExp constExp = parseConstExp();
+            constDef.addConstExps(&constExp);
+            if (tkType == LexType::RBRACK) {
+                printTk;
+                readTk;
             }
         }
         if (tkType == LexType::ASSIGN) {
             printTk;
             readTk;
-            int ConstInitVal = parseConstInitVal();
-            if (ConstInitVal != 0) {
-                return -1;
-            } else {
-                ofs << "<ConstDef>" << endl;
-                return 0;
-            }
-        } else {
-            return -1;
+            ConstInitVal constInitVal = parseConstInitVal();
+            constDef.setConstInitVal(&constInitVal);
+            ofs << "<ConstDef>" << endl;
+            return constDef;
         }
-    } else {
-        return -1;
     }
 }
 
-int Parser::parseConstInitVal() {
+ConstInitVal Parser::parseConstInitVal() {
+    ConstInitVal constInitVal;
     if (tkType == LexType::LBRACE) {
         printTk;
         readTk;
@@ -164,108 +129,83 @@ int Parser::parseConstInitVal() {
             printTk;
             ofs << "<ConstInitVal>" << endl;
             readTk;
-            return 0;
+            return constInitVal;
         }
-        int ConstInitVal = parseConstInitVal();
-        if (ConstInitVal != 0) {
-            return -1;
-        } else {
-            while (tkType == LexType::COMMA) {
-                printTk;
-                readTk;
-                int ConstInitVal = parseConstInitVal();
-                if (ConstInitVal != 0) {
-                    return -1;
-                }
-            }
-            if (tkType == LexType::RBRACE) {
-                printTk;
-                ofs << "<ConstInitVal>" << endl;
-                readTk;
-                return 0;
-            } else {
-                return -1;
-            }
+        ConstInitVal son_constInitVal1 = parseConstInitVal();
+        constInitVal.addConstInitVal(&son_constInitVal1);
+        while (tkType == LexType::COMMA) {
+            printTk;
+            readTk;
+            ConstInitVal son_constInitVal = parseConstInitVal();
+            constInitVal.addConstInitVal(&son_constInitVal);
         }
-    } else {
-        int ConstExp = parseConstExp();
-        if (ConstExp != 0) {
-            return -1;
-        } else {
+        if (tkType == LexType::RBRACE) {
+            printTk;
             ofs << "<ConstInitVal>" << endl;
-            return 0;
+            readTk;
+            return constInitVal;
         }
-    }
-}
-
-int Parser::parseVarDecl() {
-    int BType = parseBType();
-    if (BType != 0) {
-        return -1;
     } else {
-        int VarDef = parseVarDef();
-        if (VarDef != 0) {
-            return -1;
-        } else {
-            while (tkType == LexType::COMMA) {
-                printTk;
-                readTk;
-                int VarDef = parseVarDef();
-                if (VarDef != 0) {
-                    return -1;
-                }
-            }
-            if (tkType == LexType::SEMICN) {
-                printTk;
-                ofs << "<VarDecl>" << endl;
-                readTk;
-                return 0;
-            } else {
-                return -1;
-            }
-        }
+        ConstExp constExp = parseConstExp();
+        constInitVal.setConstExp(&constExp);
+        ofs << "<ConstInitVal>" << endl;
+        return constInitVal;
     }
 }
 
-int Parser::parseVarDef() {
+VarDecl Parser::parseVarDecl() {
+    VarDecl varDecl;
+    Btype btype = parseBType();
+    varDecl.setBType(&btype);
+    VarDef varDef = parseVarDef();
+    varDecl.addVarDef(&varDef);
+    while (tkType == LexType::COMMA) {
+        printTk;
+        readTk;
+        VarDef varDef = parseVarDef();
+        varDecl.addVarDef(&varDef);
+    }
+    if (tkType == LexType::SEMICN) {
+        printTk;
+        ofs << "<VarDecl>" << endl;
+        readTk;
+        return varDecl;
+    }
+}
+
+VarDef Parser::parseVarDef() {
+    VarDef varDef;
     if (tkType == LexType::IDENFR) {
+        Ident ident(tkWord);
+        varDef.setIdent(&ident);
         printTk;
         readTk;
         while (tkType == LexType::LBRACK) {
             printTk;
             readTk;
-            int ConstExp = parseConstExp();
-            if (ConstExp != 0) {
-                return -1;
-            } else {
-                if (tkType == LexType::RBRACK) {
-                    printTk;
-                    readTk;
-                } else {
-                    return -1;
-                }
+            ConstExp constExp = parseConstExp();
+            varDef.addConstExp(&constExp);
+            if (tkType == LexType::RBRACK) {
+                printTk;
+                readTk;
             }
         }
         if (tkType == LexType::ASSIGN) {
             printTk;
             readTk;
-            int InitVal = parseInitVal();
-            if (InitVal != 0) {
-                return -1;
-            } else {
-                ofs << "<VarDef>" << endl;
-                return 0;
-            }
+            InitVal initVal = parseInitVal();
+            varDef.setInitVal(&initVal);
+            ofs << "<VarDef>" << endl;
+            return varDef;
         } else {
             ofs << "<VarDef>" << endl;
-            return 0;
+            return varDef;
         }
-    } else {
-        return -1;
     }
 }
 
-int Parser::parseInitVal() {
+InitVal Parser::parseInitVal() {
+    InitVal initVal;
     if (tkType == LexType::LBRACE) {
         printTk;
         readTk;
@@ -273,84 +213,62 @@ int Parser::parseInitVal() {
             printTk;
             ofs << "<InitVal>" << endl;
             readTk;
-            return 0;
+            return initVal;
         }
-        int InitVal = parseInitVal();
-        if (InitVal != 0) {
-            return -1;
-        } else {
-            while (tkType == LexType::COMMA) {
-                printTk;
-                readTk;
-                int InitVal = parseInitVal();
-                if (InitVal != 0) {
-                    return -1;
-                }
-            }
-            if (tkType == LexType::RBRACE) {
-                printTk;
-                ofs << "<InitVal>" << endl;
-                readTk;
-                return 0;
-            } else {
-                return -1;
-            }
+        InitVal son_initVal1 = parseInitVal();
+        initVal.addInitVal(&son_initVal1);
+        while (tkType == LexType::COMMA) {
+            printTk;
+            readTk;
+            InitVal son_initVal1 = parseInitVal();
+            initVal.addInitVal(&son_initVal1);
+        }
+        if (tkType == LexType::RBRACE) {
+            printTk;
+            ofs << "<InitVal>" << endl;
+            readTk;
+            return initVal;
         }
     } else {
-        int Exp = parseExp();
-        if (Exp != 0) {
-            return -1;
-        } else {
-            ofs << "<InitVal>" << endl;
-            return 0;
-        }
+        Exp exp = parseExp();
+        initVal.setExp(&exp);
+        return initVal;
     }
 }
 
-int Parser::parseFuncDef() {
-    int FuncType = parseFuncType();
-    if (FuncType != 0) {
-        return -1;
-    } else {
-        if (tkType == LexType::IDENFR) {
+FuncDef Parser::parseFuncDef() {
+    FuncDef funcDef;
+    FuncType funcType = parseFuncType();
+    funcDef.setFuncType(&funcType);
+    if (tkType == LexType::IDENFR) {
+        Ident ident(tkWord);
+        funcDef.setIdent(&ident);
+        printTk;
+        readTk;
+        if (tkType == LexType::LPARENT) {
             printTk;
             readTk;
-            if (tkType == LexType::LPARENT) {
+            if (tkType == LexType::RPARENT) {
                 printTk;
                 readTk;
+            } else {
+                FuncFParams funcFParams = parseFuncFParams();
+                funcDef.setFuncFParams(&funcFParams);
                 if (tkType == LexType::RPARENT) {
                     printTk;
                     readTk;
-                } else {
-                    int FuncFParams = parseFuncFParams();
-                    if (FuncFParams != 0) {
-                        return FuncFParams;
-                    } else {
-                        if (tkType == LexType::RPARENT) {
-                            printTk;
-                            readTk;
-                        } else {
-                            return -1;
-                        }
-                    }
                 }
-                int Block = parseBlock();
-                if (Block == 0) {
-                    ofs << "<FuncDef>" << endl;
-                    return 0;
-                } else {
-                    return -1;
-                }
-            } else {
-                return -1;
             }
-        } else {
-            return -1;
-        }
+            Block block = parseBlock();
+            funcDef.setBlock(&block);
+            ofs << "<FuncDef>" << endl;
+            return funcDef;
+        } 
     }
 }
 
-int Parser::parseMainFuncDef() {
+MainFuncDef Parser::parseMainFuncDef() {
+    MainFuncDef mainFuncDef;
     if (tkType == LexType::INTTK) {
         printTk;
         readTk;
@@ -363,65 +281,57 @@ int Parser::parseMainFuncDef() {
                 if (tkType == LexType::RPARENT) {
                     printTk;
                     readTk;
-                    int Block = parseBlock();
-                    if (Block != 0) {
-                        return -1;
-                    } else {
-                        ofs << "<MainFuncDef>" << endl;
-                        return 0;
-                    }
-                } else {
-                    return -1;
+                    Block block = parseBlock();
+                    mainFuncDef.setBlock(&block);
+                    ofs << "<MainFuncDef>" << endl;
+                    return mainFuncDef;
                 }
-            } else {
-                return -1;
             }
-        } else {
-            return -1;
         }
-    } else {
-        return -1;
     }
 }
 
-int Parser::parseFuncType() {
+FuncType Parser::parseFuncType() {
     if (tkType == LexType::INTTK) {
+        FuncType funcType("int");
         printTk;
         ofs << "<FuncType>" << endl;
         readTk;
-        return 0;
+        return funcType;
     } else if (tkType == LexType::VOIDTK) {
+        FuncType funcType("int");
         printTk;
         ofs << "<FuncType>" << endl;
         readTk;
-        return 0;
-    } else {
-        return -1;
+        return funcType;
     }
 }
 
-int Parser::parseFuncFParams() {
-    int FuncFParam = parseFuncFParam();
-    if (FuncFParam != 0) {
-        return -1;
-    }
+FuncFParams Parser::parseFuncFParams() {
+    FuncFParams funcFParams;
+    FuncFParam funcFParam = parseFuncFParam();
+    funcFParams.addFuncFParam(&funcFParam);
     while (tkType == LexType::COMMA) {
         printTk;
         readTk;
-        int FuncFParam = parseFuncFParam();
-        if (FuncFParam != 0) {
-            return -1;
-        }
+        FuncFParams funcFParams;
+        FuncFParam funcFParam = parseFuncFParam();
+        funcFParams.addFuncFParam(&funcFParam);
     }
     ofs << "<FuncFParams>" << endl;
-    return 0;
+    return funcFParams;
 }
 
-int Parser::parseFuncFParam() {
+FuncFParam Parser::parseFuncFParam() {
+    FuncFParam funcFparam;
     if (tkType == LexType::INTTK) {
+        Btype btype("int");
+        funcFparam.setBtype(&btype);
         printTk;
         readTk;
         if (tkType == LexType::IDENFR) {
+            Ident ident(tkWord);
+            funcFparam.setIdent(&ident);
             printTk;
             readTk;
             if (tkType == LexType::LBRACK) {
@@ -430,76 +340,55 @@ int Parser::parseFuncFParam() {
                 if (tkType == LexType::RBRACK) {
                     printTk;
                     readTk;
-                } else {
-                    return -1;
                 }
                 while (tkType == LexType::LBRACK) {
                     printTk;
                     readTk;
-                    int ConstExp = parseConstExp();
-                    if (ConstExp != 0) {
-                        return -1;
-                    } else {
-                        if (tkType == LexType::RBRACK) {
-                            printTk;
-                            readTk;
-                        } else {
-                            return -1;
-                        }
+                    ConstExp constExp = parseConstExp();
+                    funcFparam.addConstExp(&constExp);
+                    if (tkType == LexType::RBRACK) {
+                        printTk;
+                        readTk;
                     }
                 }
                 ofs << "<FuncFParam>" << endl;
-                return 0;
+                return funcFparam;
             } else {
                 ofs << "<FuncFParam>" << endl;
-                return 0;
+                return funcFparam;
             }
-        } else {
-            return -1;
         }
-    } else {
-        return -1;
     }
 }
 
-int Parser::parseBlock() {
+Block Parser::parseBlock() {
+    Block block;
     if (tkType == LexType::LBRACE) {
         printTk;
         readTk;
         while (tkType != LexType::RBRACE) {
-            int BlockItem = parseBlockItem();
-            if (BlockItem != 0) {
-                return -1;
-            }
+            BlockItem blockItem = parseBlockItem();
+            block.addBlockItem(&blockItem);
         }
         if (tkType == LexType::RBRACE) {
             printTk;
             ofs << "<Block>" << endl;
             readTk;
-            return 0;
-        } else {
-            return -1;
-        }
-    } else {
-        return -1;
-    }
-}
-
-int Parser::parseBlockItem() {
-    int Decl = parseDecl();
-    if (Decl == 0) {
-        return 0;
-    } else {
-        int Stmt = parseStmt();
-        if (Stmt != 0) {
-            return -1;
-        } else {
-            return 0;
+            return block;
         }
     }
 }
 
-int Parser::parseStmt() {
+BlockItem Parser::parseBlockItem() {
+    BlockItem blockItem;
+    Decl decl = parseDecl();
+    blockItem.setDecl(&decl);
+    Stmt stmt = parseStmt();
+    blockItem.setStmt(&stmt);
+    return blockItem;
+}
+
+Stmt Parser::parseStmt() {
     if (tkType == LexType::IFTK) {
         printTk;
         readTk;
@@ -746,88 +635,67 @@ int Parser::parseStmt() {
     return 0;
 }
 
-int Parser::parseForStmt() {
-    int LVal = parseLVal();
-    if (LVal == 0) {
-        if (tkType == LexType::ASSIGN) {
-            printTk;
-            readTk;
-            int Exp = parseExp();
-            if (Exp == 0) {
-                ofs << "<ForStmt>" << endl;
-                return 0;
-            } else {
-                return -1;
-            }
-        } else {
-            return -1;
-        }
-    } else {
-        return -1;
+ForStmt Parser::parseForStmt() {
+    ForStmt forStmt;
+    LVal lVal = parseLVal();
+    forStmt.setLVal(&lVal);
+    if (tkType == LexType::ASSIGN) {
+        printTk;
+        readTk;
+        Exp exp = parseExp();
+        ofs << "<ForStmt>" << endl;
+        forStmt.setExp(&exp);
+        return forStmt;
     }
 }
 
-int Parser::parseExp() {
-    int AddExp = parseAddExp();
-    if (AddExp == 0) {
-        ofs << "<Exp>" << endl;
-        return 0;
-    } else {
-        return -1;
-    }
+Exp Parser::parseExp() {
+    Exp exp;
+    AddExp addExp = parseAddExp();
+    exp.setAddExp(&addExp);
+    ofs << "<Exp>" << endl;
+    return exp;
 }
 
-int Parser::parseCond() {
-    int LOrExp = parseLOrExp();
-    if (LOrExp == 0) {
-        ofs << "<Cond>" << endl;
-        return 0;
-    } else {
-        return -1;
-    }
+Cond Parser::parseCond() {
+    Cond cond;
+    LOrExp lOrExp = parseLOrExp();
+    cond.setLOrExp(&lOrExp);
+    ofs << "<Cond>" << endl;
+    return cond;
 }
 
-int Parser::parseLVal() {
+LVal Parser::parseLVal() {
+    LVal lVal;
     if (tkType == LexType::IDENFR) {
+        Ident ident(tkWord);
+        lVal.setIdent(&ident);
         printTk;
         readTk;
         while (tkType == LexType::LBRACK) {
             printTk;
             readTk;
-            int Exp = parseExp();
-            if (Exp != 0) {
-                return -1;
-            }
+            Exp exp = parseExp();
+            lVal.addExp(&exp);
             if (tkType == LexType::RBRACK) {
                 printTk;
                 readTk;
-            } else {
-                return -1;
             }
         }
-        ofs << "<LVal>" << endl;
-        return 0;
-    } else {
-        return -1;
+        return lVal;
     }
 }
 
-int Parser::parsePrimaryExp() {
+PrimaryExp Parser::parsePrimaryExp() {
     if (tkType == LexType::LPARENT) {
         printTk;
         readTk;
-        int Exp = parseExp();
-        if (Exp == 0) {
-            if (tkType == LexType::RPARENT) {
-                printTk;
-                ofs << "<PrimaryExp>" << endl;
-                readTk;
-                return 0;
-            } else {
-                return -1;
-            }
-        } else {
-            return -1;
+        Exp exp = parseExp();
+        if (tkType == LexType::RPARENT) {
+            printTk;
+            ofs << "<PrimaryExp>" << endl;
+            readTk;
+            return 0;
         }
     } else {
         int Number = parseNumber();
@@ -846,7 +714,7 @@ int Parser::parsePrimaryExp() {
     }
 }
 
-int Parser::parseNumber() {
+Number Parser::parseNumber() {
     if (tkType == LexType::INTCON) {
         printTk;
         ofs << "<Number>" << endl;
@@ -857,7 +725,7 @@ int Parser::parseNumber() {
     }
 }
 
-int Parser::parseUnaryExp() {
+UnaryExp Parser::parseUnaryExp() {
     int UnaryOp = parseUnaryOp();
     if (UnaryOp == 0) {
         int UnaryExp = parseUnaryExp();
@@ -905,7 +773,7 @@ int Parser::parseUnaryExp() {
     }
 }
 
-int Parser::parseUnaryOp() {
+UnaryOp Parser::parseUnaryOp() {
     if (tkType == LexType::PLUS || tkType == LexType::MINU || tkType == LexType::NOT) {
         printTk;
         ofs << "<UnaryOp>" << endl;
@@ -916,7 +784,7 @@ int Parser::parseUnaryOp() {
     }
 }
 
-int Parser::parseFuncRParams() {
+FuncRParams Parser::parseFuncRParams() {
     int Exp = parseExp();
     if (Exp == 0) {
         while (tkType == LexType::COMMA) {
@@ -934,7 +802,7 @@ int Parser::parseFuncRParams() {
     }
 }
 
-int Parser::parseMulExp() {
+MulExp Parser::parseMulExp() {
     int UnaryExp = parseUnaryExp();
     if (UnaryExp == 0) {
         while (tkType == LexType::MULT || tkType == LexType::DIV || tkType == LexType::MOD) {
@@ -953,7 +821,7 @@ int Parser::parseMulExp() {
     }
 }
 
-int Parser::parseAddExp() {
+AddExp Parser::parseAddExp() {
     int MulExp = parseMulExp();
     if (MulExp == 0) {
         while (tkType == LexType::PLUS || tkType == LexType::MINU) {
@@ -972,7 +840,7 @@ int Parser::parseAddExp() {
     }
 }
 
-int Parser::parseRelExp() {
+RelExp Parser::parseRelExp() {
     int AddExp = parseAddExp();
     if (AddExp == 0) {
         while (tkType == LexType::GRE || tkType == LexType::GEQ ||
@@ -993,7 +861,7 @@ int Parser::parseRelExp() {
 }
 
 //TODO
-int Parser::parseEqExp() {
+EqExp Parser::parseEqExp() {
     int RelExp = parseRelExp();
     if (RelExp == 0) {
         while (tkType == LexType::EQL || tkType == LexType::NEQ) {
@@ -1012,7 +880,7 @@ int Parser::parseEqExp() {
     }
 }
 
-int Parser::parseLAndExp() {
+LAndExp Parser::parseLAndExp() {
     int EqExp = parseEqExp();
     if (EqExp == 0) {
         while (tkType == LexType::AND) {
@@ -1031,7 +899,7 @@ int Parser::parseLAndExp() {
     }
 }
 
-int Parser::parseLOrExp() {
+LOrExp Parser::parseLOrExp() {
     int LAndExp = parseLAndExp();
     if (LAndExp == 0) {
         while (tkType == LexType::OR) {
@@ -1050,7 +918,7 @@ int Parser::parseLOrExp() {
     }
 }
 
-int Parser::parseConstExp() {
+ConstExp Parser::parseConstExp() {
     int AddExp = parseAddExp();
     if (AddExp == 0) {
         ofs << "<ConstExp>" << endl;

@@ -18,8 +18,8 @@ void FuncDef::setIdent(Ident *ident) {
     this->ident = ident;
 }
 
-void FuncDef::addFuncFParam(FuncFParam *funcFParam) {
-    this->funcFParams.push_back(funcFParam);
+void FuncDef::setFuncFParams(FuncFParams *funcFParams) {
+    this->funcFParams = funcFParams;
 }
 
 void FuncDef::setBlock(Block *block) {

@@ -5,21 +5,22 @@
 #ifndef SYSY_COMPILER_MULEXP_H
 #define SYSY_COMPILER_MULEXP_H
 
-#include "Nonterminal.h"
+#include "UnaryExp.h"
+#include "MulExp.h"
 
-class MulExp : Nonterminal{
+class MulExp {
 public:
-    Nonterminal *UnaryExp;
-    Nonterminal *MulExp1;
-    Nonterminal *UnaryExp1;
+    UnaryExp *unaryExp;
+    MulExp *mulExp1;
+    UnaryExp *unaryExp1;
 
     MulExp();
 
-    void setUnaryExp(Nonterminal *unaryExp);
+    void setUnaryExp(UnaryExp *unaryExp);
 
-    void setMulExp1(Nonterminal *mulExp1);
+    void setMulExp1(MulExp *mulExp1);
 
-    void setUnaryExp1(Nonterminal *unaryExp1);
+    void setUnaryExp1(UnaryExp *unaryExp1);
 };
 
 

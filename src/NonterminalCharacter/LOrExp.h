@@ -5,20 +5,21 @@
 #ifndef SYSY_COMPILER_LOREXP_H
 #define SYSY_COMPILER_LOREXP_H
 
-#include "Nonterminal.h"
+#include "LAndExp.h"
+#include "LOrExp.h"
 
-class LOrExp : Nonterminal {
+class LOrExp {
 public:
-    Nonterminal *LAndExp;
-    Nonterminal *LOrExp1;
-    Nonterminal *LAndExp1;
+    LAndExp *lAndExp;
+    LOrExp *lOrExp1;
+    LAndExp *lAndExp1;
     LOrExp();
 
-    void setLAndExp(Nonterminal *lAndExp);
+    void setLAndExp(LAndExp *lAndExp);
 
-    void setLOrExp1(Nonterminal *lOrExp1);
+    void setLOrExp1(LOrExp *lOrExp1);
 
-    void setLAndExp1(Nonterminal *lAndExp1);
+    void setLAndExp1(LAndExp *lAndExp1);
 };
 
 

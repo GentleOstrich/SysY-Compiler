@@ -5,12 +5,10 @@
 #ifndef SYSY_COMPILER_NUMBER_H
 #define SYSY_COMPILER_NUMBER_H
 
-#include "Nonterminal.h"
 
-
-class Number : Nonterminal {
+class Number {
 public:
-    int IntConst;
+    int intConst;
     Number();
 
     void setIntConst(int intConst);

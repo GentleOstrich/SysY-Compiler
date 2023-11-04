@@ -4,10 +4,10 @@
 
 #ifndef SYSY_COMPILER_FUNCTYPE_H
 #define SYSY_COMPILER_FUNCTYPE_H
-#include "Nonterminal.h"
+
 #include <string>
 
-class FuncType : Nonterminal{
+class FuncType {
 public:
     std::string word;
     FuncType(std::string word);

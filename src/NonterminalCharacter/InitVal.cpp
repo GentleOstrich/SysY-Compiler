@@ -5,15 +5,13 @@
 #include "InitVal.h"
 
 InitVal::InitVal() {
-    this->Exp = nullptr;
+    this->exp = nullptr;
 }
 
-int InitVal::setExp(Nonterminal *Exp) {
-    this->Exp = Exp;
-    return 0;
+void InitVal::setExp(Exp *exp) {
+    this->exp = exp;
 }
 
-int InitVal::addInitVal(Nonterminal *InitVal) {
-    this->InitVals.push_back(InitVal);
-    return 0;
+void InitVal::addInitVal(InitVal *initVal) {
+    this->initVals.push_back(initVal);
 }

@@ -8,7 +8,7 @@
 #include "ConstInitVal.h"
 #include <vector>
 
-class ConstInitVal : Nonterminal{
+class ConstInitVal {
 public:
     ConstExp *constExp;
     std::vector<ConstInitVal*> constInitVals;

@@ -4,16 +4,17 @@
 
 #ifndef SYSY_COMPILER_INITVAL_H
 #define SYSY_COMPILER_INITVAL_H
-#include "Nonterminal.h"
+#include "Exp.h"
+#include "InitVal.h"
 #include <vector>
 
-class InitVal : Nonterminal{
-    Nonterminal *Exp;
-    std::vector<Nonterminal*> InitVals;
+class InitVal{
+public:
+    Exp *exp;
+    std::vector<InitVal*> initVals;
     InitVal();
-    int setExp(Nonterminal *Exp);
-    int addInitVal(Nonterminal *InitVal);
-
+    void setExp(Exp *exp);
+    void addInitVal(InitVal *initVal);
 };
 
 
