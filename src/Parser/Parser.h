@@ -14,71 +14,71 @@ using namespace std;
 
 class Parser {
 public:
-    CompUnit parseCompUnit();
+    int parseCompUnit();
 
-    Decl parseDecl();
+    int parseDecl();
 
-    ConstDecl parseConstDecl();
+    int parseConstDecl();
 
-    Btype parseBType();
+    int parseBType();
 
-    ConstDef parseConstDef();
+    int parseConstDef();
 
-    ConstInitVal parseConstInitVal();
+    int parseConstInitVal();
 
-    VarDecl parseVarDecl();
+    int parseVarDecl();
 
-    VarDef parseVarDef();
+    int parseVarDef();
 
-    InitVal parseInitVal();
+    int parseInitVal();
 
-    FuncDef parseFuncDef();
+    int parseFuncDef();
 
-    MainFuncDef parseMainFuncDef();
+    int parseMainFuncDef();
 
-    FuncType parseFuncType();
+    int parseFuncType();
 
-    FuncFParams parseFuncFParams();
+    int parseFuncFParams();
 
-    FuncFParam parseFuncFParam();
+    int parseFuncFParam();
 
-    Block parseBlock();
+    int parseBlock();
 
-    BlockItem parseBlockItem();
+    int parseBlockItem();
 
-    Stmt parseStmt();
+    int parseStmt();
 
-    ForStmt parseForStmt();
+    int parseForStmt();
 
-    Exp parseExp();
+    int parseExp();
 
-    Cond parseCond();
+    int parseCond();
 
-    LVal parseLVal();
+    int parseLVal();
 
-    PrimaryExp parsePrimaryExp();
+    int parsePrimaryExp();
 
-    Number parseNumber();
+    int parseNumber();
 
-    UnaryExp parseUnaryExp();
+    int parseUnaryExp();
 
-    UnaryOp parseUnaryOp();
+    int parseUnaryOp();
 
-    FuncFParams parseFuncRParams();
+    int parseFuncRParams();
 
-    MulExp parseMulExp();
+    int parseMulExp();
 
-    AddExp parseAddExp();
+    int parseAddExp();
 
-    RelExp parseRelExp();
+    int parseRelExp();
 
-    EqExp parseEqExp();
+    int parseEqExp();
 
-    LAndExp parseLAndExp();
+    int parseLAndExp();
 
-    LOrExp parseLOrExp();
+    int parseLOrExp();
 
-    ConstExp parseConstExp();
+    int parseConstExp();
 
 };
 

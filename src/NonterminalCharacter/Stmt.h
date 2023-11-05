@@ -10,7 +10,7 @@
 #include "Exp.h"
 #include "Block.h"
 #include "Cond.h"
-
+#include "ForStmt.h"
 
 #include <vector>
 #include <string>
@@ -24,9 +24,10 @@ public:
     Cond *ifCond;
     Stmt *ifStmt;
     Stmt *elseStmt;
-    Stmt *ForStmt1;
+    ForStmt *ForStmt1;
     Cond *forCond;
-    Stmt *ForStmt2;
+    ForStmt *ForStmt2;
+    Stmt *ForStmt3;
     bool isBreak;
     bool isContinue;
     Exp *returnExp;
@@ -36,6 +37,8 @@ public:
     std::string formatString;
     std::vector<Exp *> exps;
     bool isPrintf;
+
+    Stmt();
 
     void setLVal1(LVal *lVal1);
 
@@ -51,11 +54,13 @@ public:
 
     void setElseStmt(Stmt *elseStmt);
 
-    void setForStmt1(Stmt *forStmt1);
+    void setForStmt1(ForStmt *forStmt1);
 
     void setForCond(Cond *forCond);
 
-    void setForStmt2(Stmt *forStmt2);
+    void setForStmt2(ForStmt *forStmt2);
+
+    void setForStmt3(Stmt *forStmt3);
 
     void setIsBreak(bool isBreak);
 

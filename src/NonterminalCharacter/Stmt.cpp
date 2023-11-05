@@ -32,7 +32,7 @@ void Stmt::setElseStmt(Stmt *elseStmt) {
     Stmt::elseStmt = elseStmt;
 }
 
-void Stmt::setForStmt1(Stmt *forStmt1) {
+void Stmt::setForStmt1(ForStmt *forStmt1) {
     ForStmt1 = forStmt1;
 }
 
@@ -40,8 +40,12 @@ void Stmt::setForCond(Cond *forCond) {
     Stmt::forCond = forCond;
 }
 
-void Stmt::setForStmt2(Stmt *forStmt2) {
+void Stmt::setForStmt2(ForStmt *forStmt2) {
     ForStmt2 = forStmt2;
+}
+
+void Stmt::setForStmt3(Stmt *forStmt3) {
+    ForStmt3 = forStmt3;
 }
 
 void Stmt::setIsBreak(bool isBreak) {
@@ -78,4 +82,26 @@ void Stmt::addExps(Exp *exp) {
 
 void Stmt::setIsPrintf(bool isPrintf) {
     Stmt::isPrintf = isPrintf;
+}
+
+Stmt::Stmt() {
+    lVal1 = nullptr;
+    eqExp = nullptr;
+    exp = nullptr;
+    block = nullptr;   
+    ifCond = nullptr;
+    ifStmt = nullptr;
+    elseStmt = nullptr;
+    ForStmt1 = nullptr;
+    forCond = nullptr;
+    ForStmt2 = nullptr;
+    ForStmt3 = nullptr;
+    bool isBreak = false;
+    bool isContinue = false;
+    returnExp  = nullptr;
+    isReturn = false;
+    lVal2 = nullptr;
+    isGetint = false;
+    formatString = "";
+    isPrintf = false;
 }
