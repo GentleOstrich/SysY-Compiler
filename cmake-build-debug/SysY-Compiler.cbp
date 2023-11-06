@@ -101,6 +101,12 @@
 		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/src/NonterminalCharacter/AddExp.h">
 			<Option target="SysY-Compiler"/>
 		</Unit>
+		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/src/NonterminalCharacter/BType.cpp">
+			<Option target="SysY-Compiler"/>
+		</Unit>
+		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/src/NonterminalCharacter/BType.h">
+			<Option target="SysY-Compiler"/>
+		</Unit>
 		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/src/NonterminalCharacter/Block.cpp">
 			<Option target="SysY-Compiler"/>
 		</Unit>
@@ -111,12 +117,6 @@
 			<Option target="SysY-Compiler"/>
 		</Unit>
 		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/src/NonterminalCharacter/BlockItem.h">
-			<Option target="SysY-Compiler"/>
-		</Unit>
-		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/src/NonterminalCharacter/Btype.cpp">
-			<Option target="SysY-Compiler"/>
-		</Unit>
-		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/src/NonterminalCharacter/Btype.h">
 			<Option target="SysY-Compiler"/>
 		</Unit>
 		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/src/NonterminalCharacter/CompUnit.cpp">
@@ -209,12 +209,6 @@
 		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/src/NonterminalCharacter/FuncType.h">
 			<Option target="SysY-Compiler"/>
 		</Unit>
-		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/src/NonterminalCharacter/Ident.cpp">
-			<Option target="SysY-Compiler"/>
-		</Unit>
-		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/src/NonterminalCharacter/Ident.h">
-			<Option target="SysY-Compiler"/>
-		</Unit>
 		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/src/NonterminalCharacter/InitVal.cpp">
 			<Option target="SysY-Compiler"/>
 		</Unit>
@@ -249,6 +243,12 @@
 			<Option target="SysY-Compiler"/>
 		</Unit>
 		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/src/NonterminalCharacter/MulExp.h">
+			<Option target="SysY-Compiler"/>
+		</Unit>
+		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/src/NonterminalCharacter/Node.cpp">
+			<Option target="SysY-Compiler"/>
+		</Unit>
+		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/src/NonterminalCharacter/Node.h">
 			<Option target="SysY-Compiler"/>
 		</Unit>
 		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/src/NonterminalCharacter/Nonterminals.h">
@@ -306,6 +306,12 @@
 			<Option target="SysY-Compiler"/>
 		</Unit>
 		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/src/Parser/Parser.h">
+			<Option target="SysY-Compiler"/>
+		</Unit>
+		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/src/Parser/temp.txt">
+			<Option target="SysY-Compiler"/>
+		</Unit>
+		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/src/Parser/temp2.txt">
 			<Option target="SysY-Compiler"/>
 		</Unit>
 		<Unit filename="D:/University/Study/2023fall/Compiler/SysY-Compiler/src/SymbolManager/Func.cpp">

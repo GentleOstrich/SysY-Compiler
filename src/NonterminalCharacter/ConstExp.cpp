@@ -4,10 +4,3 @@
 
 #include "ConstExp.h"
 
-void ConstExp::setAddExp(AddExp *addExp) {
-    this->addExp = addExp;
-}
-
-ConstExp::ConstExp() {
-    this->addExp = nullptr;
-}

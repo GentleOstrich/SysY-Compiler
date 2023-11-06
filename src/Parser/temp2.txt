@@ -83,9 +83,9 @@ ConstDecl Parser::parseConstDecl() {
     }
 }
 
-Btype Parser::parseBType() {
+BType Parser::parseBType() {
     if (tkType == LexType::INTTK) {
-        Btype btype("int");
+        BType btype("int");
         printTk;
         readTk;
         return btype;
@@ -155,7 +155,7 @@ ConstInitVal Parser::parseConstInitVal() {
 
 VarDecl Parser::parseVarDecl() {
     VarDecl varDecl;
-    Btype btype = parseBType();
+    BType btype = parseBType();
     varDecl.setBType(&btype);
     VarDef varDef = parseVarDef();
     varDecl.addVarDef(&varDef);
@@ -325,8 +325,8 @@ FuncFParams Parser::parseFuncFParams() {
 FuncFParam Parser::parseFuncFParam() {
     FuncFParam funcFparam;
     if (tkType == LexType::INTTK) {
-        Btype btype("int");
-        funcFparam.setBtype(&btype);
+        BType btype("int");
+        funcFparam.setBType(&btype);
         printTk;
         readTk;
         if (tkType == LexType::IDENFR) {

@@ -3,7 +3,3 @@
 //
 
 #include "FuncType.h"
-
-FuncType::FuncType(std::string word) {
-    this->word = word;
-}

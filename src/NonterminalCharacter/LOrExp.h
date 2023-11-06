@@ -4,22 +4,11 @@
 
 #ifndef SYSY_COMPILER_LOREXP_H
 #define SYSY_COMPILER_LOREXP_H
+#include "Node.h"
 
-#include "LAndExp.h"
-#include "LOrExp.h"
-
-class LOrExp {
+class LOrExp : public Node {
 public:
-    LAndExp *lAndExp;
-    LOrExp *lOrExp1;
-    LAndExp *lAndExp1;
-    LOrExp();
 
-    void setLAndExp(LAndExp *lAndExp);
-
-    void setLOrExp1(LOrExp *lOrExp1);
-
-    void setLAndExp1(LAndExp *lAndExp1);
 };
 
 

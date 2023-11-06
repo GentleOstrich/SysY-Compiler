@@ -4,17 +4,12 @@
 
 #ifndef SYSY_COMPILER_CONSTDECL_H
 #define SYSY_COMPILER_CONSTDECL_H
-#include "Btype.h"
-#include "ConstDef.h"
+#include "Node.h"
 #include <vector>
 
-class ConstDecl {
+class ConstDecl : public Node{
 public:
-    Btype *btype;
-    std::vector<ConstDef*> constDefs;
-    ConstDecl();
-    void setBtype(Btype *btype);
-    void addConstDef(ConstDef *constDef);
+
 };
 
 

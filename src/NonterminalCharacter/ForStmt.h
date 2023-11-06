@@ -4,19 +4,12 @@
 
 #ifndef SYSY_COMPILER_FORSTMT_H
 #define SYSY_COMPILER_FORSTMT_H
-#include "LVal.h"
-#include "Exp.h"
+#include "Node.h"
 #include <vector>
 
-class ForStmt {
+class ForStmt : public Node {
 public:
-    LVal *lVal;
-    Exp *exp;
-    ForStmt();
 
-    void setLVal(LVal *lVal);
-
-    void setExp(Exp *exp);
 };
 
 

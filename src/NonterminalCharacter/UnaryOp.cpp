@@ -3,11 +3,3 @@
 //
 
 #include "UnaryOp.h"
-
-UnaryOp::UnaryOp() {
-
-}
-
-void UnaryOp::setOp(char op) {
-    this->op = op;
-}

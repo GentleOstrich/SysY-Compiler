@@ -5,26 +5,22 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_BUILD_TYPE Debug)
 
 
-add_executable(SysY-Compiler
+add_executable(
+        SysY-Compiler
         src/main.cpp
-        src/Lexer/Lexer.cpp
-        src/Lexer/Lexer.h
-        src/Parser/Parser.cpp
-        src/Parser/Parser.h
-        src/Lexer/LexType.h
-        src/SymbolManager/Symbol.cpp
-        src/SymbolManager/Symbol.h
         src/ErrorCheck/ErrorCheck.cpp
         src/ErrorCheck/ErrorCheck.h
-        src/SymbolManager/Func.cpp
+        src/Lexer/Lexer.cpp
+        src/Lexer/Lexer.h
+        src/Lexer/LexType.h
         src/NonterminalCharacter/AddExp.cpp
         src/NonterminalCharacter/AddExp.h
         src/NonterminalCharacter/Block.cpp
         src/NonterminalCharacter/Block.h
         src/NonterminalCharacter/BlockItem.cpp
         src/NonterminalCharacter/BlockItem.h
-        src/NonterminalCharacter/Btype.cpp
-        src/NonterminalCharacter/Btype.h
+        src/NonterminalCharacter/BType.cpp
+        src/NonterminalCharacter/BType.h
         src/NonterminalCharacter/CompUnit.cpp
         src/NonterminalCharacter/CompUnit.h
         src/NonterminalCharacter/Cond.cpp
@@ -55,8 +51,6 @@ add_executable(SysY-Compiler
         src/NonterminalCharacter/FuncRParams.h
         src/NonterminalCharacter/FuncType.cpp
         src/NonterminalCharacter/FuncType.h
-        src/NonterminalCharacter/Ident.cpp
-        src/NonterminalCharacter/Ident.h
         src/NonterminalCharacter/InitVal.cpp
         src/NonterminalCharacter/InitVal.h
         src/NonterminalCharacter/LAndExp.cpp
@@ -69,6 +63,8 @@ add_executable(SysY-Compiler
         src/NonterminalCharacter/MainFuncDef.h
         src/NonterminalCharacter/MulExp.cpp
         src/NonterminalCharacter/MulExp.h
+        src/NonterminalCharacter/Node.cpp
+        src/NonterminalCharacter/Node.h
         src/NonterminalCharacter/Nonterminals.h
         src/NonterminalCharacter/Number.cpp
         src/NonterminalCharacter/Number.h
@@ -86,4 +82,12 @@ add_executable(SysY-Compiler
         src/NonterminalCharacter/VarDecl.h
         src/NonterminalCharacter/VarDef.cpp
         src/NonterminalCharacter/VarDef.h
-        )
+        src/Parser/Parser.cpp
+        src/Parser/Parser.h
+        src/Parser/temp.txt
+        src/Parser/temp2.txt
+        src/SymbolManager/Func.cpp
+        src/SymbolManager/Func.h
+        src/SymbolManager/Symbol.cpp
+        src/SymbolManager/Symbol.h
+)

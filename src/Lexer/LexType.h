@@ -1,11 +1,10 @@
 //
 // Created by lyh on 9/19/2023.
 //
-#include <string>
-using namespace std;
 #ifndef SYSY_COMPILER_LEXTYPE_H
 #define SYSY_COMPILER_LEXTYPE_H
-
+#include <string>
+using namespace std;
 enum class LexType {
     IDENFR,
     MAINTK,

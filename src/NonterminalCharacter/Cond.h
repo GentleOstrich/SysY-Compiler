@@ -4,13 +4,11 @@
 
 #ifndef SYSY_COMPILER_COND_H
 #define SYSY_COMPILER_COND_H
-#include "LOrExp.h"
+#include "Node.h"
 
-class Cond {
+class Cond : public Node{
 public:
-    LOrExp *lOrExp;
-    Cond();
-    void setLOrExp(LOrExp *lOrExp);
+
 };
 
 

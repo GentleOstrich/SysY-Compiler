@@ -11,75 +11,73 @@
 #include "../Lexer/Lexer.h"
 using namespace std;
 
-
 class Parser {
 public:
-    int parseCompUnit();
+    CompUnit* parseCompUnit();
 
-    int parseDecl();
+    Decl* parseDecl();
 
-    int parseConstDecl();
+    ConstDecl* parseConstDecl();
 
-    int parseBType();
+    BType* parseBType();
 
-    int parseConstDef();
+    ConstDef* parseConstDef();
 
-    int parseConstInitVal();
+    ConstInitVal* parseConstInitVal();
 
-    int parseVarDecl();
+    VarDecl* parseVarDecl();
 
-    int parseVarDef();
+    VarDef* parseVarDef();
 
-    int parseInitVal();
+    InitVal* parseInitVal();
 
-    int parseFuncDef();
+    FuncDef* parseFuncDef();
 
-    int parseMainFuncDef();
+    MainFuncDef* parseMainFuncDef();
 
-    int parseFuncType();
+    FuncType* parseFuncType();
 
-    int parseFuncFParams();
+    FuncFParams* parseFuncFParams();
 
-    int parseFuncFParam();
+    FuncFParam* parseFuncFParam();
 
-    int parseBlock();
+    Block* parseBlock();
 
-    int parseBlockItem();
+    BlockItem* parseBlockItem();
 
-    int parseStmt();
+    Stmt* parseStmt();
 
-    int parseForStmt();
+    ForStmt* parseForStmt();
 
-    int parseExp();
+    Exp* parseExp();
 
-    int parseCond();
+    Cond* parseCond();
 
-    int parseLVal();
+    LVal* parseLVal();
 
-    int parsePrimaryExp();
+    PrimaryExp* parsePrimaryExp();
 
-    int parseNumber();
+    UnaryExp* parseUnaryExp();
 
-    int parseUnaryExp();
+    UnaryOp* parseUnaryOp();
 
-    int parseUnaryOp();
+    FuncRParams* parseFuncRParams();
 
-    int parseFuncRParams();
+    MulExp* parseMulExp();
 
-    int parseMulExp();
+    AddExp* parseAddExp();
 
-    int parseAddExp();
+    RelExp* parseRelExp();
 
-    int parseRelExp();
+    EqExp* parseEqExp();
 
-    int parseEqExp();
+    LAndExp* parseLAndExp();
 
-    int parseLAndExp();
+    LOrExp* parseLOrExp();
 
-    int parseLOrExp();
+    ConstExp* parseConstExp();
 
-    int parseConstExp();
-
+    Number* parseNumber();
 };
 
 

@@ -1,9 +1,5 @@
 //
-// Created by lyh on 11/3/2023.
+// Created by lyh on 11/6/2023.
 //
 
 #include "Number.h"
-
-void Number::setIntConst(int intConst) {
-    this->intConst = intConst;
-}

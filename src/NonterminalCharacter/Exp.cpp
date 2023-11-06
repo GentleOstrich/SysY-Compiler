@@ -3,11 +3,3 @@
 //
 
 #include "Exp.h"
-
-void Exp::setAddExp(AddExp *addExp) {
-    this->addExp = addExp;
-}
-
-Exp::Exp() {
-    this->addExp = nullptr;
-}

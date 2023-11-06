@@ -4,16 +4,11 @@
 
 #ifndef SYSY_COMPILER_DECL_H
 #define SYSY_COMPILER_DECL_H
-#include "ConstDecl.h"
-#include "VarDecl.h"
+#include "Node.h"
 
-class Decl {
+class Decl : public Node {
 public:
-    ConstDecl *constDecl;
-    VarDecl *varDecl;
-    Decl();
-    void setConstDecl(ConstDecl *constDecl);
-    void setVarDecl(VarDecl *varDecl);
+
 };
 
 

@@ -4,17 +4,12 @@
 
 #ifndef SYSY_COMPILER_CONSTINITVAL_H
 #define SYSY_COMPILER_CONSTINITVAL_H
-#include "ConstExp.h"
-#include "ConstInitVal.h"
+#include "Node.h"
 #include <vector>
 
-class ConstInitVal {
+class ConstInitVal : public Node {
 public:
-    ConstExp *constExp;
-    std::vector<ConstInitVal*> constInitVals;
-    ConstInitVal();
-    void setConstExp(ConstExp *constExp);
-    void addConstInitVal(ConstInitVal *constInitVal);
+
 };
 
 

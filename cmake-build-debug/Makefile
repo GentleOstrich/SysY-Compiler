@@ -203,6 +203,33 @@ src/NonterminalCharacter/AddExp.cpp.s:
 	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/AddExp.cpp.s
 .PHONY : src/NonterminalCharacter/AddExp.cpp.s
 
+src/NonterminalCharacter/BType.obj: src/NonterminalCharacter/BType.cpp.obj
+
+.PHONY : src/NonterminalCharacter/BType.obj
+
+# target to build an object file
+src/NonterminalCharacter/BType.cpp.obj:
+	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/BType.cpp.obj
+.PHONY : src/NonterminalCharacter/BType.cpp.obj
+
+src/NonterminalCharacter/BType.i: src/NonterminalCharacter/BType.cpp.i
+
+.PHONY : src/NonterminalCharacter/BType.i
+
+# target to preprocess a source file
+src/NonterminalCharacter/BType.cpp.i:
+	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/BType.cpp.i
+.PHONY : src/NonterminalCharacter/BType.cpp.i
+
+src/NonterminalCharacter/BType.s: src/NonterminalCharacter/BType.cpp.s
+
+.PHONY : src/NonterminalCharacter/BType.s
+
+# target to generate assembly for a file
+src/NonterminalCharacter/BType.cpp.s:
+	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/BType.cpp.s
+.PHONY : src/NonterminalCharacter/BType.cpp.s
+
 src/NonterminalCharacter/Block.obj: src/NonterminalCharacter/Block.cpp.obj
 
 .PHONY : src/NonterminalCharacter/Block.obj
@@ -256,33 +283,6 @@ src/NonterminalCharacter/BlockItem.s: src/NonterminalCharacter/BlockItem.cpp.s
 src/NonterminalCharacter/BlockItem.cpp.s:
 	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/BlockItem.cpp.s
 .PHONY : src/NonterminalCharacter/BlockItem.cpp.s
-
-src/NonterminalCharacter/Btype.obj: src/NonterminalCharacter/Btype.cpp.obj
-
-.PHONY : src/NonterminalCharacter/Btype.obj
-
-# target to build an object file
-src/NonterminalCharacter/Btype.cpp.obj:
-	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Btype.cpp.obj
-.PHONY : src/NonterminalCharacter/Btype.cpp.obj
-
-src/NonterminalCharacter/Btype.i: src/NonterminalCharacter/Btype.cpp.i
-
-.PHONY : src/NonterminalCharacter/Btype.i
-
-# target to preprocess a source file
-src/NonterminalCharacter/Btype.cpp.i:
-	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Btype.cpp.i
-.PHONY : src/NonterminalCharacter/Btype.cpp.i
-
-src/NonterminalCharacter/Btype.s: src/NonterminalCharacter/Btype.cpp.s
-
-.PHONY : src/NonterminalCharacter/Btype.s
-
-# target to generate assembly for a file
-src/NonterminalCharacter/Btype.cpp.s:
-	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Btype.cpp.s
-.PHONY : src/NonterminalCharacter/Btype.cpp.s
 
 src/NonterminalCharacter/CompUnit.obj: src/NonterminalCharacter/CompUnit.cpp.obj
 
@@ -689,33 +689,6 @@ src/NonterminalCharacter/FuncType.cpp.s:
 	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncType.cpp.s
 .PHONY : src/NonterminalCharacter/FuncType.cpp.s
 
-src/NonterminalCharacter/Ident.obj: src/NonterminalCharacter/Ident.cpp.obj
-
-.PHONY : src/NonterminalCharacter/Ident.obj
-
-# target to build an object file
-src/NonterminalCharacter/Ident.cpp.obj:
-	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Ident.cpp.obj
-.PHONY : src/NonterminalCharacter/Ident.cpp.obj
-
-src/NonterminalCharacter/Ident.i: src/NonterminalCharacter/Ident.cpp.i
-
-.PHONY : src/NonterminalCharacter/Ident.i
-
-# target to preprocess a source file
-src/NonterminalCharacter/Ident.cpp.i:
-	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Ident.cpp.i
-.PHONY : src/NonterminalCharacter/Ident.cpp.i
-
-src/NonterminalCharacter/Ident.s: src/NonterminalCharacter/Ident.cpp.s
-
-.PHONY : src/NonterminalCharacter/Ident.s
-
-# target to generate assembly for a file
-src/NonterminalCharacter/Ident.cpp.s:
-	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Ident.cpp.s
-.PHONY : src/NonterminalCharacter/Ident.cpp.s
-
 src/NonterminalCharacter/InitVal.obj: src/NonterminalCharacter/InitVal.cpp.obj
 
 .PHONY : src/NonterminalCharacter/InitVal.obj
@@ -877,6 +850,33 @@ src/NonterminalCharacter/MulExp.s: src/NonterminalCharacter/MulExp.cpp.s
 src/NonterminalCharacter/MulExp.cpp.s:
 	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/MulExp.cpp.s
 .PHONY : src/NonterminalCharacter/MulExp.cpp.s
+
+src/NonterminalCharacter/Node.obj: src/NonterminalCharacter/Node.cpp.obj
+
+.PHONY : src/NonterminalCharacter/Node.obj
+
+# target to build an object file
+src/NonterminalCharacter/Node.cpp.obj:
+	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Node.cpp.obj
+.PHONY : src/NonterminalCharacter/Node.cpp.obj
+
+src/NonterminalCharacter/Node.i: src/NonterminalCharacter/Node.cpp.i
+
+.PHONY : src/NonterminalCharacter/Node.i
+
+# target to preprocess a source file
+src/NonterminalCharacter/Node.cpp.i:
+	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Node.cpp.i
+.PHONY : src/NonterminalCharacter/Node.cpp.i
+
+src/NonterminalCharacter/Node.s: src/NonterminalCharacter/Node.cpp.s
+
+.PHONY : src/NonterminalCharacter/Node.s
+
+# target to generate assembly for a file
+src/NonterminalCharacter/Node.cpp.s:
+	$(MAKE) -f CMakeFiles\SysY-Compiler.dir\build.make CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Node.cpp.s
+.PHONY : src/NonterminalCharacter/Node.cpp.s
 
 src/NonterminalCharacter/Number.obj: src/NonterminalCharacter/Number.cpp.obj
 
@@ -1220,15 +1220,15 @@ help:
 	@echo ... src/NonterminalCharacter/AddExp.obj
 	@echo ... src/NonterminalCharacter/AddExp.i
 	@echo ... src/NonterminalCharacter/AddExp.s
+	@echo ... src/NonterminalCharacter/BType.obj
+	@echo ... src/NonterminalCharacter/BType.i
+	@echo ... src/NonterminalCharacter/BType.s
 	@echo ... src/NonterminalCharacter/Block.obj
 	@echo ... src/NonterminalCharacter/Block.i
 	@echo ... src/NonterminalCharacter/Block.s
 	@echo ... src/NonterminalCharacter/BlockItem.obj
 	@echo ... src/NonterminalCharacter/BlockItem.i
 	@echo ... src/NonterminalCharacter/BlockItem.s
-	@echo ... src/NonterminalCharacter/Btype.obj
-	@echo ... src/NonterminalCharacter/Btype.i
-	@echo ... src/NonterminalCharacter/Btype.s
 	@echo ... src/NonterminalCharacter/CompUnit.obj
 	@echo ... src/NonterminalCharacter/CompUnit.i
 	@echo ... src/NonterminalCharacter/CompUnit.s
@@ -1274,9 +1274,6 @@ help:
 	@echo ... src/NonterminalCharacter/FuncType.obj
 	@echo ... src/NonterminalCharacter/FuncType.i
 	@echo ... src/NonterminalCharacter/FuncType.s
-	@echo ... src/NonterminalCharacter/Ident.obj
-	@echo ... src/NonterminalCharacter/Ident.i
-	@echo ... src/NonterminalCharacter/Ident.s
 	@echo ... src/NonterminalCharacter/InitVal.obj
 	@echo ... src/NonterminalCharacter/InitVal.i
 	@echo ... src/NonterminalCharacter/InitVal.s
@@ -1295,6 +1292,9 @@ help:
 	@echo ... src/NonterminalCharacter/MulExp.obj
 	@echo ... src/NonterminalCharacter/MulExp.i
 	@echo ... src/NonterminalCharacter/MulExp.s
+	@echo ... src/NonterminalCharacter/Node.obj
+	@echo ... src/NonterminalCharacter/Node.i
+	@echo ... src/NonterminalCharacter/Node.s
 	@echo ... src/NonterminalCharacter/Number.obj
 	@echo ... src/NonterminalCharacter/Number.i
 	@echo ... src/NonterminalCharacter/Number.s

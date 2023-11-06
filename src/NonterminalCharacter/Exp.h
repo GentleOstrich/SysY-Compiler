@@ -4,14 +4,11 @@
 
 #ifndef SYSY_COMPILER_EXP_H
 #define SYSY_COMPILER_EXP_H
+#include "Node.h"
 
-#include "AddExp.h"
-class AddExp;
-class Exp {
+class Exp : public Node {
 public:
-    AddExp *addExp;
-    Exp();
-    void setAddExp(AddExp *addExp);
+
 };
 
 

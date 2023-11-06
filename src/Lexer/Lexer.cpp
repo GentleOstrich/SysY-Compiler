@@ -313,6 +313,10 @@ LexType Lexer::nnext() {
     LexType nowLexType = lexType;
     int nowNumber = number;
     bool flag = false;
+    int res = next();
+    if (res == 0) {
+        flag = true;
+    }
     LexType resLexType = LexType::NONE;
     if (flag) {
         resLexType = lexType;
@@ -332,6 +336,13 @@ LexType Lexer::nnnext() {
     LexType nowLexType = lexType;
     int nowNumber = number;
     bool flag = false;
+    int res = next();
+    if (res == 0) {
+        res = next();
+        if (res == 0) {
+            flag = true;
+        }
+    }
     LexType resLexType = LexType::NONE;
     if (flag) {
         resLexType = lexType;

@@ -6,22 +6,11 @@
 #define SYSY_COMPILER_COMPUNIT_H
 
 #include <vector>
-#include "Decl.h"
-#include "FuncDef.h"
-#include "MainFuncDef.h"
+#include "Node.h"
 
-class CompUnit {
+class CompUnit : public Node{
 public:
-    std::vector<Decl*> decls;
-    std::vector<FuncDef*> funcDefs;
-    MainFuncDef *mainFuncDef;
-    CompUnit();
 
-    void addDecl(Decl *decl);
-
-    void addFuncDef(FuncDef *funcDef);
-
-    void setMainFuncDef(MainFuncDef *mainFuncDef);
 };
 
 

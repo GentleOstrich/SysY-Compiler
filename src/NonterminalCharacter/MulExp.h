@@ -4,23 +4,11 @@
 
 #ifndef SYSY_COMPILER_MULEXP_H
 #define SYSY_COMPILER_MULEXP_H
+#include "Node.h"
 
-#include "UnaryExp.h"
-#include "MulExp.h"
-
-class MulExp {
+class MulExp : public Node {
 public:
-    UnaryExp *unaryExp;
-    MulExp *mulExp1;
-    UnaryExp *unaryExp1;
 
-    MulExp();
-
-    void setUnaryExp(UnaryExp *unaryExp);
-
-    void setMulExp1(MulExp *mulExp1);
-
-    void setUnaryExp1(UnaryExp *unaryExp1);
 };
 
 

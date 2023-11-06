@@ -4,13 +4,11 @@
 
 #ifndef SYSY_COMPILER_MAINFUNCDEF_H
 #define SYSY_COMPILER_MAINFUNCDEF_H
-#include "Block.h"
+#include "Node.h"
 
-class MainFuncDef {
+class MainFuncDef : public Node {
 public:
-    Block *block;
-    MainFuncDef();
-    void setBlock(Block *block);
+
 };
 
 

@@ -4,13 +4,11 @@
 
 #ifndef SYSY_COMPILER_UNARYOP_H
 #define SYSY_COMPILER_UNARYOP_H
+#include "Node.h"
 
-
-class UnaryOp {
+class UnaryOp : public Node {
 public:
-    char op; // + - !
-    UnaryOp();
-    void setOp(char op);
+
 };
 
 

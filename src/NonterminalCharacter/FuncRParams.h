@@ -4,15 +4,12 @@
 
 #ifndef SYSY_COMPILER_FUNCRPARAMS_H
 #define SYSY_COMPILER_FUNCRPARAMS_H
-
-#include "Exp.h"
+#include "Node.h"
 #include <vector>
 
-class FuncRParams {
+class FuncRParams : public Node {
 public:
-    std::vector<Exp*>exps;
-    FuncRParams();
-    void addExp(Exp* exp);
+
 };
 
 

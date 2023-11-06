@@ -4,15 +4,4 @@
 
 #include "BlockItem.h"
 
-BlockItem::BlockItem() {
-    this->stmt = nullptr;
-    this->decl = nullptr;
-}
 
-void BlockItem::setDecl(Decl *decl) {
-    this->decl = decl;
-}
-
-void BlockItem::setStmt(Stmt *stmt) {
-    this->stmt = stmt;
-}

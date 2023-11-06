@@ -4,22 +4,11 @@
 
 #ifndef SYSY_COMPILER_EQEXP_H
 #define SYSY_COMPILER_EQEXP_H
+#include "Node.h"
 
-#include "RelExp.h"
-#include "EqExp.h"
-
-class EqExp {
+class EqExp : public Node{
 public:
-    RelExp *relExp;
-    EqExp *eqExp1;
-    RelExp *relExp1;
-    EqExp();
 
-    void setRelExp(RelExp *relExp);
-
-    void setEqExp1(EqExp *eqExp1);
-
-    void setRelExp1(RelExp *relExp1);
 };
 
 

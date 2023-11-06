@@ -4,17 +4,13 @@
 
 #ifndef SYSY_COMPILER_INITVAL_H
 #define SYSY_COMPILER_INITVAL_H
-#include "Exp.h"
-#include "InitVal.h"
+#include "Node.h"
 #include <vector>
 
-class InitVal{
+class InitVal : public Node {
 public:
-    Exp *exp;
-    std::vector<InitVal*> initVals;
-    InitVal();
-    void setExp(Exp *exp);
-    void addInitVal(InitVal *initVal);
+
+
 };
 
 

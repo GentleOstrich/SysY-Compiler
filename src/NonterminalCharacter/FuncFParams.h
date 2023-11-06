@@ -4,14 +4,12 @@
 
 #ifndef SYSY_COMPILER_FUNCFPARAMS_H
 #define SYSY_COMPILER_FUNCFPARAMS_H
-#include "FuncFParam.h"
+#include "Node.h"
 #include <vector>
 
-class FuncFParams {
+class FuncFParams : public Node {
 public:
-    std::vector<FuncFParam *> funcFParams;
-    FuncFParams();
-    void addFuncFParam(FuncFParam *funcFParam);
+
 };
 
 

@@ -4,22 +4,12 @@
 
 #ifndef SYSY_COMPILER_CONSTDEF_H
 #define SYSY_COMPILER_CONSTDEF_H
-#include "Ident.h"
-#include "ConstExp.h"
-#include "ConstInitVal.h"
+#include "Node.h"
 #include "vector"
 
-class ConstDef {
+class ConstDef : public Node {
 public:
-    Ident *ident;
-    std::vector<ConstExp*> constExps;
-    ConstInitVal *constInitVal;
-    ConstDef();
-    void setIdent(Ident *ident);
 
-    void addConstExps(ConstExp *constExp);
-
-    void setConstInitVal(ConstInitVal *constInitVal);
 };
 
 

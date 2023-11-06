@@ -4,14 +4,11 @@
 
 #ifndef SYSY_COMPILER_CONSTEXP_H
 #define SYSY_COMPILER_CONSTEXP_H
-#include "AddExp.h"
+#include "Node.h"
 
-class ConstExp {
+class ConstExp : public Node {
 public:
-    AddExp *addExp;
-    ConstExp();
 
-    void setAddExp(AddExp *addExp);
 };
 
 

@@ -4,22 +4,11 @@
 
 #ifndef SYSY_COMPILER_LANDEXP_H
 #define SYSY_COMPILER_LANDEXP_H
+#include "Node.h"
 
-#include "EqExp.h"
-#include "LAndExp.h"
-
-class LAndExp {
+class LAndExp : public Node {
 public:
-    EqExp *eqExp;
-    LAndExp *lAndExp1;
-    EqExp *eqExp1;
-    LAndExp();
 
-    void setEqExp(EqExp *eqExp);
-
-    void setLAndExp1(LAndExp *lAndExp1);
-
-    void setEqExp1(EqExp *eqExp1);
 };
 
 

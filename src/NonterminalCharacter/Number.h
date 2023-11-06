@@ -1,17 +1,14 @@
 //
-// Created by lyh on 11/3/2023.
+// Created by lyh on 11/6/2023.
 //
 
 #ifndef SYSY_COMPILER_NUMBER_H
 #define SYSY_COMPILER_NUMBER_H
+#include "Node.h"
 
-
-class Number {
+class Number : public Node{
 public:
-    int intConst;
-    Number();
 
-    void setIntConst(int intConst);
 };
 
 

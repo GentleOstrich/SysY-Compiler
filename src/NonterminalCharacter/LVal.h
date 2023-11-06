@@ -4,17 +4,12 @@
 
 #ifndef SYSY_COMPILER_LVAL_H
 #define SYSY_COMPILER_LVAL_H
-#include "Ident.h"
-#include "Exp.h"
+#include "Node.h"
 #include <vector>
-class Exp;
-class LVal {
+
+class LVal : public Node {
 public:
-    Ident *ident;
-    std::vector<Exp*> exps;
-    LVal();
-    void setIdent(Ident *ident);
-    void addExp(Exp *exp);
+
 };
 
 

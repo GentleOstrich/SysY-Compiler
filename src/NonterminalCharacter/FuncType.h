@@ -4,15 +4,13 @@
 
 #ifndef SYSY_COMPILER_FUNCTYPE_H
 #define SYSY_COMPILER_FUNCTYPE_H
-
+#include "Node.h"
 #include <string>
-
-class FuncType {
+class FuncType : public Node {
 public:
-    std::string word;
-    FuncType(std::string word);
 
 };
+
 
 
 #endif //SYSY_COMPILER_FUNCTYPE_H

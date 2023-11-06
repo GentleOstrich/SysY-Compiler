@@ -4,21 +4,12 @@
 
 #ifndef SYSY_COMPILER_ADDEXP_H
 #define SYSY_COMPILER_ADDEXP_H
+#include "Node.h"
 
-#include "MulExp.h"
 
-class AddExp {
+class AddExp : public Node {
 public:
-    MulExp *mulExp;
-    AddExp *addExp1;
-    MulExp *mulExp1;
-    AddExp();
 
-    void setMulExp(MulExp *mulExp);
-
-    void setAddExp1(AddExp *addExp1);
-
-    void setMulExp1(MulExp *mulExp1);
 };
 
 

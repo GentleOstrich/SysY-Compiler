@@ -4,10 +4,3 @@
 
 #include "FuncFParams.h"
 
-FuncFParams::FuncFParams() {
-
-}
-
-void FuncFParams::addFuncFParam(FuncFParam *funcFParam) {
-    this->funcFParams.push_back(funcFParam);
-}

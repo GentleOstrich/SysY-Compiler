@@ -7,12 +7,10 @@
 
 #include "BlockItem.h"
 #include <vector>
-class BlockItem;
-class Block {
+
+class Block : public Node {
 public:
-    std::vector<BlockItem *> blockItems;
-    Block();
-    void addBlockItem(BlockItem *blockItem);
+
 };
 
 

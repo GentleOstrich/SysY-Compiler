@@ -3,11 +3,3 @@
 //
 
 #include "ForStmt.h"
-
-void ForStmt::setLVal(LVal *lVal) {
-    this->lVal = lVal;
-}
-
-void ForStmt::setExp(Exp *exp) {
-    this->exp = exp;
-}

@@ -4,23 +4,12 @@
 
 #ifndef SYSY_COMPILER_FUNCDEF_H
 #define SYSY_COMPILER_FUNCDEF_H
-#include "FuncType.h"
-#include "Ident.h"
-#include "FuncFParams.h"
-#include "Block.h"
+#include "Node.h"
 #include <vector>
 
-class FuncDef {
+class FuncDef : public Node {
 public:
-    FuncType *funcType;
-    Ident *ident;
-    FuncFParams *funcFParams;
-    Block *block;
-    FuncDef();
-    void setFuncType(FuncType *funcType);
-    void setIdent(Ident* ident);
-    void setFuncFParams(FuncFParams *funcFParams);
-    void setBlock(Block *block);
+
 };
 
 

@@ -4,16 +4,10 @@
 
 #ifndef SYSY_COMPILER_VARDECL_H
 #define SYSY_COMPILER_VARDECL_H
-#include "Btype.h"
-#include "VarDef.h"
+#include "Node.h"
 #include <vector>
-class VarDecl {
+class VarDecl : public Node {
 public:
-    Btype *btype;
-    std::vector<VarDef*> varDefs;
-    VarDecl();
-    void setBType(Btype *btype);
-    void  addVarDef(VarDef *varDef);
 
 };
 

@@ -4,10 +4,3 @@
 
 #include "Cond.h"
 
-void Cond::setLOrExp(LOrExp *lOrExp) {
-    this->lOrExp = lOrExp;
-}
-
-Cond::Cond() {
-    this->lOrExp = nullptr;
-}

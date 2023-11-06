@@ -69,48 +69,9 @@ CMakeFiles/SysY-Compiler.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SysY-Compiler.dir/src/main.cpp.s"
 	D:\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\University\Study\2023fall\Compiler\SysY-Compiler\src\main.cpp -o CMakeFiles\SysY-Compiler.dir\src\main.cpp.s
 
-CMakeFiles/SysY-Compiler.dir/src/Lexer/Lexer.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
-CMakeFiles/SysY-Compiler.dir/src/Lexer/Lexer.cpp.obj: ../src/Lexer/Lexer.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/Lexer/Lexer.cpp.obj"
-	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\Lexer\Lexer.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\Lexer\Lexer.cpp
-
-CMakeFiles/SysY-Compiler.dir/src/Lexer/Lexer.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SysY-Compiler.dir/src/Lexer/Lexer.cpp.i"
-	D:\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\University\Study\2023fall\Compiler\SysY-Compiler\src\Lexer\Lexer.cpp > CMakeFiles\SysY-Compiler.dir\src\Lexer\Lexer.cpp.i
-
-CMakeFiles/SysY-Compiler.dir/src/Lexer/Lexer.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SysY-Compiler.dir/src/Lexer/Lexer.cpp.s"
-	D:\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\University\Study\2023fall\Compiler\SysY-Compiler\src\Lexer\Lexer.cpp -o CMakeFiles\SysY-Compiler.dir\src\Lexer\Lexer.cpp.s
-
-CMakeFiles/SysY-Compiler.dir/src/Parser/Parser.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
-CMakeFiles/SysY-Compiler.dir/src/Parser/Parser.cpp.obj: ../src/Parser/Parser.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/Parser/Parser.cpp.obj"
-	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\Parser\Parser.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\Parser\Parser.cpp
-
-CMakeFiles/SysY-Compiler.dir/src/Parser/Parser.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SysY-Compiler.dir/src/Parser/Parser.cpp.i"
-	D:\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\University\Study\2023fall\Compiler\SysY-Compiler\src\Parser\Parser.cpp > CMakeFiles\SysY-Compiler.dir\src\Parser\Parser.cpp.i
-
-CMakeFiles/SysY-Compiler.dir/src/Parser/Parser.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SysY-Compiler.dir/src/Parser/Parser.cpp.s"
-	D:\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\University\Study\2023fall\Compiler\SysY-Compiler\src\Parser\Parser.cpp -o CMakeFiles\SysY-Compiler.dir\src\Parser\Parser.cpp.s
-
-CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Symbol.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
-CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Symbol.cpp.obj: ../src/SymbolManager/Symbol.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Symbol.cpp.obj"
-	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\SymbolManager\Symbol.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\SymbolManager\Symbol.cpp
-
-CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Symbol.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Symbol.cpp.i"
-	D:\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\University\Study\2023fall\Compiler\SysY-Compiler\src\SymbolManager\Symbol.cpp > CMakeFiles\SysY-Compiler.dir\src\SymbolManager\Symbol.cpp.i
-
-CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Symbol.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Symbol.cpp.s"
-	D:\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\University\Study\2023fall\Compiler\SysY-Compiler\src\SymbolManager\Symbol.cpp -o CMakeFiles\SysY-Compiler.dir\src\SymbolManager\Symbol.cpp.s
-
 CMakeFiles/SysY-Compiler.dir/src/ErrorCheck/ErrorCheck.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
 CMakeFiles/SysY-Compiler.dir/src/ErrorCheck/ErrorCheck.cpp.obj: ../src/ErrorCheck/ErrorCheck.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/ErrorCheck/ErrorCheck.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/ErrorCheck/ErrorCheck.cpp.obj"
 	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\ErrorCheck\ErrorCheck.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\ErrorCheck\ErrorCheck.cpp
 
 CMakeFiles/SysY-Compiler.dir/src/ErrorCheck/ErrorCheck.cpp.i: cmake_force
@@ -121,22 +82,22 @@ CMakeFiles/SysY-Compiler.dir/src/ErrorCheck/ErrorCheck.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SysY-Compiler.dir/src/ErrorCheck/ErrorCheck.cpp.s"
 	D:\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\University\Study\2023fall\Compiler\SysY-Compiler\src\ErrorCheck\ErrorCheck.cpp -o CMakeFiles\SysY-Compiler.dir\src\ErrorCheck\ErrorCheck.cpp.s
 
-CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Func.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
-CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Func.cpp.obj: ../src/SymbolManager/Func.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Func.cpp.obj"
-	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\SymbolManager\Func.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\SymbolManager\Func.cpp
+CMakeFiles/SysY-Compiler.dir/src/Lexer/Lexer.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
+CMakeFiles/SysY-Compiler.dir/src/Lexer/Lexer.cpp.obj: ../src/Lexer/Lexer.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/Lexer/Lexer.cpp.obj"
+	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\Lexer\Lexer.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\Lexer\Lexer.cpp
 
-CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Func.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Func.cpp.i"
-	D:\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\University\Study\2023fall\Compiler\SysY-Compiler\src\SymbolManager\Func.cpp > CMakeFiles\SysY-Compiler.dir\src\SymbolManager\Func.cpp.i
+CMakeFiles/SysY-Compiler.dir/src/Lexer/Lexer.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SysY-Compiler.dir/src/Lexer/Lexer.cpp.i"
+	D:\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\University\Study\2023fall\Compiler\SysY-Compiler\src\Lexer\Lexer.cpp > CMakeFiles\SysY-Compiler.dir\src\Lexer\Lexer.cpp.i
 
-CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Func.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Func.cpp.s"
-	D:\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\University\Study\2023fall\Compiler\SysY-Compiler\src\SymbolManager\Func.cpp -o CMakeFiles\SysY-Compiler.dir\src\SymbolManager\Func.cpp.s
+CMakeFiles/SysY-Compiler.dir/src/Lexer/Lexer.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SysY-Compiler.dir/src/Lexer/Lexer.cpp.s"
+	D:\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\University\Study\2023fall\Compiler\SysY-Compiler\src\Lexer\Lexer.cpp -o CMakeFiles\SysY-Compiler.dir\src\Lexer\Lexer.cpp.s
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/AddExp.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/AddExp.cpp.obj: ../src/NonterminalCharacter/AddExp.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/AddExp.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/AddExp.cpp.obj"
 	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\AddExp.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\AddExp.cpp
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/AddExp.cpp.i: cmake_force
@@ -149,7 +110,7 @@ CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/AddExp.cpp.s: cmake_force
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Block.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Block.cpp.obj: ../src/NonterminalCharacter/Block.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Block.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Block.cpp.obj"
 	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\Block.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\Block.cpp
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Block.cpp.i: cmake_force
@@ -162,7 +123,7 @@ CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Block.cpp.s: cmake_force
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/BlockItem.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/BlockItem.cpp.obj: ../src/NonterminalCharacter/BlockItem.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/BlockItem.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/BlockItem.cpp.obj"
 	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\BlockItem.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\BlockItem.cpp
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/BlockItem.cpp.i: cmake_force
@@ -173,22 +134,22 @@ CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/BlockItem.cpp.s: cmake_for
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/BlockItem.cpp.s"
 	D:\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\BlockItem.cpp -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\BlockItem.cpp.s
 
-CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Btype.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
-CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Btype.cpp.obj: ../src/NonterminalCharacter/Btype.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Btype.cpp.obj"
-	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\Btype.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\Btype.cpp
+CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/BType.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
+CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/BType.cpp.obj: ../src/NonterminalCharacter/BType.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/BType.cpp.obj"
+	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\BType.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\BType.cpp
 
-CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Btype.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Btype.cpp.i"
-	D:\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\Btype.cpp > CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\Btype.cpp.i
+CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/BType.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/BType.cpp.i"
+	D:\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\BType.cpp > CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\BType.cpp.i
 
-CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Btype.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Btype.cpp.s"
-	D:\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\Btype.cpp -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\Btype.cpp.s
+CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/BType.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/BType.cpp.s"
+	D:\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\BType.cpp -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\BType.cpp.s
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/CompUnit.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/CompUnit.cpp.obj: ../src/NonterminalCharacter/CompUnit.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/CompUnit.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/CompUnit.cpp.obj"
 	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\CompUnit.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\CompUnit.cpp
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/CompUnit.cpp.i: cmake_force
@@ -201,7 +162,7 @@ CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/CompUnit.cpp.s: cmake_forc
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Cond.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Cond.cpp.obj: ../src/NonterminalCharacter/Cond.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Cond.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Cond.cpp.obj"
 	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\Cond.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\Cond.cpp
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Cond.cpp.i: cmake_force
@@ -214,7 +175,7 @@ CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Cond.cpp.s: cmake_force
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/ConstDecl.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/ConstDecl.cpp.obj: ../src/NonterminalCharacter/ConstDecl.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/ConstDecl.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/ConstDecl.cpp.obj"
 	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\ConstDecl.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\ConstDecl.cpp
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/ConstDecl.cpp.i: cmake_force
@@ -227,7 +188,7 @@ CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/ConstDecl.cpp.s: cmake_for
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/ConstDef.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/ConstDef.cpp.obj: ../src/NonterminalCharacter/ConstDef.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/ConstDef.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/ConstDef.cpp.obj"
 	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\ConstDef.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\ConstDef.cpp
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/ConstDef.cpp.i: cmake_force
@@ -240,7 +201,7 @@ CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/ConstDef.cpp.s: cmake_forc
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/ConstExp.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/ConstExp.cpp.obj: ../src/NonterminalCharacter/ConstExp.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/ConstExp.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/ConstExp.cpp.obj"
 	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\ConstExp.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\ConstExp.cpp
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/ConstExp.cpp.i: cmake_force
@@ -253,7 +214,7 @@ CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/ConstExp.cpp.s: cmake_forc
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/ConstInitVal.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/ConstInitVal.cpp.obj: ../src/NonterminalCharacter/ConstInitVal.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/ConstInitVal.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/ConstInitVal.cpp.obj"
 	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\ConstInitVal.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\ConstInitVal.cpp
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/ConstInitVal.cpp.i: cmake_force
@@ -266,7 +227,7 @@ CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/ConstInitVal.cpp.s: cmake_
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Decl.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Decl.cpp.obj: ../src/NonterminalCharacter/Decl.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Decl.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Decl.cpp.obj"
 	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\Decl.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\Decl.cpp
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Decl.cpp.i: cmake_force
@@ -279,7 +240,7 @@ CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Decl.cpp.s: cmake_force
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/EqExp.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/EqExp.cpp.obj: ../src/NonterminalCharacter/EqExp.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/EqExp.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/EqExp.cpp.obj"
 	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\EqExp.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\EqExp.cpp
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/EqExp.cpp.i: cmake_force
@@ -292,7 +253,7 @@ CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/EqExp.cpp.s: cmake_force
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Exp.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Exp.cpp.obj: ../src/NonterminalCharacter/Exp.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Exp.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Exp.cpp.obj"
 	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\Exp.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\Exp.cpp
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Exp.cpp.i: cmake_force
@@ -305,7 +266,7 @@ CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Exp.cpp.s: cmake_force
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/ForStmt.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/ForStmt.cpp.obj: ../src/NonterminalCharacter/ForStmt.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/ForStmt.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/ForStmt.cpp.obj"
 	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\ForStmt.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\ForStmt.cpp
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/ForStmt.cpp.i: cmake_force
@@ -318,7 +279,7 @@ CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/ForStmt.cpp.s: cmake_force
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncDef.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncDef.cpp.obj: ../src/NonterminalCharacter/FuncDef.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncDef.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncDef.cpp.obj"
 	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\FuncDef.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\FuncDef.cpp
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncDef.cpp.i: cmake_force
@@ -331,7 +292,7 @@ CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncDef.cpp.s: cmake_force
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncFParam.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncFParam.cpp.obj: ../src/NonterminalCharacter/FuncFParam.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncFParam.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncFParam.cpp.obj"
 	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\FuncFParam.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\FuncFParam.cpp
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncFParam.cpp.i: cmake_force
@@ -344,7 +305,7 @@ CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncFParam.cpp.s: cmake_fo
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncFParams.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncFParams.cpp.obj: ../src/NonterminalCharacter/FuncFParams.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncFParams.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncFParams.cpp.obj"
 	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\FuncFParams.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\FuncFParams.cpp
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncFParams.cpp.i: cmake_force
@@ -357,7 +318,7 @@ CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncFParams.cpp.s: cmake_f
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncRParams.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncRParams.cpp.obj: ../src/NonterminalCharacter/FuncRParams.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncRParams.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncRParams.cpp.obj"
 	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\FuncRParams.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\FuncRParams.cpp
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncRParams.cpp.i: cmake_force
@@ -370,7 +331,7 @@ CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncRParams.cpp.s: cmake_f
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncType.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncType.cpp.obj: ../src/NonterminalCharacter/FuncType.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncType.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncType.cpp.obj"
 	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\FuncType.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\FuncType.cpp
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncType.cpp.i: cmake_force
@@ -381,22 +342,9 @@ CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncType.cpp.s: cmake_forc
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncType.cpp.s"
 	D:\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\FuncType.cpp -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\FuncType.cpp.s
 
-CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Ident.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
-CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Ident.cpp.obj: ../src/NonterminalCharacter/Ident.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Ident.cpp.obj"
-	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\Ident.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\Ident.cpp
-
-CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Ident.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Ident.cpp.i"
-	D:\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\Ident.cpp > CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\Ident.cpp.i
-
-CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Ident.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Ident.cpp.s"
-	D:\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\Ident.cpp -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\Ident.cpp.s
-
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/InitVal.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/InitVal.cpp.obj: ../src/NonterminalCharacter/InitVal.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/InitVal.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/InitVal.cpp.obj"
 	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\InitVal.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\InitVal.cpp
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/InitVal.cpp.i: cmake_force
@@ -409,7 +357,7 @@ CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/InitVal.cpp.s: cmake_force
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/LAndExp.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/LAndExp.cpp.obj: ../src/NonterminalCharacter/LAndExp.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/LAndExp.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/LAndExp.cpp.obj"
 	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\LAndExp.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\LAndExp.cpp
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/LAndExp.cpp.i: cmake_force
@@ -422,7 +370,7 @@ CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/LAndExp.cpp.s: cmake_force
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/LOrExp.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/LOrExp.cpp.obj: ../src/NonterminalCharacter/LOrExp.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/LOrExp.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/LOrExp.cpp.obj"
 	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\LOrExp.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\LOrExp.cpp
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/LOrExp.cpp.i: cmake_force
@@ -435,7 +383,7 @@ CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/LOrExp.cpp.s: cmake_force
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/LVal.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/LVal.cpp.obj: ../src/NonterminalCharacter/LVal.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/LVal.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/LVal.cpp.obj"
 	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\LVal.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\LVal.cpp
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/LVal.cpp.i: cmake_force
@@ -448,7 +396,7 @@ CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/LVal.cpp.s: cmake_force
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/MainFuncDef.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/MainFuncDef.cpp.obj: ../src/NonterminalCharacter/MainFuncDef.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/MainFuncDef.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/MainFuncDef.cpp.obj"
 	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\MainFuncDef.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\MainFuncDef.cpp
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/MainFuncDef.cpp.i: cmake_force
@@ -461,7 +409,7 @@ CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/MainFuncDef.cpp.s: cmake_f
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/MulExp.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/MulExp.cpp.obj: ../src/NonterminalCharacter/MulExp.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/MulExp.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/MulExp.cpp.obj"
 	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\MulExp.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\MulExp.cpp
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/MulExp.cpp.i: cmake_force
@@ -472,9 +420,22 @@ CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/MulExp.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/MulExp.cpp.s"
 	D:\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\MulExp.cpp -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\MulExp.cpp.s
 
+CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Node.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
+CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Node.cpp.obj: ../src/NonterminalCharacter/Node.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Node.cpp.obj"
+	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\Node.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\Node.cpp
+
+CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Node.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Node.cpp.i"
+	D:\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\Node.cpp > CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\Node.cpp.i
+
+CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Node.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Node.cpp.s"
+	D:\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\Node.cpp -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\Node.cpp.s
+
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Number.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Number.cpp.obj: ../src/NonterminalCharacter/Number.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_33) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Number.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Number.cpp.obj"
 	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\Number.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\Number.cpp
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Number.cpp.i: cmake_force
@@ -487,7 +448,7 @@ CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Number.cpp.s: cmake_force
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/PrimaryExp.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/PrimaryExp.cpp.obj: ../src/NonterminalCharacter/PrimaryExp.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_34) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/PrimaryExp.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/PrimaryExp.cpp.obj"
 	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\PrimaryExp.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\PrimaryExp.cpp
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/PrimaryExp.cpp.i: cmake_force
@@ -500,7 +461,7 @@ CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/PrimaryExp.cpp.s: cmake_fo
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/RelExp.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/RelExp.cpp.obj: ../src/NonterminalCharacter/RelExp.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_35) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/RelExp.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/RelExp.cpp.obj"
 	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\RelExp.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\RelExp.cpp
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/RelExp.cpp.i: cmake_force
@@ -513,7 +474,7 @@ CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/RelExp.cpp.s: cmake_force
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Stmt.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Stmt.cpp.obj: ../src/NonterminalCharacter/Stmt.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_36) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Stmt.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_33) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Stmt.cpp.obj"
 	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\Stmt.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\Stmt.cpp
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Stmt.cpp.i: cmake_force
@@ -526,7 +487,7 @@ CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Stmt.cpp.s: cmake_force
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/UnaryExp.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/UnaryExp.cpp.obj: ../src/NonterminalCharacter/UnaryExp.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_37) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/UnaryExp.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_34) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/UnaryExp.cpp.obj"
 	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\UnaryExp.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\UnaryExp.cpp
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/UnaryExp.cpp.i: cmake_force
@@ -539,7 +500,7 @@ CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/UnaryExp.cpp.s: cmake_forc
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/UnaryOp.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/UnaryOp.cpp.obj: ../src/NonterminalCharacter/UnaryOp.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_38) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/UnaryOp.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_35) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/UnaryOp.cpp.obj"
 	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\UnaryOp.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\UnaryOp.cpp
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/UnaryOp.cpp.i: cmake_force
@@ -552,7 +513,7 @@ CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/UnaryOp.cpp.s: cmake_force
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/VarDecl.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/VarDecl.cpp.obj: ../src/NonterminalCharacter/VarDecl.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_39) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/VarDecl.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_36) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/VarDecl.cpp.obj"
 	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\VarDecl.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\VarDecl.cpp
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/VarDecl.cpp.i: cmake_force
@@ -565,7 +526,7 @@ CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/VarDecl.cpp.s: cmake_force
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/VarDef.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/VarDef.cpp.obj: ../src/NonterminalCharacter/VarDef.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_40) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/VarDef.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_37) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/VarDef.cpp.obj"
 	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\VarDef.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\VarDef.cpp
 
 CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/VarDef.cpp.i: cmake_force
@@ -576,18 +537,54 @@ CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/VarDef.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/VarDef.cpp.s"
 	D:\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\University\Study\2023fall\Compiler\SysY-Compiler\src\NonterminalCharacter\VarDef.cpp -o CMakeFiles\SysY-Compiler.dir\src\NonterminalCharacter\VarDef.cpp.s
 
+CMakeFiles/SysY-Compiler.dir/src/Parser/Parser.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
+CMakeFiles/SysY-Compiler.dir/src/Parser/Parser.cpp.obj: ../src/Parser/Parser.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_38) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/Parser/Parser.cpp.obj"
+	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\Parser\Parser.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\Parser\Parser.cpp
+
+CMakeFiles/SysY-Compiler.dir/src/Parser/Parser.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SysY-Compiler.dir/src/Parser/Parser.cpp.i"
+	D:\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\University\Study\2023fall\Compiler\SysY-Compiler\src\Parser\Parser.cpp > CMakeFiles\SysY-Compiler.dir\src\Parser\Parser.cpp.i
+
+CMakeFiles/SysY-Compiler.dir/src/Parser/Parser.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SysY-Compiler.dir/src/Parser/Parser.cpp.s"
+	D:\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\University\Study\2023fall\Compiler\SysY-Compiler\src\Parser\Parser.cpp -o CMakeFiles\SysY-Compiler.dir\src\Parser\Parser.cpp.s
+
+CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Func.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
+CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Func.cpp.obj: ../src/SymbolManager/Func.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_39) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Func.cpp.obj"
+	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\SymbolManager\Func.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\SymbolManager\Func.cpp
+
+CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Func.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Func.cpp.i"
+	D:\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\University\Study\2023fall\Compiler\SysY-Compiler\src\SymbolManager\Func.cpp > CMakeFiles\SysY-Compiler.dir\src\SymbolManager\Func.cpp.i
+
+CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Func.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Func.cpp.s"
+	D:\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\University\Study\2023fall\Compiler\SysY-Compiler\src\SymbolManager\Func.cpp -o CMakeFiles\SysY-Compiler.dir\src\SymbolManager\Func.cpp.s
+
+CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Symbol.cpp.obj: CMakeFiles/SysY-Compiler.dir/flags.make
+CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Symbol.cpp.obj: ../src/SymbolManager/Symbol.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\University\Study\2023fall\Compiler\SysY-Compiler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_40) "Building CXX object CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Symbol.cpp.obj"
+	D:\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\SysY-Compiler.dir\src\SymbolManager\Symbol.cpp.obj -c D:\University\Study\2023fall\Compiler\SysY-Compiler\src\SymbolManager\Symbol.cpp
+
+CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Symbol.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Symbol.cpp.i"
+	D:\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\University\Study\2023fall\Compiler\SysY-Compiler\src\SymbolManager\Symbol.cpp > CMakeFiles\SysY-Compiler.dir\src\SymbolManager\Symbol.cpp.i
+
+CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Symbol.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Symbol.cpp.s"
+	D:\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\University\Study\2023fall\Compiler\SysY-Compiler\src\SymbolManager\Symbol.cpp -o CMakeFiles\SysY-Compiler.dir\src\SymbolManager\Symbol.cpp.s
+
 # Object files for target SysY-Compiler
 SysY__Compiler_OBJECTS = \
 "CMakeFiles/SysY-Compiler.dir/src/main.cpp.obj" \
-"CMakeFiles/SysY-Compiler.dir/src/Lexer/Lexer.cpp.obj" \
-"CMakeFiles/SysY-Compiler.dir/src/Parser/Parser.cpp.obj" \
-"CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Symbol.cpp.obj" \
 "CMakeFiles/SysY-Compiler.dir/src/ErrorCheck/ErrorCheck.cpp.obj" \
-"CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Func.cpp.obj" \
+"CMakeFiles/SysY-Compiler.dir/src/Lexer/Lexer.cpp.obj" \
 "CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/AddExp.cpp.obj" \
 "CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Block.cpp.obj" \
 "CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/BlockItem.cpp.obj" \
-"CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Btype.cpp.obj" \
+"CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/BType.cpp.obj" \
 "CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/CompUnit.cpp.obj" \
 "CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Cond.cpp.obj" \
 "CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/ConstDecl.cpp.obj" \
@@ -603,13 +600,13 @@ SysY__Compiler_OBJECTS = \
 "CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncFParams.cpp.obj" \
 "CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncRParams.cpp.obj" \
 "CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncType.cpp.obj" \
-"CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Ident.cpp.obj" \
 "CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/InitVal.cpp.obj" \
 "CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/LAndExp.cpp.obj" \
 "CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/LOrExp.cpp.obj" \
 "CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/LVal.cpp.obj" \
 "CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/MainFuncDef.cpp.obj" \
 "CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/MulExp.cpp.obj" \
+"CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Node.cpp.obj" \
 "CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Number.cpp.obj" \
 "CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/PrimaryExp.cpp.obj" \
 "CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/RelExp.cpp.obj" \
@@ -617,21 +614,21 @@ SysY__Compiler_OBJECTS = \
 "CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/UnaryExp.cpp.obj" \
 "CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/UnaryOp.cpp.obj" \
 "CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/VarDecl.cpp.obj" \
-"CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/VarDef.cpp.obj"
+"CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/VarDef.cpp.obj" \
+"CMakeFiles/SysY-Compiler.dir/src/Parser/Parser.cpp.obj" \
+"CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Func.cpp.obj" \
+"CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Symbol.cpp.obj"
 
 # External object files for target SysY-Compiler
 SysY__Compiler_EXTERNAL_OBJECTS =
 
 SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/src/main.cpp.obj
-SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/src/Lexer/Lexer.cpp.obj
-SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/src/Parser/Parser.cpp.obj
-SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Symbol.cpp.obj
 SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/src/ErrorCheck/ErrorCheck.cpp.obj
-SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Func.cpp.obj
+SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/src/Lexer/Lexer.cpp.obj
 SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/AddExp.cpp.obj
 SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Block.cpp.obj
 SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/BlockItem.cpp.obj
-SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Btype.cpp.obj
+SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/BType.cpp.obj
 SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/CompUnit.cpp.obj
 SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Cond.cpp.obj
 SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/ConstDecl.cpp.obj
@@ -647,13 +644,13 @@ SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncFPa
 SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncFParams.cpp.obj
 SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncRParams.cpp.obj
 SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/FuncType.cpp.obj
-SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Ident.cpp.obj
 SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/InitVal.cpp.obj
 SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/LAndExp.cpp.obj
 SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/LOrExp.cpp.obj
 SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/LVal.cpp.obj
 SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/MainFuncDef.cpp.obj
 SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/MulExp.cpp.obj
+SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Node.cpp.obj
 SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/Number.cpp.obj
 SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/PrimaryExp.cpp.obj
 SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/RelExp.cpp.obj
@@ -662,6 +659,9 @@ SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/UnaryEx
 SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/UnaryOp.cpp.obj
 SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/VarDecl.cpp.obj
 SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/src/NonterminalCharacter/VarDef.cpp.obj
+SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/src/Parser/Parser.cpp.obj
+SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Func.cpp.obj
+SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/src/SymbolManager/Symbol.cpp.obj
 SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/build.make
 SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/linklibs.rsp
 SysY-Compiler.exe: CMakeFiles/SysY-Compiler.dir/objects1.rsp

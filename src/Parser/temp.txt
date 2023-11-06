@@ -6,7 +6,7 @@
 #include <fstream>
 #include <stack>
 #include "../ErrorCheck/ErrorCheck.h"
-#include "../NonterminalCharacter/Nonterminal.h"
+#include "../Node/Node.h"
 
 #define tkType token.first
 #define tkWord token.second
@@ -34,7 +34,7 @@ struct Error {
 extern Error errors[100];
 extern int e;
 extern int symbolId;
-extern Nonterminal root;
+extern Node root;
 
 Token token = make_pair(LexType::NONE, "");
 
