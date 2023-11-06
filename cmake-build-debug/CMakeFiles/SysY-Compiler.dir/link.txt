@@ -1,3 +1,0 @@
-"D:\Program Files\JetBrains\CLion 2019.3.6\bin\cmake\win\bin\cmake.exe" -E remove -f CMakeFiles\SysY-Compiler.dir/objects.a
-D:\mingw64\bin\ar.exe cr CMakeFiles\SysY-Compiler.dir/objects.a @CMakeFiles\SysY-Compiler.dir\objects1.rsp
-D:\mingw64\bin\g++.exe -g   -Wl,--whole-archive CMakeFiles\SysY-Compiler.dir/objects.a -Wl,--no-whole-archive  -o SysY-Compiler.exe -Wl,--out-implib,libSysY-Compiler.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\SysY-Compiler.dir\linklibs.rsp
