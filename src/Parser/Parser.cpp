@@ -218,6 +218,7 @@ InitVal* Parser::parseInitVal() {
         }
     } else {
         initVal->addChild(parseExp());
+        ofs << "<InitVal>" << endl;
         return initVal;
     }
     panic("InitVal");
@@ -585,6 +586,7 @@ LVal* Parser::parseLVal() {
                 readTk;
             }
         }
+        ofs << "<LVal>" << endl;
         return lVal;
     }
     panic("LVal");
