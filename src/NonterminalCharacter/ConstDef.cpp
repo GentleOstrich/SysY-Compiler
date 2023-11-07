@@ -3,3 +3,7 @@
 //
 
 #include "ConstDef.h"
+
+void ConstDef::setValid() {
+    this->isValid = true;
+}

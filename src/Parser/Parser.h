@@ -19,7 +19,7 @@ public:
 
     ConstDecl* parseConstDecl();
 
-    BType* parseBType();
+    static BType* parseBType();
 
     ConstDef* parseConstDef();
 
@@ -35,7 +35,7 @@ public:
 
     MainFuncDef* parseMainFuncDef();
 
-    FuncType* parseFuncType();
+    static FuncType* parseFuncType();
 
     FuncFParams* parseFuncFParams();
 
@@ -59,7 +59,7 @@ public:
 
     UnaryExp* parseUnaryExp();
 
-    UnaryOp* parseUnaryOp();
+    static UnaryOp* parseUnaryOp();
 
     FuncRParams* parseFuncRParams();
 
@@ -77,7 +77,7 @@ public:
 
     ConstExp* parseConstExp();
 
-    Number* parseNumber();
+    static Number* parseNumber();
 };
 
 

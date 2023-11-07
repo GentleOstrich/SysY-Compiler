@@ -4,3 +4,6 @@
 
 #include "InitVal.h"
 
+void InitVal::setValid() {
+    this->isValid = true;
+}

@@ -4,3 +4,7 @@
 
 #include "ConstInitVal.h"
 
+void ConstInitVal::setValid() {
+    this->isValid = true;
+
+}

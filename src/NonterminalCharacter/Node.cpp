@@ -12,5 +12,7 @@ Node::Node() {
 }
 
 void Node::addChild(Node *child) {
-    this->children.push_back(child);
+    if (child != nullptr) {
+        this->children.push_back(child);
+    }
 }

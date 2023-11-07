@@ -9,6 +9,8 @@
 
 class ConstInitVal : public Node {
 public:
+    bool isValid = false;
+    void setValid();
 
 };
 

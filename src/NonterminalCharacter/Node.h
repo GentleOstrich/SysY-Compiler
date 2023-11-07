@@ -15,7 +15,6 @@ public:
     explicit Node();
     explicit Node(Token token);
     void addChild(Node *child);
-
 };
 
 

@@ -5,3 +5,6 @@
 #include "Block.h"
 
 
+void Block::setValid() {
+    this->isValid = true;
+}
