@@ -8,7 +8,9 @@
 #include <string>
 class FuncType : public Node {
 public:
+    int type; // 0 is int 1 is void
 
+    FuncType(int type);
 };
 
 

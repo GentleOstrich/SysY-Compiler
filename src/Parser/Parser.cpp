@@ -92,18 +92,13 @@ ConstDecl* Parser::parseConstDecl() {
 }
 
 BType* Parser::parseBType() {
-    auto* bType = new BType();
     if (tkType == LexType::INTTK) {
-        auto* inttk = new Node(lexer.getToken());
-        bType->addChild(inttk);
+        auto* bType = new BType(0);
         printTk;
         readTk;
-    }
-    if (bType->children.empty()) {
-        delete(bType);
-        return nullptr;
-    } else {
         return bType;
+    } else {
+        return nullptr;
     }
 }
 
@@ -171,7 +166,6 @@ ConstInitVal* Parser::parseConstInitVal() {
         ofs << "<ConstInitVal>" << endl;
         return constInitVal;
     }
-    panic("ConstInitVal");
 }
 
 VarDecl* Parser::parseVarDecl() {
@@ -321,25 +315,21 @@ MainFuncDef* Parser::parseMainFuncDef() {
 }
 
 FuncType* Parser::parseFuncType() {
-    auto* funcType = new FuncType();
+
     if (tkType == LexType::INTTK) {
-        auto* tktype = new Node(lexer.getToken());
-        funcType->addChild(tktype);
+        auto* funcType = new FuncType(0);
         printTk;
         readTk;
+        ofs << "<FuncType>" << endl;
+        return funcType;
     } else if (tkType == LexType::VOIDTK) {
-        auto* tktype = new Node(lexer.getToken());
-        funcType->addChild(tktype);
+        auto* funcType = new FuncType(1);
         printTk;
         readTk;
-    }
-    if (funcType->children.empty()) {
-        delete(funcType);
-        return nullptr;
-    } else {
         ofs << "<FuncType>" << endl;
         return funcType;
     }
+    return nullptr;
 }
 
 FuncFParams* Parser::parseFuncFParams() {
