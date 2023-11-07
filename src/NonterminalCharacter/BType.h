@@ -10,8 +10,6 @@
 class BType : public Node {
 public:
     int type; // 0 is int
-
-    explicit BType(int type);
 };
 
 

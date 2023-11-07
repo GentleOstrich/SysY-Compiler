@@ -4,6 +4,3 @@
 
 #include "BType.h"
 
-BType::BType(int type) : type(type) {
-    this->type= type;
-}

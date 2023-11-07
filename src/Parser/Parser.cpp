@@ -2,14 +2,12 @@
 // Created by yh on 2023/9/25.
 //
 #include "Parser.h"
-
 #define tkType token.first
 #define tkWord token.second
 #define readTk token = (lexer.next() == 0) ? lexer.getToken() : make_pair(LexType::NONE, "")
 #define printTk ofs << LexType2String(tkType) << " " << tkWord << endl
 #define preRead lexer.nnext()
 #define prePreRead lexer.nnnext()
-#define panic(error) std::cout << error << endl; return nullptr
 
 using namespace std;
 extern Lexer lexer;
@@ -38,13 +36,8 @@ CompUnit* Parser::parseCompUnit() {
             compUnit->addChild(parseFuncDef());
         }
     }
-    if (compUnit->children.empty()) {
-        delete(compUnit);
-        return nullptr;
-    } else {
-        ofs << "<CompUnit>" << endl;
-        return compUnit;
-    }
+    ofs << "<CompUnit>" << endl;
+    return compUnit;
 }
 
 Decl* Parser::parseDecl() {
@@ -54,12 +47,7 @@ Decl* Parser::parseDecl() {
     } else if (tkType == LexType::INTTK) {
         decl->addChild(parseVarDecl());
     }
-    if (decl->children.empty()) {
-        delete(decl);
-        return nullptr;
-    } else {
-        return decl;
-    }
+    return decl;
 }
 
 ConstDecl* Parser::parseConstDecl() {
@@ -67,39 +55,30 @@ ConstDecl* Parser::parseConstDecl() {
     if (tkType == LexType::CONSTTK) {
         printTk;
         readTk;
-        if (tkType == LexType::INTTK) {
+        constDecl->addChild(parseBType());
+        constDecl->addChild(parseConstDef());
+        while (tkType == LexType::COMMA) {
             printTk;
             readTk;
             constDecl->addChild(parseConstDef());
-            while (tkType == LexType::COMMA) {
-                printTk;
-                readTk;
-                constDecl->addChild(parseConstDef());
-            }
         }
         if (tkType == LexType::SEMICN) {
             printTk;
             readTk;
         }
     }
-    if (constDecl->children.empty()) {
-        delete(constDecl);
-        return nullptr;
-    } else {
-        ofs << "<ConstDecl>" << endl;
-        return constDecl;
-    }
+    ofs << "<ConstDecl>" << endl;
+    return constDecl;
 }
 
 BType* Parser::parseBType() {
+    auto* bType = new BType();
     if (tkType == LexType::INTTK) {
-        auto* bType = new BType(0);
+        bType->type = 0;
         printTk;
         readTk;
-        return bType;
-    } else {
-        return nullptr;
     }
+    return bType;
 }
 
 ConstDef* Parser::parseConstDef() {
@@ -119,21 +98,13 @@ ConstDef* Parser::parseConstDef() {
             }
         }
         if (tkType == LexType::ASSIGN) {
-            constDef->setValid();
             printTk;
             readTk;
             constDef->addChild(parseConstInitVal());
-            ofs << "<ConstDef>" << endl;
-            return constDef;
         }
     }
-    if (!constDef->isValid) {
-        delete(constDef);
-        return nullptr;
-    } else {
-        ofs << "<ConstDef>" << endl;
-        return constDef;
-    }
+    ofs << "<ConstDef>" << endl;
+    return constDef;
 }
 
 ConstInitVal* Parser::parseConstInitVal() {
@@ -142,30 +113,25 @@ ConstInitVal* Parser::parseConstInitVal() {
         printTk;
         readTk;
         if (tkType == LexType::RBRACE) {
-            constInitVal->setValid();
             printTk;
             readTk;
-        }
-        constInitVal->addChild(parseConstInitVal());
-        while (tkType == LexType::COMMA) {
-            printTk;
-            readTk;
+        } else {
             constInitVal->addChild(parseConstInitVal());
-        }
-        if (tkType == LexType::RBRACE) {
-            printTk;
-            readTk;
+            while (tkType == LexType::COMMA) {
+                printTk;
+                readTk;
+                constInitVal->addChild(parseConstInitVal());
+            }
+            if (tkType == LexType::RBRACE) {
+                printTk;
+                readTk;
+            }
         }
     } else {
         constInitVal->addChild(parseConstExp());
     }
-    if (constInitVal->children.empty() && !constInitVal->isValid) {
-        delete( constInitVal);
-        return nullptr;
-    } else {
-        ofs << "<ConstInitVal>" << endl;
-        return constInitVal;
-    }
+    ofs << "<ConstInitVal>" << endl;
+    return constInitVal;
 }
 
 VarDecl* Parser::parseVarDecl() {
@@ -181,13 +147,8 @@ VarDecl* Parser::parseVarDecl() {
         printTk;
         readTk;
     }
-    if (varDecl->children.empty()) {
-        delete(varDecl);
-        return nullptr;
-    } else {
-        ofs << "<VarDecl>" << endl;
-        return varDecl;
-    }
+    ofs << "<VarDecl>" << endl;
+    return varDecl;
 }
 
 VarDef* Parser::parseVarDef() {
@@ -212,13 +173,8 @@ VarDef* Parser::parseVarDef() {
             varDef->addChild(parseInitVal());
         }
     }
-    if (varDef->children.empty()) {
-        delete(varDef);
-        return nullptr;
-    } else {
-        ofs << "<VarDef>" << endl;
-        return varDef;
-    }
+    ofs << "<VarDef>" << endl;
+    return varDef;
 }
 
 InitVal* Parser::parseInitVal() {
@@ -229,28 +185,23 @@ InitVal* Parser::parseInitVal() {
         if (tkType == LexType::RBRACE) {
             printTk;
             readTk;
-            initVal->setValid();
-        }
-        initVal->addChild(parseInitVal());
-        while (tkType == LexType::COMMA) {
-            printTk;
-            readTk;
+        } else {
             initVal->addChild(parseInitVal());
-        }
-        if (tkType == LexType::RBRACE) {
-            printTk;
-            readTk;
+            while (tkType == LexType::COMMA) {
+                printTk;
+                readTk;
+                initVal->addChild(parseInitVal());
+            }
+            if (tkType == LexType::RBRACE) {
+                printTk;
+                readTk;
+            }
         }
     } else {
         initVal->addChild(parseExp());
     }
-    if (!initVal->isValid && initVal->children.empty()) {
-        delete(initVal);
-        return nullptr;
-    } else {
-        ofs << "<InitVal>" << endl;
-        return initVal;
-    }
+    ofs << "<InitVal>" << endl;
+    return initVal;
 }
 
 FuncDef* Parser::parseFuncDef() {
@@ -275,15 +226,10 @@ FuncDef* Parser::parseFuncDef() {
                 }
             }
             funcDef->addChild(parseBlock());
-        } 
+        }
     }
-    if (funcDef->children.empty()) {
-        delete(funcDef);
-        return nullptr;
-    } else {
-        ofs << "<FuncDef>" << endl;
-        return funcDef;
-    }
+    ofs << "<FuncDef>" << endl;
+    return funcDef;
 }
 
 MainFuncDef* Parser::parseMainFuncDef() {
@@ -305,31 +251,23 @@ MainFuncDef* Parser::parseMainFuncDef() {
             }
         }
     }
-    if (mainFuncDef->children.empty()) {
-        delete(mainFuncDef);
-        return nullptr;
-    } else {
-        ofs << "<MainFuncDef>" << endl;
-        return mainFuncDef;
-    }
+    ofs << "<MainFuncDef>" << endl;
+    return mainFuncDef;
 }
 
 FuncType* Parser::parseFuncType() {
-
+    auto* funcType = new FuncType();
     if (tkType == LexType::INTTK) {
-        auto* funcType = new FuncType(0);
+        funcType->type = 0;
         printTk;
         readTk;
-        ofs << "<FuncType>" << endl;
-        return funcType;
     } else if (tkType == LexType::VOIDTK) {
-        auto* funcType = new FuncType(1);
+        funcType->type = 1;
         printTk;
         readTk;
-        ofs << "<FuncType>" << endl;
-        return funcType;
     }
-    return nullptr;
+    ofs << "<FuncType>" << endl;
+    return funcType;
 }
 
 FuncFParams* Parser::parseFuncFParams() {
@@ -340,13 +278,8 @@ FuncFParams* Parser::parseFuncFParams() {
         readTk;
         funcFParams->addChild(parseFuncFParam());
     }
-    if (funcFParams->children.empty()) {
-        delete(funcFParams);
-        return nullptr;
-    } else {
-        ofs << "<FuncFParams>" << endl;
-        return funcFParams;
-    }
+    ofs << "<FuncFParams>" << endl;
+    return funcFParams;
 }
 
 FuncFParam* Parser::parseFuncFParam() {
@@ -375,13 +308,8 @@ FuncFParam* Parser::parseFuncFParam() {
             }
         }
     }
-    if (funcFParam->children.empty()) {
-        delete(funcFParam);
-        return nullptr;
-    } else {
-        ofs << "<FuncFParam>" << endl;
-        return funcFParam;
-    }
+    ofs << "<FuncFParam>" << endl;
+    return funcFParam;
 }
 
 Block* Parser::parseBlock() {
@@ -393,38 +321,28 @@ Block* Parser::parseBlock() {
             block->addChild(parseBlockItem());
         }
         if (tkType == LexType::RBRACE) {
-            block->setValid();
             printTk;
             readTk;
         }
     }
-    if (!block->isValid) {
-        delete(block);
-        return nullptr;
-    } else {
-        ofs << "<Block>" << endl;
-        return block;
-    }
+    ofs << "<Block>" << endl;
+    return block;
 }
 
 BlockItem* Parser::parseBlockItem() {
     auto* blockItem = new BlockItem();
     if (tkType == LexType::CONSTTK || tkType == LexType::INTTK) {
         blockItem->addChild(parseDecl());
-    } else{
+    } else {
         blockItem->addChild(parseStmt());
     }
-    if (blockItem->children.empty()) {
-        delete(blockItem);
-        return nullptr;
-    } else {
-        return blockItem;
-    }
+    return blockItem;
 }
 
 Stmt* Parser::parseStmt() {
-    Stmt* stmt = new Stmt();
+    auto* stmt = new Stmt();
     if (tkType == LexType::IFTK) {
+        stmt->type = 1;
         printTk;
         readTk;
         if (tkType == LexType::LPARENT) {
@@ -443,20 +361,27 @@ Stmt* Parser::parseStmt() {
             }
         }
     } else if (tkType == LexType::FORTK) {
+        stmt->type = 2;
         printTk;
         readTk;
         if (tkType == LexType::LPARENT) {
             printTk;
             readTk;
-            stmt->addChild(parseForStmt());
+            if (tkType != LexType::SEMICN) {
+                stmt->addChild(parseForStmt());
+            }
             if (tkType == LexType::SEMICN) {
                 printTk;
                 readTk;
-                stmt->addChild(parseCond());
+                if (tkType != LexType::SEMICN) {
+                    stmt->addChild(parseCond());
+                }
                 if (tkType == LexType::SEMICN) {
                     printTk;
                     readTk;
-                    stmt->addChild(parseForStmt());
+                    if (tkType != LexType::RPARENT) {
+                        stmt->addChild(parseForStmt());
+                    }
                     if (tkType == LexType::RPARENT) {
                         printTk;
                         readTk;
@@ -466,8 +391,7 @@ Stmt* Parser::parseStmt() {
             }
         }
     } else if (tkType == LexType::BREAKTK) {
-        auto* breaktk = new Node(lexer.getToken());
-        stmt->addChild(breaktk);
+        stmt->type = 3;
         printTk;
         readTk;
         if (tkType == LexType::SEMICN) {
@@ -475,8 +399,7 @@ Stmt* Parser::parseStmt() {
             readTk;
         }
     } else if (tkType == LexType::CONTINUETK) {
-        auto* continuetk = new Node(lexer.getToken());
-        stmt->addChild(continuetk);
+        stmt->type = 4;
         printTk;
         readTk;
         if (tkType == LexType::SEMICN) {
@@ -484,8 +407,7 @@ Stmt* Parser::parseStmt() {
             readTk;
         }
     } else if (tkType == LexType::RETURNTK) {
-        auto* returntk = new Node(lexer.getToken());
-        stmt->addChild(returntk);
+        stmt->type = 5;
         printTk;
         readTk;
         if (tkType == LexType::SEMICN) {
@@ -499,8 +421,7 @@ Stmt* Parser::parseStmt() {
             }
         }
     } else if (tkType == LexType::PRINTFTK) {
-        auto* printftk = new Node(lexer.getToken());
-        stmt->addChild(printftk);
+        stmt->type = 7;
         printTk;
         readTk;
         if (tkType == LexType::LPARENT) {
@@ -528,59 +449,49 @@ Stmt* Parser::parseStmt() {
         }
     } else if (tkType == LexType::LBRACE) {
         stmt->addChild(parseBlock());
+    } else if (tkType == LexType::SEMICN) {
+        printTk;
+        readTk;
     } else {
-        if (tkType == LexType::SEMICN) {
-            auto* semicn = new Node(lexer.getToken());
-            stmt->addChild(semicn);
-            printTk;
-            readTk;
-        } else {
-            if (lexer.hasAUntilB('=', ';')) {
-                stmt->addChild(parseLVal());
-                if (tkType == LexType::ASSIGN) {
+        if (lexer.hasAUntilB('=', ';')) {
+            stmt->addChild(parseLVal());
+            if (tkType == LexType::ASSIGN) {
+                printTk;
+                readTk;
+                if (tkType == LexType::GETINTTK) {
+                    stmt->type = 6;
                     printTk;
                     readTk;
-                    if (tkType == LexType::GETINTTK) {
-                        auto* getinttk = new Node(lexer.getToken());
-                        stmt->addChild(getinttk);
+                    if (tkType == LexType::LPARENT) {
                         printTk;
                         readTk;
-                        if (tkType == LexType::LPARENT) {
+                        if (tkType == LexType::RPARENT) {
                             printTk;
                             readTk;
-                            if (tkType == LexType::RPARENT) {
+                            if (tkType == LexType::SEMICN) {
                                 printTk;
                                 readTk;
-                                if (tkType == LexType::SEMICN) {
-                                    printTk;
-                                    readTk;
-                                }
                             }
                         }
-                    } else {
-                        stmt->addChild(parseExp());
-                        if (tkType == LexType::SEMICN) {
-                            printTk;
-                            readTk;
-                        }
+                    }
+                } else {
+                    stmt->addChild(parseExp());
+                    if (tkType == LexType::SEMICN) {
+                        printTk;
+                        readTk;
                     }
                 }
-            } else {
-                stmt->addChild(parseExp());
-                if (tkType == LexType::SEMICN) {
-                    printTk;
-                    readTk;
-                }
+            }
+        } else {
+            stmt->addChild(parseExp());
+            if (tkType == LexType::SEMICN) {
+                printTk;
+                readTk;
             }
         }
     }
-    if (stmt->children.empty()) {
-        delete(stmt);
-        return nullptr;
-    } else {
-        ofs << "<Stmt>" << endl;
-        return stmt;
-    }
+    ofs << "<Stmt>" << endl;
+    return stmt;
 }
 
 ForStmt* Parser::parseForStmt() {
@@ -591,37 +502,22 @@ ForStmt* Parser::parseForStmt() {
         readTk;
         forStmt->addChild(parseExp());
     }
-    if (forStmt->children.empty()) {
-        delete(forStmt);
-        return nullptr;
-    } else {
-        ofs << "<ForStmt>" << endl;
-        return forStmt;
-    }
+    ofs << "<ForStmt>" << endl;
+    return forStmt;
 }
 
 Exp* Parser::parseExp() {
     auto* exp = new Exp();
     exp->addChild(parseAddExp());
-    if (exp->children.empty()) {
-        delete(exp);
-        return nullptr;
-    } else {
-        ofs << "<Exp>" << endl;
-        return exp;
-    }
+    ofs << "<Exp>" << endl;
+    return exp;
 }
 
 Cond* Parser::parseCond() {
     auto* cond = new Cond();
     cond->addChild(parseLOrExp());
-    if (cond->children.empty()) {
-        delete(cond);
-        return nullptr;
-    } else {
-        ofs << "<Cond>" << endl;
-        return cond;
-    }
+    ofs << "<Cond>" << endl;
+    return cond;
 }
 
 LVal* Parser::parseLVal() {
@@ -641,13 +537,8 @@ LVal* Parser::parseLVal() {
             }
         }
     }
-    if (lVal->children.empty()) {
-        delete(lVal);
-        return nullptr;
-    } else {
-        ofs << "<LVal>" << endl;
-        return lVal;
-    }
+    ofs << "<LVal>" << endl;
+    return lVal;
 }
 
 PrimaryExp* Parser::parsePrimaryExp() {
@@ -667,26 +558,19 @@ PrimaryExp* Parser::parsePrimaryExp() {
             primaryExp->addChild(parseLVal());
         }
     }
-    if (primaryExp->children.empty()) {
-        delete(primaryExp);
-        return nullptr;
-    } else {
-        ofs << "<PrimaryExp>" << endl;
-        return primaryExp;
-    }
+    ofs << "<PrimaryExp>" << endl;
+    return primaryExp;
 }
 
 Number* Parser::parseNumber() {
     auto* number = new Number();
     if (tkType == LexType::INTCON) {
+        number->val = 1145414;
         printTk;
         readTk;
-        ofs << "<Number>" << endl;
-        return number;
-    } else {
-        delete(number);
-        return nullptr;
     }
+    ofs << "<Number>" << endl;
+    return number;
 }
 
 UnaryExp* Parser::parseUnaryExp() {
@@ -716,26 +600,27 @@ UnaryExp* Parser::parseUnaryExp() {
             unaryExp->addChild(parsePrimaryExp());
         }
     }
-    if (unaryExp->children.empty()) {
-        delete(unaryExp);
-        return nullptr;
-    } else {
-        ofs << "<UnaryExp>" << endl;
-        return unaryExp;
-    }
+    ofs << "<UnaryExp>" << endl;
+    return unaryExp;
 }
 
 UnaryOp* Parser::parseUnaryOp() {
     auto* unaryOp = new UnaryOp();
-    if (tkType == LexType::PLUS || tkType == LexType::MINU || tkType == LexType::NOT) {
+    if (tkType == LexType::PLUS) {
+        unaryOp->type = 0;
         printTk;
         readTk;
-        ofs << "<UnaryOp>" << endl;
-        return unaryOp;
-    } else {
-        delete(unaryOp);
-        return nullptr;
+    } else if (tkType == LexType::MINU) {
+        unaryOp->type = 1;
+        printTk;
+        readTk;
+    } else if (tkType == LexType::NOT) {
+        unaryOp->type = 2;
+        printTk;
+        readTk;
     }
+    ofs << "<UnaryOp>" << endl;
+    return unaryOp;
 }
 
 FuncRParams* Parser::parseFuncRParams() {
@@ -746,13 +631,8 @@ FuncRParams* Parser::parseFuncRParams() {
         readTk;
         funcRParams->addChild(parseExp());
     }
-    if (funcRParams->children.empty()) {
-        delete(funcRParams);
-        return nullptr;
-    } else {
-        ofs << "<FuncRParams>" << endl;
-        return funcRParams;
-    }
+    ofs << "<FuncRParams>" << endl;
+    return funcRParams;
 }
 
 MulExp* Parser::parseMulExp() {
@@ -764,13 +644,8 @@ MulExp* Parser::parseMulExp() {
         readTk;
         mulExp->addChild(parseUnaryExp());
     }
-    if (mulExp->children.empty()) {
-        delete(mulExp);
-        return nullptr;
-    } else {
-        ofs << "<MulExp>" << endl;
-        return mulExp;
-    }
+    ofs << "<MulExp>" << endl;
+    return mulExp;
 }
 
 AddExp* Parser::parseAddExp() {
@@ -782,13 +657,8 @@ AddExp* Parser::parseAddExp() {
         readTk;
         addExp->addChild(parseMulExp());
     }
-    if (addExp->children.empty()) {
-        delete(addExp);
-        return nullptr;
-    } else {
-        ofs << "<AddExp>" << endl;
-        return addExp;
-    }
+    ofs << "<AddExp>" << endl;
+    return addExp;
 }
 
 RelExp* Parser::parseRelExp() {
@@ -800,13 +670,8 @@ RelExp* Parser::parseRelExp() {
         readTk;
         relExp->addChild(parseAddExp());
     }
-    if (relExp->children.empty()) {
-        delete(relExp);
-        return nullptr;
-    } else {
-        ofs << "<RelExp>" << endl;
-        return relExp;
-    }
+    ofs << "<RelExp>" << endl;
+    return relExp;
 }
 
 EqExp* Parser::parseEqExp() {
@@ -818,13 +683,8 @@ EqExp* Parser::parseEqExp() {
         readTk;
         eqExp->addChild(parseRelExp());
     }
-    if (eqExp->children.empty()) {
-        delete(eqExp);
-        return nullptr;
-    } else {
-        ofs << "<EqExp>" << endl;
-        return eqExp;
-    }
+    ofs << "<EqExp>" << endl;
+    return eqExp;
 }
 
 LAndExp* Parser::parseLAndExp() {
@@ -836,13 +696,8 @@ LAndExp* Parser::parseLAndExp() {
         readTk;
         lAndExp->addChild(parseEqExp());
     }
-    if (lAndExp->children.empty()) {
-        delete(lAndExp);
-        return nullptr;
-    } else {
-        ofs << "<LAndExp>" << endl;
-        return lAndExp;
-    }
+    ofs << "<LAndExp>" << endl;
+    return lAndExp;
 }
 
 LOrExp* Parser::parseLOrExp() {
@@ -854,23 +709,13 @@ LOrExp* Parser::parseLOrExp() {
         readTk;
         lOrExp->addChild(parseLAndExp());
     }
-    if (lOrExp->children.empty()) {
-        delete(lOrExp);
-        return nullptr;
-    } else {
-        ofs << "<LOrExp>" << endl;
-        return lOrExp;
-    }
+    ofs << "<LOrExp>" << endl;
+    return lOrExp;
 }
 
 ConstExp* Parser::parseConstExp() {
     auto* constExp = new ConstExp();
     constExp->addChild(parseAddExp());
-    if (constExp->children.empty()) {
-        delete (constExp);
-        return nullptr;
-    } else {
-        ofs << "<ConstExp>" << endl;
-        return constExp;
-    }
+    ofs << "<ConstExp>" << endl;
+    return constExp;
 }

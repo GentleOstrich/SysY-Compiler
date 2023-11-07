@@ -8,7 +8,7 @@
 
 class Number : public Node{
 public:
-
+    int val;
 };
 
 

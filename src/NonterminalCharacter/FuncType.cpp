@@ -4,6 +4,4 @@
 
 #include "FuncType.h"
 
-FuncType::FuncType(int type) : type(type) {
-    this->type = type;
-}
+
