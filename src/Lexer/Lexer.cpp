@@ -303,7 +303,8 @@ int Lexer::next() {
 }
 
 Token Lexer::getToken()  {
-    return make_pair(lexType, word);
+    Token token(lexType, word, lineNum);
+    return token;
 }
 
 LexType Lexer::nnext() {

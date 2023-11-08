@@ -90,4 +90,4 @@ add_executable(
         src/SymbolManager/Func.h
         src/SymbolManager/Symbol.cpp
         src/SymbolManager/Symbol.h
-)
+        src/Lexer/Token.cpp src/Lexer/Token.h)

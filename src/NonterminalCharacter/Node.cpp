@@ -4,7 +4,7 @@
 
 #include "Node.h"
 Node::Node(Token token) {
-    this->token = token;
+    this->token = &token;
 }
 
 Node::Node() {

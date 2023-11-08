@@ -6,10 +6,11 @@
 #define SYSY_COMPILER_Node_H
 #include <vector>
 #include "../Lexer/LexType.h"
-#define Token pair<LexType, string>
+#include "../Lexer/Token.h"
+
 class Node {
 public:
-    Token token;
+    Token* token;
     int line;
     std::vector<Node*> children;
     explicit Node();

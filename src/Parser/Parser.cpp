@@ -2,19 +2,20 @@
 // Created by yh on 2023/9/25.
 //
 #include "Parser.h"
-#define tkType token.first
-#define tkWord token.second
-#define readTk token = (lexer.next() == 0) ? lexer.getToken() : make_pair(LexType::NONE, "")
+#define tkType token.lexType
+#define tkWord token.word
+#define tkLineNum token.lineNum
+#define readTk lexer.next(); token.setToken(lexer.getToken())
 #define printTk ofs << LexType2String(tkType) << " " << tkWord << endl
 #define preRead lexer.nnext()
 #define prePreRead lexer.nnnext()
 
 using namespace std;
+
 extern Lexer lexer;
 extern ifstream ifs;
 extern ofstream ofs;
-Token token = make_pair(LexType::NONE, "");
-
+Token token;
 // 正常返回 0 错误返回 -1
 CompUnit* Parser::parseCompUnit() {
     auto* compUnit = new CompUnit();

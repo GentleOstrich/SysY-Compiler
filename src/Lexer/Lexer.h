@@ -10,11 +10,11 @@
 #include <iostream>
 #include <fstream>
 #include "LexType.h"
+#include "Token.h"
 
 using namespace std;
 
 #define RESERVEWORDS_NUM 12
-#define Token pair<LexType, string>
 
 using namespace std;
 

@@ -3,8 +3,12 @@
 //
 #ifndef SYSY_COMPILER_LEXTYPE_H
 #define SYSY_COMPILER_LEXTYPE_H
+
 #include <string>
+
 using namespace std;
+
+
 enum class LexType {
     IDENFR,
     MAINTK,
@@ -132,5 +136,6 @@ static string LexType2String(LexType lexType) {
             return "NONE";
     }
 }
+
 
 #endif //SYSY_COMPILER_LEXTYPE_H
