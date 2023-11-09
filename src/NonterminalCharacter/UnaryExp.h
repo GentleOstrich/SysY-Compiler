@@ -12,7 +12,6 @@ class UnaryExp : public Node {
 public:
     UnaryExp(NodeType nodeType1);
 
-    virtual ~UnaryExp();
 };
 
 

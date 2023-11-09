@@ -10,7 +10,6 @@ class Exp : public Node {
 public:
     Exp(NodeType nodeType1);
 
-    virtual ~Exp();
 };
 
 

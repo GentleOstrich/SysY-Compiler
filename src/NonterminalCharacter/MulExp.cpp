@@ -9,7 +9,3 @@ void MulExp::addOp(int op) {
 }
 
 MulExp::MulExp(NodeType nodeType1) : Node(nodeType1) {}
-
-MulExp::~MulExp() {
-
-}

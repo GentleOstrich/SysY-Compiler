@@ -16,6 +16,4 @@ string VarDef::getWord() {
     return this->word;
 }
 
-VarDef::~VarDef() {
 
-}

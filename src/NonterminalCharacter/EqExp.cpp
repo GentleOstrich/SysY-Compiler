@@ -10,6 +10,3 @@ void EqExp::addOp(int op) {
 
 EqExp::EqExp(NodeType nodeType1) : Node(nodeType1) {}
 
-EqExp::~EqExp() {
-
-}

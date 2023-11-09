@@ -6,6 +6,3 @@
 
 ConstDef::ConstDef(NodeType nodeType1) : Node(nodeType1) {}
 
-ConstDef::~ConstDef() {
-
-}

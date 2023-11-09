@@ -7,6 +7,3 @@
 
 ConstInitVal::ConstInitVal(NodeType nodeType1) : Node(nodeType1) {}
 
-ConstInitVal::~ConstInitVal() {
-
-}

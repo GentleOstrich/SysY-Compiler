@@ -6,6 +6,3 @@
 
 FuncFParams::FuncFParams(NodeType nodeType1) : Node(nodeType1) {}
 
-FuncFParams::~FuncFParams() {
-
-}

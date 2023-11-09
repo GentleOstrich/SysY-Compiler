@@ -11,7 +11,6 @@ public:
     short type = 0; // 0 is int 1 is void
     FuncType(NodeType nodeType1);
 
-    virtual ~FuncType();
 };
 
 

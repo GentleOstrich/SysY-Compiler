@@ -6,6 +6,4 @@
 
 VarDecl::VarDecl(NodeType nodeType1) : Node(nodeType1) {}
 
-VarDecl::~VarDecl() {
 
-}

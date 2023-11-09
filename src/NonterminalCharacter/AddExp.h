@@ -14,9 +14,6 @@ public:
 
     AddExp(NodeType nodeType1);
 
-    virtual ~AddExp();
-
-    ~Node() override ;
 };
 
 

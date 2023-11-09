@@ -19,7 +19,8 @@ public:
     explicit Node(Token token, NodeType nodeType1);
     void addChild(Node *child);
     NodeType getNodeType();
-    virtual ~Node();
+    virtual string getWord();
+
 };
 
 

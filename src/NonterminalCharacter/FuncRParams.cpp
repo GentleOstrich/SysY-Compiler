@@ -5,7 +5,3 @@
 #include "FuncRParams.h"
 
 FuncRParams::FuncRParams(NodeType nodeType1) : Node(nodeType1) {}
-
-FuncRParams::~FuncRParams() {
-
-}

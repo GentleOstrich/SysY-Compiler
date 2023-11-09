@@ -3,24 +3,27 @@
 //
 
 #include "SymbolTable.h"
-
 void SymbolTable::createSymbolTable() {
     table.push(this->symbolId);
 }
 
 void SymbolTable::addSymbol(Node* def) {
     if (def->getNodeType() == NodeType::FuncDef) {
-        auto* funcDef = dynamic_cast<FuncDef *>(def);
-        if (SymbolTable::findSymbol(funcDef->getWord(), true, false)) {
+        if (findSymbol(def->getWord(), true, false)) {
+            return;
+        } else {
 
         }
+
     } else if (def->getNodeType() == NodeType::VarDef) {
-        auto* varDef = dynamic_cast<VarDef *>(def);
-        if (SymbolTable::findSymbol(varDef->getWord(), false, false)) {
+        if (findSymbol(def->getWord(), false, false)) {
+            return;
+        } else {
 
         }
-    } else {
 
+    } else {
+        return;
     }
 }
 

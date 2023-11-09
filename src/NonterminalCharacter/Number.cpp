@@ -5,7 +5,3 @@
 #include "Number.h"
 
 Number::Number(NodeType nodeType1) : Node(nodeType1) {}
-
-Number::~Number() {
-
-}

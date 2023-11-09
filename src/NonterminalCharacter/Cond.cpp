@@ -5,7 +5,3 @@
 #include "Cond.h"
 
 Cond::Cond(NodeType nodeType1) : Node(nodeType1) {}
-
-Cond::~Cond() {
-
-}

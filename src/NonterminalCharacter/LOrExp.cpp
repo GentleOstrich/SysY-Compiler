@@ -5,7 +5,3 @@
 #include "LOrExp.h"
 
 LOrExp::LOrExp(NodeType nodeType1) : Node(nodeType1) {}
-
-LOrExp::~LOrExp() {
-
-}

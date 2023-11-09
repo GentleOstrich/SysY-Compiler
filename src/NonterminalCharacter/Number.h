@@ -12,7 +12,6 @@ public:
 
     Number(NodeType nodeType1);
 
-    virtual ~Number();
 };
 
 

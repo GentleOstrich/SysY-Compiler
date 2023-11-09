@@ -22,5 +22,9 @@ NodeType Node::getNodeType() {
     return this->nodeType;
 }
 
+string Node::getWord() {
+    return std::string();
+}
+
 
 

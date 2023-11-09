@@ -10,7 +10,6 @@ class LAndExp : public Node {
 public:
     LAndExp(NodeType nodeType1);
 
-    virtual ~LAndExp();
 };
 
 

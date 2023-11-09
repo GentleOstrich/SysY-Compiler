@@ -9,7 +9,3 @@ void RelExp::addOp(int op) {
 }
 
 RelExp::RelExp(NodeType nodeType1) : Node(nodeType1) {}
-
-RelExp::~RelExp() {
-
-}

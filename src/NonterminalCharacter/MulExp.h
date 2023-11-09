@@ -14,7 +14,6 @@ public:
 
     MulExp(NodeType nodeType1);
 
-    virtual ~MulExp();
 };
 
 

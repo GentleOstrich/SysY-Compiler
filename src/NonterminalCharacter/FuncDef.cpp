@@ -13,7 +13,3 @@ void FuncDef::setWord(const string& word) {
 string FuncDef::getWord() {
     return this->word;
 }
-
-FuncDef::~FuncDef() {
-
-}

@@ -11,7 +11,6 @@ class ConstDecl : public Node{
 public:
     ConstDecl(NodeType nodeType1);
 
-    virtual ~ConstDecl();
 };
 
 

@@ -13,7 +13,6 @@ public:
 
     EqExp(NodeType nodeType1);
 
-    virtual ~EqExp();
 };
 
 

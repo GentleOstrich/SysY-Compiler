@@ -10,7 +10,6 @@ class MainFuncDef : public Node {
 public:
     MainFuncDef(NodeType nodeType1);
 
-    virtual ~MainFuncDef();
 };
 
 

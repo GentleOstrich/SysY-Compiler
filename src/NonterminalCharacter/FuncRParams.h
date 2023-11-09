@@ -11,7 +11,6 @@ class FuncRParams : public Node {
 public:
     FuncRParams(NodeType nodeType1);
 
-    virtual ~FuncRParams();
 };
 
 

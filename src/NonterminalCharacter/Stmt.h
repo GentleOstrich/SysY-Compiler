@@ -15,7 +15,6 @@ public:
     int type = 0; // 0 normal 1-if 2-for 3-break 4-continue 5-return 6-getint 7-printf
     Stmt(NodeType nodeType1);
 
-    virtual ~Stmt();
 };
 
 

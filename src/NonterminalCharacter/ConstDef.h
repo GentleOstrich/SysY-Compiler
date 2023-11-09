@@ -11,7 +11,6 @@ class ConstDef : public Node {
 public:
     ConstDef(NodeType nodeType1);
 
-    virtual ~ConstDef();
 };
 
 

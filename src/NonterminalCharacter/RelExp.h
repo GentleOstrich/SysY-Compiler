@@ -13,7 +13,6 @@ public:
 
     RelExp(NodeType nodeType1);
 
-    virtual ~RelExp();
 };
 
 

@@ -5,7 +5,3 @@
 #include "LVal.h"
 
 LVal::LVal(NodeType nodeType1) : Node(nodeType1) {}
-
-LVal::~LVal() {
-
-}

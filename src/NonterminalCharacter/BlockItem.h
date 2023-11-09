@@ -11,7 +11,6 @@ class BlockItem : public Node {
 public:
     BlockItem(NodeType nodeType1);
 
-    virtual ~BlockItem();
 };
 
 

@@ -6,6 +6,3 @@
 
 Decl::Decl(NodeType nodeType1) : Node(nodeType1) {}
 
-Decl::~Decl() {
-
-}

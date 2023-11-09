@@ -9,7 +9,3 @@ void AddExp::addOp(int op) {
 }
 
 AddExp::AddExp(NodeType nodeType1) : Node(nodeType1) {}
-
-AddExp::~AddExp() {
-
-}
