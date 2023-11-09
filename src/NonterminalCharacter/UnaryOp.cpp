@@ -3,3 +3,9 @@
 //
 
 #include "UnaryOp.h"
+
+UnaryOp::UnaryOp(NodeType nodeType1) : Node(nodeType1) {}
+
+UnaryOp::~UnaryOp() {
+
+}

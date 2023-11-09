@@ -8,7 +8,9 @@
 
 class ConstExp : public Node {
 public:
+    ConstExp(NodeType nodeType1);
 
+    virtual ~ConstExp();
 };
 
 

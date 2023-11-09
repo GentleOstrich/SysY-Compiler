@@ -3,3 +3,9 @@
 //
 
 #include "ForStmt.h"
+
+ForStmt::ForStmt(NodeType nodeType1) : Node(nodeType1) {}
+
+ForStmt::~ForStmt() {
+
+}

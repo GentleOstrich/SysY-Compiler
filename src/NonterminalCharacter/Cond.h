@@ -8,7 +8,9 @@
 
 class Cond : public Node{
 public:
+    Cond(NodeType nodeType1);
 
+    virtual ~Cond();
 };
 
 

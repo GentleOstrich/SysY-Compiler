@@ -10,7 +10,9 @@
 
 class CompUnit : public Node{
 public:
+    CompUnit(NodeType nodeType1);
 
+    virtual ~CompUnit();
 };
 
 

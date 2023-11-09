@@ -9,7 +9,9 @@
 
 class FuncFParam : public Node {
 public:
+    FuncFParam(NodeType nodeType1);
 
+    virtual ~FuncFParam();
 };
 
 

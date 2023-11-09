@@ -8,7 +8,9 @@
 
 class Decl : public Node {
 public:
+    Decl(NodeType nodeType1);
 
+    virtual ~Decl();
 };
 
 

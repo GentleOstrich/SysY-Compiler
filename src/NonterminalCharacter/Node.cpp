@@ -3,12 +3,13 @@
 //
 
 #include "Node.h"
-Node::Node(Token token) {
+Node::Node(Token token, NodeType nodeType) {
     this->token = &token;
+    this->nodeType = nodeType;
 }
 
-Node::Node() {
-
+Node::Node(NodeType nodeType) {
+    this->nodeType = nodeType;
 }
 
 void Node::addChild(Node *child) {
@@ -16,3 +17,10 @@ void Node::addChild(Node *child) {
         this->children.push_back(child);
     }
 }
+
+NodeType Node::getNodeType() {
+    return this->nodeType;
+}
+
+
+

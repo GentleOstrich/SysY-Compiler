@@ -39,8 +39,6 @@ public:
     bool hasAUntilB(char A, char B);
 
     int getLineNum();
-
-    int getLastLineNum();
 };
 
 

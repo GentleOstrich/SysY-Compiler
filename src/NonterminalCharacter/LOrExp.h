@@ -8,7 +8,9 @@
 
 class LOrExp : public Node {
 public:
+    LOrExp(NodeType nodeType1);
 
+    virtual ~LOrExp();
 };
 
 

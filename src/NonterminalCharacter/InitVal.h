@@ -9,7 +9,9 @@
 
 class InitVal : public Node {
 public:
+    InitVal(NodeType nodeType1);
 
+    virtual ~InitVal();
 
 };
 

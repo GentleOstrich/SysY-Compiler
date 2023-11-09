@@ -9,7 +9,9 @@
 
 class PrimaryExp : public Node {
 public:
+    PrimaryExp(NodeType nodeType1);
 
+    virtual ~PrimaryExp();
 };
 
 

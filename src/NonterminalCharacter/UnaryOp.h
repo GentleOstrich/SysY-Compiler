@@ -8,7 +8,10 @@
 
 class UnaryOp : public Node {
 public:
-    int type = 0; // 0-+ 1-- 1-!
+    short type = 0; // 0-+ 1-- 1-!
+    UnaryOp(NodeType nodeType1);
+
+    virtual ~UnaryOp();
 };
 
 

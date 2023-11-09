@@ -3,3 +3,9 @@
 //
 
 #include "ConstDecl.h"
+
+ConstDecl::ConstDecl(NodeType nodeType1) : Node(nodeType1) {}
+
+ConstDecl::~ConstDecl() {
+
+}

@@ -9,7 +9,12 @@
 
 class VarDef : public Node {
 public:
+    explicit VarDef(NodeType nodeType1);
+    string word;
+    void setWord(const string& word);
+    string getWord() ;
 
+    virtual ~VarDef();
 };
 
 

@@ -9,7 +9,9 @@
 
 class ConstInitVal : public Node {
 public:
+    ConstInitVal(NodeType nodeType1);
 
+    virtual ~ConstInitVal();
 
 };
 

@@ -9,7 +9,9 @@
 
 class LVal : public Node {
 public:
+    LVal(NodeType nodeType1);
 
+    virtual ~LVal();
 };
 
 

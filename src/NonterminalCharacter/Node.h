@@ -7,15 +7,19 @@
 #include <vector>
 #include "../Lexer/LexType.h"
 #include "../Lexer/Token.h"
+#include "NodeType.h"
 
 class Node {
 public:
+    NodeType nodeType;
     Token* token;
     int line;
     std::vector<Node*> children;
-    explicit Node();
-    explicit Node(Token token);
+    explicit Node(NodeType nodeType1);
+    explicit Node(Token token, NodeType nodeType1);
     void addChild(Node *child);
+    NodeType getNodeType();
+    virtual ~Node();
 };
 
 

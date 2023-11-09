@@ -8,8 +8,6 @@ set(CMAKE_BUILD_TYPE Debug)
 add_executable(
         SysY-Compiler
         src/main.cpp
-        src/ErrorCheck/ErrorCheck.cpp
-        src/ErrorCheck/ErrorCheck.h
         src/Lexer/Lexer.cpp
         src/Lexer/Lexer.h
         src/Lexer/LexType.h
@@ -90,4 +88,10 @@ add_executable(
         src/SymbolManager/Func.h
         src/SymbolManager/Symbol.cpp
         src/SymbolManager/Symbol.h
-        src/Lexer/Token.cpp src/Lexer/Token.h)
+        src/Lexer/Token.cpp src/Lexer/Token.h
+        src/NonterminalCharacter/NodeType.cpp
+        src/NonterminalCharacter/NodeType.h
+        src/Visitor/Visitor.cpp
+        src/Visitor/Visitor.h
+        src/SymbolManager/SymbolTable.cpp
+        src/SymbolManager/SymbolTable.h)

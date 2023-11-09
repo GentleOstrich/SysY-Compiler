@@ -3,3 +3,9 @@
 //
 
 #include "Block.h"
+
+Block::Block(NodeType nodeType1) : Node(nodeType1) {}
+
+Block::~Block() {
+
+}

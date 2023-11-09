@@ -9,6 +9,10 @@
 class Number : public Node{
 public:
     int val;
+
+    Number(NodeType nodeType1);
+
+    virtual ~Number();
 };
 
 

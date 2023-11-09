@@ -4,3 +4,12 @@
 
 #include "MulExp.h"
 
+void MulExp::addOp(int op) {
+    this->op.push_back(op);
+}
+
+MulExp::MulExp(NodeType nodeType1) : Node(nodeType1) {}
+
+MulExp::~MulExp() {
+
+}

@@ -3,3 +3,9 @@
 //
 
 #include "PrimaryExp.h"
+
+PrimaryExp::PrimaryExp(NodeType nodeType1) : Node(nodeType1) {}
+
+PrimaryExp::~PrimaryExp() {
+
+}

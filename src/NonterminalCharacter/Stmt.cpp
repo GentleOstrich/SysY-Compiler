@@ -3,3 +3,9 @@
 //
 
 #include "Stmt.h"
+
+Stmt::Stmt(NodeType nodeType1) : Node(nodeType1) {}
+
+Stmt::~Stmt() {
+
+}

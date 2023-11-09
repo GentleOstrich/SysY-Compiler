@@ -5,10 +5,15 @@
 #ifndef SYSY_COMPILER_RELEXP_H
 #define SYSY_COMPILER_RELEXP_H
 #include "Node.h"
-
+#include <vector>
 class RelExp : public Node {
 public:
+    vector<short> op; // 0-GRE 1-GEQ 2-LSS 3-LEQ
+    void addOp(int op);
 
+    RelExp(NodeType nodeType1);
+
+    virtual ~RelExp();
 };
 
 

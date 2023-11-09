@@ -4,3 +4,8 @@
 
 #include "MainFuncDef.h"
 
+MainFuncDef::MainFuncDef(NodeType nodeType1) : Node(nodeType1) {}
+
+MainFuncDef::~MainFuncDef() {
+
+}

@@ -4,3 +4,8 @@
 
 #include "ConstExp.h"
 
+ConstExp::ConstExp(NodeType nodeType1) : Node(nodeType1) {}
+
+ConstExp::~ConstExp() {
+
+}

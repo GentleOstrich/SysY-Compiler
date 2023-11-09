@@ -9,7 +9,9 @@
 
 class ForStmt : public Node {
 public:
+    ForStmt(NodeType nodeType1);
 
+    virtual ~ForStmt();
 };
 
 
