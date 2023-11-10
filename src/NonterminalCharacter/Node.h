@@ -20,7 +20,8 @@ public:
     void addChild(Node *child);
     NodeType getNodeType();
     virtual string getWord();
-
+    virtual short getType();
+    virtual bool hasEqual();
 };
 
 

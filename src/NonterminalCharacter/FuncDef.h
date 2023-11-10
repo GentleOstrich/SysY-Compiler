@@ -13,7 +13,6 @@ public:
     string word;
     void setWord(const string& word);
     string getWord() override ;
-
 };
 
 

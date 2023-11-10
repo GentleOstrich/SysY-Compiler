@@ -11,8 +11,12 @@ class VarDef : public Node {
 public:
     explicit VarDef(NodeType nodeType1);
     string word;
+    bool Equal = false;
+    short type = 0;
     void setWord(const string& word);
     string getWord() override ;
+    bool hasEqual() override ;
+    short getType() override ;
 
 };
 

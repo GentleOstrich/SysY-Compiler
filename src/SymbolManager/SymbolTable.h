@@ -15,10 +15,11 @@ public:
     std::stack<int> table;
     std::vector<Symbol*> symbols;
     int symbolId;
+    SymbolTable();
 
     void createSymbolTable();
 
-    void addSymbol(Node* def);
+    void addSymbol(Symbol* symbol);
 
     bool findSymbol(const string& word, bool isFunc, bool all);
 

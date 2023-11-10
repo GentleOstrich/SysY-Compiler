@@ -16,4 +16,12 @@ string VarDef::getWord() {
     return this->word;
 }
 
+bool VarDef::hasEqual() {
+    return this->Equal;
+}
+
+short VarDef::getType() {
+    return this->type;
+}
+
 

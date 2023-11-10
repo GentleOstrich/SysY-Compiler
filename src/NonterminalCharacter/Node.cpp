@@ -26,5 +26,13 @@ string Node::getWord() {
     return std::string();
 }
 
+short Node::getType() {
+    return 0;
+}
+
+bool Node::hasEqual() {
+    return false;
+}
+
 
 

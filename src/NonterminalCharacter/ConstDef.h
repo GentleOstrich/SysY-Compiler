@@ -10,7 +10,11 @@
 class ConstDef : public Node {
 public:
     ConstDef(NodeType nodeType1);
-
+    string word;
+    short type = 0;
+    void setWord(const string& word);
+    string getWord() override ;
+    short getType() override ;
 };
 
 

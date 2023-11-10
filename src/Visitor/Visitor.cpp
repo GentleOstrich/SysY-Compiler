@@ -3,7 +3,177 @@
 //
 
 #include "Visitor.h"
+extern SymbolTable symbolTable;
 
-void Visitor::visit(Node *node) {
+void Visitor::handleCompUnit(Node* node) {
+    for (auto* child : node->children) {
+        if (node->getNodeType() == NodeType::Decl) {
+            handleDecl(child);
+        } else if (node->getNodeType() == NodeType::FuncDef) {
+            handleFuncDef(child);
+        } else if (node->getNodeType() == NodeType::MainFuncDef) {
+            handleMainFuncDef(child);
+        }
+    }
+}
+
+void Visitor::handleVarDef(Node *varDef) {
+    string word = varDef->getWord();
+    Symbol symbol(0, word, false, nullptr);
+    if (varDef->hasEqual()) {
+        symbol.type += varDef->children.size() - 1;
+    } else {
+        symbol.type += varDef->children.size();
+    }
+    symbolTable.addSymbol(&symbol);
+
+    for (auto* child : varDef->children) {
+        if (child->getNodeType() == NodeType::InitVal) {
+            handleInitVal(child);
+        } else if (child->getNodeType() == NodeType::ConstExp) {
+            handleConstExp(child);
+        }
+    }
+}
+
+void Visitor::handleConstDef(Node *constDef) {
+    string word = constDef->getWord();
+    Symbol symbol(0, word, true, nullptr);
+    symbol.type += constDef->children.size() - 1;
+    // domention of def
+    symbolTable.addSymbol(&symbol);
+
+    for (auto* child : constDef->children) {
+        if (child->getNodeType() == NodeType::ConstInitVal) {
+            handleConstInitVal(child);
+        } else if (child->getNodeType() == NodeType::ConstExp) {
+            handleConstExp(child);
+        }
+    }
 
 }
+
+int Visitor::handleFuncFParam(Node *funcFParam) {
+    string word = funcFParam->getWord();
+    Symbol symbol(0, word, false, nullptr);
+    symbol.type += funcFParam->children.size() - 1;
+    symbolTable.addSymbol(&symbol);
+    return funcFParam->getType();
+}
+
+void Visitor::handleFuncDef(Node *funcDef) {
+    int retType = funcDef->children[0]->getType();
+    int paramNum = 0;
+    Func func(retType, paramNum);
+
+    string word = funcDef->getWord();
+    Symbol symbol(-1, word, false, &func);
+    
+    Node* funcFParams = funcDef->children[1];
+    symbolTable.addSymbol(&symbol);
+
+    for (auto* child : funcFParams->children) {
+        if (child->getNodeType() == NodeType::FuncFParams) {
+            handleFuncFParams(child);
+            func.paramTypeList.push_back(child->getType());
+            func.paramNum++;
+        } else if (child->getNodeType() == NodeType::FuncType) {
+            handleFuncType(child);
+        } else if (child->getNodeType() == NodeType::Block) {
+            handleBlock(child);
+        }
+    }
+
+
+    if (funcFParams->getNodeType() == NodeType::FuncFParams) {
+        for (auto child : funcFParams->children) {
+            if (child->getNodeType() == NodeType::FuncFParam) {
+                handleFuncFParam(dynamic_cast<FuncFParam *>(child));
+                func.paramTypeList.push_back(child->getType());
+                func.paramNum++;
+            }
+        }
+    }
+    
+}
+
+void Visitor::handleDecl(Node *funcFParam) {
+    for (auto* child : funcFParam->children) {
+        if (child->getNodeType() == NodeType::ConstDecl) {
+            handleConstDecl(child);
+        } else if (child->getNodeType() == NodeType::VarDecl) {
+            handleVarDecl(child);
+        }
+    }
+}
+
+void Visitor::handleMainFuncDef(Node *funcFParam) {
+
+}
+
+void Visitor::handleConstDecl(Node *constDecl) {
+    for (auto* child : constDecl->children) {
+        if (child->getNodeType() == NodeType::BType) {
+            handleBType(child);
+        } else if (child->getNodeType() == NodeType::ConstDef) {
+            handleConstDef(child);
+        } 
+    }
+}
+
+void Visitor::handleVarDecl(Node *varDecl) {
+    for (auto* child : varDecl->children) {
+        if (child->getNodeType() == NodeType::BType) {
+            handleBType(child);
+        } else if (child->getNodeType() == NodeType::VarDef) {
+            handleVarDef(child);
+        }
+    }
+}
+
+void Visitor::handleBType(Node *BType) {
+    return;
+}
+
+void Visitor::handleConstInitVal(Node *constInitVal) {
+    for (auto* child : constInitVal->children) {
+        if (child->getNodeType() == NodeType::ConstExp) {
+            handleConstExp(child);
+        } else if (child->getNodeType() == NodeType::ConstInitVal) {
+            handleConstInitVal(child);
+        }
+    }
+}
+
+void Visitor::handleConstExp(Node *constExp) {
+
+}
+
+void Visitor::handleInitVal(Node *initVal) {
+    for (auto* child : initVal->children) {
+        if (child->getNodeType() == NodeType::Exp) {
+            handleExp(child);
+        } else if (child->getNodeType() == NodeType::InitVal) {
+            handleInitVal(child);
+        }
+    }
+}
+
+void Visitor::handleExp(Node *exp) {
+
+}
+
+int Visitor::handleFuncFParams(Node *funcFParams) {
+
+}
+
+void Visitor::handleFuncType(Node *funcType) {
+
+}
+
+void Visitor::handleBlock(Node *block) {
+
+}
+
+
+

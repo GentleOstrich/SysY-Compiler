@@ -84,11 +84,11 @@ BType* Parser::parseBType() {
 ConstDef* Parser::parseConstDef() {
     auto* constDef = new ConstDef(NodeType::ConstDef);
     if (tkType == LexType::IDENFR) {
-        Node* ident = new Node(lexer.getToken(), NodeType::Node);
-        constDef->addChild(ident);
+        constDef->setWord(tkWord);
         printTk;
         readTk;
         while (tkType == LexType::LBRACK) {
+            constDef->type++;
             printTk;
             readTk;
             constDef->addChild(parseConstExp());
@@ -135,7 +135,7 @@ ConstInitVal* Parser::parseConstInitVal() {
 }
 
 VarDecl* Parser::parseVarDecl() {
-    auto* varDecl = new VarDecl(NodeType::VarDef);
+    auto* varDecl = new VarDecl(NodeType::VarDecl);
     varDecl->addChild(parseBType());
     varDecl->addChild(parseVarDef());
     while (tkType == LexType::COMMA) {
@@ -160,6 +160,7 @@ VarDef* Parser::parseVarDef() {
         while (tkType == LexType::LBRACK) {
             printTk;
             readTk;
+            varDef->type++;
             varDef->addChild(parseConstExp());
             if (tkType == LexType::RBRACK) {
                 printTk;
@@ -167,6 +168,7 @@ VarDef* Parser::parseVarDef() {
             }
         }
         if (tkType == LexType::ASSIGN) {
+            varDef->Equal = true;
             printTk;
             readTk;
             varDef->addChild(parseInitVal());
@@ -284,11 +286,11 @@ FuncFParam* Parser::parseFuncFParam() {
     auto* funcFParam = new FuncFParam(NodeType::FuncFParam);
     funcFParam->addChild(parseBType());
     if (tkType == LexType::IDENFR) {
-        auto* ident = new Node(lexer.getToken(), NodeType::Node);
-        funcFParam->addChild(ident);
+        funcFParam->setWord(tkWord);
         printTk;
         readTk;
         if (tkType == LexType::LBRACK) {
+            funcFParam->type++;
             printTk;
             readTk;
             if (tkType == LexType::RBRACK) {

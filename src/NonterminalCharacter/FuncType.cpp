@@ -5,3 +5,7 @@
 #include "FuncType.h"
 
 FuncType::FuncType(NodeType nodeType1) : Node(nodeType1){}
+
+short FuncType::getType() {
+    return this->type;
+}

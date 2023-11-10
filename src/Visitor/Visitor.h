@@ -10,7 +10,23 @@
 extern CompUnit* compUnit;
 class Visitor {
 public:
-    void visit(Node* node);
+    void handleCompUnit(Node* compUnit);  
+    void handleVarDef(Node* varDef);
+    void handleConstDef(Node* constDef);
+    void handleFuncDef(Node* funcDef);
+    int handleFuncFParam(Node* funcFParam); // 返回参数类型
+    void handleDecl(Node* funcFParam);
+    void handleMainFuncDef(Node* funcFParam);
+    void handleConstDecl(Node* constDecl);
+    void handleVarDecl(Node* varDecl);
+    void handleBType(Node* BType);
+    void handleConstInitVal(Node* constInitVal);
+    void handleConstExp(Node* constExp);
+    void handleInitVal(Node* initVal);
+    void handleExp(Node* exp);
+    int handleFuncFParams(Node* funcFParams); // 返回参数个数
+    void handleFuncType(Node* funcType);
+    void handleBlock(Node* block);
 };
 
 
