@@ -55,8 +55,7 @@ void Visitor::handleConstDef(Node *constDef) {
 
 int Visitor::handleFuncFParam(Node *funcFParam) {
     string word = funcFParam->getWord();
-    Symbol symbol(0, word, false, nullptr);
-    symbol.type += funcFParam->children.size() - 1;
+    Symbol symbol(funcFParam->getType(), word, false, nullptr);
     symbolTable.addSymbol(&symbol);
     return funcFParam->getType();
 }
@@ -72,9 +71,11 @@ void Visitor::handleFuncDef(Node *funcDef) {
     Node* funcFParams = funcDef->children[1];
     symbolTable.addSymbol(&symbol);
 
+    symbolTable.createSymbolTable(); // create new symbol table
+
     for (auto* child : funcFParams->children) {
         if (child->getNodeType() == NodeType::FuncFParams) {
-            handleFuncFParams(child);
+            handleFuncFParams(child, func.paramTypeList);
             func.paramTypeList.push_back(child->getType());
             func.paramNum++;
         } else if (child->getNodeType() == NodeType::FuncType) {
@@ -84,17 +85,6 @@ void Visitor::handleFuncDef(Node *funcDef) {
         }
     }
 
-
-    if (funcFParams->getNodeType() == NodeType::FuncFParams) {
-        for (auto child : funcFParams->children) {
-            if (child->getNodeType() == NodeType::FuncFParam) {
-                handleFuncFParam(dynamic_cast<FuncFParam *>(child));
-                func.paramTypeList.push_back(child->getType());
-                func.paramNum++;
-            }
-        }
-    }
-    
 }
 
 void Visitor::handleDecl(Node *funcFParam) {
@@ -163,8 +153,15 @@ void Visitor::handleExp(Node *exp) {
 
 }
 
-int Visitor::handleFuncFParams(Node *funcFParams) {
-
+int Visitor::handleFuncFParams(Node *funcFParams, vector<int> paramTypeList) {
+    int num = 0;
+    for (auto* child : funcFParams->children) {
+        if (child->getNodeType() == NodeType::FuncFParam) {
+            num++;
+            paramTypeList.push_back(handleFuncFParam(child));
+        }
+    }
+    return num;
 }
 
 void Visitor::handleFuncType(Node *funcType) {
@@ -172,6 +169,25 @@ void Visitor::handleFuncType(Node *funcType) {
 }
 
 void Visitor::handleBlock(Node *block) {
+    for (auto* child : block->children) {
+        if (child->getNodeType() == NodeType::BlockItem) {
+            handleBlockItem(child);
+        }
+    }
+    symbolTable.deleteSymbolTable();
+}
+
+void Visitor::handleBlockItem(Node *blockItem) {
+    for (auto* child : blockItem->children) {
+        if (child->getNodeType() == NodeType::Decl) {
+            handleDecl(child);
+        } else if (child->getNodeType() == NodeType::Stmt) {
+            handleStmt(child);
+        }
+    }
+}
+
+void Visitor::handleStmt(Node *stmt) {
 
 }
 

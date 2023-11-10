@@ -24,9 +24,11 @@ public:
     void handleConstExp(Node* constExp);
     void handleInitVal(Node* initVal);
     void handleExp(Node* exp);
-    int handleFuncFParams(Node* funcFParams); // 返回参数个数
+    int handleFuncFParams(Node* funcFParams, vector<int> paramTypeList); // 返回参数个数
     void handleFuncType(Node* funcType);
     void handleBlock(Node* block);
+    void handleBlockItem(Node* blockItem);
+    void handleStmt(Node* stmt);
 };
 
 
