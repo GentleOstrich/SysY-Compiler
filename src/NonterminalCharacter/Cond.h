@@ -8,7 +8,7 @@
 
 class Cond : public Node{
 public:
-    Cond(NodeType nodeType1);
+    Cond(NodeType nodeType1, int lineNum);
 
 };
 

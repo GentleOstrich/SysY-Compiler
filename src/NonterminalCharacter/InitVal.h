@@ -9,7 +9,7 @@
 
 class InitVal : public Node {
 public:
-    InitVal(NodeType nodeType1);
+    InitVal(NodeType nodeType1, int lineNum);
 
 };
 

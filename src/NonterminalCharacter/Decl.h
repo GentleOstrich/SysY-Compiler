@@ -9,7 +9,7 @@
 class Decl : public Node {
 public:
     int a = 0;
-    Decl(NodeType nodeType1);
+    Decl(NodeType nodeType1, int lineNum);
 
 };
 

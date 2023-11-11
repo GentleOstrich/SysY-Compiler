@@ -9,7 +9,7 @@
 
 class ConstInitVal : public Node {
 public:
-    ConstInitVal(NodeType nodeType1);
+    ConstInitVal(NodeType nodeType1, int lineNum);
 
 };
 

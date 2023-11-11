@@ -8,7 +8,7 @@
 
 class Exp : public Node {
 public:
-    Exp(NodeType nodeType1);
+    Exp(NodeType nodeType1, int lineNum);
 
 };
 

@@ -4,5 +4,5 @@
 
 #include "Decl.h"
 
-Decl::Decl(NodeType nodeType1) : Node(nodeType1) {}
+Decl::Decl(NodeType nodeType1, int lineNum) : Node(nodeType1, lineNum) {}
 

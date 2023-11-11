@@ -10,7 +10,7 @@ class Number : public Node{
 public:
     int val;
 
-    Number(NodeType nodeType1);
+    Number(NodeType nodeType1, int lineNum);
     int getVal() override;
 
 };

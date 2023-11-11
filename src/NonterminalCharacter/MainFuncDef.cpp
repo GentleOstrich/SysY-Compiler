@@ -4,4 +4,4 @@
 
 #include "MainFuncDef.h"
 
-MainFuncDef::MainFuncDef(NodeType nodeType1) : Node(nodeType1) {}
+MainFuncDef::MainFuncDef(NodeType nodeType1, int lineNum) : Node(nodeType1, lineNum) {}

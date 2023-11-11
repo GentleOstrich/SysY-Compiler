@@ -78,7 +78,7 @@ void Visitor::handleFuncDef(Node *funcDef) {
             func.paramTypeList.push_back(child->getType());
             func.paramNum++;
         } else if (child->getNodeType() == NodeType::FuncType) {
-            handleFuncType(child);
+            func.retype = handleFuncType(child);
         } else if (child->getNodeType() == NodeType::Block) {
             handleBlock(child);
         }
@@ -165,8 +165,8 @@ int Visitor::handleFuncFParams(Node *funcFParams, vector<int> paramTypeList) {
     return num;
 }
 
-void Visitor::handleFuncType(Node *funcType) {
-
+short Visitor::handleFuncType(Node *funcType) {
+    return funcType->getType();
 }
 
 void Visitor::handleBlock(Node *block) {

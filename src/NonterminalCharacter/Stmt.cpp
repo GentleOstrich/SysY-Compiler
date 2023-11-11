@@ -4,7 +4,7 @@
 
 #include "Stmt.h"
 
-Stmt::Stmt(NodeType nodeType1) : Node(nodeType1) {}
+Stmt::Stmt(NodeType nodeType1, int lineNum) : Node(nodeType1, lineNum) {}
 
 short Stmt::getType() {
     return type;

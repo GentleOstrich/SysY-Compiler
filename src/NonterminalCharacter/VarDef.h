@@ -9,7 +9,7 @@
 
 class VarDef : public Node {
 public:
-    explicit VarDef(NodeType nodeType1);
+    explicit VarDef(NodeType nodeType1, int lineNum);
     string word;
     bool Equal = false;
     short type = 0;

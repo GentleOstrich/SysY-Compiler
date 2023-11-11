@@ -4,4 +4,8 @@
 
 #include "Number.h"
 
-Number::Number(NodeType nodeType1) : Node(nodeType1) {}
+Number::Number(NodeType nodeType1, int lineNum) : Node(nodeType1, lineNum) {}
+
+int Number::getVal() {
+    return this->val;
+}

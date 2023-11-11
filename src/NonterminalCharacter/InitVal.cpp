@@ -4,5 +4,5 @@
 
 #include "InitVal.h"
 
-InitVal::InitVal(NodeType nodeType1) : Node(nodeType1) {}
+InitVal::InitVal(NodeType nodeType1, int lineNum) : Node(nodeType1, lineNum) {}
 

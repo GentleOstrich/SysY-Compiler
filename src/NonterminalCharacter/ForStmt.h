@@ -9,7 +9,7 @@
 
 class ForStmt : public Node {
 public:
-    ForStmt(NodeType nodeType1);
+    ForStmt(NodeType nodeType1, int lineNum);
 
 };
 

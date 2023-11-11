@@ -13,10 +13,10 @@ class Node {
 public:
     NodeType nodeType;
     Token* token;
-    int line;
+    int lineNum;
     std::vector<Node*> children;
-    explicit Node(NodeType nodeType1);
-    explicit Node(Token token, NodeType nodeType1);
+    explicit Node(NodeType nodeType1, int lineNum);
+    explicit Node(Token token, NodeType nodeType1, int lineNum);
     void addChild(Node *child);
     NodeType getNodeType();
     virtual string getWord();
@@ -24,6 +24,7 @@ public:
     virtual bool hasEqual();
     virtual string getStr();
     virtual int getVal();
+    int getLineNum();
 };
 
 

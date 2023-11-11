@@ -8,7 +8,7 @@
 
 class LOrExp : public Node {
 public:
-    LOrExp(NodeType nodeType1);
+    LOrExp(NodeType nodeType1, int lineNum);
 
 };
 

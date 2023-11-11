@@ -10,7 +10,7 @@
 class BType : public Node {
 public:
     int type; // 0 is int
-    BType(NodeType nodeType1);
+    BType(NodeType nodeType1, int lineNum);
 
 };
 

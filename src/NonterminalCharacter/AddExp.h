@@ -12,7 +12,7 @@ public:
     vector<short> op; // 0-+ 1--
     void addOp(int op);
 
-    AddExp(NodeType nodeType1);
+    AddExp(NodeType nodeType1, int lineNum);
 
 };
 

@@ -4,5 +4,5 @@
 
 #include "ConstExp.h"
 
-ConstExp::ConstExp(NodeType nodeType1) : Node(nodeType1) {}
+ConstExp::ConstExp(NodeType nodeType1, int lineNum) : Node(nodeType1, lineNum) {}
 

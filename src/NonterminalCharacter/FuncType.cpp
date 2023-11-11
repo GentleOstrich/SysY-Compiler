@@ -4,7 +4,7 @@
 
 #include "FuncType.h"
 
-FuncType::FuncType(NodeType nodeType1) : Node(nodeType1){}
+FuncType::FuncType(NodeType nodeType1, int lineNum) : Node(nodeType1, lineNum){}
 
 short FuncType::getType() {
     return this->type;

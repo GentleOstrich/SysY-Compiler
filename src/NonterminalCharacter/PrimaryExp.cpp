@@ -4,5 +4,5 @@
 
 #include "PrimaryExp.h"
 
-PrimaryExp::PrimaryExp(NodeType nodeType1) : Node(nodeType1) {}
+PrimaryExp::PrimaryExp(NodeType nodeType1, int lineNum) : Node(nodeType1, lineNum) {}
 

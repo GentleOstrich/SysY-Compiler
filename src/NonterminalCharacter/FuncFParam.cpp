@@ -4,7 +4,7 @@
 
 #include "FuncFParam.h"
 
-FuncFParam::FuncFParam(NodeType nodeType1) : Node(nodeType1) {}
+FuncFParam::FuncFParam(NodeType nodeType1, int lineNum) : Node(nodeType1, lineNum) {}
 
 void FuncFParam::setWord(const string &word) {
     this->word = word;

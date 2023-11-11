@@ -10,7 +10,7 @@
 
 class Block : public Node {
 public:
-    Block(NodeType nodeType1);
+    Block(NodeType nodeType1, int lineNum);
 
 };
 

@@ -9,7 +9,7 @@
 
 class FuncDef : public Node {
 public:
-    explicit FuncDef(NodeType nodeType1);
+    explicit FuncDef(NodeType nodeType1, int lineNum);
     string word;
     void setWord(const string& word);
     string getWord() override ;

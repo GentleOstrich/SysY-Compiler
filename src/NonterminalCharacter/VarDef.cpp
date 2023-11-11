@@ -6,7 +6,7 @@
 
 #include <utility>
 
-VarDef::VarDef(NodeType nodeType1) : Node(nodeType1) {}
+VarDef::VarDef(NodeType nodeType1, int lineNum) : Node(nodeType1, lineNum) {}
 
 void VarDef::setWord(const string& word) {
     this->word = word;

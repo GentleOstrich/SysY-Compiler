@@ -8,7 +8,7 @@
 
 class ConstExp : public Node {
 public:
-    ConstExp(NodeType nodeType1);
+    ConstExp(NodeType nodeType1, int lineNum);
 
 };
 

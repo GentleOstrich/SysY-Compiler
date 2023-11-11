@@ -4,7 +4,7 @@
 
 #include "ConstDef.h"
 
-ConstDef::ConstDef(NodeType nodeType1) : Node(nodeType1) {}
+ConstDef::ConstDef(NodeType nodeType1, int lineNum) : Node(nodeType1, lineNum) {}
 
 void ConstDef::setWord(const string &word) {
     this->word = word;

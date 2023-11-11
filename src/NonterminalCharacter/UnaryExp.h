@@ -10,7 +10,7 @@
 
 class UnaryExp : public Node {
 public:
-    UnaryExp(NodeType nodeType1);
+    UnaryExp(NodeType nodeType1, int lineNum);
 
 };
 

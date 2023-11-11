@@ -5,5 +5,5 @@
 #include "ConstInitVal.h"
 
 
-ConstInitVal::ConstInitVal(NodeType nodeType1) : Node(nodeType1) {}
+ConstInitVal::ConstInitVal(NodeType nodeType1, int lineNum) : Node(nodeType1, lineNum) {}
 

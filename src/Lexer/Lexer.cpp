@@ -5,14 +5,21 @@
 
 extern string source;
 extern ofstream e_ofs;
-// struct Error {
-//     int line;
-//     char c;
-// };
-// extern Error errors[1000];
-// extern int e;
+
+#define ERROR_CHECK
+
+#ifdef ERROR_CHECK
+
+struct Error {
+    int line;
+    char c;
+};
+extern Error errors[1000];
+extern int e;
 
 #define printError(lineNum, type, info) errors[e++] = {lineNum, type[0]}
+
+#endif
 
 string reserveWords[RESERVEWORDS_NUM] = {
         "main", "const", "int", "break", "continue", "if", "else", "for", "getint", "printf", "return", "void"
@@ -123,10 +130,12 @@ int Lexer::next() {
         curPos++;
         for (int i = 1; i < word.length()-1; ++i) {
             char c = word[i];
-            // if (!((c == '%' && word[i+1] == 'd') || c == 32 || c == 33 || (c >= 40 && c <= 126)) || (c == 92 && word[i+1] != 'n') ) {
-            //     printError(this->lineNum, "a", c);
-            //     break;
-            // }
+#ifdef ERROR_CHECK
+            if (!((c == '%' && word[i+1] == 'd') || c == 32 || c == 33 || (c >= 40 && c <= 126)) || (c == 92 && word[i+1] != 'n') ) {
+                printError(this->lineNum, "a", c);
+                break;
+            }
+#endif
         }
         lexType = LexType::STRCON;
         return 0;
@@ -370,7 +379,7 @@ bool Lexer::hasAUntilB(char A, char B) {
 }
 
 int Lexer::getLineNum() {
-    return lineNum;
+    return this->lineNum;
 }
 
 

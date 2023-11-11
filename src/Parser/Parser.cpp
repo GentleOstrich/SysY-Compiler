@@ -9,6 +9,21 @@
 #define preRead lexer.nnext()
 #define prePreRead lexer.nnnext()
 
+#define ERROR_CHECK
+
+#ifdef ERROR_CHECK
+
+struct Error {
+    int line;
+    char c;
+};
+extern Error errors[1000];
+extern int e;
+
+#define printError(lineNum, type) errors[e++] = {lineNum, type[0]}
+
+#endif
+
 using namespace std;
 
 extern Lexer lexer;
@@ -17,7 +32,7 @@ extern ofstream ofs;
 Token token;
 // 正常返回 0 错误返回 -1
 CompUnit* Parser::parseCompUnit() {
-    auto* compUnit = new CompUnit(NodeType::CompUnit);
+    auto* compUnit = new CompUnit(NodeType::CompUnit, lexer.getLineNum());
     readTk;
     while (tkType != LexType::NONE) {
         if (tkType == LexType::CONSTTK) {
@@ -41,7 +56,7 @@ CompUnit* Parser::parseCompUnit() {
 }
 
 Decl* Parser::parseDecl() {
-    Decl *decl = new Decl(NodeType::Decl);
+    Decl *decl = new Decl(NodeType::Decl, lexer.getLineNum());
     if (tkType == LexType::CONSTTK) {
         decl->addChild(parseConstDecl());
     } else if (tkType == LexType::INTTK) {
@@ -51,7 +66,7 @@ Decl* Parser::parseDecl() {
 }
 
 ConstDecl* Parser::parseConstDecl() {
-    auto* constDecl = new ConstDecl(NodeType::ConstDecl);
+    auto* constDecl = new ConstDecl(NodeType::ConstDecl, lexer.getLineNum());
     if (tkType == LexType::CONSTTK) {
         printTk;
         readTk;
@@ -65,6 +80,10 @@ ConstDecl* Parser::parseConstDecl() {
         if (tkType == LexType::SEMICN) {
             printTk;
             readTk;
+        } else {
+#ifdef ERROR_CHECK
+            printError(constDecl->getLineNum(), "i");
+#endif
         }
     }
     ofs << "<ConstDecl>" << endl;
@@ -72,7 +91,7 @@ ConstDecl* Parser::parseConstDecl() {
 }
 
 BType* Parser::parseBType() {
-    auto* bType = new BType(NodeType::BType);
+    auto* bType = new BType(NodeType::BType, lexer.getLineNum());
     if (tkType == LexType::INTTK) {
         bType->type = 0;
         printTk;
@@ -82,7 +101,7 @@ BType* Parser::parseBType() {
 }
 
 ConstDef* Parser::parseConstDef() {
-    auto* constDef = new ConstDef(NodeType::ConstDef);
+    auto* constDef = new ConstDef(NodeType::ConstDef, lexer.getLineNum());
     if (tkType == LexType::IDENFR) {
         constDef->setWord(tkWord);
         printTk;
@@ -95,6 +114,10 @@ ConstDef* Parser::parseConstDef() {
             if (tkType == LexType::RBRACK) {
                 printTk;
                 readTk;
+            } else {
+#ifdef ERROR_CHECK
+                printError(constDef->getLineNum(), "k");
+#endif
             }
         }
         if (tkType == LexType::ASSIGN) {
@@ -108,7 +131,7 @@ ConstDef* Parser::parseConstDef() {
 }
 
 ConstInitVal* Parser::parseConstInitVal() {
-    auto* constInitVal = new ConstInitVal(NodeType::ConstInitVal);
+    auto* constInitVal = new ConstInitVal(NodeType::ConstInitVal, lexer.getLineNum());
     if (tkType == LexType::LBRACE) {
         printTk;
         readTk;
@@ -135,7 +158,7 @@ ConstInitVal* Parser::parseConstInitVal() {
 }
 
 VarDecl* Parser::parseVarDecl() {
-    auto* varDecl = new VarDecl(NodeType::VarDecl);
+    auto* varDecl = new VarDecl(NodeType::VarDecl, lexer.getLineNum());
     varDecl->addChild(parseBType());
     varDecl->addChild(parseVarDef());
     while (tkType == LexType::COMMA) {
@@ -146,13 +169,17 @@ VarDecl* Parser::parseVarDecl() {
     if (tkType == LexType::SEMICN) {
         printTk;
         readTk;
+    } else {
+#ifdef ERROR_CHECK
+        printError(varDecl->getLineNum(), "i");
+#endif
     }
     ofs << "<VarDecl>" << endl;
     return varDecl;
 }
 
 VarDef* Parser::parseVarDef() {
-    auto* varDef = new VarDef(NodeType::VarDef);
+    auto* varDef = new VarDef(NodeType::VarDef, lexer.getLineNum());
     if (tkType == LexType::IDENFR) {
         varDef->setWord(tkWord);
         printTk;
@@ -165,6 +192,10 @@ VarDef* Parser::parseVarDef() {
             if (tkType == LexType::RBRACK) {
                 printTk;
                 readTk;
+            } else {
+#ifdef ERROR_CHECK
+                printError(varDef->getLineNum(), "k");
+#endif
             }
         }
         if (tkType == LexType::ASSIGN) {
@@ -179,7 +210,7 @@ VarDef* Parser::parseVarDef() {
 }
 
 InitVal* Parser::parseInitVal() {
-    auto* initVal = new InitVal(NodeType::InitVal);
+    auto* initVal = new InitVal(NodeType::InitVal, lexer.getLineNum());
     if (tkType == LexType::LBRACE) {
         printTk;
         readTk;
@@ -206,7 +237,7 @@ InitVal* Parser::parseInitVal() {
 }
 
 FuncDef* Parser::parseFuncDef() {
-    auto* funcDef = new FuncDef(NodeType::FuncDef);
+    auto* funcDef = new FuncDef(NodeType::FuncDef, lexer.getLineNum());
     funcDef->addChild(parseFuncType());
     if (tkType == LexType::IDENFR) {
         funcDef->setWord(tkWord);
@@ -223,6 +254,10 @@ FuncDef* Parser::parseFuncDef() {
                 if (tkType == LexType::RPARENT) {
                     printTk;
                     readTk;
+                } else {
+#ifdef ERROR_CHECK
+                    printError(funcDef->getLineNum(), "j");
+#endif
                 }
             }
             funcDef->addChild(parseBlock());
@@ -233,7 +268,7 @@ FuncDef* Parser::parseFuncDef() {
 }
 
 MainFuncDef* Parser::parseMainFuncDef() {
-    auto* mainFuncDef = new MainFuncDef(NodeType::MainFuncDef);
+    auto* mainFuncDef = new MainFuncDef(NodeType::MainFuncDef, lexer.getLineNum());
     if (tkType == LexType::INTTK) {
         printTk;
         readTk;
@@ -246,8 +281,12 @@ MainFuncDef* Parser::parseMainFuncDef() {
                 if (tkType == LexType::RPARENT) {
                     printTk;
                     readTk;
-                    mainFuncDef->addChild(parseBlock());
+                } else {
+#ifdef ERROR_CHECK
+                    printError(mainFuncDef->getLineNum(), "j");
+#endif
                 }
+                mainFuncDef->addChild(parseBlock());
             }
         }
     }
@@ -256,7 +295,7 @@ MainFuncDef* Parser::parseMainFuncDef() {
 }
 
 FuncType* Parser::parseFuncType() {
-    auto* funcType = new FuncType(NodeType::FuncType);
+    auto* funcType = new FuncType(NodeType::FuncType, lexer.getLineNum());
     if (tkType == LexType::INTTK) {
         funcType->type = 0;
         printTk;
@@ -271,7 +310,7 @@ FuncType* Parser::parseFuncType() {
 }
 
 FuncFParams* Parser::parseFuncFParams() {
-    auto* funcFParams = new FuncFParams(NodeType::FuncFParams);
+    auto* funcFParams = new FuncFParams(NodeType::FuncFParams, lexer.getLineNum());
     funcFParams->addChild(parseFuncFParam());
     while (tkType == LexType::COMMA) {
         printTk;
@@ -283,7 +322,7 @@ FuncFParams* Parser::parseFuncFParams() {
 }
 
 FuncFParam* Parser::parseFuncFParam() {
-    auto* funcFParam = new FuncFParam(NodeType::FuncFParam);
+    auto* funcFParam = new FuncFParam(NodeType::FuncFParam, lexer.getLineNum());
     funcFParam->addChild(parseBType());
     if (tkType == LexType::IDENFR) {
         funcFParam->setWord(tkWord);
@@ -296,6 +335,10 @@ FuncFParam* Parser::parseFuncFParam() {
             if (tkType == LexType::RBRACK) {
                 printTk;
                 readTk;
+            } else {
+#ifdef ERROR_CHECK
+                printError(funcFParam->getLineNum(), "k");
+#endif
             }
             while (tkType == LexType::LBRACK) {
                 printTk;
@@ -304,6 +347,10 @@ FuncFParam* Parser::parseFuncFParam() {
                 if (tkType == LexType::RBRACK) {
                     printTk;
                     readTk;
+                } else {
+#ifdef ERROR_CHECK
+                    printError(funcFParam->getLineNum(), "k");
+#endif
                 }
             }
         }
@@ -313,7 +360,7 @@ FuncFParam* Parser::parseFuncFParam() {
 }
 
 Block* Parser::parseBlock() {
-    auto* block = new Block(NodeType::Block);
+    auto* block = new Block(NodeType::Block, lexer.getLineNum());
     if (tkType == LexType::LBRACE) {
         printTk;
         readTk;
@@ -330,7 +377,7 @@ Block* Parser::parseBlock() {
 }
 
 BlockItem* Parser::parseBlockItem() {
-    auto* blockItem = new BlockItem(NodeType::BlockItem);
+    auto* blockItem = new BlockItem(NodeType::BlockItem, lexer.getLineNum());
     if (tkType == LexType::CONSTTK || tkType == LexType::INTTK) {
         blockItem->addChild(parseDecl());
     } else {
@@ -340,7 +387,7 @@ BlockItem* Parser::parseBlockItem() {
 }
 
 Stmt* Parser::parseStmt() {
-    auto* stmt = new Stmt(NodeType::Stmt);
+    auto* stmt = new Stmt(NodeType::Stmt, lexer.getLineNum());
     if (tkType == LexType::IFTK) {
         stmt->type = 1;
         printTk;
@@ -352,12 +399,16 @@ Stmt* Parser::parseStmt() {
             if (tkType == LexType::RPARENT) {
                 printTk;
                 readTk;
+            }  else {
+#ifdef ERROR_CHECK
+                printError(stmt->getLineNum(), "j");
+#endif
+            }
+            stmt->addChild(parseStmt());
+            if (tkType == LexType::ELSETK) {
+                printTk;
+                readTk;
                 stmt->addChild(parseStmt());
-                if (tkType == LexType::ELSETK) {
-                    printTk;
-                    readTk;
-                    stmt->addChild(parseStmt());
-                }
             }
         }
     } else if (tkType == LexType::FORTK) {
@@ -397,6 +448,10 @@ Stmt* Parser::parseStmt() {
         if (tkType == LexType::SEMICN) {
             printTk;
             readTk;
+        } else {
+#ifdef ERROR_CHECK
+            printError(stmt->getLineNum(), "i");
+#endif
         }
     } else if (tkType == LexType::CONTINUETK) {
         stmt->type = 4;
@@ -405,6 +460,10 @@ Stmt* Parser::parseStmt() {
         if (tkType == LexType::SEMICN) {
             printTk;
             readTk;
+        } else {
+#ifdef ERROR_CHECK
+            printError(stmt->getLineNum(), "i");
+#endif
         }
     } else if (tkType == LexType::RETURNTK) {
         stmt->type = 5;
@@ -418,6 +477,10 @@ Stmt* Parser::parseStmt() {
             if (tkType == LexType::SEMICN) {
                 printTk;
                 readTk;
+            } else {
+#ifdef ERROR_CHECK
+                printError(stmt->getLineNum(), "i");
+#endif
             }
         }
     } else if (tkType == LexType::PRINTFTK) {
@@ -439,11 +502,20 @@ Stmt* Parser::parseStmt() {
                 if (tkType == LexType::RPARENT) {
                     printTk;
                     readTk;
-                    if (tkType == LexType::SEMICN) {
-                        printTk;
-                        readTk;
-                    }
+                } else {
+#ifdef ERROR_CHECK
+                    printError(stmt->getLineNum(), "j");
+#endif
                 }
+                if (tkType == LexType::SEMICN) {
+                    printTk;
+                    readTk;
+                } else {
+#ifdef ERROR_CHECK
+                    printError(stmt->getLineNum(), "i");
+#endif
+                }
+
             }
         }
     } else if (tkType == LexType::LBRACE) {
@@ -467,10 +539,18 @@ Stmt* Parser::parseStmt() {
                         if (tkType == LexType::RPARENT) {
                             printTk;
                             readTk;
-                            if (tkType == LexType::SEMICN) {
-                                printTk;
-                                readTk;
-                            }
+                        } else {
+#ifdef ERROR_CHECK
+                            printError(stmt->getLineNum(), "j");
+#endif
+                        }
+                        if (tkType == LexType::SEMICN) {
+                            printTk;
+                            readTk;
+                        } else {
+#ifdef ERROR_CHECK
+                            printError(stmt->getLineNum(), "i");
+#endif
                         }
                     }
                 } else {
@@ -478,6 +558,10 @@ Stmt* Parser::parseStmt() {
                     if (tkType == LexType::SEMICN) {
                         printTk;
                         readTk;
+                    } else {
+#ifdef ERROR_CHECK
+                        printError(stmt->getLineNum(), "i");
+#endif
                     }
                 }
             }
@@ -486,6 +570,10 @@ Stmt* Parser::parseStmt() {
             if (tkType == LexType::SEMICN) {
                 printTk;
                 readTk;
+            } else {
+#ifdef ERROR_CHECK
+                printError(stmt->getLineNum(), "i");
+#endif
             }
         }
     }
@@ -494,7 +582,7 @@ Stmt* Parser::parseStmt() {
 }
 
 ForStmt* Parser::parseForStmt() {
-    auto* forStmt = new ForStmt(NodeType::ForStmt);
+    auto* forStmt = new ForStmt(NodeType::ForStmt, lexer.getLineNum());
     forStmt->addChild(parseLVal());
     if (tkType == LexType::ASSIGN) {
         printTk;
@@ -506,23 +594,23 @@ ForStmt* Parser::parseForStmt() {
 }
 
 Exp* Parser::parseExp() {
-    auto* exp = new Exp(NodeType::Exp);
+    auto* exp = new Exp(NodeType::Exp, lexer.getLineNum());
     exp->addChild(parseAddExp());
     ofs << "<Exp>" << endl;
     return exp;
 }
 
 Cond* Parser::parseCond() {
-    auto* cond = new Cond(NodeType::Cond);
+    auto* cond = new Cond(NodeType::Cond, lexer.getLineNum());
     cond->addChild(parseLOrExp());
     ofs << "<Cond>" << endl;
     return cond;
 }
 
 LVal* Parser::parseLVal() {
-    auto* lVal = new LVal(NodeType::LVal);
+    auto* lVal = new LVal(NodeType::LVal, lexer.getLineNum());
     if (tkType == LexType::IDENFR) {
-        Node* ident = new Node(lexer.getToken(), NodeType::Node);
+        Node* ident = new Node(lexer.getToken(), NodeType::Node, lexer.getLineNum());
         lVal->addChild(ident);
         printTk;
         readTk;
@@ -533,6 +621,10 @@ LVal* Parser::parseLVal() {
             if (tkType == LexType::RBRACK) {
                 printTk;
                 readTk;
+            } else {
+#ifdef ERROR_CHECK
+                printError(lVal->getLineNum(), "k");
+#endif
             }
         }
     }
@@ -541,7 +633,7 @@ LVal* Parser::parseLVal() {
 }
 
 PrimaryExp* Parser::parsePrimaryExp() {
-    auto* primaryExp = new PrimaryExp(NodeType::PrimaryExp);
+    auto* primaryExp = new PrimaryExp(NodeType::PrimaryExp, lexer.getLineNum());
     if (tkType == LexType::LPARENT) {
         printTk;
         readTk;
@@ -562,7 +654,7 @@ PrimaryExp* Parser::parsePrimaryExp() {
 }
 
 Number* Parser::parseNumber() {
-    auto* number = new Number(NodeType::Number);
+    auto* number = new Number(NodeType::Number, lexer.getLineNum());
     if (tkType == LexType::INTCON) {
         // TODO
         number->val = 1145414;
@@ -574,13 +666,13 @@ Number* Parser::parseNumber() {
 }
 
 UnaryExp* Parser::parseUnaryExp() {
-    auto* unaryExp = new UnaryExp(NodeType::UnaryExp);
+    auto* unaryExp = new UnaryExp(NodeType::UnaryExp, lexer.getLineNum());
     if (tkType == LexType::PLUS || tkType == LexType::MINU || tkType == LexType::NOT) {
         unaryExp->addChild(parseUnaryOp());
         unaryExp->addChild(parseUnaryExp());
     } else {
         if (tkType == LexType::IDENFR && preRead == LexType::LPARENT) {
-            Node* ident = new Node(lexer.getToken(), NodeType::Node);
+            Node* ident = new Node(lexer.getToken(), NodeType::Node, lexer.getLineNum());
             unaryExp->addChild(ident);
             printTk;
             readTk;
@@ -594,6 +686,10 @@ UnaryExp* Parser::parseUnaryExp() {
                 if (tkType == LexType::RPARENT) {
                     printTk;
                     readTk;
+                } else {
+#ifdef ERROR_CHECK
+                    printError(unaryExp->getLineNum(), "j");
+#endif
                 }
             }
         } else {
@@ -605,7 +701,7 @@ UnaryExp* Parser::parseUnaryExp() {
 }
 
 UnaryOp* Parser::parseUnaryOp() {
-    auto* unaryOp = new UnaryOp(NodeType::UnaryOp);
+    auto* unaryOp = new UnaryOp(NodeType::UnaryOp, lexer.getLineNum());
     if (tkType == LexType::PLUS) {
         unaryOp->type = 0;
         printTk;
@@ -624,7 +720,7 @@ UnaryOp* Parser::parseUnaryOp() {
 }
 
 FuncRParams* Parser::parseFuncRParams() {
-    auto* funcRParams = new FuncRParams(NodeType::FuncRParams);
+    auto* funcRParams = new FuncRParams(NodeType::FuncRParams, lexer.getLineNum());
     funcRParams->addChild(parseExp());
     while (tkType == LexType::COMMA) {
         printTk;
@@ -636,7 +732,7 @@ FuncRParams* Parser::parseFuncRParams() {
 }
 
 MulExp* Parser::parseMulExp() {
-    auto* mulExp = new MulExp(NodeType::MulExp);
+    auto* mulExp = new MulExp(NodeType::MulExp, lexer.getLineNum());
     mulExp->addChild(parseUnaryExp());
     while (tkType == LexType::MULT || tkType == LexType::DIV || tkType == LexType::MOD) {
         switch (tkType) {
@@ -662,7 +758,7 @@ MulExp* Parser::parseMulExp() {
 }
 
 AddExp* Parser::parseAddExp() {
-    auto* addExp = new AddExp(NodeType::AddExp);
+    auto* addExp = new AddExp(NodeType::AddExp, lexer.getLineNum());
     addExp->addChild(parseMulExp());
     while (tkType == LexType::PLUS || tkType == LexType::MINU) {
         switch(tkType) {
@@ -685,7 +781,7 @@ AddExp* Parser::parseAddExp() {
 }
 
 RelExp* Parser::parseRelExp() {
-    auto* relExp = new RelExp(NodeType::RelExp);
+    auto* relExp = new RelExp(NodeType::RelExp, lexer.getLineNum());
     relExp->addChild(parseAddExp());
     while (tkType == LexType::GRE || tkType == LexType::GEQ || tkType == LexType::LSS || tkType == LexType::LEQ) {
         switch (tkType) {
@@ -714,7 +810,7 @@ RelExp* Parser::parseRelExp() {
 }
 
 EqExp* Parser::parseEqExp() {
-    auto* eqExp = new EqExp(NodeType::EqExp);
+    auto* eqExp = new EqExp(NodeType::EqExp, lexer.getLineNum());
     eqExp->addChild(parseRelExp());
     while (tkType == LexType::EQL || tkType == LexType::NEQ) {
         switch(tkType) {
@@ -737,7 +833,7 @@ EqExp* Parser::parseEqExp() {
 }
 
 LAndExp* Parser::parseLAndExp() {
-    auto* lAndExp = new LAndExp(NodeType::LAndExp);
+    auto* lAndExp = new LAndExp(NodeType::LAndExp, lexer.getLineNum());
     lAndExp->addChild(parseEqExp());
     while (tkType == LexType::AND) {
         ofs << "<LAndExp>" << endl;
@@ -750,7 +846,7 @@ LAndExp* Parser::parseLAndExp() {
 }
 
 LOrExp* Parser::parseLOrExp() {
-    auto* lOrExp = new LOrExp(NodeType::LOrExp);
+    auto* lOrExp = new LOrExp(NodeType::LOrExp, lexer.getLineNum());
     lOrExp->addChild(parseLAndExp());
     while (tkType == LexType::OR) {
         ofs << "<LOrExp>" << endl;
@@ -763,7 +859,7 @@ LOrExp* Parser::parseLOrExp() {
 }
 
 ConstExp* Parser::parseConstExp() {
-    auto* constExp = new ConstExp(NodeType::ConstExp);
+    auto* constExp = new ConstExp(NodeType::ConstExp, lexer.getLineNum());
     constExp->addChild(parseAddExp());
     ofs << "<ConstExp>" << endl;
     return constExp;

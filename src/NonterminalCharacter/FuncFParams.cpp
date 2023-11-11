@@ -4,5 +4,5 @@
 
 #include "FuncFParams.h"
 
-FuncFParams::FuncFParams(NodeType nodeType1) : Node(nodeType1) {}
+FuncFParams::FuncFParams(NodeType nodeType1, int lineNum) : Node(nodeType1, lineNum) {}
 

@@ -4,4 +4,4 @@
 
 #include "CompUnit.h"
 
-CompUnit::CompUnit(NodeType nodeType1) : Node(nodeType1) {}
+CompUnit::CompUnit(NodeType nodeType1, int lineNum) : Node(nodeType1, lineNum) {}

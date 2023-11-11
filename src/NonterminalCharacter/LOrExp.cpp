@@ -4,4 +4,4 @@
 
 #include "LOrExp.h"
 
-LOrExp::LOrExp(NodeType nodeType1) : Node(nodeType1) {}
+LOrExp::LOrExp(NodeType nodeType1, int lineNum) : Node(nodeType1, lineNum) {}

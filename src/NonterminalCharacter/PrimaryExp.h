@@ -9,7 +9,7 @@
 
 class PrimaryExp : public Node {
 public:
-    PrimaryExp(NodeType nodeType1);
+    PrimaryExp(NodeType nodeType1, int lineNum);
 
 };
 

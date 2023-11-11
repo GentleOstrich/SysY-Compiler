@@ -4,6 +4,6 @@
 
 #include "VarDecl.h"
 
-VarDecl::VarDecl(NodeType nodeType1) : Node(nodeType1) {}
+VarDecl::VarDecl(NodeType nodeType1, int lineNum) : Node(nodeType1, lineNum) {}
 
 

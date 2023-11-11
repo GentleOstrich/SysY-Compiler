@@ -10,7 +10,7 @@
 
 class CompUnit : public Node{
 public:
-    CompUnit(NodeType nodeType1);
+    CompUnit(NodeType nodeType1, int lineNum);
 
 };
 

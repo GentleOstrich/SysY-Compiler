@@ -9,7 +9,7 @@
 
 class LVal : public Node {
 public:
-    LVal(NodeType nodeType1);
+    LVal(NodeType nodeType1, int lineNum);
     string word;
     void setWord(const string& word);
     string getWord() override ;

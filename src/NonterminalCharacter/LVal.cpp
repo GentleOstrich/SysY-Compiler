@@ -4,7 +4,7 @@
 
 #include "LVal.h"
 
-LVal::LVal(NodeType nodeType1) : Node(nodeType1) {}
+LVal::LVal(NodeType nodeType1, int lineNum) : Node(nodeType1, lineNum) {}
 
 void LVal::setWord(const string &word) {
     this->word = word;

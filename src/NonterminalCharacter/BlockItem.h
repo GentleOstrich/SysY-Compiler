@@ -9,7 +9,7 @@
 
 class BlockItem : public Node {
 public:
-    BlockItem(NodeType nodeType1);
+    BlockItem(NodeType nodeType1, int lineNum);
 
 };
 

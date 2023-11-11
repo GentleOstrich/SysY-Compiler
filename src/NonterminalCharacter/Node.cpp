@@ -3,13 +3,15 @@
 //
 
 #include "Node.h"
-Node::Node(Token token, NodeType nodeType) {
+Node::Node(Token token, NodeType nodeType, int lineNum) {
     this->token = &token;
     this->nodeType = nodeType;
+    this->lineNum = lineNum;
 }
 
-Node::Node(NodeType nodeType) {
+Node::Node(NodeType nodeType, int lineNum) {
     this->nodeType = nodeType;
+    this->lineNum = lineNum;
 }
 
 void Node::addChild(Node *child) {
@@ -41,6 +43,14 @@ string Node::getStr() {
 int Node::getVal() {
     return 0;
 }
+
+int Node::getLineNum() {
+    if (this->children.empty()) {
+        return this->lineNum;
+    }
+    return this->children[this->children.size()-1]->lineNum;
+}
+
 
 
 

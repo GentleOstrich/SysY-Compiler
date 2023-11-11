@@ -9,7 +9,7 @@
 
 class ConstDecl : public Node{
 public:
-    ConstDecl(NodeType nodeType1);
+    ConstDecl(NodeType nodeType1, int lineNum);
 
 };
 

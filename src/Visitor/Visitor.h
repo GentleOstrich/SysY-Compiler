@@ -25,7 +25,7 @@ public:
     void handleInitVal(Node* initVal);
     
     int handleFuncFParams(Node* funcFParams, vector<int> paramTypeList); // 返回参数个数
-    void handleFuncType(Node* funcType);
+    short handleFuncType(Node* funcType);
     void handleBlock(Node* block);
     void handleBlockItem(Node* blockItem);
     void handleStmt(Node* stmt);

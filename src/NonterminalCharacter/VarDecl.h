@@ -8,7 +8,7 @@
 #include <vector>
 class VarDecl : public Node {
 public:
-    VarDecl(NodeType nodeType1);
+    VarDecl(NodeType nodeType1, int lineNum);
 
 };
 

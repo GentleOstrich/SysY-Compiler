@@ -9,7 +9,7 @@
 
 class FuncFParams : public Node {
 public:
-    FuncFParams(NodeType nodeType1);
+    FuncFParams(NodeType nodeType1, int lineNum);
 
 };
 

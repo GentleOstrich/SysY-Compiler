@@ -8,7 +8,7 @@
 
 class MainFuncDef : public Node {
 public:
-    MainFuncDef(NodeType nodeType1);
+    MainFuncDef(NodeType nodeType1, int lineNum);
 
 };
 
