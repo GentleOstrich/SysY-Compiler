@@ -22,6 +22,8 @@ public:
     virtual string getWord();
     virtual short getType();
     virtual bool hasEqual();
+    virtual string getStr();
+    virtual int getVal();
 };
 
 

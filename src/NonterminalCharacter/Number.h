@@ -11,6 +11,7 @@ public:
     int val;
 
     Number(NodeType nodeType1);
+    int getVal() override;
 
 };
 

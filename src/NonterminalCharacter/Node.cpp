@@ -34,5 +34,13 @@ bool Node::hasEqual() {
     return false;
 }
 
+string Node::getStr() {
+    return std::string();
+}
+
+int Node::getVal() {
+    return 0;
+}
+
 
 

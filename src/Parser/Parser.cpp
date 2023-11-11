@@ -428,8 +428,7 @@ Stmt* Parser::parseStmt() {
             printTk;
             readTk;
             if (tkType == LexType::STRCON) {
-                auto* str = new Node(lexer.getToken(), NodeType::Node);
-                stmt->addChild(str);
+                stmt->setStr(tkWord);
                 printTk;
                 readTk;
                 while (tkType == LexType::COMMA) {
@@ -565,6 +564,7 @@ PrimaryExp* Parser::parsePrimaryExp() {
 Number* Parser::parseNumber() {
     auto* number = new Number(NodeType::Number);
     if (tkType == LexType::INTCON) {
+        // TODO
         number->val = 1145414;
         printTk;
         readTk;
