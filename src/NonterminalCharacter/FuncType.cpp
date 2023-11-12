@@ -6,6 +6,6 @@
 
 FuncType::FuncType(NodeType nodeType1, int lineNum) : Node(nodeType1, lineNum){}
 
-short FuncType::getType() {
+int FuncType::getType() {
     return this->type;
 }

@@ -13,3 +13,7 @@ void LVal::setWord(const string &word) {
 string LVal::getWord() {
     return this->word;
 }
+
+int LVal::getType() {
+    return this->type;
+}

@@ -28,7 +28,7 @@ string Node::getWord() {
     return std::string();
 }
 
-short Node::getType() {
+int Node::getType() {
     return 0;
 }
 
@@ -49,6 +49,10 @@ int Node::getLineNum() {
         return this->lineNum;
     }
     return this->children[this->children.size()-1]->lineNum;
+}
+
+int Node::getLastLine() {
+    return 0;
 }
 
 

@@ -107,9 +107,9 @@ ConstDef* Parser::parseConstDef() {
         printTk;
         readTk;
         while (tkType == LexType::LBRACK) {
-            constDef->type++;
             printTk;
             readTk;
+            constDef->type++;
             constDef->addChild(parseConstExp());
             if (tkType == LexType::RBRACK) {
                 printTk;
@@ -329,9 +329,9 @@ FuncFParam* Parser::parseFuncFParam() {
         printTk;
         readTk;
         if (tkType == LexType::LBRACK) {
-            funcFParam->type++;
             printTk;
             readTk;
+            funcFParam->type++;
             if (tkType == LexType::RBRACK) {
                 printTk;
                 readTk;
@@ -343,6 +343,7 @@ FuncFParam* Parser::parseFuncFParam() {
             while (tkType == LexType::LBRACK) {
                 printTk;
                 readTk;
+                funcFParam->type++;
                 funcFParam->addChild(parseConstExp());
                 if (tkType == LexType::RBRACK) {
                     printTk;
@@ -368,6 +369,7 @@ Block* Parser::parseBlock() {
             block->addChild(parseBlockItem());
         }
         if (tkType == LexType::RBRACE) {
+            block->lastLine = lexer.getLineNum();
             printTk;
             readTk;
         }
@@ -610,13 +612,13 @@ Cond* Parser::parseCond() {
 LVal* Parser::parseLVal() {
     auto* lVal = new LVal(NodeType::LVal, lexer.getLineNum());
     if (tkType == LexType::IDENFR) {
-        Node* ident = new Node(lexer.getToken(), NodeType::Node, lexer.getLineNum());
-        lVal->addChild(ident);
+        lVal->setWord(tkWord);
         printTk;
         readTk;
         while (tkType == LexType::LBRACK) {
             printTk;
             readTk;
+            lVal->type++;
             lVal->addChild(parseExp());
             if (tkType == LexType::RBRACK) {
                 printTk;
@@ -628,8 +630,10 @@ LVal* Parser::parseLVal() {
             }
         }
     }
+    /////
     ofs << "<LVal>" << endl;
     return lVal;
+
 }
 
 PrimaryExp* Parser::parsePrimaryExp() {
@@ -672,8 +676,7 @@ UnaryExp* Parser::parseUnaryExp() {
         unaryExp->addChild(parseUnaryExp());
     } else {
         if (tkType == LexType::IDENFR && preRead == LexType::LPARENT) {
-            Node* ident = new Node(lexer.getToken(), NodeType::Node, lexer.getLineNum());
-            unaryExp->addChild(ident);
+            unaryExp->setWord(tkWord);
             printTk;
             readTk;
             printTk;

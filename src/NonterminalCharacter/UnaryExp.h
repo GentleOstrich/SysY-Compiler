@@ -11,6 +11,9 @@
 class UnaryExp : public Node {
 public:
     UnaryExp(NodeType nodeType1, int lineNum);
+    string word = "";
+    void setWord(const string& word);
+    string getWord() override;
 
 };
 

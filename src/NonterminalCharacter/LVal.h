@@ -11,8 +11,10 @@ class LVal : public Node {
 public:
     LVal(NodeType nodeType1, int lineNum);
     string word;
+    int type = 0;
     void setWord(const string& word);
     string getWord() override ;
+    int getType() override ;
 
 };
 

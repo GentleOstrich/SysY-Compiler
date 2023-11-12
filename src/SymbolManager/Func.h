@@ -9,7 +9,7 @@
 
 class Func {
 public:
-    int retype;
+    int retype; // 0->int, 1->void
     int paramNum;
     std::vector<int> paramTypeList;
     Func(int retype, int paramNum);

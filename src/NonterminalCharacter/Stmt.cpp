@@ -6,7 +6,7 @@
 
 Stmt::Stmt(NodeType nodeType1, int lineNum) : Node(nodeType1, lineNum) {}
 
-short Stmt::getType() {
+int Stmt::getType() {
     return type;
 }
 
@@ -17,3 +17,4 @@ void Stmt::setStr(string str) {
 string Stmt::getStr() {
     return str;
 }
+

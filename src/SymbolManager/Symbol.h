@@ -15,10 +15,10 @@ using namespace std;
 class Symbol {
 public:
     string word;
-    short type; // 0->a, 1->a[], 2->a[][], -1->func
+    int type; // 0->a, 1->a[], 2->a[][], -1->func
     bool con; // 1->const, 0->var
     Func *func;
-    Symbol(short type, const string &word, bool con, Func *func);
+    Symbol(int type, const string &word, bool con, Func *func);
 };
 
 

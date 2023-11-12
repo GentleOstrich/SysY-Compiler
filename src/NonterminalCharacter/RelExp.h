@@ -8,7 +8,7 @@
 #include <vector>
 class RelExp : public Node {
 public:
-    vector<short> op; // 0-GRE 1-GEQ 2-LSS 3-LEQ
+    vector<int> op; // 0-GRE 1-GEQ 2-LSS 3-LEQ
     void addOp(int op);
 
     RelExp(NodeType nodeType1, int lineNum);

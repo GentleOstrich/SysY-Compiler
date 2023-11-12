@@ -5,6 +5,7 @@
 #ifndef SYSY_COMPILER_VISITOR_H
 #define SYSY_COMPILER_VISITOR_H
 
+#include "iostream"
 #include "../NonterminalCharacter/Nonterminals.h"
 #include "../SymbolManager/SymbolTable.h"
 extern CompUnit* compUnit;
@@ -16,7 +17,7 @@ public:
     void handleFuncDef(Node* funcDef);
     int handleFuncFParam(Node* funcFParam); // 返回参数类型
     void handleDecl(Node* funcFParam);
-    void handleMainFuncDef(Node* funcFParam);
+    void handleMainFuncDef(Node* mainFuncFParam);
     void handleConstDecl(Node* constDecl);
     void handleVarDecl(Node* varDecl);
     void handleBType(Node* BType);
@@ -24,23 +25,23 @@ public:
     
     void handleInitVal(Node* initVal);
     
-    int handleFuncFParams(Node* funcFParams, vector<int> paramTypeList); // 返回参数个数
-    short handleFuncType(Node* funcType);
-    void handleBlock(Node* block);
-    void handleBlockItem(Node* blockItem);
-    void handleStmt(Node* stmt);
+    int handleFuncFParams(Node* funcFParams, vector<int>* paramTypeList); // 返回参数个数
+    int handleFuncType(Node* funcType);
+    void handleBlock(Node* block, int isNoRet, bool isLoop);
+    void handleBlockItem(Node* blockItem, int isNoRet, bool isLoop);
+    void handleStmt(Node* stmt, int isNoRet, bool isLoop);
     
     void handleForStmt(Node* forStmt);
-    void handleExp(Node* exp);
+    int handleExp(Node* exp);
     void handleCond(Node* cond);
-    void handleLVal(Node* lVal);
-    void handlePrimaryExp(Node* primaryExp);
-    void handleNumber(Node* number);
-    void handleUnaryExp(Node* unaryExp);
+    int handleLVal(Node* lVal);
+    int handlePrimaryExp(Node* primaryExp);
+    int handleNumber(Node* number);
+    int handleUnaryExp(Node* unaryExp);
     void handleUnaryOp(Node* unaryOp);
-    void handleFuncRParams(Node* funcRParams);
-    void handleMulExp(Node* mulExp);
-    void handleAddExp(Node* addExp);
+    void handleFuncRParams(Node* funcRParams, Symbol* funcSymbole);
+    int handleMulExp(Node* mulExp);
+    int handleAddExp(Node* addExp);
     void handleRelExp(Node* relExp);
     void handleEqExp(Node* eqExp);
     void handleLAndExp(Node* lAndExp);

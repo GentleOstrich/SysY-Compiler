@@ -19,11 +19,13 @@ public:
 
     void createSymbolTable();
 
-    void addSymbol(Symbol* symbol);
+    void addSymbol(Symbol* symbol, int lineNum);
 
     bool findSymbol(const string& word, bool isFunc, bool all);
 
     void deleteSymbolTable();
+
+    Symbol* getSymbol(const string& word, bool isFunc, bool all);
 
 };
 

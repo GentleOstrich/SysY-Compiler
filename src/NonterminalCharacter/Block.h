@@ -10,8 +10,9 @@
 
 class Block : public Node {
 public:
+    int lastLine;
     Block(NodeType nodeType1, int lineNum);
-
+    int getLastLine() override;
 };
 
 

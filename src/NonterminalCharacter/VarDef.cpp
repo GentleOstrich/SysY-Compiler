@@ -20,7 +20,7 @@ bool VarDef::hasEqual() {
     return this->Equal;
 }
 
-short VarDef::getType() {
+int VarDef::getType() {
     return this->type;
 }
 

@@ -9,7 +9,7 @@
 
 class MulExp : public Node {
 public:
-    vector<short> op; // 0-* 1-/ 2-%
+    vector<int> op; // 0-* 1-/ 2-%
     void addOp(int op);
 
     MulExp(NodeType nodeType1, int lineNum);

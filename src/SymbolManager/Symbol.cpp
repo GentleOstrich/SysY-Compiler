@@ -7,7 +7,7 @@
 #include <vector>
 using namespace std;
 
-Symbol::Symbol(short type, const string &word, bool con, Func* func) {
+Symbol::Symbol(int type, const string &word, bool con, Func* func) {
     this->type = type;
     this->word = word;
     this->con = con;

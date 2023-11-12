@@ -14,7 +14,7 @@ string ConstDef::getWord() {
     return this->word;
 }
 
-short ConstDef::getType() {
+int ConstDef::getType() {
     return this->type;
 }
 

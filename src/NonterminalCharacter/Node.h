@@ -20,11 +20,12 @@ public:
     void addChild(Node *child);
     NodeType getNodeType();
     virtual string getWord();
-    virtual short getType();
+    virtual int getType();
     virtual bool hasEqual();
     virtual string getStr();
     virtual int getVal();
     int getLineNum();
+    virtual int getLastLine();
 };
 
 

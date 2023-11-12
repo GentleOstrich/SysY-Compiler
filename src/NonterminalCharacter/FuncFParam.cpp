@@ -14,6 +14,6 @@ string FuncFParam::getWord() {
     return this->word;
 }
 
-short FuncFParam::getType() {
+int FuncFParam::getType() {
     return this->type;
 }
