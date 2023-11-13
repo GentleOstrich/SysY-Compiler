@@ -26,7 +26,7 @@ public:
     virtual int getVal();
     int getLineNum();
     virtual int getLastLine();
-    virtual vector<int>* getOp();
+    virtual int getOp();
 };
 
 

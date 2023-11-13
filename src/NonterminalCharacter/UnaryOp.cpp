@@ -6,3 +6,7 @@
 
 UnaryOp::UnaryOp(NodeType nodeType1, int lineNum) : Node(nodeType1, lineNum) {}
 
+int UnaryOp::getType() {
+    return this->type;
+}
+

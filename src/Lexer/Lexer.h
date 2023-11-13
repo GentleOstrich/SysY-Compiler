@@ -24,7 +24,7 @@ private:
     string word = "";
     LexType lexType = LexType::NONE;
     int lineNum = 1;
-    int number;
+    int number = 114514;
     int isReserveWord(const string &word);
 
 public:
@@ -39,6 +39,8 @@ public:
     bool hasAUntilB(char A, char B);
 
     int getLineNum();
+
+    int getNumber();
 };
 
 

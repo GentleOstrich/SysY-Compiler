@@ -33,16 +33,16 @@ public:
     void handleStmt(Node* stmt, int isNoRet, bool isLoop);
     
     void handleForStmt(Node* forStmt);
-    int handleExp(Node* exp);
+    int handleExp(Node* exp, int *c);
     void handleCond(Node* cond);
     int handleLVal(Node* lVal);
-    int handlePrimaryExp(Node* primaryExp);
-    int handleNumber(Node* number);
-    int handleUnaryExp(Node* unaryExp);
-    void handleUnaryOp(Node* unaryOp);
+    int handlePrimaryExp(Node* primaryExp, int* c, int pos);
+    int handleNumber(Node* number, int* c, int pos);
+    int handleUnaryExp(Node* unaryExp, int* c, int pos);
+    int handleUnaryOp(Node* unaryOp);
     void handleFuncRParams(Node* funcRParams, Symbol* funcSymbole);
-    int handleMulExp(Node* mulExp);
-    int handleAddExp(Node* addExp);
+    int handleMulExp(Node* mulExp, int* c);
+    int handleAddExp(Node* addExp, int* c);
     void handleRelExp(Node* relExp);
     void handleEqExp(Node* eqExp);
     void handleLAndExp(Node* lAndExp);

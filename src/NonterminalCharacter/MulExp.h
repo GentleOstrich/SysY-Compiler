@@ -9,12 +9,12 @@
 
 class MulExp : public Node {
 public:
-    vector<int> op; // 0-* 1-/ 2-%
+    int op = -1; // 0-* 1-/ 2-%
     void addOp(int op);
 
     MulExp(NodeType nodeType1, int lineNum);
-
-    vector<int>* getOp() override;
+    
+    int getOp() override;
 
 };
 

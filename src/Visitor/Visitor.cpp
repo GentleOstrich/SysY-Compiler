@@ -21,7 +21,8 @@ extern int e;
 
 extern SymbolTable symbolTable;
 extern ofstream c_ofs;
-#define generateCode(code) c_ofs << code << std::endl
+int C = 1;
+#define generateCode(code) c_ofs << code
 
 void Visitor::handleCompUnit(Node* node) {
     for (auto* child : node->children) {
@@ -112,12 +113,12 @@ void Visitor::handleDecl(Node *funcFParam) {
 }
 
 void Visitor::handleMainFuncDef(Node *mainFuncFParam) {
-    generateCode("define dso_local i32 @main() {");
+    generateCode("define dso_local i32 @main() {" << endl);
     for (auto* child : mainFuncFParam->children) {
         symbolTable.createSymbolTable();
         handleBlock(child, 0, false);
     }
-    generateCode("}");
+    generateCode("}" << endl);
 }
 
 void Visitor::handleConstDecl(Node *constDecl) {
@@ -155,27 +156,29 @@ void Visitor::handleConstInitVal(Node *constInitVal) {
 }
 
 void Visitor::handleConstExp(Node *constExp) {
+    int c;
     for (auto* child : constExp->children) {
         if (child->getNodeType() == NodeType::AddExp) {
-            handleAddExp(child);
+            handleAddExp(child, &c);
         }
     }
 }
 
 void Visitor::handleInitVal(Node *initVal) {
+    int c;
     for (auto* child : initVal->children) {
         if (child->getNodeType() == NodeType::Exp) {
-            handleExp(child);
+            handleExp(child, &c);
         } else if (child->getNodeType() == NodeType::InitVal) {
             handleInitVal(child);
         }
     }
 }
 
-int Visitor::handleExp(Node *exp) {
+int Visitor::handleExp(Node *exp, int *c) {
     int ret;
     for (auto* child : exp->children) {
-        ret = handleAddExp(child);
+        ret = handleAddExp(child, c);
     }
     return ret;
 }
@@ -235,7 +238,8 @@ void Visitor::handleStmt(Node *stmt, int isNoRet, bool isLoop) {
                     printError(stmt->lineNum, "h");
                 }
 #endif
-                handleExp(child);
+                int c;
+                handleExp(child, &c);
             } else if (child->getNodeType() == NodeType::Block) {
                 symbolTable.createSymbolTable();
                 handleBlock(child, isNoRet, isLoop);
@@ -289,10 +293,13 @@ void Visitor::handleStmt(Node *stmt, int isNoRet, bool isLoop) {
             }
 #endif
             if (child->getNodeType() == NodeType::Exp) {
-                handleExp(child);
+                int c;
+                handleExp(child, &c);
+                generateCode("ret i32 \%" << c << endl);
             }
         }
-        generateCode("ret i32 \%sth");
+
+
     } else if (stmt->getType() == 6) {
         // getint
         for (auto* child : stmt->children) {
@@ -328,7 +335,8 @@ void Visitor::handleForStmt(Node *forStmt) {
         if (child->getNodeType() == NodeType::LVal) {
             handleLVal(child);
         } else if (child->getNodeType() == NodeType::Exp) {
-            handleExp(child);
+            int c;
+            handleExp(child, &c);
         }
     }
 }
@@ -354,35 +362,44 @@ int Visitor::handleLVal(Node *lVal) {
     for (auto *child : lVal->children) {
         if (child->getNodeType() == NodeType::Exp) {
             ret = (ret > 0) ? ret-1 : ret;
-            handleExp(child);
+            int c;
+            handleExp(child, &c);
         }
     }
     return ret;
 }
 
-int Visitor::handlePrimaryExp(Node *primaryExp) {
-    int ret;
+int Visitor::handlePrimaryExp(Node *primaryExp, int *c, int pos) {
+    int ret = -2;
     for (auto* child : primaryExp->children) {
         if (child->getNodeType() == NodeType::LVal) {
             ret = handleLVal(child);
         } else if (child->getNodeType() == NodeType::Number) {
-            ret = handleNumber(child);
+            ret = handleNumber(child, c, pos);
         } else if (child->getNodeType() == NodeType::Exp) {
-            ret = handleExp(child);
+            int c;
+            ret = handleExp(child, &c);
         }
     }
     return ret;
 }
 
-int Visitor::handleNumber(Node *number) {
-    int num = number->getVal();
+int Visitor::handleNumber(Node *number, int *c, int pos) {
+    *c = C++;
+    if (pos == 1) {
+        generateCode("%" << *c << " = add i32 " << 0 << ", " << number->getVal() << endl);
+    } else {
+        generateCode("%" << *c << " = sub i32 " << 0 << ", " << number->getVal() << endl);
+    }
+
+    //generateCode(number->getVal() << " ");
     return 0; // is int
     // generate code
 }
 
-int Visitor::handleUnaryExp(Node *unaryExp) {
+int Visitor::handleUnaryExp(Node *unaryExp, int* c, int pos) {
     int ret = 0;
-    if (unaryExp->getWord() != "") { // is Ident '(' [FuncRParams] ')'
+    if (!unaryExp->getWord().empty()) { // is Ident '(' [FuncRParams] ')'
         Symbol* symbol = symbolTable.getSymbol(unaryExp->getWord(), true, true);
         if (symbol != nullptr) {
             ret = symbol->func->retype;
@@ -397,13 +414,14 @@ int Visitor::handleUnaryExp(Node *unaryExp) {
     }
     for (auto* child : unaryExp->children) {
         if (child->getNodeType() == NodeType::PrimaryExp) {
-            ret = handlePrimaryExp(child);
+            ret = handlePrimaryExp(child, c, pos);
         } else if (child->getNodeType() == NodeType::UnaryOp) {
-            handleUnaryOp(child);
+            if (handleUnaryOp(child) == 1) {
+                pos = -pos;
+            }
         } else if (child->getNodeType() == NodeType::UnaryExp) {
-            ret = handleUnaryExp(child);
+            ret = handleUnaryExp(child, c, pos);
         } else if (child->getNodeType() == NodeType::FuncRParams) {
-            int funcRParamsNum = child->children.size();
             Symbol* funcSymbol = symbolTable.getSymbol(unaryExp->getWord(), true, true);
 #ifdef ERROR_CHECK
             if (funcSymbol && funcRParamsNum != funcSymbol->func->paramNum) {
@@ -416,8 +434,8 @@ int Visitor::handleUnaryExp(Node *unaryExp) {
     return ret;
 }
 
-void Visitor::handleUnaryOp(Node *unaryOp) {
-    return; // + = !
+int Visitor::handleUnaryOp(Node *unaryOp) {
+    return unaryOp->getType(); // 0 + 1 - 2 !
 }
 
 void Visitor::handleFuncRParams(Node *funcRParams, Symbol* funcSymbol) {
@@ -425,7 +443,8 @@ void Visitor::handleFuncRParams(Node *funcRParams, Symbol* funcSymbol) {
     int i = 0;
     for (auto* child : funcRParams->children) {
         if (child->getNodeType() == NodeType::Exp) {
-            int t = handleExp(child); // 返回实参的类型
+            int c;
+            int t = handleExp(child, &c); // 返回实参的类型
 #ifdef ERROR_CHECK
             if (funcSymbol != nullptr) {
                 if (i > funcSymbol->func->paramNum) {
@@ -440,61 +459,63 @@ void Visitor::handleFuncRParams(Node *funcRParams, Symbol* funcSymbol) {
     }
 }
 
-int Visitor::handleMulExp(Node *mulExp) {
+int Visitor::handleMulExp(Node *mulExp, int* c) {
     int ret = 0;
-    vector<int>* op = mulExp->getOp();
-    int opi = 0;
     // mul div mod
+    int c1 = -1, c2 = -1;
     for (auto* child : mulExp->children) {
         if (child->getNodeType() == NodeType::UnaryExp) {
-            ret = handleUnaryExp(child);
+            ret = handleUnaryExp(child, &c2, 1);
         } else if (child->getNodeType() == NodeType::MulExp) {
-            ret = handleMulExp(child);
+            ret = handleMulExp(child, &c1);
             // 0 * 1 / 2 %
         }
-        if (op->size() > 0 && opi < op->size()) {
-            if (op->at(opi) == 0) {
-                generateCode("\%sth = mul i32 \%sth, \%sth");
-            } else if (op->at(opi) == 1) {
-                generateCode("\%sth = div i32 \%sth, \%sth");
-            } else if (op->at(opi) == 2) {
-                generateCode("\%sth = mod i32 \%sth, \%sth");
-            }
-            opi++;
-        }
+    }
+    if (mulExp->getOp() == 0) {
+        *c = C++;
+        generateCode("%" << *c << " = mul i32 " << "%" << c1 << ", " << "%" << c2 << endl);
+    } else if (mulExp->getOp() == 1) {
+        *c = C++;
+        generateCode("%" << *c << " = div i32 " << "%" << c1 << ", " << "%" << c2 << endl );
+    } else if (mulExp->getOp() == 2) {
+        *c = C++;
+        generateCode("%" << *c << " = mod i32 " << "%" << c1 << ", " << "%" << c2 << endl);
+    } else {
+        *c = c2;
     }
     return ret;
 }
 
-int Visitor::handleAddExp(Node *addExp) {
+int Visitor::handleAddExp(Node *addExp, int* c) {
     // add sub
     int ret = 0;
-    vector<int>* op = addExp->getOp();
-    int opi = 0;
+    int c1 = -1, c2 = -1;
     for (auto* child : addExp->children) {
         if (child->getNodeType() == NodeType::MulExp) {
-            ret = handleMulExp(child);
+            ret = handleMulExp(child, &c2);
         } else if (child->getNodeType() == NodeType::AddExp) {
-            ret = handleAddExp(child);
-            // 0 + 1 -
+            ret = handleAddExp(child, &c1);
         }
-        if (op->size() > 0 && opi < op->size()) {
-            if (op->at(opi) == 0) {
-                generateCode("\%sth = add i32 \%sth, \%sth");
-            } else if (op->at(opi) == 1) {
-                generateCode("\%sth = sub i32 \%sth, \%sth");
-            }
-            opi++;
-        }
+        // 0 + 1 -
+    }
+    if (addExp->getOp() == 0) {
+        *c = C++;
+        generateCode("%" << *c << " = add i32 " << "%" << c1 << ", " << "%" << c2 << endl);
+    } else if (addExp->getOp() == 1) {
+        *c = C++;
+        generateCode("%" << *c << " = sub i32 " << "%" << c1 << ", " << "%" << c2 << endl);
+    } else {
+        *c = c2;
     }
     return ret;
 }
 
 void Visitor::handleRelExp(Node *relExp) {
     // lt gt le ge
+    int c;
     for (auto* child : relExp->children) {
         if (child->getNodeType() == NodeType::AddExp) {
-            handleAddExp(child);
+            handleAddExp(child, &c);
         } else if (child->getNodeType() == NodeType::RelExp) {
             handleRelExp(child);
         }

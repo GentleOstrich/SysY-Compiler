@@ -9,11 +9,12 @@
 
 class AddExp : public Node {
 public:
-    vector<int> op; // 0-+ 1--
-    void addOp(int op);
-
+    int op = -1; // 0-+ 1--
+   
     AddExp(NodeType nodeType1, int lineNum);
-    vector<int>* getOp() override;
+
+    int getOp() override;
+
 
 };
 

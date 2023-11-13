@@ -661,7 +661,7 @@ Number* Parser::parseNumber() {
     auto* number = new Number(NodeType::Number, lexer.getLineNum());
     if (tkType == LexType::INTCON) {
         // TODO
-        number->val = 1145414;
+        number->val = lexer.getNumber();
         printTk;
         readTk;
     }
@@ -735,59 +735,46 @@ FuncRParams* Parser::parseFuncRParams() {
 }
 
 MulExp* Parser::parseMulExp() {
-    auto* mulExp = new MulExp(NodeType::MulExp, lexer.getLineNum());
+    MulExp* mulExp = new MulExp(NodeType::MulExp, lexer.getLineNum());
     mulExp->addChild(parseUnaryExp());
     while (tkType == LexType::MULT || tkType == LexType::DIV || tkType == LexType::MOD) {
-        switch (tkType) {
-            case LexType::MULT:
-                mulExp->addOp(0);
-                break;
-            case LexType::DIV:
-                mulExp->addOp(1);
-                break;
-            case LexType::MOD:
-                mulExp->addOp(2);
-                break;
-            default:
-                break;
+        auto* temp = new MulExp(NodeType::MulExp, lexer.getLineNum());
+        if (tkType == LexType::MULT) {
+            temp->op = 0;
+        } else if (tkType == LexType::DIV) {
+            temp->op = 1;
+        } else if (tkType == LexType::MOD) {
+            temp->op = 2;
         }
         ofs << "<MulExp>" << endl;
         printTk;
         readTk;
-        mulExp->addChild(parseUnaryExp());
+        Node* rightUnaryExp = parseUnaryExp();
+        temp->addChild(mulExp);
+        temp->addChild(rightUnaryExp);
+        mulExp = temp;
     }
     ofs << "<MulExp>" << endl;
     return mulExp;
 }
 
 AddExp* Parser::parseAddExp() {
-    auto* addExp = new AddExp(NodeType::AddExp, lexer.getLineNum());
-    Node* leftAdd = parseMulExp();
-    bool flag = false;
+    AddExp* addExp = new AddExp(NodeType::AddExp, lexer.getLineNum());
+    addExp->addChild(parseMulExp());
     while (tkType == LexType::PLUS || tkType == LexType::MINU) {
-        flag = true;
-        switch(tkType) {
-            case LexType::PLUS:
-                addExp->addOp(0);
-                break;
-            case LexType::MINU:
-                addExp->addOp(1);
-                break;
-            default:
-                break;
-        }
         auto* temp = new AddExp(NodeType::AddExp, lexer.getLineNum());
+        if (tkType == LexType::PLUS) {
+            temp->op = 0;
+        } else if (tkType == LexType::MINU) {
+            temp->op = 1;
+        }
         ofs << "<AddExp>" << endl;
         printTk;
         readTk;
-        temp->addChild(leftAdd);
-        temp->addChild(parseMulExp());
-        leftAdd = temp;
-    }
-    if (!flag) {
-        addExp->addChild(leftAdd);
-    } else {
-        addExp = dynamic_cast<AddExp *>(leftAdd);
+        Node* rightMulExp = parseMulExp();
+        temp->addChild(addExp);
+        temp->addChild(rightMulExp);
+        addExp = temp;
     }
     ofs << "<AddExp>" << endl;
     return addExp;

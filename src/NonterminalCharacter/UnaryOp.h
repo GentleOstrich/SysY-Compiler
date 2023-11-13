@@ -10,6 +10,7 @@ class UnaryOp : public Node {
 public:
     int type = 0; // 0-+ 1-- 1-!
     UnaryOp(NodeType nodeType1, int lineNum);
+    int getType() override;
 
 };
 

@@ -382,7 +382,9 @@ int Lexer::getLineNum() {
     return this->lineNum;
 }
 
-
+int Lexer::getNumber() {
+    return this->number;
+}
 
 
 
