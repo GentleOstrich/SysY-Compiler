@@ -14,6 +14,8 @@ public:
 
     MulExp(NodeType nodeType1, int lineNum);
 
+    vector<int>* getOp() override;
+
 };
 
 

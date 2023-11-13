@@ -4,7 +4,7 @@
 
 #include "Visitor.h"
 
-#define ERROR_CHECK
+//#define ERROR_CHECK
 
 #ifdef ERROR_CHECK
 
@@ -20,6 +20,8 @@ extern int e;
 #endif
 
 extern SymbolTable symbolTable;
+extern ofstream c_ofs;
+#define generateCode(code) c_ofs << code << std::endl
 
 void Visitor::handleCompUnit(Node* node) {
     for (auto* child : node->children) {
@@ -110,10 +112,12 @@ void Visitor::handleDecl(Node *funcFParam) {
 }
 
 void Visitor::handleMainFuncDef(Node *mainFuncFParam) {
+    generateCode("define dso_local i32 @main() {");
     for (auto* child : mainFuncFParam->children) {
         symbolTable.createSymbolTable();
         handleBlock(child, 0, false);
     }
+    generateCode("}");
 }
 
 void Visitor::handleConstDecl(Node *constDecl) {
@@ -288,6 +292,7 @@ void Visitor::handleStmt(Node *stmt, int isNoRet, bool isLoop) {
                 handleExp(child);
             }
         }
+        generateCode("ret i32 \%sth");
     } else if (stmt->getType() == 6) {
         // getint
         for (auto* child : stmt->children) {
@@ -398,9 +403,9 @@ int Visitor::handleUnaryExp(Node *unaryExp) {
         } else if (child->getNodeType() == NodeType::UnaryExp) {
             ret = handleUnaryExp(child);
         } else if (child->getNodeType() == NodeType::FuncRParams) {
-#ifdef ERROR_CHECK
             int funcRParamsNum = child->children.size();
             Symbol* funcSymbol = symbolTable.getSymbol(unaryExp->getWord(), true, true);
+#ifdef ERROR_CHECK
             if (funcSymbol && funcRParamsNum != funcSymbol->func->paramNum) {
                 printError(unaryExp->lineNum, "d");
             }
@@ -437,12 +442,25 @@ void Visitor::handleFuncRParams(Node *funcRParams, Symbol* funcSymbol) {
 
 int Visitor::handleMulExp(Node *mulExp) {
     int ret = 0;
+    vector<int>* op = mulExp->getOp();
+    int opi = 0;
     // mul div mod
     for (auto* child : mulExp->children) {
         if (child->getNodeType() == NodeType::UnaryExp) {
             ret = handleUnaryExp(child);
         } else if (child->getNodeType() == NodeType::MulExp) {
             ret = handleMulExp(child);
+            // 0 * 1 / 2 %
+        }
+        if (op->size() > 0 && opi < op->size()) {
+            if (op->at(opi) == 0) {
+                generateCode("\%sth = mul i32 \%sth, \%sth");
+            } else if (op->at(opi) == 1) {
+                generateCode("\%sth = div i32 \%sth, \%sth");
+            } else if (op->at(opi) == 2) {
+                generateCode("\%sth = mod i32 \%sth, \%sth");
+            }
+            opi++;
         }
     }
     return ret;
@@ -451,11 +469,22 @@ int Visitor::handleMulExp(Node *mulExp) {
 int Visitor::handleAddExp(Node *addExp) {
     // add sub
     int ret = 0;
+    vector<int>* op = addExp->getOp();
+    int opi = 0;
     for (auto* child : addExp->children) {
         if (child->getNodeType() == NodeType::MulExp) {
             ret = handleMulExp(child);
         } else if (child->getNodeType() == NodeType::AddExp) {
             ret = handleAddExp(child);
+            // 0 + 1 -
+        }
+        if (op->size() > 0 && opi < op->size()) {
+            if (op->at(opi) == 0) {
+                generateCode("\%sth = add i32 \%sth, \%sth");
+            } else if (op->at(opi) == 1) {
+                generateCode("\%sth = sub i32 \%sth, \%sth");
+            }
+            opi++;
         }
     }
     return ret;

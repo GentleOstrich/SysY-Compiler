@@ -6,7 +6,7 @@
 extern string source;
 extern ofstream e_ofs;
 
-#define ERROR_CHECK
+//#define ERROR_CHECK
 
 #ifdef ERROR_CHECK
 

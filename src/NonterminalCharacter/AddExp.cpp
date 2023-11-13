@@ -9,3 +9,7 @@ void AddExp::addOp(int op) {
 }
 
 AddExp::AddExp(NodeType nodeType1, int lineNum) : Node(nodeType1, lineNum) {}
+
+vector<int>* AddExp::getOp() {
+    return &(this->op);
+}

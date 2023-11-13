@@ -9,3 +9,8 @@ void MulExp::addOp(int op) {
 }
 
 MulExp::MulExp(NodeType nodeType1, int lineNum) : Node(nodeType1, lineNum) {}
+
+vector<int>* MulExp::getOp() {
+    return &(this->op);
+}
+

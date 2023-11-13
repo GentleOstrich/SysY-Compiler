@@ -5,7 +5,8 @@
 #ifndef SYSY_COMPILER_VISITOR_H
 #define SYSY_COMPILER_VISITOR_H
 
-#include "iostream"
+#include <iostream>
+#include <fstream>
 #include "../NonterminalCharacter/Nonterminals.h"
 #include "../SymbolManager/SymbolTable.h"
 extern CompUnit* compUnit;

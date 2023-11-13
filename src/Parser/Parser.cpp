@@ -9,7 +9,7 @@
 #define preRead lexer.nnext()
 #define prePreRead lexer.nnnext()
 
-#define ERROR_CHECK
+//#define ERROR_CHECK
 
 #ifdef ERROR_CHECK
 
@@ -762,8 +762,10 @@ MulExp* Parser::parseMulExp() {
 
 AddExp* Parser::parseAddExp() {
     auto* addExp = new AddExp(NodeType::AddExp, lexer.getLineNum());
-    addExp->addChild(parseMulExp());
+    Node* leftAdd = parseMulExp();
+    bool flag = false;
     while (tkType == LexType::PLUS || tkType == LexType::MINU) {
+        flag = true;
         switch(tkType) {
             case LexType::PLUS:
                 addExp->addOp(0);
@@ -774,10 +776,18 @@ AddExp* Parser::parseAddExp() {
             default:
                 break;
         }
+        auto* temp = new AddExp(NodeType::AddExp, lexer.getLineNum());
         ofs << "<AddExp>" << endl;
         printTk;
         readTk;
-        addExp->addChild(parseMulExp());
+        temp->addChild(leftAdd);
+        temp->addChild(parseMulExp());
+        leftAdd = temp;
+    }
+    if (!flag) {
+        addExp->addChild(leftAdd);
+    } else {
+        addExp = dynamic_cast<AddExp *>(leftAdd);
     }
     ofs << "<AddExp>" << endl;
     return addExp;

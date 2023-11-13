@@ -13,6 +13,7 @@ public:
     void addOp(int op);
 
     AddExp(NodeType nodeType1, int lineNum);
+    vector<int>* getOp() override;
 
 };
 

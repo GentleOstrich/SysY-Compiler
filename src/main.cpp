@@ -13,6 +13,7 @@ using namespace std;
 string INFILEPATH = "testfile.txt";
 string OUTFILEPATH = "output.txt";
 string ERROR_OUTFILEPATH = "error.txt";
+string GENERATE_CODE = "generate_code.txt";
 
 string source = "";
 Parser parser;
@@ -25,8 +26,9 @@ Visitor visitor;
 ifstream ifs(INFILEPATH);
 ofstream ofs(OUTFILEPATH);
 ofstream e_ofs(ERROR_OUTFILEPATH);
+ofstream c_ofs(GENERATE_CODE);
 
-#define ERROR_CHECK
+//#define ERROR_CHECK
 #ifdef ERROR_CHECK
 struct Error {
     int line;
@@ -41,7 +43,7 @@ bool cmp(Error error1, Error error2) {
 }
 #endif
 int main() {
-    if (ifs.is_open() && ofs.is_open() && e_ofs.is_open()) {
+    if (ifs.is_open() && ofs.is_open() && e_ofs.is_open() && c_ofs.is_open()) {
         source = string((istreambuf_iterator<char>(ifs)), istreambuf_iterator<char>());
         compUnit = parser.parseCompUnit();
         visitor.handleCompUnit(compUnit);

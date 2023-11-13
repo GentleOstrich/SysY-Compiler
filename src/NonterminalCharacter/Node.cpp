@@ -55,6 +55,10 @@ int Node::getLastLine() {
     return 0;
 }
 
+vector<int>* Node::getOp() {
+    return nullptr;
+}
+
 
 
 

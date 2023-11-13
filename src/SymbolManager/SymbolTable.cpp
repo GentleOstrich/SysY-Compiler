@@ -4,7 +4,7 @@
 
 #include "SymbolTable.h"
 
-#define ERROR_CHECK
+//#define ERROR_CHECK
 
 #ifdef ERROR_CHECK
 
