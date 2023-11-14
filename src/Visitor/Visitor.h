@@ -13,18 +13,18 @@ extern CompUnit* compUnit;
 class Visitor {
 public:
     void handleCompUnit(Node* compUnit);  
-    void handleVarDef(Node* varDef);
-    void handleConstDef(Node* constDef);
+    void handleVarDef(Node* varDef, bool isGlobal);
+    void handleConstDef(Node* constDef, bool isGlobal);
     void handleFuncDef(Node* funcDef);
     int handleFuncFParam(Node* funcFParam); // 返回参数类型
-    void handleDecl(Node* funcFParam);
+    void handleDecl(Node* funcFParam, bool isGlobal);
     void handleMainFuncDef(Node* mainFuncFParam);
-    void handleConstDecl(Node* constDecl);
-    void handleVarDecl(Node* varDecl);
+    void handleConstDecl(Node* constDecl, bool isGlobal);
+    void handleVarDecl(Node* varDecl, bool isGlobal);
     void handleBType(Node* BType);
-    void handleConstInitVal(Node* constInitVal);
+    int handleConstInitVal(Node* constInitVal, bool isGlobal);
     
-    void handleInitVal(Node* initVal);
+    int handleInitVal(Node *initVal, bool isGlobal, int* c);
     
     int handleFuncFParams(Node* funcFParams, vector<int>* paramTypeList); // 返回参数个数
     int handleFuncType(Node* funcType);
@@ -33,21 +33,21 @@ public:
     void handleStmt(Node* stmt, int isNoRet, bool isLoop);
     
     void handleForStmt(Node* forStmt);
-    int handleExp(Node* exp, int *c);
+    int handleExp(Node *exp, int *c, int* val, bool isGlobal);
     void handleCond(Node* cond);
-    int handleLVal(Node* lVal);
-    int handlePrimaryExp(Node* primaryExp, int* c, int pos);
-    int handleNumber(Node* number, int* c, int pos);
-    int handleUnaryExp(Node* unaryExp, int* c, int pos);
+    int handleLVal(Node* lVal, int* initVal, int *c, bool isGlobal);
+    int handlePrimaryExp(Node* primaryExp, int* c, int pos, int* initVal, bool isGlobal);
+    int handleNumber(Node* number, int* c, int pos, int* initVal, bool isGlobal);
+    int handleUnaryExp(Node* unaryExp, int* c, int pos, int* initVal, bool isGlobal);
     int handleUnaryOp(Node* unaryOp);
     void handleFuncRParams(Node* funcRParams, Symbol* funcSymbole);
-    int handleMulExp(Node* mulExp, int* c);
-    int handleAddExp(Node* addExp, int* c);
+    int handleMulExp(Node* mulExp, int* c, int* initVal, bool isGlobal);
+    int handleAddExp(Node* addExp, int* c, int* initVal, bool isGlobal);
     void handleRelExp(Node* relExp);
     void handleEqExp(Node* eqExp);
     void handleLAndExp(Node* lAndExp);
     void handleLOrExp(Node* lOrExp);
-    void handleConstExp(Node* constExp);
+    int handleConstExp(Node* constExp, bool isGlobal, int *c);
 };
 
 

@@ -17,6 +17,9 @@ public:
     string word;
     int type; // 0->a, 1->a[], 2->a[][], -1->func
     bool con; // 1->const, 0->var
+    int val;
+    int ty = -1;
+    bool local = false;
     Func *func;
     Symbol(int type, const string &word, bool con, Func *func);
 };
