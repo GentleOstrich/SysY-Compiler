@@ -16,7 +16,7 @@ public:
     void handleVarDef(Node* varDef, bool isGlobal);
     void handleConstDef(Node* constDef, bool isGlobal);
     void handleFuncDef(Node* funcDef);
-    int handleFuncFParam(Node* funcFParam); // 返回参数类型
+    int handleFuncFParam(Node* funcFParam, string* code); // 返回参数类型
     void handleDecl(Node* funcFParam, bool isGlobal);
     void handleMainFuncDef(Node* mainFuncFParam);
     void handleConstDecl(Node* constDecl, bool isGlobal);
@@ -40,7 +40,7 @@ public:
     int handleNumber(Node* number, int* c, int pos, int* initVal, bool isGlobal);
     int handleUnaryExp(Node* unaryExp, int* c, int pos, int* initVal, bool isGlobal);
     int handleUnaryOp(Node* unaryOp);
-    void handleFuncRParams(Node* funcRParams, Symbol* funcSymbole);
+    void handleFuncRParams(Node* funcRParams, Symbol* funcSymbole, string* code);
     int handleMulExp(Node* mulExp, int* c, int* initVal, bool isGlobal);
     int handleAddExp(Node* addExp, int* c, int* initVal, bool isGlobal);
     void handleRelExp(Node* relExp);
