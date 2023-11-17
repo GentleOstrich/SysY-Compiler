@@ -4,9 +4,7 @@
 
 #include "Value.h"
 
-Value::Value(const std::string &name, ValueType valueType) : name(name), valueType(valueType) {}
+#include <utility>
 
-void Value::addUse(Use use) {
-    this->useList.push_back(use);
-}
-
+Value::Value(std::string name, ValueType valueType) :
+        name(std::move(name)), valueType(valueType) {}

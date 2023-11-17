@@ -4,16 +4,17 @@
 
 #ifndef SYSY_COMPILER_USE_H
 #define SYSY_COMPILER_USE_H
-
-#include "Values/Value.h"
-#include "Values/User.h"
+#include <memory>
+class User;
+class Value;
 
 class Use {
 public:
-    Value value;
-    User user;
+    Value* value;
+    User* user;
     int pos;
-    Use(const Value &value, const User &user, int pos);
+
+    Use(Value* value, User* user, int pos);
 };
 
 

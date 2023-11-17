@@ -106,4 +106,5 @@ add_executable(
         src/IR/Values/User.h
         src/IR/Use.cpp
         src/IR/Use.h
-        src/IR/ValueType.h)
+        src/IR/ValueType.h
+)

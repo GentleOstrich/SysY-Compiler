@@ -17,11 +17,12 @@
 class Lexer {
 private:
     int curPos = 0;
-    std::string word = "";
+    std::string word;
     LexType lexType = LexType::NONE;
     int lineNum = 1;
     int number = 114514;
-    int isReserveWord(const std::string &word);
+
+    static int isReserveWord(const std::string &word);
 
 public:
     int next();
@@ -32,11 +33,11 @@ public:
 
     Token getToken();
 
-    bool hasAUntilB(char A, char B);
+    [[nodiscard]] bool hasAUntilB(char A, char B) const;
 
-    int getLineNum();
+    [[nodiscard]] int getLineNum() const;
 
-    int getNumber();
+    [[nodiscard]] int getNumber() const;
 };
 
 

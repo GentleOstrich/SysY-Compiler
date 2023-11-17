@@ -4,9 +4,12 @@
 
 #ifndef SYSY_COMPILER_BASICBLOCK_H
 #define SYSY_COMPILER_BASICBLOCK_H
+#include "Value.h"
 
 
-class BasicBlock {
+class BasicBlock : Value {
+public:
+    std::vector<std::unique_ptr<Value>> instructions;
 
 };
 

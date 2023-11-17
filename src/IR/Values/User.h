@@ -7,12 +7,14 @@
 
 #include "Value.h"
 #include <vector>
+#include <memory>
 
 class User : public Value {
 public:
-    std::vector<Value> operands;
+    std::vector<std::unique_ptr<Value>> operands;
 
     User(const std::string &name, ValueType valueType);
+
 };
 
 

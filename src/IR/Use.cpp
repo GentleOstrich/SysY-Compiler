@@ -4,4 +4,4 @@
 
 #include "Use.h"
 
-Use::Use(const Value &value, const User &user, int pos) : value(value), user(user), pos(pos) {}
+Use::Use(Value *value, User *user, int pos) : value(value), user(user), pos(pos) {}

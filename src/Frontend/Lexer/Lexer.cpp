@@ -365,7 +365,7 @@ LexType Lexer::nnnext() {
     return resLexType;
 }
 
-bool Lexer::hasAUntilB(char A, char B) {
+bool Lexer::hasAUntilB(char A, char B) const {
     int i = curPos;
     char c;
     do {
@@ -378,11 +378,11 @@ bool Lexer::hasAUntilB(char A, char B) {
     return false;
 }
 
-int Lexer::getLineNum() {
+int Lexer::getLineNum() const {
     return this->lineNum;
 }
 
-int Lexer::getNumber() {
+int Lexer::getNumber() const {
     return this->number;
 }
 

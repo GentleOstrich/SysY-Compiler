@@ -4,6 +4,5 @@
 
 #include "User.h"
 
-
-User::User(const std::string &name, ValueType valueType) : Value(name, valueType) {}
-
+User::User(const std::string &name, ValueType valueType) :
+        Value(name, valueType) {}

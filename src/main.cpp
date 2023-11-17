@@ -14,11 +14,11 @@ std::string OUTFILEPATH = "output.txt";
 std::string ERROR_OUTFILEPATH = "error.txt";
 std::string GENERATE_CODE = "generate_code.txt";
 
-std::string source = "";
+std::string source;
 Parser parser;
 
 std::unique_ptr<CompUnit> compUnit;
-SymbolTable symbolTable;
+//SymbolTable symbolTable;
 //Visitor visitor;
 
 
