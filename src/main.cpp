@@ -4,29 +4,28 @@
 #include <algorithm>
 #include <iostream>
 #include <fstream>
-#include "Parser/Parser.h"
-#include "NonterminalCharacter/Nonterminals.h"
-#include "SymbolManager/SymbolTable.h"
-#include "Visitor/Visitor.h"
-using namespace std;
+#include "Frontend/Parser/Parser.h"
+#include "Frontend/NonterminalCharacter/Nonterminals.h"
+#include "IR/SymbolManager/SymbolTable.h"
+#include "IR/Visitor.h"
 
-string INFILEPATH = "testfile.txt";
-string OUTFILEPATH = "output.txt";
-string ERROR_OUTFILEPATH = "error.txt";
-string GENERATE_CODE = "generate_code.txt";
+std::string INFILEPATH = "testfile.txt";
+std::string OUTFILEPATH = "output.txt";
+std::string ERROR_OUTFILEPATH = "error.txt";
+std::string GENERATE_CODE = "generate_code.txt";
 
-string source = "";
+std::string source = "";
 Parser parser;
 
-CompUnit* compUnit;
+std::unique_ptr<CompUnit> compUnit;
 SymbolTable symbolTable;
-Visitor visitor;
+//Visitor visitor;
 
 
-ifstream ifs(INFILEPATH);
-ofstream ofs(OUTFILEPATH);
-ofstream e_ofs(ERROR_OUTFILEPATH);
-ofstream c_ofs(GENERATE_CODE);
+std::ifstream ifs(INFILEPATH);
+std::ofstream ofs(OUTFILEPATH);
+std::ofstream e_ofs(ERROR_OUTFILEPATH);
+std::ofstream c_ofs(GENERATE_CODE);
 
 //#define ERROR_CHECK
 #ifdef ERROR_CHECK
@@ -44,9 +43,9 @@ bool cmp(Error error1, Error error2) {
 #endif
 int main() {
     if (ifs.is_open() && ofs.is_open() && e_ofs.is_open() && c_ofs.is_open()) {
-        source = string((istreambuf_iterator<char>(ifs)), istreambuf_iterator<char>());
+        source = std::string((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
         compUnit = parser.parseCompUnit();
-        visitor.handleCompUnit(compUnit);
+//        visitor.handleCompUnit(compUnit);
 #ifdef ERROR_CHECK
         stable_sort(errors, errors + e, cmp);
         for (int i = 0; i < e; ++i) {
