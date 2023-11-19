@@ -9,23 +9,24 @@
 #include <vector>
 #include "Symbol.h"
 #include "../../Frontend/NonterminalCharacter/Nonterminals.h"
+#include "../Value.h"
 
 class SymbolTable {
 public:
     std::stack<int> table;
-    std::vector<Symbol*> symbols;
+    std::vector<Value*> values;
     int symbolId;
     SymbolTable();
 
     void createSymbolTable();
 
-    void addSymbol(Symbol* symbol, int lineNum);
+    void addSymbol(Value* symbol, int lineNum);
 
     bool findSymbol(const std::string& word, bool isFunc, bool all);
 
     void deleteSymbolTable();
 
-    Symbol* getSymbol(const std::string& word, bool isFunc, bool all);
+    Value* getSymbol(const std::string& word, bool isFunc, bool all);
 
 };
 
