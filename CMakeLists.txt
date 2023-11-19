@@ -92,19 +92,19 @@ add_executable(
         src/IR/Visitor.h
         src/IR/SymbolManager/SymbolTable.cpp
         src/IR/SymbolManager/SymbolTable.h
-        src/IR/Values/Value.cpp
-        src/IR/Values/Value.h
+        src/IR/Value.cpp
+        src/IR/Value.h
         src/IR/Values/BasicBlock.cpp
         src/IR/Values/BasicBlock.h
         src/IR/Values/Function.cpp
         src/IR/Values/Function.h
-        src/IR/IRModule.cpp
-        src/IR/IRModule.h
-        src/IR/IRBuildFactory.cpp
-        src/IR/IRBuildFactory.h
-        src/IR/Values/User.cpp
-        src/IR/Values/User.h
+        src/IR/Module.cpp
+        src/IR/Module.h
+        src/IR/BuildFactory.cpp
+        src/IR/BuildFactory.h
+        src/IR/User.cpp
+        src/IR/User.h
         src/IR/Use.cpp
         src/IR/Use.h
-        src/IR/ValueType.h
-)
+        src/IR/Values/ValueType.h
+        src/IR/Values/Instructions/Instruction.cpp src/IR/Values/Instructions/Instruction.h src/IR/Values/Instructions/InstructionType.h src/IR/Values/Param.cpp src/IR/Values/Param.h)

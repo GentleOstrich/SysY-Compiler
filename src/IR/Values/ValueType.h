@@ -6,6 +6,14 @@
 #define SYSY_COMPILER_VALUETYPE_H
 
 enum class ValueType {
-    NORMAL,
+    Function,
+    Integer,
+    Label,
+    None,
+    Pointer,
+    Void,
+    Array,
+    Instruction,
+    BasicBlock
 };
 #endif //SYSY_COMPILER_VALUETYPE_H

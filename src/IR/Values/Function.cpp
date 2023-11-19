@@ -3,3 +3,6 @@
 //
 
 #include "Function.h"
+
+Function::Function(const std::string &name, ValueType valueType, Module *module, int cnt) : Value(name, valueType),
+                                                                                            module(module), cnt(cnt) {}

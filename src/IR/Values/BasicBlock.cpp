@@ -3,3 +3,7 @@
 //
 
 #include "BasicBlock.h"
+
+
+BasicBlock::BasicBlock(const std::string &name, ValueType valueType, Function *function) : Value(name, valueType),
+                                                                                                 function(function) {}

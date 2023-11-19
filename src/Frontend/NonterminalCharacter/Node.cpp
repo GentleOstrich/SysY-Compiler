@@ -15,9 +15,9 @@ Node::Node(NodeType nodeType, int lineNum) {
     this->lineNum = lineNum;
 }
 
-void Node::addChild(std::unique_ptr<Node> child) {
+void Node::addChild(Node *child) {
     if (child != nullptr) {
-        this->children.push_back(std::move(child));
+        this->children.push_back(child);
     }
 }
 

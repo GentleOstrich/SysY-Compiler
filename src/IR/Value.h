@@ -7,16 +7,15 @@
 
 #include <string>
 #include <vector>
-#include <memory>
-#include "../ValueType.h"
-#include "../Use.h"
+#include "Values/ValueType.h"
+#include "Use.h"
 
 class Value {
 public:
     std::string name;
     ValueType valueType;
     int valNumber = -1;
-    std::vector<std::unique_ptr<Use>> uses;
+    std::vector<Use*> uses;
     Value(std::string name, ValueType valueType);
 };
 

@@ -34,8 +34,8 @@ extern std::ofstream ofs;
 Token token;
 
 // 正常返回 0 错误返回 -1
-std::unique_ptr<CompUnit> Parser::parseCompUnit() {
-    auto compUnit = std::make_unique<CompUnit>(NodeType::CompUnit, lexer.getLineNum());
+CompUnit *Parser::parseCompUnit() {
+    auto compUnit = new CompUnit(NodeType::CompUnit, lexer.getLineNum());
     readTk;
     while (tkType != LexType::NONE) {
         if (tkType == LexType::CONSTTK) {
@@ -58,8 +58,8 @@ std::unique_ptr<CompUnit> Parser::parseCompUnit() {
     return compUnit;
 }
 
-std::unique_ptr<Decl> Parser::parseDecl() {
-    auto decl = std::make_unique<Decl>(NodeType::Decl, lexer.getLineNum());
+Decl *Parser::parseDecl() {
+    auto decl = new Decl(NodeType::Decl, lexer.getLineNum());
     if (tkType == LexType::CONSTTK) {
         decl->addChild(parseConstDecl());
     } else if (tkType == LexType::INTTK) {
@@ -68,8 +68,8 @@ std::unique_ptr<Decl> Parser::parseDecl() {
     return decl;
 }
 
-std::unique_ptr<ConstDecl> Parser::parseConstDecl() {
-    auto constDecl = std::make_unique<ConstDecl>(NodeType::ConstDecl, lexer.getLineNum());
+ConstDecl *Parser::parseConstDecl() {
+    auto constDecl = new ConstDecl(NodeType::ConstDecl, lexer.getLineNum());
     if (tkType == LexType::CONSTTK) {
         printTk;
         readTk;
@@ -85,7 +85,7 @@ std::unique_ptr<ConstDecl> Parser::parseConstDecl() {
             readTk;
         } else {
 #ifdef ERROR_CHECK
-            printError(constDecl->getLineNum(), "i");
+            printError(constDecl ->getLineNum(), "i");
 #endif
         }
     }
@@ -93,8 +93,8 @@ std::unique_ptr<ConstDecl> Parser::parseConstDecl() {
     return constDecl;
 }
 
-std::unique_ptr<BType> Parser::parseBType() {
-    auto bType = std::make_unique<BType>(NodeType::BType, lexer.getLineNum());
+BType *Parser::parseBType() {
+    auto bType = new BType(NodeType::BType, lexer.getLineNum());
     if (tkType == LexType::INTTK) {
         bType->type = 0;
         printTk;
@@ -103,8 +103,8 @@ std::unique_ptr<BType> Parser::parseBType() {
     return bType;
 }
 
-std::unique_ptr<ConstDef> Parser::parseConstDef() {
-    auto constDef = std::make_unique<ConstDef>(NodeType::ConstDef, lexer.getLineNum());
+ConstDef *Parser::parseConstDef() {
+    auto constDef = new ConstDef(NodeType::ConstDef, lexer.getLineNum());
     if (tkType == LexType::IDENFR) {
         constDef->setWord(tkWord);
         printTk;
@@ -119,7 +119,7 @@ std::unique_ptr<ConstDef> Parser::parseConstDef() {
                 readTk;
             } else {
 #ifdef ERROR_CHECK
-                printError(constDef->getLineNum(), "k");
+                printError(constDef ->getLineNum(), "k");
 #endif
             }
         }
@@ -133,8 +133,8 @@ std::unique_ptr<ConstDef> Parser::parseConstDef() {
     return constDef;
 }
 
-std::unique_ptr<ConstInitVal> Parser::parseConstInitVal() {
-    auto constInitVal = std::make_unique<ConstInitVal>(NodeType::ConstInitVal, lexer.getLineNum());
+ConstInitVal *Parser::parseConstInitVal() {
+    auto constInitVal = new ConstInitVal(NodeType::ConstInitVal, lexer.getLineNum());
     if (tkType == LexType::LBRACE) {
         printTk;
         readTk;
@@ -160,8 +160,8 @@ std::unique_ptr<ConstInitVal> Parser::parseConstInitVal() {
     return constInitVal;
 }
 
-std::unique_ptr<VarDecl> Parser::parseVarDecl() {
-    auto varDecl = std::make_unique<VarDecl>(NodeType::VarDecl, lexer.getLineNum());
+VarDecl *Parser::parseVarDecl() {
+    auto varDecl = new VarDecl(NodeType::VarDecl, lexer.getLineNum());
     varDecl->addChild(parseBType());
     varDecl->addChild(parseVarDef());
     while (tkType == LexType::COMMA) {
@@ -174,15 +174,15 @@ std::unique_ptr<VarDecl> Parser::parseVarDecl() {
         readTk;
     } else {
 #ifdef ERROR_CHECK
-        printError(varDecl->getLineNum(), "i");
+        printError(varDecl ->getLineNum(), "i");
 #endif
     }
     ofs << "<VarDecl>" << std::endl;
     return varDecl;
 }
 
-std::unique_ptr<VarDef> Parser::parseVarDef() {
-    auto varDef = std::make_unique<VarDef>(NodeType::VarDef, lexer.getLineNum());
+VarDef *Parser::parseVarDef() {
+    auto varDef = new VarDef(NodeType::VarDef, lexer.getLineNum());
     if (tkType == LexType::IDENFR) {
         varDef->word = tkWord;
         printTk;
@@ -197,7 +197,7 @@ std::unique_ptr<VarDef> Parser::parseVarDef() {
                 readTk;
             } else {
 #ifdef ERROR_CHECK
-                printError(varDef->getLineNum(), "k");
+                printError(varDef ->getLineNum(), "k");
 #endif
             }
         }
@@ -212,8 +212,8 @@ std::unique_ptr<VarDef> Parser::parseVarDef() {
     return varDef;
 }
 
-std::unique_ptr<InitVal> Parser::parseInitVal() {
-    auto initVal = std::make_unique<InitVal>(NodeType::InitVal, lexer.getLineNum());
+InitVal *Parser::parseInitVal() {
+    auto initVal = new InitVal(NodeType::InitVal, lexer.getLineNum());
     if (tkType == LexType::LBRACE) {
         printTk;
         readTk;
@@ -239,8 +239,8 @@ std::unique_ptr<InitVal> Parser::parseInitVal() {
     return initVal;
 }
 
-std::unique_ptr<FuncDef> Parser::parseFuncDef() {
-    auto funcDef = std::make_unique<FuncDef>(NodeType::FuncDef, lexer.getLineNum());
+FuncDef *Parser::parseFuncDef() {
+    auto funcDef = new FuncDef(NodeType::FuncDef, lexer.getLineNum());
     funcDef->addChild(parseFuncType());
     if (tkType == LexType::IDENFR) {
         funcDef->word = tkWord;
@@ -259,7 +259,7 @@ std::unique_ptr<FuncDef> Parser::parseFuncDef() {
                     readTk;
                 } else {
 #ifdef ERROR_CHECK
-                    printError(funcDef->getLineNum(), "j");
+                    printError(funcDef ->getLineNum(), "j");
 #endif
                 }
             }
@@ -270,8 +270,8 @@ std::unique_ptr<FuncDef> Parser::parseFuncDef() {
     return funcDef;
 }
 
-std::unique_ptr<MainFuncDef> Parser::parseMainFuncDef() {
-    auto mainFuncDef = std::make_unique<MainFuncDef>(NodeType::MainFuncDef, lexer.getLineNum());
+MainFuncDef *Parser::parseMainFuncDef() {
+    auto mainFuncDef = new MainFuncDef(NodeType::MainFuncDef, lexer.getLineNum());
     if (tkType == LexType::INTTK) {
         printTk;
         readTk;
@@ -286,7 +286,7 @@ std::unique_ptr<MainFuncDef> Parser::parseMainFuncDef() {
                     readTk;
                 } else {
 #ifdef ERROR_CHECK
-                    printError(mainFuncDef->getLineNum(), "j");
+                    printError(mainFuncDef ->getLineNum(), "j");
 #endif
                 }
                 mainFuncDef->addChild(parseBlock());
@@ -297,8 +297,8 @@ std::unique_ptr<MainFuncDef> Parser::parseMainFuncDef() {
     return mainFuncDef;
 }
 
-std::unique_ptr<FuncType> Parser::parseFuncType() {
-    auto funcType = std::make_unique<FuncType>(NodeType::FuncType, lexer.getLineNum());
+FuncType *Parser::parseFuncType() {
+    auto funcType = new FuncType(NodeType::FuncType, lexer.getLineNum());
     if (tkType == LexType::INTTK) {
         funcType->type = 0;
         printTk;
@@ -312,8 +312,8 @@ std::unique_ptr<FuncType> Parser::parseFuncType() {
     return funcType;
 }
 
-std::unique_ptr<FuncFParams> Parser::parseFuncFParams() {
-    auto funcFParams = std::make_unique<FuncFParams>(NodeType::FuncFParams, lexer.getLineNum());
+FuncFParams *Parser::parseFuncFParams() {
+    auto funcFParams = new FuncFParams(NodeType::FuncFParams, lexer.getLineNum());
     funcFParams->addChild(parseFuncFParam());
     while (tkType == LexType::COMMA) {
         printTk;
@@ -324,8 +324,8 @@ std::unique_ptr<FuncFParams> Parser::parseFuncFParams() {
     return funcFParams;
 }
 
-std::unique_ptr<FuncFParam> Parser::parseFuncFParam() {
-    auto funcFParam = std::make_unique<FuncFParam>(NodeType::FuncFParam, lexer.getLineNum());
+FuncFParam *Parser::parseFuncFParam() {
+    auto funcFParam = new FuncFParam(NodeType::FuncFParam, lexer.getLineNum());
     funcFParam->addChild(parseBType());
     if (tkType == LexType::IDENFR) {
         funcFParam->word = tkWord;
@@ -340,7 +340,7 @@ std::unique_ptr<FuncFParam> Parser::parseFuncFParam() {
                 readTk;
             } else {
 #ifdef ERROR_CHECK
-                printError(funcFParam->getLineNum(), "k");
+                printError(funcFParam ->getLineNum(), "k");
 #endif
             }
             while (tkType == LexType::LBRACK) {
@@ -353,7 +353,7 @@ std::unique_ptr<FuncFParam> Parser::parseFuncFParam() {
                     readTk;
                 } else {
 #ifdef ERROR_CHECK
-                    printError(funcFParam->getLineNum(), "k");
+                    printError(funcFParam ->getLineNum(), "k");
 #endif
                 }
             }
@@ -363,8 +363,8 @@ std::unique_ptr<FuncFParam> Parser::parseFuncFParam() {
     return funcFParam;
 }
 
-std::unique_ptr<Block> Parser::parseBlock() {
-    auto block = std::make_unique<Block>(NodeType::Block, lexer.getLineNum());
+Block *Parser::parseBlock() {
+    auto block = new Block(NodeType::Block, lexer.getLineNum());
     if (tkType == LexType::LBRACE) {
         printTk;
         readTk;
@@ -381,8 +381,8 @@ std::unique_ptr<Block> Parser::parseBlock() {
     return block;
 }
 
-std::unique_ptr<BlockItem> Parser::parseBlockItem() {
-    auto blockItem = std::make_unique<BlockItem>(NodeType::BlockItem, lexer.getLineNum());
+BlockItem *Parser::parseBlockItem() {
+    auto blockItem = new BlockItem(NodeType::BlockItem, lexer.getLineNum());
     if (tkType == LexType::CONSTTK || tkType == LexType::INTTK) {
         blockItem->addChild(parseDecl());
     } else {
@@ -391,8 +391,8 @@ std::unique_ptr<BlockItem> Parser::parseBlockItem() {
     return blockItem;
 }
 
-std::unique_ptr<Stmt> Parser::parseStmt() {
-    auto stmt = std::make_unique<Stmt>(NodeType::Stmt, lexer.getLineNum());
+Stmt *Parser::parseStmt() {
+    auto stmt = new Stmt(NodeType::Stmt, lexer.getLineNum());
     if (tkType == LexType::IFTK) {
         stmt->type = 1;
         printTk;
@@ -406,7 +406,7 @@ std::unique_ptr<Stmt> Parser::parseStmt() {
                 readTk;
             } else {
 #ifdef ERROR_CHECK
-                printError(stmt->getLineNum(), "j");
+                printError(stmt ->getLineNum(), "j");
 #endif
             }
             stmt->addChild(parseStmt());
@@ -455,7 +455,7 @@ std::unique_ptr<Stmt> Parser::parseStmt() {
             readTk;
         } else {
 #ifdef ERROR_CHECK
-            printError(stmt->getLineNum(), "i");
+            printError(stmt ->getLineNum(), "i");
 #endif
         }
     } else if (tkType == LexType::CONTINUETK) {
@@ -467,7 +467,7 @@ std::unique_ptr<Stmt> Parser::parseStmt() {
             readTk;
         } else {
 #ifdef ERROR_CHECK
-            printError(stmt->getLineNum(), "i");
+            printError(stmt ->getLineNum(), "i");
 #endif
         }
     } else if (tkType == LexType::RETURNTK) {
@@ -484,7 +484,7 @@ std::unique_ptr<Stmt> Parser::parseStmt() {
                 readTk;
             } else {
 #ifdef ERROR_CHECK
-                printError(stmt->getLineNum(), "i");
+                printError(stmt ->getLineNum(), "i");
 #endif
             }
         }
@@ -509,7 +509,7 @@ std::unique_ptr<Stmt> Parser::parseStmt() {
                     readTk;
                 } else {
 #ifdef ERROR_CHECK
-                    printError(stmt->getLineNum(), "j");
+                    printError(stmt ->getLineNum(), "j");
 #endif
                 }
                 if (tkType == LexType::SEMICN) {
@@ -517,7 +517,7 @@ std::unique_ptr<Stmt> Parser::parseStmt() {
                     readTk;
                 } else {
 #ifdef ERROR_CHECK
-                    printError(stmt->getLineNum(), "i");
+                    printError(stmt ->getLineNum(), "i");
 #endif
                 }
             }
@@ -545,7 +545,7 @@ std::unique_ptr<Stmt> Parser::parseStmt() {
                             readTk;
                         } else {
 #ifdef ERROR_CHECK
-                            printError(stmt->getLineNum(), "j");
+                            printError(stmt ->getLineNum(), "j");
 #endif
                         }
                         if (tkType == LexType::SEMICN) {
@@ -553,7 +553,7 @@ std::unique_ptr<Stmt> Parser::parseStmt() {
                             readTk;
                         } else {
 #ifdef ERROR_CHECK
-                            printError(stmt->getLineNum(), "i");
+                            printError(stmt ->getLineNum(), "i");
 #endif
                         }
                     }
@@ -564,7 +564,7 @@ std::unique_ptr<Stmt> Parser::parseStmt() {
                         readTk;
                     } else {
 #ifdef ERROR_CHECK
-                        printError(stmt->getLineNum(), "i");
+                        printError(stmt ->getLineNum(), "i");
 #endif
                     }
                 }
@@ -576,7 +576,7 @@ std::unique_ptr<Stmt> Parser::parseStmt() {
                 readTk;
             } else {
 #ifdef ERROR_CHECK
-                printError(stmt->getLineNum(), "i");
+                printError(stmt ->getLineNum(), "i");
 #endif
             }
         }
@@ -585,8 +585,8 @@ std::unique_ptr<Stmt> Parser::parseStmt() {
     return stmt;
 }
 
-std::unique_ptr<ForStmt> Parser::parseForStmt() {
-    auto forStmt = std::make_unique<ForStmt>(NodeType::ForStmt, lexer.getLineNum());
+ForStmt *Parser::parseForStmt() {
+    auto forStmt = new ForStmt(NodeType::ForStmt, lexer.getLineNum());
     forStmt->addChild(parseLVal());
     if (tkType == LexType::ASSIGN) {
         printTk;
@@ -597,22 +597,22 @@ std::unique_ptr<ForStmt> Parser::parseForStmt() {
     return forStmt;
 }
 
-std::unique_ptr<Exp> Parser::parseExp() {
-    auto exp = std::make_unique<Exp>(NodeType::Exp, lexer.getLineNum());
+Exp *Parser::parseExp() {
+    auto exp = new Exp(NodeType::Exp, lexer.getLineNum());
     exp->addChild(parseAddExp());
     ofs << "<Exp>" << std::endl;
     return exp;
 }
 
-std::unique_ptr<Cond> Parser::parseCond() {
-    auto cond = std::make_unique<Cond>(NodeType::Cond, lexer.getLineNum());
+Cond *Parser::parseCond() {
+    auto cond = new Cond(NodeType::Cond, lexer.getLineNum());
     cond->addChild(parseLOrExp());
     ofs << "<Cond>" << std::endl;
     return cond;
 }
 
-std::unique_ptr<LVal> Parser::parseLVal() {
-    auto lVal = std::make_unique<LVal>(NodeType::LVal, lexer.getLineNum());
+LVal *Parser::parseLVal() {
+    auto lVal = new LVal(NodeType::LVal, lexer.getLineNum());
     if (tkType == LexType::IDENFR) {
         lVal->word = tkWord;
         printTk;
@@ -627,7 +627,7 @@ std::unique_ptr<LVal> Parser::parseLVal() {
                 readTk;
             } else {
 #ifdef ERROR_CHECK
-                printError(lVal->getLineNum(), "k");
+                printError(lVal ->getLineNum(), "k");
 #endif
             }
         }
@@ -637,8 +637,8 @@ std::unique_ptr<LVal> Parser::parseLVal() {
     return lVal;
 }
 
-std::unique_ptr<PrimaryExp> Parser::parsePrimaryExp() {
-    auto primaryExp = std::make_unique<PrimaryExp>(NodeType::PrimaryExp, lexer.getLineNum());
+PrimaryExp *Parser::parsePrimaryExp() {
+    auto primaryExp = new PrimaryExp(NodeType::PrimaryExp, lexer.getLineNum());
     if (tkType == LexType::LPARENT) {
         printTk;
         readTk;
@@ -658,8 +658,8 @@ std::unique_ptr<PrimaryExp> Parser::parsePrimaryExp() {
     return primaryExp;
 }
 
-std::unique_ptr<Number> Parser::parseNumber() {
-    auto number = std::make_unique<Number>(NodeType::Number, lexer.getLineNum());
+Number *Parser::parseNumber() {
+    auto number = new Number(NodeType::Number, lexer.getLineNum());
     if (tkType == LexType::INTCON) {
         // TODO
         number->val = lexer.getNumber();
@@ -670,8 +670,8 @@ std::unique_ptr<Number> Parser::parseNumber() {
     return number;
 }
 
-std::unique_ptr<UnaryExp> Parser::parseUnaryExp() {
-    auto unaryExp = std::make_unique<UnaryExp>(NodeType::UnaryExp, lexer.getLineNum());
+UnaryExp *Parser::parseUnaryExp() {
+    auto unaryExp = new UnaryExp(NodeType::UnaryExp, lexer.getLineNum());
     if (tkType == LexType::PLUS || tkType == LexType::MINU || tkType == LexType::NOT) {
         unaryExp->addChild(parseUnaryOp());
         unaryExp->addChild(parseUnaryExp());
@@ -692,7 +692,7 @@ std::unique_ptr<UnaryExp> Parser::parseUnaryExp() {
                     readTk;
                 } else {
 #ifdef ERROR_CHECK
-                    printError(unaryExp->getLineNum(), "j");
+                    printError(unaryExp ->getLineNum(), "j");
 #endif
                 }
             }
@@ -704,8 +704,8 @@ std::unique_ptr<UnaryExp> Parser::parseUnaryExp() {
     return unaryExp;
 }
 
-std::unique_ptr<UnaryOp> Parser::parseUnaryOp() {
-    auto unaryOp = std::make_unique<UnaryOp>(NodeType::UnaryOp, lexer.getLineNum());
+UnaryOp *Parser::parseUnaryOp() {
+    auto unaryOp = new UnaryOp(NodeType::UnaryOp, lexer.getLineNum());
     if (tkType == LexType::PLUS) {
         unaryOp->type = 0;
         printTk;
@@ -723,8 +723,8 @@ std::unique_ptr<UnaryOp> Parser::parseUnaryOp() {
     return unaryOp;
 }
 
-std::unique_ptr<FuncRParams> Parser::parseFuncRParams() {
-    auto funcRParams = std::make_unique<FuncRParams>(NodeType::FuncRParams, lexer.getLineNum());
+FuncRParams *Parser::parseFuncRParams() {
+    auto funcRParams = new FuncRParams(NodeType::FuncRParams, lexer.getLineNum());
     funcRParams->addChild(parseExp());
     while (tkType == LexType::COMMA) {
         printTk;
@@ -735,11 +735,11 @@ std::unique_ptr<FuncRParams> Parser::parseFuncRParams() {
     return funcRParams;
 }
 
-std::unique_ptr<MulExp> Parser::parseMulExp() {
-    auto mulExp = std::make_unique<MulExp>(NodeType::MulExp, lexer.getLineNum());
+MulExp *Parser::parseMulExp() {
+    auto mulExp = new MulExp(NodeType::MulExp, lexer.getLineNum());
     mulExp->addChild(parseUnaryExp());
     while (tkType == LexType::MULT || tkType == LexType::DIV || tkType == LexType::MOD) {
-        auto temp = std::make_unique<MulExp>(NodeType::MulExp, lexer.getLineNum());
+        auto temp = new MulExp(NodeType::MulExp, lexer.getLineNum());
         if (tkType == LexType::MULT) {
             temp->op = 0;
         } else if (tkType == LexType::DIV) {
@@ -752,17 +752,17 @@ std::unique_ptr<MulExp> Parser::parseMulExp() {
         readTk;
         temp->addChild(std::move(mulExp));
         temp->addChild(parseUnaryExp());
-        mulExp.swap(temp);
+        mulExp = temp;
     }
     ofs << "<MulExp>" << std::endl;
     return mulExp;
 }
 
-std::unique_ptr<AddExp> Parser::parseAddExp() {
-    auto addExp = std::make_unique<AddExp>(NodeType::AddExp, lexer.getLineNum());
+AddExp *Parser::parseAddExp() {
+    auto addExp = new AddExp(NodeType::AddExp, lexer.getLineNum());
     addExp->addChild(parseMulExp());
     while (tkType == LexType::PLUS || tkType == LexType::MINU) {
-        auto temp = std::make_unique<AddExp>(NodeType::AddExp, lexer.getLineNum());
+        auto temp = new AddExp(NodeType::AddExp, lexer.getLineNum());
         if (tkType == LexType::PLUS) {
             temp->op = 0;
         } else if (tkType == LexType::MINU) {
@@ -773,18 +773,18 @@ std::unique_ptr<AddExp> Parser::parseAddExp() {
         readTk;
         temp->addChild(std::move(addExp));
         temp->addChild(parseMulExp());
-        addExp.swap(temp);
+        addExp = temp;
     }
     ofs << "<AddExp>" << std::endl;
     return addExp;
 }
 
-std::unique_ptr<RelExp> Parser::parseRelExp() {
-    auto relExp = std::make_unique<RelExp>(NodeType::RelExp, lexer.getLineNum());
+RelExp *Parser::parseRelExp() {
+    auto relExp = new RelExp(NodeType::RelExp, lexer.getLineNum());
     relExp->addChild(parseAddExp());
     while (tkType == LexType::GRE || tkType == LexType::GEQ ||
            tkType == LexType::LSS || tkType == LexType::LEQ) {
-        auto temp = std::make_unique<RelExp>(NodeType::RelExp, lexer.getLineNum());
+        auto temp = new RelExp(NodeType::RelExp, lexer.getLineNum());
         switch (tkType) {
             case LexType::GRE:
                 relExp->op = 0;
@@ -806,17 +806,17 @@ std::unique_ptr<RelExp> Parser::parseRelExp() {
         readTk;
         temp->addChild(std::move(relExp));
         temp->addChild(parseAddExp());
-        relExp .swap(temp);
+        relExp = temp;
     }
     ofs << "<RelExp>" << std::endl;
     return relExp;
 }
 
-std::unique_ptr<EqExp> Parser::parseEqExp() {
-    auto eqExp = std::make_unique<EqExp>(NodeType::EqExp, lexer.getLineNum());
+EqExp *Parser::parseEqExp() {
+    auto eqExp = new EqExp(NodeType::EqExp, lexer.getLineNum());
     eqExp->addChild(parseRelExp());
     while (tkType == LexType::EQL || tkType == LexType::NEQ) {
-        auto temp = std::make_unique<EqExp>(NodeType::EqExp, lexer.getLineNum());
+        auto temp = new EqExp(NodeType::EqExp, lexer.getLineNum());
         switch (tkType) {
             case LexType::EQL:
                 eqExp->op = 0;
@@ -832,47 +832,47 @@ std::unique_ptr<EqExp> Parser::parseEqExp() {
         readTk;
         temp->addChild(std::move(eqExp));
         temp->addChild(parseRelExp());
-        eqExp.swap(temp);
+        eqExp = temp;
     }
     ofs << "<EqExp>" << std::endl;
     return eqExp;
 }
 
-std::unique_ptr<LAndExp> Parser::parseLAndExp() {
-    auto lAndExp = std::make_unique<LAndExp>(NodeType::LAndExp, lexer.getLineNum());
+LAndExp *Parser::parseLAndExp() {
+    auto lAndExp = new LAndExp(NodeType::LAndExp, lexer.getLineNum());
     lAndExp->addChild(parseEqExp());
     while (tkType == LexType::AND) {
-        auto temp = std::make_unique<LAndExp>(NodeType::LAndExp, lexer.getLineNum());
+        auto temp = new LAndExp(NodeType::LAndExp, lexer.getLineNum());
         ofs << "<LAndExp>" << std::endl;
         printTk;
         readTk;
-        //auto rightEqExp = std::make_unique<EqExp>(NodeType::EqExp, lexer.getLineNum());
+        // auto rightEqExp = std::make_unique<EqExp *(NodeType::EqExp, lexer.getLineNum());
         temp->addChild(std::move(lAndExp));
         temp->addChild(parseEqExp());
-        lAndExp.swap(temp);
+        lAndExp = temp;
     }
     ofs << "<LAndExp>" << std::endl;
     return lAndExp;
 }
 
-std::unique_ptr<LOrExp> Parser::parseLOrExp() {
-    auto lOrExp = std::make_unique<LOrExp>(NodeType::LOrExp, lexer.getLineNum());
+LOrExp *Parser::parseLOrExp() {
+    auto lOrExp = new LOrExp(NodeType::LOrExp, lexer.getLineNum());
     lOrExp->addChild(parseLAndExp());
     while (tkType == LexType::OR) {
-        auto temp = std::make_unique<LOrExp>(NodeType::LOrExp, lexer.getLineNum());
+        auto temp = new LOrExp(NodeType::LOrExp, lexer.getLineNum());
         ofs << "<LOrExp>" << std::endl;
         printTk;
         readTk;
         temp->addChild(std::move(lOrExp));
         temp->addChild(parseLAndExp());
-        lOrExp.swap(temp);
+        lOrExp = temp;
     }
     ofs << "<LOrExp>" << std::endl;
     return lOrExp;
 }
 
-std::unique_ptr<ConstExp> Parser::parseConstExp() {
-    auto constExp = std::make_unique<ConstExp>(NodeType::ConstExp, lexer.getLineNum());
+ConstExp *Parser::parseConstExp() {
+    auto constExp = new ConstExp(NodeType::ConstExp, lexer.getLineNum());
     constExp->addChild(parseAddExp());
     ofs << "<ConstExp>" << std::endl;
     return constExp;

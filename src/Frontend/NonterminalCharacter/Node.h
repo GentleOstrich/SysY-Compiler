@@ -17,10 +17,10 @@ public:
     NodeType nodeType;
     Token *token;
     int lineNum;
-    std::vector<std::unique_ptr<Node>> children;
+    std::vector<Node *> children;
     explicit Node(NodeType nodeType, int lineNum);
     explicit Node(Token token, NodeType nodeType, int lineNum);
-    void addChild(std::unique_ptr<Node> child);
+    void addChild(Node *child);
     NodeType getNodeType();
     virtual std::string getWord();
     virtual int getType();

@@ -17,7 +17,7 @@ std::string GENERATE_CODE = "generate_code.txt";
 std::string source;
 Parser parser;
 
-std::unique_ptr<CompUnit> compUnit;
+CompUnit* compUnit;
 //SymbolTable symbolTable;
 //Visitor visitor;
 

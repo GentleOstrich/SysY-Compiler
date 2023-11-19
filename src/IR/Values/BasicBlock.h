@@ -4,12 +4,18 @@
 
 #ifndef SYSY_COMPILER_BASICBLOCK_H
 #define SYSY_COMPILER_BASICBLOCK_H
-#include "Value.h"
+#include "../Value.h"
+#include "Instructions/Instruction.h"
+#include "Function.h"
 
-
-class BasicBlock : Value {
+class BasicBlock : public Value {
 public:
-    std::vector<std::unique_ptr<Value>> instructions;
+    std::vector<Instruction*> instructions;
+
+    Function* function;
+
+    BasicBlock(const std::string &name, ValueType valueType, Function *function);
+
 
 };
 

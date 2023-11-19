@@ -11,7 +11,9 @@
 
 class User : public Value {
 public:
-    std::vector<std::unique_ptr<Value>> operands;
+    int opNum; // 操作数数量
+
+    std::vector<Use*> operands;
 
     User(const std::string &name, ValueType valueType);
 

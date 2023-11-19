@@ -7,78 +7,76 @@
 
 #include <iostream>
 #include <fstream>
-#include <memory>
 #include "../NonterminalCharacter/Nonterminals.h"
 #include "../Lexer/Lexer.h"
 
-class Parser
-{
+class Parser {
 public:
-    std::unique_ptr<CompUnit> parseCompUnit();
+    CompUnit *parseCompUnit();
 
-    std::unique_ptr<Decl> parseDecl();
+    Decl *parseDecl();
 
-    std::unique_ptr<ConstDecl> parseConstDecl();
+    ConstDecl *parseConstDecl();
 
-    std::unique_ptr<BType> parseBType();
+    BType *parseBType();
 
-    std::unique_ptr<ConstDef> parseConstDef();
+    ConstDef *parseConstDef();
 
-    std::unique_ptr<ConstInitVal> parseConstInitVal();
+    ConstInitVal *parseConstInitVal();
 
-    std::unique_ptr<VarDecl> parseVarDecl();
+    VarDecl *parseVarDecl();
 
-    std::unique_ptr<VarDef> parseVarDef();
+    VarDef *parseVarDef();
 
-    std::unique_ptr<InitVal> parseInitVal();
+    InitVal *parseInitVal();
 
-    std::unique_ptr<FuncDef> parseFuncDef();
+    FuncDef *parseFuncDef();
 
-    std::unique_ptr<MainFuncDef> parseMainFuncDef();
+    MainFuncDef *parseMainFuncDef();
 
-    std::unique_ptr<FuncType> parseFuncType();
+    FuncType *parseFuncType();
 
-    std::unique_ptr<FuncFParams> parseFuncFParams();
+    FuncFParams *parseFuncFParams();
 
-    std::unique_ptr<FuncFParam> parseFuncFParam();
+    FuncFParam *parseFuncFParam();
 
-    std::unique_ptr<Block> parseBlock();
+    Block *parseBlock();
 
-    std::unique_ptr<BlockItem> parseBlockItem();
+    BlockItem *parseBlockItem();
 
-    std::unique_ptr<Stmt> parseStmt();
+    Stmt *parseStmt();
 
-    std::unique_ptr<ForStmt> parseForStmt();
+    ForStmt *parseForStmt();
 
-    std::unique_ptr<Exp> parseExp();
+    Exp *parseExp();
 
-    std::unique_ptr<Cond> parseCond();
+    Cond *parseCond();
 
-    std::unique_ptr<LVal> parseLVal();
+    LVal *parseLVal();
 
-    std::unique_ptr<PrimaryExp> parsePrimaryExp();
+    PrimaryExp *parsePrimaryExp();
 
-    std::unique_ptr<UnaryExp> parseUnaryExp();
+    UnaryExp *parseUnaryExp();
 
-    std::unique_ptr<UnaryOp> parseUnaryOp();
+    UnaryOp *parseUnaryOp();
 
-    std::unique_ptr<FuncRParams> parseFuncRParams();
+    FuncRParams *parseFuncRParams();
 
-    std::unique_ptr<MulExp> parseMulExp();
+    MulExp *parseMulExp();
 
-    std::unique_ptr<AddExp> parseAddExp();
+    AddExp *parseAddExp();
 
-    std::unique_ptr<RelExp> parseRelExp();
+    RelExp *parseRelExp();
 
-    std::unique_ptr<EqExp> parseEqExp();
+    EqExp *parseEqExp();
 
-    std::unique_ptr<LAndExp> parseLAndExp();
+    LAndExp *parseLAndExp();
 
-    std::unique_ptr<LOrExp> parseLOrExp();
+    LOrExp *parseLOrExp();
 
-    std::unique_ptr<ConstExp> parseConstExp();
+    ConstExp *parseConstExp();
 
-    std::unique_ptr<Number> parseNumber();
+    Number *parseNumber();
 };
 
 #endif // SYSY_COMPILER_PARSER_H
