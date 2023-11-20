@@ -13,7 +13,6 @@ public:
     Value* value;
     User* user;
     int pos; // value's pos in user --- add i32 %a, %b --- a is 0, b is 1
-
     Use(Value* value, User* user, int pos);
 };
 

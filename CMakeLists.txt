@@ -107,4 +107,4 @@ add_executable(
         src/IR/Use.cpp
         src/IR/Use.h
         src/IR/Values/ValueType.h
-        src/IR/Values/Instructions/Instruction.cpp src/IR/Values/Instructions/Instruction.h src/IR/Values/Instructions/InstructionType.h src/IR/Values/Param.cpp src/IR/Values/Param.h)
+        src/IR/Values/Instructions/Instruction.cpp src/IR/Values/Instructions/Instruction.h src/IR/Values/Instructions/InstructionType.h src/IR/Values/Param.cpp src/IR/Values/Param.h src/IR/Values/Const.cpp src/IR/Values/Const.h src/IR/Values/GlobalVar.cpp src/IR/Values/GlobalVar.h)

@@ -17,6 +17,8 @@ public:
 
     User(const std::string &name, ValueType valueType);
 
+    void addOperand(Use* use);
+
 };
 
 

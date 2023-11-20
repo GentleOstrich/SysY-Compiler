@@ -16,6 +16,10 @@ public:
 
     BasicBlock(const std::string &name, ValueType valueType, Function *function);
 
+    void addInstruction(Instruction* instruction);
+
+    void translate() override;
+
 
 };
 

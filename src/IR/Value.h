@@ -14,9 +14,13 @@ class Value {
 public:
     std::string name;
     ValueType valueType;
-    int valNumber = -1;
+    //int valNumber = -1;
     std::vector<Use*> uses;
     Value(std::string name, ValueType valueType);
+
+    void addUse(Use* use);
+    virtual void translate();
+    virtual std::string getName();
 };
 
 

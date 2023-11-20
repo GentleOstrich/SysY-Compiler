@@ -11,25 +11,34 @@
 #include "Values/Function.h"
 #include "Values/BasicBlock.h"
 #include "Values/ValueType.h"
+#include "SymbolManager/SymbolTable.h"
+#include "Values/Const.h"
 #include <string>
 #include <vector>
 
 extern CompUnit *compUnit;
 
-class BuildFactory
-{
+class BuildFactory {
 public:
-    int symbolTable = 0;
-
     BuildFactory();
+
+    Module *module;
+
+    BasicBlock *curBasicBlock;
+
+    Function *curFunction;
 
     Module *genIRModule();
 
-    Function *genFunction(Node* decl, Module* irModule);
+    Function *genFunction(Node *node);
 
-    BasicBlock *genBasicBlock(Node *decl, Function* function);
+    BasicBlock *genBasicBlock(Node *node, Function *function);
 
-    Instruction *genInstruction(Node* decl, BasicBlock* basicBlock, InstructionType instructionType);
+    Instruction *genInstruction(Node *node, InstructionType instructionType, bool needReg);
+
+    Const* genConst(Node *node, int val);
+
+    GlobalVar* genGlobalVar(Node *node, int val, bool isConst);
 };
 
 #endif //SYSY_COMPILER_BUILDFACTORY_H

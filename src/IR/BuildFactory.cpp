@@ -4,40 +4,63 @@
 
 #include "BuildFactory.h"
 
-BuildFactory::BuildFactory() {}
+BuildFactory::BuildFactory() {
+    this->module = new Module();
+}
 
 Module *BuildFactory::genIRModule() {
-    auto *module = new Module();
-    for (Node *child: compUnit->children) {
-        if (child->nodeType == NodeType::Decl) {
-            module->globalVars.push_back(genInstruction(child, nullptr, InstructionType::Alloca));
-        } else if (child->nodeType == NodeType::FuncDef) {
-            module->functions.push_back(genFunction(child, module));
-        } else if (child->nodeType == NodeType::MainFuncDef) {
-            module->functions.push_back(genFunction(child, module));
-        }
-    }
     return module;
 }
 
-Function *BuildFactory::genFunction(Node *node, Module *module) {
-    Function *function = new Function(node->getWord(), ValueType::Function, module, 0);
-
+Function *BuildFactory::genFunction(Node *node) {
+    auto *function = new Function(node->getWord(), ValueType::Function, this->module, 0);
+    // 函数的参数数量先设置为0
+    this->curFunction = function;
+    this->module->addFunction(function);
+    curBasicBlock = genBasicBlock(node, curFunction);
     return function;
 }
 
 BasicBlock *BuildFactory::genBasicBlock(Node *node, Function *function) {
-    BasicBlock *basicBlock = new BasicBlock(node->getWord(), ValueType::BasicBlock, function);
-
+    auto *basicBlock = new BasicBlock(node->getWord(), ValueType::BasicBlock, this->curFunction);
+    this->curFunction->addBasicBlock(basicBlock);
     return basicBlock;
 }
 
-Instruction *BuildFactory::genInstruction(Node *node, BasicBlock *basicBlock, InstructionType instructionType) {
-    if (node->nodeType == NodeType::VarDef) {
-
+Instruction *BuildFactory::genInstruction(Node *node, InstructionType instructionType, bool needReg) {
+    int reg = (needReg) ? curFunction->allocReg() : -1;
+    auto *instruction = new Instruction(std::to_string(reg), ValueType::Instruction,
+                                        this->curBasicBlock, instructionType);
+    this->curBasicBlock->addInstruction(instruction);
+    return instruction;
+    if (instructionType == InstructionType::Alloca) {
+        auto *instruction = new Instruction("%" + std::to_string(curFunction->allocReg()), ValueType::Instruction,
+                                            this->curBasicBlock, InstructionType::Alloca);
+        this->curBasicBlock->addInstruction(instruction);
+        return instruction;
+    } else if (instructionType == InstructionType::Ret) {
+        auto *instruction = new Instruction(node->getWord(), ValueType::Instruction, this->curBasicBlock,
+                                            InstructionType::Ret);
+        this->curBasicBlock->addInstruction(instruction);
+        return instruction;
+    } else if (instructionType == InstructionType::Add) {
+        auto *instruction = new Instruction("%" + std::to_string(curFunction->allocReg()), ValueType::Instruction,
+                                            this->curBasicBlock, InstructionType::Add);
+        this->curBasicBlock->addInstruction(instruction);
+        return instruction;
     }
-
-
     return nullptr;
 }
+
+Const *BuildFactory::genConst(Node *node, int val) {
+    return new Const("", ValueType::Const, val);
+}
+
+GlobalVar *BuildFactory::genGlobalVar(Node *node, int val, bool isConst) {
+    auto* globalVar = new GlobalVar(node->getWord(), ValueType::Global, this->module, isConst, val);
+    this->module->addGlobalVar(globalVar);
+    return globalVar;
+}
+
+
 

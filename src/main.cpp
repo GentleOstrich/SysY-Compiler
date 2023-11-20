@@ -10,7 +10,7 @@
 #include "IR/Visitor.h"
 
 std::string INFILEPATH = "testfile.txt";
-std::string OUTFILEPATH = "output.txt";
+std::string OUTFILEPATH = "translate.txt";
 std::string ERROR_OUTFILEPATH = "error.txt";
 std::string GENERATE_CODE = "generate_code.txt";
 
@@ -18,14 +18,14 @@ std::string source;
 Parser parser;
 
 CompUnit* compUnit;
-//SymbolTable symbolTable;
-//Visitor visitor;
+Visitor visitor;
 
 
 std::ifstream ifs(INFILEPATH);
 std::ofstream ofs(OUTFILEPATH);
 std::ofstream e_ofs(ERROR_OUTFILEPATH);
 std::ofstream c_ofs(GENERATE_CODE);
+
 
 //#define ERROR_CHECK
 #ifdef ERROR_CHECK
@@ -45,7 +45,7 @@ int main() {
     if (ifs.is_open() && ofs.is_open() && e_ofs.is_open() && c_ofs.is_open()) {
         source = std::string((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
         compUnit = parser.parseCompUnit();
-//        visitor.handleCompUnit(compUnit);
+        visitor.handleCompUnit(compUnit);
 #ifdef ERROR_CHECK
         stable_sort(errors, errors + e, cmp);
         for (int i = 0; i < e; ++i) {

@@ -8,3 +8,16 @@
 
 Value::Value(std::string name, ValueType valueType) :
         name(std::move(name)), valueType(valueType) {}
+
+void Value::addUse(Use *use) {
+    this->uses.push_back(use);
+
+}
+
+void Value::translate() {
+
+}
+
+std::string Value::getName() {
+    return std::__cxx11::string();
+}

@@ -272,6 +272,7 @@ FuncDef *Parser::parseFuncDef() {
 
 MainFuncDef *Parser::parseMainFuncDef() {
     auto mainFuncDef = new MainFuncDef(NodeType::MainFuncDef, lexer.getLineNum());
+    mainFuncDef->word = "main";
     if (tkType == LexType::INTTK) {
         printTk;
         readTk;

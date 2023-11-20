@@ -9,7 +9,8 @@
 class MainFuncDef : public Node {
 public:
     MainFuncDef(NodeType nodeType, int lineNum);
-
+    std::string word;
+    std::string getWord() override;
 };
 
 

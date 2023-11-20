@@ -14,19 +14,19 @@
 class SymbolTable {
 public:
     std::stack<int> table;
-    std::vector<Value*> values;
+    std::vector<Symbol*> symbols;
     int symbolId;
     SymbolTable();
 
     void createSymbolTable();
 
-    void addSymbol(Value* symbol, int lineNum);
+    void addSymbol(Symbol* symbol, int lineNum);
 
     bool findSymbol(const std::string& word, bool isFunc, bool all);
 
     void deleteSymbolTable();
 
-    Value* getSymbol(const std::string& word, bool isFunc, bool all);
+    Symbol* getSymbol(const std::string& word, bool isFunc, bool all);
 
 };
 

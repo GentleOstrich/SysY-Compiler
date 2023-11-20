@@ -7,3 +7,13 @@
 
 BasicBlock::BasicBlock(const std::string &name, ValueType valueType, Function *function) : Value(name, valueType),
                                                                                                  function(function) {}
+
+void BasicBlock::translate() {
+    for (auto* child : instructions) {
+        child->translate();
+    }
+}
+
+void BasicBlock::addInstruction(Instruction *instruction) {
+    this->instructions.push_back(instruction);
+}

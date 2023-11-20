@@ -23,7 +23,9 @@ void SymbolTable::createSymbolTable() {
     table.push(this->symbolId);
 }
 
-void SymbolTable::addSymbol(Value* value, int lineNum) {
+void SymbolTable::addSymbol(Symbol* symbol, int lineNum) {
+    this->symbols.insert(symbols.begin()+symbolId, symbol);
+    symbolId++;
 //    if (!findSymbol(symbol->word, symbol->type == -1, false)) {
 //        symbols.insert(symbols.begin() + symbolId, symbol);
 //        symbolId++;
@@ -36,6 +38,13 @@ void SymbolTable::addSymbol(Value* value, int lineNum) {
 
 
 bool SymbolTable::findSymbol(const std::string& word, bool isFunc, bool all) {
+    int end=(all)?0:table.top();
+    for (int i = this->symbolId-1;i>=end;--i) {
+        if (symbols[i]->word == word && ((isFunc && symbols[i]->value->valueType == ValueType::Function) ||
+                (!isFunc && symbols[i]->value->valueType != ValueType::Function))) {
+            return true;
+        }
+    }
 //    int end = (all) ? 0 : table.top();
 //    for (int i = this->symbolId - 1; i >= end; --i) {
 //        if (symbols[i]->word == word && ((isFunc && symbols[i]->type == -1) || (!isFunc && symbols[i]->type != -1))) {
@@ -51,15 +60,16 @@ void SymbolTable::deleteSymbolTable() {
 }
 
 SymbolTable::SymbolTable() {
-    this->table.push(0);
+    symbolId=0;
 }
 
-Value* SymbolTable::getSymbol(const std::string& word, bool isFunc, bool all) {
-//    int end = (all) ? 0 : table.top();
-//    for (int i = this->symbolId - 1; i >= end; --i) {
-//        if (symbols[i]->word == word && ((isFunc && symbols[i]->type == -1) || (!isFunc && symbols[i]->type != -1))) {
-//            return symbols[i];
-//        }
-//    }
+Symbol* SymbolTable::getSymbol(const std::string& word, bool isFunc, bool all) {
+    int end = (all) ? 0 : table.top();
+    for (int i = this->symbolId - 1; i >= end; --i) {
+        if (symbols[i]->word == word && ((isFunc && symbols[i]->value->valueType == ValueType::Function) ||
+                (!isFunc && symbols[i]->value->valueType != ValueType::Function))) {
+            return symbols[i];
+        }
+    }
     return nullptr;
 }

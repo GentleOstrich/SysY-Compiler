@@ -11,38 +11,42 @@
 #include "SymbolManager/SymbolTable.h"
 #include "BuildFactory.h"
 
-BuildFactory* buildFactory;
-
 using namespace std;
 extern CompUnit *compUnit;
 
 class Visitor {
 public:
+    SymbolTable *symbolTable;
+
+    BuildFactory *buildFactory;
+
+    Visitor();
+
     void handleCompUnit(Node *compUnit);
 
-    void handleVarDef(Node *varDef);
+    void handleVarDef(Node *varDef, bool isGlobal);
 
-    void handleConstDef(Node *constDef);
+    void handleConstDef(Node *constDef, bool isGlobal);
 
     void handleFuncDef(Node *funcDef);
 
     void handleFuncFParam(Node *funcFParam);
 
-    void handleDecl(Node *funcFParam);
+    void handleDecl(Node *funcFParam, bool isConst);
 
     void handleMainFuncDef(Node *mainFuncFParam);
 
-    void handleConstDecl(Node *constDecl);
+    void handleConstDecl(Node *constDecl, bool isGlobal);
 
-    void handleVarDecl(Node *varDecl);
+    void handleVarDecl(Node *varDecl, bool isGlobal);
 
     void handleBType(Node *BType);
 
-    void handleConstInitVal(Node *constInitVal);
+    int handleConstInitVal(Node *constInitVal, Value **constInitInstruction);
 
-    void handleInitVal(Node *initVal);
+    int handleInitVal(Node *initVal, Value **initValInstruction);
 
-    void handleFuncFParams(Node *funcFParams);
+    int handleFuncFParams(Node *funcFParams);
 
     void handleFuncType(Node *funcType);
 
@@ -54,25 +58,25 @@ public:
 
     void handleForStmt(Node *forStmt);
 
-    void handleExp(Node *exp);
+    int handleExp(Node *exp, Value **expInstruction);
 
     void handleCond(Node *cond);
 
-    void handleLVal(Node *lVal);
+    int handleLVal(Node *lVal, Value**LValInstucrion);
 
-    void handlePrimaryExp(Node *primaryExp);
+    int handlePrimaryExp(Node *primaryExp, Value **primaryInstruction);
 
     void handleNumber(Node *number);
 
-    void handleUnaryExp(Node *unaryExp);
+    int handleUnaryExp(Node *unaryExp, Value **unaryInstruction);
 
-    void handleUnaryOp(Node *unaryOp);
+    int handleUnaryOp(Node *unaryOp);
 
     void handleFuncRParams(Node *funcRParams);
 
-    void handleMulExp(Node *mulExp);
+    int handleMulExp(Node *mulExp, Value **mulInstruction);
 
-    void handleAddExp(Node *addExp);
+    int handleAddExp(Node *addExp, Value **addInstruction);
 
     void handleRelExp(Node *relExp);
 
@@ -82,7 +86,7 @@ public:
 
     void handleLOrExp(Node *lOrExp);
 
-    void handleConstExp(Node *constExp);
+    int handleConstExp(Node *constExp, Value **constExpInstruction);
 };
 
 #endif // SYSY_COMPILER_VISITOR_H
