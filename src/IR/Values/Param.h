@@ -12,6 +12,8 @@ public:
     int pos;
 
     Param(const std::string &name, ValueType valueType, int pos);
+
+    std::string getName() override ;
 };
 
 

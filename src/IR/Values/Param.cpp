@@ -5,3 +5,7 @@
 #include "Param.h"
 
 Param::Param(const std::string &name, ValueType valueType, int pos) : Value(name, valueType), pos(pos) {}
+
+std::string Param::getName() {
+    return "%" + this->name;
+}

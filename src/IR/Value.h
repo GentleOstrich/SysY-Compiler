@@ -16,6 +16,7 @@ public:
     ValueType valueType;
     //int valNumber = -1;
     std::vector<Use*> uses;
+    int ty = 32;
     Value(std::string name, ValueType valueType);
 
     void addUse(Use* use);

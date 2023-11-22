@@ -6,10 +6,10 @@
 #define SYSY_COMPILER_GLOBALVAR_H
 
 
-#include "../Value.h"
+#include "../User.h"
 class Module;
 
-class GlobalVar : public Value {
+class GlobalVar : public User {
 public:
     Module* module;
 

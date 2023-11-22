@@ -6,6 +6,8 @@
 
 BuildFactory::BuildFactory() {
     this->module = new Module();
+    this->curBasicBlock = nullptr;
+    this->curBasicBlock = nullptr;
 }
 
 Module *BuildFactory::genIRModule() {
@@ -17,13 +19,16 @@ Function *BuildFactory::genFunction(Node *node) {
     // 函数的参数数量先设置为0
     this->curFunction = function;
     this->module->addFunction(function);
-    curBasicBlock = genBasicBlock(node, curFunction);
+    this->curBasicBlock = nullptr;
     return function;
 }
 
-BasicBlock *BuildFactory::genBasicBlock(Node *node, Function *function) {
-    auto *basicBlock = new BasicBlock(node->getWord(), ValueType::BasicBlock, this->curFunction);
+BasicBlock *BuildFactory::genBasicBlock(Node *node) {
+    int reg = curFunction->allocReg();
+    auto *basicBlock = new BasicBlock(std::to_string(reg), ValueType::BasicBlock, this->curFunction);
+    basicBlock->function = curFunction;
     this->curFunction->addBasicBlock(basicBlock);
+    this->curBasicBlock = basicBlock;
     return basicBlock;
 }
 
@@ -59,7 +64,24 @@ Const *BuildFactory::genConst(Node *node, int val) {
 GlobalVar *BuildFactory::genGlobalVar(Node *node, int val, bool isConst) {
     auto* globalVar = new GlobalVar(node->getWord(), ValueType::Global, this->module, isConst, val);
     this->module->addGlobalVar(globalVar);
+    this->curBasicBlock= nullptr;
     return globalVar;
+}
+
+Function *BuildFactory::genFunction(std::string name, int paraNum) {
+    // 为了建立库函数
+    auto *function = new Function(name, ValueType::Function, this->module, paraNum);
+    // 函数的参数数量先设置为0
+    //this->curFunction = function;
+    this->module->addFunction(function);
+    //curBasicBlock = genBasicBlock(node, curFunction);
+    return function;
+}
+
+Param *BuildFactory::genParam(Node *node) {
+    auto* param = new Param(std::to_string(curFunction->allocReg()), ValueType ::Param,curFunction->paramPos());
+    curFunction->addParam(param);
+    return param;
 }
 
 

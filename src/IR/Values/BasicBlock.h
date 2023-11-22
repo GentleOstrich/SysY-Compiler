@@ -20,6 +20,8 @@ public:
 
     void translate() override;
 
+    std::string getName() override ;
+
 
 };
 

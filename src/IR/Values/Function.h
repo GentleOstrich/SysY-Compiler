@@ -5,21 +5,28 @@
 #ifndef SYSY_COMPILER_FUNCTION_H
 #define SYSY_COMPILER_FUNCTION_H
 
-#include "../Value.h"
+#include "../User.h"
 class BasicBlock;
 class Module;
+class Param;
 
-class Function : public Value {
+class Function : public User {
 public:
     Module* module;
     std::vector<BasicBlock*> basicBlocks;
-    int cnt; // 参数的数量
-    int r = 1; // 临时寄存器号
+    std::vector<Param*> params;
+    int cnt = 0; // 参数的数量
+    int r = 0; // 临时寄存器号
+    int ret = 0; // 0 void 1 int
     Function(const std::string &name, ValueType valueType, Module *module, int cnt);
 
     void addBasicBlock(BasicBlock* basicBlock);
+    void addParam(Param* param);
     int allocReg();
+    int paramPos();
     void translate() override;
+    std::string getName() override;
+
 };
 
 

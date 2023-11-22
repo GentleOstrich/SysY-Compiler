@@ -30,7 +30,7 @@ public:
 
     void handleFuncDef(Node *funcDef);
 
-    void handleFuncFParam(Node *funcFParam);
+    void handleFuncFParam(Node *funcFParam, Value **param);
 
     void handleDecl(Node *funcFParam, bool isConst);
 
@@ -48,7 +48,7 @@ public:
 
     int handleFuncFParams(Node *funcFParams);
 
-    void handleFuncType(Node *funcType);
+    int handleFuncType(Node *funcType);
 
     void handleBlock(Node *block);
 
@@ -60,9 +60,9 @@ public:
 
     int handleExp(Node *exp, Value **expInstruction);
 
-    void handleCond(Node *cond);
+    Instruction *handleCond(Node *cond, Value **c);
 
-    int handleLVal(Node *lVal, Value**LValInstucrion);
+    int handleLVal(Node *lVal, Value **LValInstucrion);
 
     int handlePrimaryExp(Node *primaryExp, Value **primaryInstruction);
 
@@ -72,19 +72,19 @@ public:
 
     int handleUnaryOp(Node *unaryOp);
 
-    void handleFuncRParams(Node *funcRParams);
+    void handleFuncRParams(Node *funcRParams, Value **callInstruction);
 
     int handleMulExp(Node *mulExp, Value **mulInstruction);
 
     int handleAddExp(Node *addExp, Value **addInstruction);
 
-    void handleRelExp(Node *relExp);
+    void handleRelExp(Node *relExp, Value **rel);
 
-    void handleEqExp(Node *eqExp);
+    Instruction *handleEqExp(Node *eqExp, Value **eq); // 返回生成的br指令
 
-    void handleLAndExp(Node *lAndExp);
+    Instruction *handleLAndExp(Node *lAndExp);
 
-    void handleLOrExp(Node *lOrExp);
+    Instruction *handleLOrExp(Node *lOrExp);
 
     int handleConstExp(Node *constExp, Value **constExpInstruction);
 };

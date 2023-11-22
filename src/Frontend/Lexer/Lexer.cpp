@@ -128,15 +128,15 @@ int Lexer::next() {
         }
         word += source[curPos];
         curPos++;
+#ifdef ERROR_CHECK
         for (int i = 1; i < word.length()-1; ++i) {
             char c = word[i];
-#ifdef ERROR_CHECK
             if (!((c == '%' && word[i+1] == 'd') || c == 32 || c == 33 || (c >= 40 && c <= 126)) || (c == 92 && word[i+1] != 'n') ) {
                 printError(this->lineNum, "a", c);
                 break;
             }
-#endif
         }
+#endif
         lexType = LexType::STRCON;
         return 0;
     }

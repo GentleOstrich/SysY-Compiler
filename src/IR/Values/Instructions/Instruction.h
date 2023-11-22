@@ -11,6 +11,7 @@ class BasicBlock;
 class Instruction : public User {
 public:
     BasicBlock* basicBlock;
+
     InstructionType instructionType;
 
     Instruction(const std::string &name, ValueType valueType, BasicBlock *basicBlock, InstructionType instructionType);

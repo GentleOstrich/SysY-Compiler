@@ -752,6 +752,7 @@ MulExp *Parser::parseMulExp() {
         printTk;
         readTk;
         temp->addChild(std::move(mulExp));
+        temp->op = mulExp->getOp();
         temp->addChild(parseUnaryExp());
         mulExp = temp;
     }
@@ -773,6 +774,7 @@ AddExp *Parser::parseAddExp() {
         printTk;
         readTk;
         temp->addChild(std::move(addExp));
+        temp->op = addExp->getOp();
         temp->addChild(parseMulExp());
         addExp = temp;
     }
@@ -806,6 +808,7 @@ RelExp *Parser::parseRelExp() {
         printTk;
         readTk;
         temp->addChild(std::move(relExp));
+        temp->op = relExp->getOp();
         temp->addChild(parseAddExp());
         relExp = temp;
     }
@@ -832,6 +835,7 @@ EqExp *Parser::parseEqExp() {
         printTk;
         readTk;
         temp->addChild(std::move(eqExp));
+        temp->op = eqExp->getOp();
         temp->addChild(parseRelExp());
         eqExp = temp;
     }

@@ -16,6 +16,7 @@ enum class ValueType {
     Instruction,
     BasicBlock,
     Const,
-    Global
+    Global,
+    Param
 };
 #endif //SYSY_COMPILER_VALUETYPE_H
