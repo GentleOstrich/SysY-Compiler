@@ -8,7 +8,7 @@
 
 class UnaryOp : public Node {
 public:
-    int type = 0; // 0-+ 1-- 1-!
+    int type = 0; // 0-+ 1-- 2-!
     UnaryOp(NodeType nodeType, int lineNum);
     int getType() override;
 

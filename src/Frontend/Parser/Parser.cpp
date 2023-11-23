@@ -752,7 +752,7 @@ MulExp *Parser::parseMulExp() {
         printTk;
         readTk;
         temp->addChild(std::move(mulExp));
-        temp->op = mulExp->getOp();
+        //temp->op = mulExp->getOp();
         temp->addChild(parseUnaryExp());
         mulExp = temp;
     }
@@ -774,7 +774,7 @@ AddExp *Parser::parseAddExp() {
         printTk;
         readTk;
         temp->addChild(std::move(addExp));
-        temp->op = addExp->getOp();
+        //temp->op = addExp->getOp();
         temp->addChild(parseMulExp());
         addExp = temp;
     }
