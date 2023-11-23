@@ -80,7 +80,7 @@ public:
 
     void handleRelExp(Node *relExp, Value **rel);
 
-    Instruction *handleEqExp(Node *eqExp, Value **eq); // 返回生成的br指令
+    Instruction *handleEqExp(Node *eqExp, Value **eq, bool isBr); // 返回生成的br指令
 
     Instruction *handleLAndExp(Node *lAndExp);
 

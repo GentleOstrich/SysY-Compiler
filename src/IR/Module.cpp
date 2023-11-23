@@ -25,6 +25,7 @@ void Module::output() {
     if (!globalVars.empty()) {
         c_ofs << std::endl;
     }
+
     functions[functions.size()-1]->translate();
 }
 

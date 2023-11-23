@@ -25,15 +25,16 @@ void Function::translate() {
         if (!this->params.empty()) {
             std::string code;
             for (auto *child:this->params) {
-                code += std::to_string(child->ty) + " " + child->getName() + " ";
+                code += "i" + std::to_string(child->ty) + " " + child->getName() + ", ";
             }
+            code = code.substr(0,code.size()-2);
             c_ofs << code;
         }
         c_ofs << ")";
         if (!this->basicBlocks.empty()) {
-            c_ofs << "{" << std::endl;
+            c_ofs << " {" << std::endl;
             for (int i = 0; i < basicBlocks.size(); ++i) {
-                if (basicBlocks.size() > 1 && basicBlocks[i]->getName() != "%0") {
+                if (i > 0) {
                     c_ofs << basicBlocks[i]->getName().substr(1, basicBlocks[i]->getName().length()) << ":" << std::endl;
                 }
                 basicBlocks[i]->translate();

@@ -10,9 +10,9 @@ extern std::ofstream c_ofs;
 
 void GlobalVar::translate() {
     if (this->isConst) {
-        c_ofs << this->getName() << " = dso_local constant " << std::to_string(this->val) << std::endl;
+        c_ofs << this->getName() << " = dso_local constant " << "i" << std::to_string(this->ty)  << " " << std::to_string(this->val) << std::endl;
     } else {
-        c_ofs << this->getName()<< " = dso_local global " << std::to_string(this->val) << std::endl;
+        c_ofs << this->getName()<< " = dso_local global " << "i" << std::to_string(this->ty) <<  " " << std::to_string(this->val) << std::endl;
     }
 }
 

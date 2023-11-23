@@ -169,7 +169,8 @@ void Visitor::handleDecl(Node *Decl, bool isGlobal) {
 }
 
 void Visitor::handleMainFuncDef(Node *mainFuncFParam) {
-    buildFactory->genFunction(mainFuncFParam);
+    auto *f = buildFactory->genFunction(mainFuncFParam);
+    f->ret = 1;
     for (auto *child : mainFuncFParam->children) {
         symbolTable->createSymbolTable();
         buildFactory->genBasicBlock(child);
@@ -327,7 +328,7 @@ int Visitor::handlePrimaryExp(Node *primaryExp, Value **primaryInstruction) {
 void Visitor::handleNumber(Node *number) {
 
 }
-
+int NOT = -1;
 int Visitor::handleUnaryExp(Node *unaryExp, Value **unaryInstruction) {
     // 无需产生指令
     if (unaryInstruction == nullptr) { // 就想要这个数
@@ -335,8 +336,11 @@ int Visitor::handleUnaryExp(Node *unaryExp, Value **unaryInstruction) {
             return handlePrimaryExp(unaryExp->children[0], nullptr);
         } else if (unaryExp->children[0]->nodeType == NodeType::UnaryOp) {
             int sign = 1;
-            if (handleUnaryOp(unaryExp->children[0])) {
+            int op = handleUnaryOp(unaryExp->children[0]);
+            if ( op == 1) {
                 sign *= -1;
+            } else if (op == 2) {
+                NOT *= -1;
             }
             return sign * handleUnaryExp(unaryExp->children[1], nullptr);
         }
@@ -355,7 +359,8 @@ int Visitor::handleUnaryExp(Node *unaryExp, Value **unaryInstruction) {
             handlePrimaryExp(unaryExp->children[0], &primaryInstruction);
             *unaryInstruction = primaryInstruction;
         } else if (unaryExp->children[0]->nodeType == NodeType::UnaryOp) {
-            if (handleUnaryOp(unaryExp->children[0])) {
+            int op = handleUnaryOp(unaryExp->children[0]);
+            if (op == 1) {
                 auto *c = new Const("", ValueType::Const, 0);
 
                 Value *right;
@@ -373,7 +378,9 @@ int Visitor::handleUnaryExp(Node *unaryExp, Value **unaryInstruction) {
 
                 *unaryInstruction = subInstruction;
             } else {
-                // 这里是为什么来着
+                // 这里是为什么来着:
+                // + - !
+                if (op == 2) NOT *= -1;
                 handleUnaryExp(unaryExp->children[1], unaryInstruction);
             }
         } else {
@@ -442,14 +449,42 @@ int Visitor::handleMulExp(Node *mulExp, Value **mulInstruction) {
                                           (mulExp->getOp() == 1) ? InstructionType::Div :
                                           InstructionType::Mod;
 
-        *mulInstruction = buildFactory->genInstruction(mulExp, instructionType, true);
-        auto *use0 = new Use(leftMulInstruction, (User *) *mulInstruction, 0);//第一个数
-        auto *use1 = new Use(rightUnaryInstruction, (User *) *mulInstruction, 1);
+        if (instructionType == InstructionType::Mod) {
+            // 先除再乘再减
+            auto *instruction1 = buildFactory->genInstruction(mulExp, InstructionType::Div, true);
+            auto *use0 = new Use(leftMulInstruction, instruction1, 0);//第一个数
+            auto *use1 = new Use(rightUnaryInstruction, instruction1, 1);
 
-        leftMulInstruction->addUse(use0);
-        ((Instruction *) (*mulInstruction))->addOperand(use0);
-        rightUnaryInstruction->addUse(use1);
-        ((Instruction *) (*mulInstruction))->addOperand(use1);
+            leftMulInstruction->addUse(use0);
+            instruction1->addOperand(use0);
+            rightUnaryInstruction->addUse(use1);
+            instruction1->addOperand(use1);
+
+            auto *instruction2 = buildFactory->genInstruction(mulExp, InstructionType::Mul, true);
+            auto *use00 = new Use(rightUnaryInstruction, instruction2, 0);//第一个数
+            rightUnaryInstruction->addUse(use00); instruction2->addOperand(use00);
+            auto *use10 = new Use(instruction1, instruction2, 1);
+            instruction1->addUse(use10); instruction2->addOperand(use10);
+
+            auto *instruction3 = buildFactory->genInstruction(mulExp, InstructionType::Sub, true);
+            auto *use000 = new Use(leftMulInstruction, instruction3, 0);//第一个数
+            leftMulInstruction->addUse(use000); instruction3->addOperand(use000);
+            auto *use100 = new Use(instruction2, instruction3, 1);
+            instruction2->addUse(use100); instruction3->addOperand(use100);
+
+
+            *mulInstruction = instruction3;
+
+        } else {
+            *mulInstruction = buildFactory->genInstruction(mulExp, instructionType, true);
+            auto *use0 = new Use(leftMulInstruction, (User *) *mulInstruction, 0);//第一个数
+            auto *use1 = new Use(rightUnaryInstruction, (User *) *mulInstruction, 1);
+
+            leftMulInstruction->addUse(use0);
+            ((Instruction *) (*mulInstruction))->addOperand(use0);
+            rightUnaryInstruction->addUse(use1);
+            ((Instruction *) (*mulInstruction))->addOperand(use1);
+        }
 
     }
     return -114514;
@@ -520,6 +555,18 @@ void Visitor::handleStmt(Node *stmt) {
                 ((User *) call)->addOperand(use_);
                 j++;
                 i++;
+            } else if (str[i] == '\\' && str[i + 1] == 'n') {
+                auto *Const = buildFactory->genConst(stmt, (int) '\n');
+                auto *call = buildFactory->genInstruction(stmt, InstructionType::Call, false);
+                auto *putch = symbolTable->getSymbol("putch", true, true)->value;
+                auto *use = new Use(putch, call, 0);
+                putch->addUse(use);
+                call->addOperand(use);
+                auto *use_ = new Use(Const, ((User *) call), 0);
+                Const->addUse(use_);
+                ((User *) call)->addOperand(use_);
+                j++;
+                i++;
             } else {
                 auto *Const = buildFactory->genConst(stmt, (int) str[i]);
                 auto *call = buildFactory->genInstruction(stmt, InstructionType::Call, false);
@@ -533,37 +580,39 @@ void Visitor::handleStmt(Node *stmt) {
             }
         }
     } else if (stmt->getType() == 0) {
-        if (stmt->children[0]->getNodeType() == NodeType::Block) { // 是 block
-            symbolTable->createSymbolTable();
-            handleBlock(stmt->children[0]);
-        } else if (stmt->children[0]->getNodeType() == NodeType::LVal) {
-            // LVal = Exp
-            Value *lValInstruction = nullptr;
-            handleLVal(stmt->children[0], &lValInstruction);
-            // 得到的其实是一个 load 指令 他的operand才是alloc
-            // 生成一个store指令
-            if (lValInstruction->valueType == ValueType::Instruction) {
-                Value *allocInstruction = ((Instruction *) lValInstruction)->operands[0]->value;
+        if (!stmt->children.empty()) {
+            if (stmt->children[0]->getNodeType() == NodeType::Block) { // 是 block
+                symbolTable->createSymbolTable();
+                handleBlock(stmt->children[0]);
+            } else if (stmt->children[0]->getNodeType() == NodeType::LVal) {
+                // LVal = Exp
+                Value *lValInstruction = nullptr;
+                handleLVal(stmt->children[0], &lValInstruction);
+                // 得到的其实是一个 load 指令 他的operand才是alloc
+                // 生成一个store指令
+                if (lValInstruction->valueType == ValueType::Instruction) {
+                    Value *allocInstruction = ((Instruction *) lValInstruction)->operands[0]->value;
 
-                Value *expInstruction = nullptr;
-                handleExp(stmt->children[1], &expInstruction);
+                    Value *expInstruction = nullptr;
+                    handleExp(stmt->children[1], &expInstruction);
 
-                Instruction *storeInstruction = buildFactory->genInstruction(stmt, InstructionType::Store, false);
-                // 添加use
-                Use *use1 = new Use(expInstruction, storeInstruction, 0);
-                expInstruction->addUse(use1);
-                storeInstruction->addOperand(use1);
-                Use *use0 = new Use(allocInstruction, storeInstruction, 1);
-                allocInstruction->addUse(use0);
-                storeInstruction->addOperand(use0);
+                    Instruction *storeInstruction = buildFactory->genInstruction(stmt, InstructionType::Store, false);
+                    // 添加use
+                    Use *use1 = new Use(expInstruction, storeInstruction, 0);
+                    expInstruction->addUse(use1);
+                    storeInstruction->addOperand(use1);
+                    Use *use0 = new Use(allocInstruction, storeInstruction, 1);
+                    allocInstruction->addUse(use0);
+                    storeInstruction->addOperand(use0);
+                }
+            } else {
+                if (!stmt->children.empty()) {
+                    Value *value;
+                    handleExp(stmt->children[0], &value);
+                }
+                // Ex\
+
             }
-        } else {
-            if (!stmt->children.empty()) {
-                Value *value;
-                handleExp(stmt->children[0], &value);
-            }
-            // Ex\
-
         }
     } else if (stmt->getType() == 1) {
         // if
@@ -653,7 +702,7 @@ Instruction *Visitor::handleLAndExp(Node *lAndExp) {
     if (lAndExp->children.size() == 1) {
         Value *v = nullptr;
         // 产生新的基本块
-        br = handleEqExp(lAndExp->children[0], &v);
+        br = handleEqExp(lAndExp->children[0], &v, true);
     } else {
         Value *br1 = handleLAndExp(lAndExp->children[0]);
         // 产生新的基本块
@@ -664,17 +713,18 @@ Instruction *Visitor::handleLAndExp(Node *lAndExp) {
         ((Instruction *) br1)->addOperand(use);
 
         Value *v = nullptr;
-        br = handleEqExp(lAndExp->children[1], &v);
+        br = handleEqExp(lAndExp->children[1], &v, true);
     }
     brs_.push_back(br);
     return br;
 }
 
 
-Instruction *Visitor::handleEqExp(Node *eqExp, Value **eq) {
+Instruction *Visitor::handleEqExp(Node *eqExp, Value **eq, bool isBr) {
     if (eqExp->children.size() == 1) {
         Value *rel = nullptr;
         //先不产生add指令
+        NOT = -1;
         handleRelExp(eqExp->children[0], &rel);
         if (rel->ty != 32) {
             auto *zext = buildFactory->genInstruction(nullptr, InstructionType::Zext, true);
@@ -684,20 +734,22 @@ Instruction *Visitor::handleEqExp(Node *eqExp, Value **eq) {
             rel = zext;
         }
         *eq = rel;
-        auto *ne = buildFactory->genInstruction(nullptr, InstructionType::Ne, true);
-        auto *Const = buildFactory->genConst(nullptr, 0);
-        auto *use0 = new Use(Const, ne, 0);
-        Const->addUse(use0);
-        ne->addOperand(use0);
-        auto *use1 = new Use((*eq), ne, 1);
-        (*eq)->addUse(use1);
-        ne->addOperand(use1);
-        *eq = ne;
-
+        if (isBr) {
+            InstructionType instructionType = (NOT == -1) ? InstructionType::Ne : InstructionType::Eq;
+            auto *ne = buildFactory->genInstruction(nullptr, instructionType, true);
+            auto *Const = buildFactory->genConst(nullptr, 0);
+            auto *use0 = new Use(Const, ne, 0);
+            Const->addUse(use0);
+            ne->addOperand(use0);
+            auto *use1 = new Use((*eq), ne, 1);
+            (*eq)->addUse(use1);
+            ne->addOperand(use1);
+            *eq = ne;
+        }
     } else if (eqExp->children.size() > 1) {
         Value *leftEq = nullptr;
         Value *righRel = nullptr;
-        handleEqExp(eqExp->children[0], &leftEq);
+        handleEqExp(eqExp->children[0], &leftEq, false);
         handleRelExp(eqExp->children[1], &righRel);
 
         InstructionType instructionType = (eqExp->getOp() == 0) ? InstructionType::Eq : InstructionType::Ne;
@@ -729,14 +781,19 @@ Instruction *Visitor::handleEqExp(Node *eqExp, Value **eq) {
         ((Instruction *) (*eq))->addOperand(use1);
     }
     // 这里才是最小的，产生新的br指令,并与使用*eq
-    auto *br = buildFactory->genInstruction(nullptr, InstructionType::Br, false);
-    auto *use = new Use(*eq, br, 0);
-    (*eq)->addUse(use);
-    br->addOperand(use);
-    // 此时的br还不知道自己要跳到哪里，但回到handleAnd中将会知道label1，即成立时要跳到哪里
-    brs.push_back(br);
-    // 先将它们装进一个向量里，回到handleOr中将会知道label2，即不成立时会跳到哪里
-    return br;
+    if (isBr) {
+        auto *br = buildFactory->genInstruction(nullptr, InstructionType::Br, false);
+        auto *use = new Use(*eq, br, 0);
+        (*eq)->addUse(use);
+        br->addOperand(use);
+        // 此时的br还不知道自己要跳到哪里，但回到handleAnd中将会知道label1，即成立时要跳到哪里
+        brs.push_back(br);
+        // 先将它们装进一个向量里，回到handleOr中将会知道label2，即不成立时会跳到哪里
+        return br;
+    } else {
+        return nullptr;
+    }
+
 }
 
 void Visitor::handleRelExp(Node *relExp, Value **rel) {
@@ -836,13 +893,13 @@ Visitor::Visitor() {
     this->buildFactory = new BuildFactory();
     this->symbolTable = new SymbolTable();
     auto *getint = buildFactory->genFunction("getint", 0);
-    getint->ret=1;
+    getint->ret = 1;
     auto *putint = buildFactory->genFunction("putint", 1);
-    putint->ret=0;
+    putint->ret = 0;
     auto *putch = buildFactory->genFunction("putch", 1);
-    putch->ret=0;
+    putch->ret = 0;
     auto *putstr = buildFactory->genFunction("putstr", 1);
-    putstr->ret=0;
+    putstr->ret = 0;
     auto *symbol0 = new Symbol("getint", getint);
     auto *symbol1 = new Symbol("putint", putint);
     auto *symbol2 = new Symbol("putch", putch);

@@ -29,7 +29,7 @@ void Instruction::translate() {
         } else {
             for (auto *child : operands) {
                 Value *value = child->value;
-                code += "i" + std::to_string(value->ty) + " " + value->getName() + " ";
+                code +=  "i" + std::to_string(value->ty) + " " + value->getName() + " ";
             }
         }
         c_ofs << code << std::endl;
@@ -55,7 +55,7 @@ void Instruction::translate() {
         }
         c_ofs << code.substr(0, code.size() - 2) << std::endl;
     } else if (instructionType == InstructionType::Div) {
-        code += this->getName() + " = div " + "i" + std::to_string(this->ty) + " ";
+        code += this->getName() + " = sdiv " + "i" + std::to_string(this->ty) + " ";
         for (auto *child : operands) {
             Value *value = child->value;
             code += value->getName() + ", ";
@@ -105,12 +105,12 @@ void Instruction::translate() {
         }
         c_ofs << code.substr(0, code.size() - 2) << std::endl;
     } else if (instructionType == InstructionType::Alloca) {
-        code += this->getName() + " = alloc " + "i" + std::to_string(this->ty);
+        code += this->getName() + " = alloca " + "i" + std::to_string(this->ty);
         c_ofs << code << std::endl;
     } else if (instructionType == InstructionType::Store) {
         code += "store i" + std::to_string(this->ty) + " ";
         code += this->operands[0]->value->getName() + ", ";
-        code += std::to_string(this->ty) + "* " + this->operands[1]->value->getName();
+        code += "i" + std::to_string(this->ty) + "* " + this->operands[1]->value->getName();
         c_ofs << code << std::endl;
     } else if (instructionType == InstructionType::Load) {
         code += this->getName() + " = load " + "i" + std::to_string(this->ty) + ", ";
@@ -155,7 +155,7 @@ void Instruction::translate() {
 
             code += "br i" + std::to_string(this->operands[0]->value->ty) + " " +
                     this->operands[0]->value->getName() +
-                    " label " + label1 + " label " + label2;
+                    ", label " + label1 + ", label " + label2;
         }
         c_ofs << code << std::endl;
     } else if (instructionType == InstructionType::Zext) {
