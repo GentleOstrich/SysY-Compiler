@@ -29,7 +29,7 @@ void Instruction::translate() {
         } else {
             for (auto *child : operands) {
                 Value *value = child->value;
-                code += value->getName() + " ";
+                code += "i" + std::to_string(value->ty) + " " + value->getName() + " ";
             }
         }
         c_ofs << code << std::endl;

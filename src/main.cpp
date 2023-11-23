@@ -12,7 +12,7 @@
 std::string INFILEPATH = "testfile.txt";
 std::string OUTFILEPATH = "translate.txt";
 std::string ERROR_OUTFILEPATH = "error.txt";
-std::string GENERATE_CODE = "generate_code.txt";
+std::string GENERATE_CODE = "llvm_ir.txt";
 
 std::string source;
 Parser parser;

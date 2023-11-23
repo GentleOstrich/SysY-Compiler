@@ -19,5 +19,5 @@ void Value::translate() {
 }
 
 std::string Value::getName() {
-    return std::__cxx11::string();
+    return "";
 }
