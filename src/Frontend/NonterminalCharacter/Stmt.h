@@ -14,6 +14,9 @@ class Stmt : public Node {
 public:
     int type = 0; // 0 normal 1-if 2-for 3-break 4-continue 5-return 6-getint 7-printf
     std::string str = "";
+    Node* forStmt1 = nullptr;
+    Node* forStmt2 = nullptr;
+    Node* cond = nullptr;
     Stmt(NodeType nodeType, int lineNum);
     int getType() override;
     // void setStr(std::string str);

@@ -425,19 +425,25 @@ Stmt *Parser::parseStmt() {
             printTk;
             readTk;
             if (tkType != LexType::SEMICN) {
-                stmt->addChild(parseForStmt());
+                Node* forStmt = parseForStmt();
+                //stmt->addChild(forStmt);
+                stmt->forStmt1 = forStmt;
             }
             if (tkType == LexType::SEMICN) {
                 printTk;
                 readTk;
                 if (tkType != LexType::SEMICN) {
-                    stmt->addChild(parseCond());
+                    Node* cond = parseCond();
+                    //stmt->addChild(cond);
+                    stmt->cond = cond;
                 }
                 if (tkType == LexType::SEMICN) {
                     printTk;
                     readTk;
                     if (tkType != LexType::RPARENT) {
-                        stmt->addChild(parseForStmt());
+                        Node* forStmt = parseForStmt();
+                        //stmt->addChild(forStmt);
+                        stmt->forStmt2 = forStmt;
                     }
                     if (tkType == LexType::RPARENT) {
                         printTk;
@@ -633,7 +639,6 @@ LVal *Parser::parseLVal() {
             }
         }
     }
-    /////
     ofs << "<LVal>" << std::endl;
     return lVal;
 }
@@ -662,7 +667,6 @@ PrimaryExp *Parser::parsePrimaryExp() {
 Number *Parser::parseNumber() {
     auto number = new Number(NodeType::Number, lexer.getLineNum());
     if (tkType == LexType::INTCON) {
-        // TODO
         number->val = lexer.getNumber();
         printTk;
         readTk;
@@ -751,8 +755,7 @@ MulExp *Parser::parseMulExp() {
         ofs << "<MulExp>" << std::endl;
         printTk;
         readTk;
-        temp->addChild(std::move(mulExp));
-        //temp->op = mulExp->getOp();
+        temp->addChild(mulExp);
         temp->addChild(parseUnaryExp());
         mulExp = temp;
     }
@@ -773,8 +776,7 @@ AddExp *Parser::parseAddExp() {
         ofs << "<AddExp>" << std::endl;
         printTk;
         readTk;
-        temp->addChild(std::move(addExp));
-        //temp->op = addExp->getOp();
+        temp->addChild(addExp);
         temp->addChild(parseMulExp());
         addExp = temp;
     }
@@ -790,16 +792,16 @@ RelExp *Parser::parseRelExp() {
         auto temp = new RelExp(NodeType::RelExp, lexer.getLineNum());
         switch (tkType) {
             case LexType::GRE:
-                relExp->op = 0;
+                temp->op = 0;
                 break;
             case LexType::GEQ:
-                relExp->op = 1;
+                temp->op = 1;
                 break;
             case LexType::LSS:
-                relExp->op = 2;
+                temp->op = 2;
                 break;
             case LexType::LEQ:
-                relExp->op = 3;
+                temp->op = 3;
                 break;
             default:
                 break;
@@ -807,8 +809,7 @@ RelExp *Parser::parseRelExp() {
         ofs << "<RelExp>" << std::endl;
         printTk;
         readTk;
-        temp->addChild(std::move(relExp));
-        temp->op = relExp->getOp();
+        temp->addChild(relExp);
         temp->addChild(parseAddExp());
         relExp = temp;
     }
@@ -823,10 +824,10 @@ EqExp *Parser::parseEqExp() {
         auto temp = new EqExp(NodeType::EqExp, lexer.getLineNum());
         switch (tkType) {
             case LexType::EQL:
-                eqExp->op = 0;
+                temp->op = 0;
                 break;
             case LexType::NEQ:
-                eqExp->op = 1;
+                temp->op = 1;
                 break;
             default:
                 break;
@@ -834,8 +835,7 @@ EqExp *Parser::parseEqExp() {
         ofs << "<EqExp>" << std::endl;
         printTk;
         readTk;
-        temp->addChild(std::move(eqExp));
-        temp->op = eqExp->getOp();
+        temp->addChild(eqExp);
         temp->addChild(parseRelExp());
         eqExp = temp;
     }
@@ -851,8 +851,7 @@ LAndExp *Parser::parseLAndExp() {
         ofs << "<LAndExp>" << std::endl;
         printTk;
         readTk;
-        // auto rightEqExp = std::make_unique<EqExp *(NodeType::EqExp, lexer.getLineNum());
-        temp->addChild(std::move(lAndExp));
+        temp->addChild(lAndExp);
         temp->addChild(parseEqExp());
         lAndExp = temp;
     }
@@ -868,7 +867,7 @@ LOrExp *Parser::parseLOrExp() {
         ofs << "<LOrExp>" << std::endl;
         printTk;
         readTk;
-        temp->addChild(std::move(lOrExp));
+        temp->addChild(lOrExp);
         temp->addChild(parseLAndExp());
         lOrExp = temp;
     }
