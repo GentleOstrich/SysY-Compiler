@@ -1,4 +1,5 @@
 #include "Visitor.h"
+
 #define use(a, b, pos) use = new Use(a,b,pos); a->addUse(use); b->addOperand(use)
 Use *use = nullptr;
 
@@ -459,6 +460,8 @@ int Visitor::handleMulExp(Node *mulExp, Value **mulInstruction) {
 
 std::vector<Instruction *> brs;
 std::vector<Instruction *> brs_;
+std::vector<Instruction *> break_brs;
+int inFor = 0;
 
 void Visitor::handleStmt(Node *stmt) {
     if (stmt->getType() == 5) {
@@ -589,6 +592,9 @@ void Visitor::handleStmt(Node *stmt) {
         }
     } else if (stmt->getType() == 2) {
         // for
+        inFor++;
+        int t = brs.size();
+        int b_t = break_brs.size();
         Stmt *forStmt = (Stmt *) stmt;
         if (forStmt->forStmt1 != nullptr) {
             handleForStmt(forStmt->forStmt1);
@@ -603,7 +609,6 @@ void Visitor::handleStmt(Node *stmt) {
             br = handleCond(forStmt->cond, &cond);
         }
 
-
         handleStmt(forStmt->children[0]);
         if (forStmt->forStmt2 != nullptr) {
             handleForStmt(forStmt->forStmt2);
@@ -613,13 +618,34 @@ void Visitor::handleStmt(Node *stmt) {
         use(beforCondLabel, endBr, 0);
 
         buildFactory->genBasicBlock(nullptr);
+        // 跳出for循环的位置 break 产生的br跳出的位置
 
-        for (auto *child: brs) {
-            use(buildFactory->curBasicBlock, child, 2);
+        for (int i = brs.size() - 1; i >= t; --i) {
+            use(buildFactory->curBasicBlock, brs[i], 2);
+            brs.pop_back();
         }
 
-        // 产生跳转指令
+        if (!break_brs.empty()) {
+            //buildFactory->genBasicBlock(nullptr);
+            for (int i = break_brs.size() - 1; i >= b_t; --i) {
+                use(buildFactory->curBasicBlock, break_brs[i], 0);
+                break_brs.pop_back();
+            }
+        }
 
+        inFor--;
+    } else if (stmt->getType() == 4) {
+        //continue
+        if (inFor) {
+            auto *br = buildFactory->genInstruction(nullptr, InstructionType::Br, false);
+            brs.push_back(br);
+        }
+    } else if (stmt->getType() == 3) {
+        // break
+        if (inFor) {
+            auto *br = buildFactory->genInstruction(nullptr, InstructionType::Br, false);
+            break_brs.push_back(br);
+        }
     }
 }
 
@@ -718,8 +744,8 @@ Instruction *Visitor::handleEqExp(Node *eqExp, Value **eq, bool isBr) {
         }
 
         *eq = buildFactory->genInstruction(eqExp, instructionType, true);
-        use(leftEq, ((Instruction *) eq), 0);
-        use(righRel, ((Instruction *) eq), 0);
+        use(leftEq, ((Instruction *) (*eq)), 0);
+        use(righRel, ((Instruction *) (*eq)), 0);
     }
     // 这里才是最小的，产生新的br指令,并与使用*eq
     if (isBr) {
@@ -765,8 +791,8 @@ void Visitor::handleRelExp(Node *relExp, Value **rel) {
         }
 
         *rel = buildFactory->genInstruction(relExp, instructionType, true);
-        use(leftRel, ((Instruction *) rel), 0);
-        use(righAdd, ((Instruction *) rel), 1);
+        use(leftRel, ((Instruction *) (*rel)), 0);
+        use(righAdd, ((Instruction *) (*rel)), 1);
 
     }
 }

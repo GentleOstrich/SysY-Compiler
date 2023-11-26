@@ -42,9 +42,6 @@ bool cmp(Error error1, Error error2) {
 }
 #endif
 int main() {
-    if (!1) {
-        std::cout << "1" << std::endl;
-    }
     if (ifs.is_open() && ofs.is_open() && e_ofs.is_open() && c_ofs.is_open()) {
         source = std::string((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
         compUnit = parser.parseCompUnit();

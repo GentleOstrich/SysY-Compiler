@@ -9,5 +9,4 @@ User::User(const std::string &name, ValueType valueType) :
 
 void User::addOperand(Use *use) {
     this->operands.push_back(use);
-
 }
