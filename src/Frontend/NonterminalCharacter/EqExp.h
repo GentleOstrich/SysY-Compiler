@@ -8,7 +8,7 @@
 #include <vector>
 class EqExp : public Node{
 public:
-    int op = -1;
+    int op = -1; // 0 == 1 !=
 
     EqExp(NodeType nodeType, int lineNum);
 

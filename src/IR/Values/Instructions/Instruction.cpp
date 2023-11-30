@@ -27,36 +27,36 @@ void Instruction::translate() {
         if (operands.empty()) {
             code += "void";
         } else {
-            for (auto *child : operands) {
+            for (auto *child: operands) {
                 Value *value = child->value;
-                code +=  "i" + std::to_string(value->ty) + " " + value->getName() + " ";
+                code += "i" + std::to_string(value->ty) + " " + value->getName() + " ";
             }
         }
         c_ofs << code << std::endl;
     } else if (instructionType == InstructionType::Add) {
         code += this->getName() + " = add " + "i" + std::to_string(this->ty) + " ";
-        for (auto *child : operands) {
+        for (auto *child: operands) {
             Value *value = child->value;
             code += value->getName() + ", ";
         }
         c_ofs << code.substr(0, code.size() - 2) << std::endl;
     } else if (instructionType == InstructionType::Sub) {
         code += this->getName() + " = sub " + "i" + std::to_string(this->ty) + " ";
-        for (auto *child : operands) {
+        for (auto *child: operands) {
             Value *value = child->value;
             code += value->getName() + ", ";
         }
         c_ofs << code.substr(0, code.size() - 2) << std::endl;
     } else if (instructionType == InstructionType::Mul) {
         code += this->getName() + " = mul " + "i" + std::to_string(this->ty) + " ";
-        for (auto *child : operands) {
+        for (auto *child: operands) {
             Value *value = child->value;
             code += value->getName() + ", ";
         }
         c_ofs << code.substr(0, code.size() - 2) << std::endl;
     } else if (instructionType == InstructionType::Div) {
         code += this->getName() + " = sdiv " + "i" + std::to_string(this->ty) + " ";
-        for (auto *child : operands) {
+        for (auto *child: operands) {
             Value *value = child->value;
             code += value->getName() + ", ";
         }
@@ -64,48 +64,48 @@ void Instruction::translate() {
     } // 还缺一个mod
     else if (instructionType == InstructionType::Eq) {
         code += this->getName() + " = icmp eq " + "i" + std::to_string(this->operands[0]->value->ty) + " ";
-        for (auto *child : operands) {
+        for (auto *child: operands) {
             Value *value = child->value;
             code += value->getName() + ", ";
         }
         c_ofs << code.substr(0, code.size() - 2) << std::endl;
     } else if (instructionType == InstructionType::Ne) {
         code += this->getName() + " = icmp ne " + "i" + std::to_string(this->operands[0]->value->ty) + " ";
-        for (auto *child : operands) {
+        for (auto *child: operands) {
             Value *value = child->value;
             code += value->getName() + ", ";
         }
         c_ofs << code.substr(0, code.size() - 2) << std::endl;
     } else if (instructionType == InstructionType::Lt) {
         code += this->getName() + " = icmp slt " + "i" + std::to_string(this->operands[0]->value->ty) + " ";
-        for (auto *child : operands) {
+        for (auto *child: operands) {
             Value *value = child->value;
             code += value->getName() + ", ";
         }
         c_ofs << code.substr(0, code.size() - 2) << std::endl;
     } else if (instructionType == InstructionType::Le) {
         code += this->getName() + " = icmp sle " + "i" + std::to_string(this->operands[0]->value->ty) + " ";
-        for (auto *child : operands) {
+        for (auto *child: operands) {
             Value *value = child->value;
             code += value->getName() + ", ";
         }
         c_ofs << code.substr(0, code.size() - 2) << std::endl;
     } else if (instructionType == InstructionType::Gt) {
         code += this->getName() + " = icmp sgt " + "i" + std::to_string(this->operands[0]->value->ty) + " ";
-        for (auto *child : operands) {
+        for (auto *child: operands) {
             Value *value = child->value;
             code += value->getName() + ", ";
         }
         c_ofs << code.substr(0, code.size() - 2) << std::endl;
     } else if (instructionType == InstructionType::Ge) {
         code += this->getName() + " = icmp sge " + "i" + std::to_string(this->operands[0]->value->ty) + " ";
-        for (auto *child : operands) {
+        for (auto *child: operands) {
             Value *value = child->value;
             code += value->getName() + ", ";
         }
         c_ofs << code.substr(0, code.size() - 2) << std::endl;
     } else if (instructionType == InstructionType::Alloca) {
-        code += this->getName() + " = alloca " + "i" + std::to_string(this->ty);
+        code += this->getName() + " = alloca " + getType();
         c_ofs << code << std::endl;
     } else if (instructionType == InstructionType::Store) {
         code += "store i" + std::to_string(this->ty) + " ";
@@ -114,7 +114,7 @@ void Instruction::translate() {
         c_ofs << code << std::endl;
     } else if (instructionType == InstructionType::Load) {
         code += this->getName() + " = load " + "i" + std::to_string(this->ty) + ", ";
-        for (auto *child : operands) {
+        for (auto *child: operands) {
             Value *value = child->value;
             code += "i" + std::to_string(this->ty) + "* " + value->getName();
         }
@@ -167,3 +167,21 @@ void Instruction::translate() {
 std::string Instruction::getName() {
     return "%" + this->name;
 }
+
+void Instruction::addDim(int dim) {
+    this->dims.push_back(dim);
+}
+
+std::string Instruction::getType() {
+    std::string code;
+    for (auto dim: dims) {
+        code += "[" + std::to_string(dim) + " x ";
+    }
+    code += "i" + std::to_string(ty);
+    for (int i = 0; i < dims.size(); ++i) {
+        code += "]";
+    }
+    return code;
+}
+
+

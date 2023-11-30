@@ -7,18 +7,26 @@
 
 #include "../../User.h"
 #include "InstructionType.h"
+
 class BasicBlock;
+
 class Instruction : public User {
 public:
-    BasicBlock* basicBlock;
+    BasicBlock *basicBlock;
 
     InstructionType instructionType;
+
+    std::vector<int> dims;
 
     Instruction(const std::string &name, ValueType valueType, BasicBlock *basicBlock, InstructionType instructionType);
 
     void translate() override;
 
-    std::string getName() override ;
+    std::string getName() override;
+
+    void addDim(int dim);
+
+    std::string getType() override;
 
 };
 

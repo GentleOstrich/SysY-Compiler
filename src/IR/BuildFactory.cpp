@@ -62,7 +62,7 @@ Const *BuildFactory::genConst(Node *node, int val) {
 }
 
 GlobalVar *BuildFactory::genGlobalVar(Node *node, int val, bool isConst) {
-    auto* globalVar = new GlobalVar(node->getWord(), ValueType::Global, this->module, isConst, val);
+    auto* globalVar = new GlobalVar(node->getWord(), ValueType::Global, this->module, isConst);
     this->module->addGlobalVar(globalVar);
     this->curBasicBlock= nullptr;
     return globalVar;

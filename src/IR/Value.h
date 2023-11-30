@@ -22,6 +22,8 @@ public:
     void addUse(Use* use);
     virtual void translate();
     virtual std::string getName();
+    virtual std::string getType();
+    virtual std::string getInit();
 };
 
 

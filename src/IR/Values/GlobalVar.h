@@ -15,13 +15,19 @@ public:
 
     bool isConst;
 
-    int val;
+    std::vector<int> dims;
 
-    GlobalVar(const std::string &name, ValueType valueType, Module *module, bool isConst, int val);
+    GlobalVar(const std::string &name, ValueType valueType, Module *module, bool isConst);
 
     void translate() override;
 
     std::string getName() override ;
+
+    void addDim(int dim);
+
+    std::string getType() override;
+
+    std::string getInit() override;
 
 };
 

@@ -21,3 +21,11 @@ void Value::translate() {
 std::string Value::getName() {
     return "";
 }
+
+std::string Value::getType() {
+    return std::to_string(ty);
+}
+
+std::string Value::getInit() {
+    return std::string();
+}

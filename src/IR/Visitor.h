@@ -32,7 +32,7 @@ public:
 
     void handleFuncFParam(Node *funcFParam, Value **param);
 
-    void handleDecl(Node *funcFParam, bool isConst);
+    void handleDecl(Node *funcFParam, bool isGlobal);
 
     void handleMainFuncDef(Node *mainFuncFParam);
 
@@ -42,9 +42,9 @@ public:
 
     void handleBType(Node *BType);
 
-    int handleConstInitVal(Node *constInitVal, Value **constInitInstruction);
+    int handleConstInitVal(Node *constInitVal, std::vector<Value *> *constInitVals, bool isGlobal);
 
-    int handleInitVal(Node *initVal, Value **initValInstruction);
+    int handleInitVal(Node *initVal, std::vector<Value *> *initVals, bool isGlobal);
 
     int handleFuncFParams(Node *funcFParams);
 
@@ -58,25 +58,25 @@ public:
 
     void handleForStmt(Node *forStmt);
 
-    int handleExp(Node *exp, Value **expInstruction);
+    int handleExp(Node *exp, Value **expInstruction, bool isGlobal);
 
     Instruction *handleCond(Node *cond, Value **c);
 
     int handleLVal(Node *lVal, Value **LValInstucrion);
 
-    int handlePrimaryExp(Node *primaryExp, Value **primaryInstruction);
+    int handlePrimaryExp(Node *primaryExp, Value **primaryInstruction, bool isGlobal);
 
     void handleNumber(Node *number);
 
-    int handleUnaryExp(Node *unaryExp, Value **unaryInstruction);
+    int handleUnaryExp(Node *unaryExp, Value **unaryInstruction, bool isGlobal);
 
     int handleUnaryOp(Node *unaryOp);
 
     void handleFuncRParams(Node *funcRParams, Value **callInstruction);
 
-    int handleMulExp(Node *mulExp, Value **mulInstruction);
+    int handleMulExp(Node *mulExp, Value **mulInstruction, bool isGlobal);
 
-    int handleAddExp(Node *addExp, Value **addInstruction);
+    int handleAddExp(Node *addExp, Value **addInstruction, bool isGlobal);
 
     void handleRelExp(Node *relExp, Value **rel);
 
@@ -86,7 +86,7 @@ public:
 
     Instruction *handleLOrExp(Node *lOrExp);
 
-    int handleConstExp(Node *constExp, Value **constExpInstruction);
+    int handleConstExp(Node *constExp, Value **constExpInstruction, bool isGlobal);
 };
 
 #endif // SYSY_COMPILER_VISITOR_H
