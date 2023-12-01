@@ -15,6 +15,8 @@ public:
     Const(const std::string &name, ValueType valueType, int val);
 
     std::string getName() override ;
+
+    std::string getType() override ;
 };
 
 

@@ -48,7 +48,17 @@ void Visitor::handleVarDef(Node *varDef, bool isGlobal) {
             if (child->getNodeType() == NodeType::InitVal) {
                 std::vector<Value *> initVals;
                 handleInitVal(child, &initVals, isGlobal);
+                int i = 0;
                 for (auto initVal: initVals) {
+
+                    auto *GEPIns = buildFactory->genInstruction(nullptr, InstructionType::GEP, true);
+                    for (auto dim:allocInstruction->dims) {
+                        GEPIns->addDim(dim);
+                    }
+                    use(allocInstruction, GEPIns, 0);
+                    auto *Const1 = buildFactory->genConst(nullptr, 0);
+
+
                     auto *storeInstruction = buildFactory->genInstruction(varDef, InstructionType::Store, false);
                     use(initVal, storeInstruction, 0);
                     use(allocInstruction, storeInstruction, 1);
@@ -57,6 +67,7 @@ void Visitor::handleVarDef(Node *varDef, bool isGlobal) {
                 // 各维的长度
                 Value *Const = nullptr;
                 handleConstExp(child, &Const, isGlobal);
+                // 设定alloca的维度
                 allocInstruction->addDim(atoi(Const->getName().c_str()));
             }
         }
@@ -105,8 +116,9 @@ void Visitor::handleConstDef(Node *constDef, bool isGlobal) {
                 }
             } else if (child->getNodeType() == NodeType::ConstExp) {
                 // 各维的长度
-                int dim = handleConstExp(child, nullptr, isGlobal);
-                allocInstruction->addDim(dim);
+                Value *Const = nullptr;
+                handleConstExp(child, &Const, isGlobal);
+                allocInstruction->addDim(atoi(Const->getName().c_str()));
             }
         }
         symbolTable->symbolId++;
@@ -163,6 +175,10 @@ int Visitor::handleFuncFParams(Node *funcFParams) {
         Instruction *store = buildFactory->genInstruction(funcFParams, InstructionType::Store, false);
         use(params[i], store, 0);
         use(allocas[i], store, 1);
+        // 设定alloc的维度
+        for (auto dim:((Param *) params[i])->dims) {
+            ((Instruction *) allocas[i])->addDim(dim);
+        }
     }
     return ret;
 }
@@ -314,25 +330,35 @@ int Visitor::handleExp(Node *exp, Value **expInstruction, bool isGlobal) {
 }
 
 
-int Visitor::handleLVal(Node *lVal, Value **lValInstucrion) {
+int Visitor::handleLVal(Node *lVal, Value **lValInstruction) {
     //TODO
     // 数组相关
 
     string word = lVal->getWord();
     Symbol *symbol = symbolTable->getSymbol(word, false, true); // 找这个数先不用考虑函数
     if (symbol->value->valueType == ValueType::Global) {
-        if (lValInstucrion) {
+        if (lValInstruction) {
             Instruction *loadInstruction = buildFactory->genInstruction(lVal, InstructionType::Load, true);
+            if (symbol->value->valueType == ValueType::Instruction) {
+                for (auto dim:((Instruction *) symbol->value)->dims) {
+                    loadInstruction->addDim(dim);
+                }
+            }
             use(symbol->value, loadInstruction, 0);
-            *lValInstucrion = loadInstruction;
+            *lValInstruction = loadInstruction;
         }
         //TODO
         // 左值先返回0
         return 0;
     } else if (symbol->value->valueType == ValueType::Instruction) {
         Instruction *loadInstruction = buildFactory->genInstruction(lVal, InstructionType::Load, true);
+        if (symbol->value->valueType == ValueType::Instruction) {
+            for (auto dim:((Instruction *) symbol->value)->dims) {
+                loadInstruction->addDim(dim);
+            }
+        }
         use(symbol->value, loadInstruction, 0);
-        *lValInstucrion = loadInstruction;
+        *lValInstruction = loadInstruction;
         // 找到专门的alloc指令
         // 等一下还要向其他的一样传入Value的形参
     }

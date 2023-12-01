@@ -10,3 +10,7 @@ Const::Const(const std::string &name, ValueType valueType, int val) : Value(name
 std::string Const::getName() {
     return std::to_string(this->val);
 }
+
+std::string Const::getType() {
+    return "i" + std::to_string(ty);
+}

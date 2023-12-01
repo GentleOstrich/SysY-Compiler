@@ -62,7 +62,7 @@ public:
 
     Instruction *handleCond(Node *cond, Value **c);
 
-    int handleLVal(Node *lVal, Value **LValInstucrion);
+    int handleLVal(Node *lVal, Value **lValInstruction);
 
     int handlePrimaryExp(Node *primaryExp, Value **primaryInstruction, bool isGlobal);
 

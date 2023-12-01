@@ -11,9 +11,15 @@ class Param : public Value {
 public:
     int pos;
 
+    std::vector<int> dims;
+
     Param(const std::string &name, ValueType valueType, int pos);
 
     std::string getName() override ;
+
+    void addDim(int dim);
+
+    std::string getType() override;
 };
 
 

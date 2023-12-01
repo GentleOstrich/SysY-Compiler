@@ -108,12 +108,12 @@ void Instruction::translate() {
         code += this->getName() + " = alloca " + getType();
         c_ofs << code << std::endl;
     } else if (instructionType == InstructionType::Store) {
-        code += "store i" + std::to_string(this->ty) + " ";
-        code += this->operands[0]->value->getName() + ", ";
-        code += "i" + std::to_string(this->ty) + "* " + this->operands[1]->value->getName();
+        code += "store ";
+        code += operands[0]->value->getType() + " " + operands[0]->value->getName() + ", ";
+        code += operands[1]->value->getType() + "* " + this->operands[1]->value->getName();
         c_ofs << code << std::endl;
     } else if (instructionType == InstructionType::Load) {
-        code += this->getName() + " = load " + "i" + std::to_string(this->ty) + ", ";
+        code += this->getName() + " = load " + getType() + ", ";
         for (auto *child: operands) {
             Value *value = child->value;
             code += "i" + std::to_string(this->ty) + "* " + value->getName();
