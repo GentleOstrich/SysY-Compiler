@@ -50,18 +50,37 @@ void Visitor::handleVarDef(Node *varDef, bool isGlobal) {
                 handleInitVal(child, &initVals, isGlobal);
                 int i = 0;
                 for (auto initVal: initVals) {
+                    if (allocInstruction->dims.size() < 1) {
+                        // 不是数组 不需要GEP
+                        auto *storeInstruction = buildFactory->genInstruction(varDef, InstructionType::Store, false);
+                        use(initVal, storeInstruction, 0);
+                        use(allocInstruction, storeInstruction, 1);
+                    } else {
+                        // 是数组
+                        auto *GEPIns = buildFactory->genInstruction(nullptr, InstructionType::GEP, true);
+                        for (auto dim:allocInstruction->dims) {
+                            GEPIns->addDim(dim);
+                        }
 
-                    auto *GEPIns = buildFactory->genInstruction(nullptr, InstructionType::GEP, true);
-                    for (auto dim:allocInstruction->dims) {
-                        GEPIns->addDim(dim);
+                        use(allocInstruction, GEPIns, 0);
+                        auto *Const1 = buildFactory->genConst(nullptr, 0);
+                        use(Const1, GEPIns, 1); // 此处第一个移动数都是0 （整体不移动）
+
+                        if (allocInstruction->dims.size() == 1) {
+                            Const1 = buildFactory->genConst(nullptr, i);
+                            use(Const1, GEPIns, 2);
+                        } else if (allocInstruction->dims.size() == 2) {
+                            Const1 = buildFactory->genConst(nullptr, i / allocInstruction->dims[1]);
+                            use(Const1, GEPIns, 2);
+                            Const1 = buildFactory->genConst(nullptr, i % allocInstruction->dims[1]);
+                            use(Const1, GEPIns, 3);
+                        }
+
+                        auto *storeInstruction = buildFactory->genInstruction(varDef, InstructionType::Store, false);
+                        use(initVal, storeInstruction, 0);
+                        use(GEPIns, storeInstruction, 1);
                     }
-                    use(allocInstruction, GEPIns, 0);
-                    auto *Const1 = buildFactory->genConst(nullptr, 0);
-
-
-                    auto *storeInstruction = buildFactory->genInstruction(varDef, InstructionType::Store, false);
-                    use(initVal, storeInstruction, 0);
-                    use(allocInstruction, storeInstruction, 1);
+                    i++;
                 }
             } else if (child->getNodeType() == NodeType::ConstExp) {
                 // 各维的长度
@@ -164,13 +183,17 @@ int Visitor::handleFuncFParams(Node *funcFParams) {
     }
     buildFactory->genBasicBlock(nullptr); // 这个参数没有用
     vector<Value *> allocas;
+
+
+    // 把参数都先存起来
+    // 分配 alloca
     for (int i = 0; i < params.size(); ++i) {
         Instruction *alloca = buildFactory->genInstruction(funcFParams, InstructionType::Alloca, true);
         auto *symbol = new Symbol(funcFParams->children[i]->getWord(), alloca);
         symbolTable->addSymbol(symbol, funcFParams->getLineNum());
         allocas.push_back(alloca);
     }
-
+    // 存储 store
     for (int i = 0; i < params.size(); ++i) {
         Instruction *store = buildFactory->genInstruction(funcFParams, InstructionType::Store, false);
         use(params[i], store, 0);
@@ -186,7 +209,22 @@ int Visitor::handleFuncFParams(Node *funcFParams) {
 void Visitor::handleFuncFParam(Node *funcFParam, Value **param) {
     //TODO
     // 数组相关
-    *param = buildFactory->genParam(funcFParam);
+    auto *param1 = buildFactory->genParam(funcFParam);
+    if (funcFParam->getType() > 0) {
+        param1->addDim(0);
+    }
+    for (auto *child:funcFParam->children) {
+        if (child->getNodeType() == NodeType::BType) {
+            handleBType(child);
+        } else if (child->getNodeType() == NodeType::ConstExp) {
+            Value *Const = nullptr;
+            handleConstExp(child, &Const, false);
+
+            param1->addDim(atoi(Const->getName().c_str()));
+        }
+    }
+    *param = param1;
+
 }
 
 void Visitor::handleDecl(Node *Decl, bool isGlobal) {
@@ -337,7 +375,7 @@ int Visitor::handleLVal(Node *lVal, Value **lValInstruction) {
     string word = lVal->getWord();
     Symbol *symbol = symbolTable->getSymbol(word, false, true); // 找这个数先不用考虑函数
     if (symbol->value->valueType == ValueType::Global) {
-        if (lValInstruction) {
+        if (((Instruction *) (symbol->value))->dims.empty()) {
             Instruction *loadInstruction = buildFactory->genInstruction(lVal, InstructionType::Load, true);
             if (symbol->value->valueType == ValueType::Instruction) {
                 for (auto dim:((Instruction *) symbol->value)->dims) {
@@ -346,19 +384,131 @@ int Visitor::handleLVal(Node *lVal, Value **lValInstruction) {
             }
             use(symbol->value, loadInstruction, 0);
             *lValInstruction = loadInstruction;
+        } else {
+            auto *GEPIns = buildFactory->genInstruction(nullptr, InstructionType::GEP, true);
+            use(symbol->value, GEPIns, 0);
+            for (auto dim:((Instruction *) (symbol->value))->dims) {
+                GEPIns->dims.push_back(dim);
+            }
+            auto *Const = buildFactory->genConst(nullptr, 0);
+            use(Const, GEPIns, 1);
+            int i = 2;
+            for (auto *child:lVal->children) {
+                if (child->getNodeType() == NodeType::Exp) {
+                    Value *expIns = nullptr;
+                    handleExp(child, &expIns, false);
+                    use(expIns, GEPIns, i++);
+                    GEPIns->dims.erase(GEPIns->dims.begin());
+                }
+            }
+            Instruction *loadInstruction = buildFactory->genInstruction(lVal, InstructionType::Load, true);
+            use(GEPIns, loadInstruction, 0);
+            *lValInstruction = loadInstruction;
         }
         //TODO
         // 左值先返回0
         return 0;
     } else if (symbol->value->valueType == ValueType::Instruction) {
-        Instruction *loadInstruction = buildFactory->genInstruction(lVal, InstructionType::Load, true);
-        if (symbol->value->valueType == ValueType::Instruction) {
-            for (auto dim:((Instruction *) symbol->value)->dims) {
-                loadInstruction->addDim(dim);
+        if (((Instruction *) (symbol->value))->dims.empty()) {
+            // 不是数组
+            Instruction *loadInstruction = buildFactory->genInstruction(lVal, InstructionType::Load, true);
+            if (symbol->value->valueType == ValueType::Instruction) {
+                for (auto dim:((Instruction *) symbol->value)->dims) {
+                    loadInstruction->addDim(dim);
+                }
+            }
+            use(symbol->value, loadInstruction, 0);
+            *lValInstruction = loadInstruction;
+        } else {
+            if (((Instruction *) (symbol->value))->dims[0] != 0) {
+                auto *GEPIns = buildFactory->genInstruction(nullptr, InstructionType::GEP, true);
+                use(symbol->value, GEPIns, 0);
+                for (auto dim:((Instruction *) (symbol->value))->dims) {
+                    GEPIns->dims.push_back(dim);
+                }
+                auto *Const = buildFactory->genConst(nullptr, 0);
+                use(Const, GEPIns, 1);
+                int i = 2;
+                for (auto *child:lVal->children) {
+                    if (child->getNodeType() == NodeType::Exp) {
+                        Value *expIns = nullptr;
+                        handleExp(child, &expIns, false);
+                        use(expIns, GEPIns, i++);
+                        GEPIns->dims.erase(GEPIns->dims.begin());
+                    }
+                }
+                Instruction *loadInstruction = buildFactory->genInstruction(lVal, InstructionType::Load, true);
+                use(GEPIns, loadInstruction, 0);
+                *lValInstruction = loadInstruction;
+            } else {
+                if (((Instruction *) (symbol->value))->dims.size() == 1) {
+                    auto *loadIns = buildFactory->genInstruction(nullptr, InstructionType::Load, true);
+                    use(symbol->value, loadIns, 0);
+                    for(int i = 1; i < ((Instruction *) (symbol->value))->dims.size(); ++i) {
+                        loadIns->addDim(((Instruction *) (symbol->value))->dims[i]);
+                    }
+
+
+                    auto *GEPIns = buildFactory->genInstruction(nullptr, InstructionType::GEP, true);
+                    use(loadIns, GEPIns, 0);
+                    for (auto dim:loadIns->dims){
+                        GEPIns->addDim(dim);
+                    }
+
+                    int i = 1;
+                    for (auto *child:lVal->children) {
+                        if (child->getNodeType() == NodeType::Exp) {
+                            Value *expIns = nullptr;
+                            handleExp(child, &expIns, false);
+                            use(expIns, GEPIns, i++);
+                        }
+                    } // 应该只会有一个
+                    Instruction *loadInstruction = buildFactory->genInstruction(lVal, InstructionType::Load, true);
+                    use(GEPIns, loadInstruction, 0);
+                    *lValInstruction = loadInstruction;
+                } else if (((Instruction *) (symbol->value))->dims.size() == 2) {
+
+                    auto *loadIns = buildFactory->genInstruction(nullptr, InstructionType::Load, true);
+                    use(symbol->value, loadIns, 0);
+
+                    for(int i = 1; i < ((Instruction *) (symbol->value))->dims.size(); ++i) {
+                        loadIns->addDim(((Instruction *) (symbol->value))->dims[i]);
+                    }
+
+                    auto *GEPIns = buildFactory->genInstruction(nullptr, InstructionType::GEP, true);
+                    use(loadIns, GEPIns, 0);
+                    for (auto dim:loadIns->dims){
+                        GEPIns->addDim(dim);
+                    }
+
+                    int i = 1;
+                    Value *expIns = nullptr;
+                    handleExp(lVal->children[0], &expIns, false);
+                    use(expIns, GEPIns, i++);
+
+                    auto *GEPIns1 = buildFactory->genInstruction(nullptr, InstructionType::GEP, true);
+                    use(GEPIns, GEPIns1, 0);
+
+                    auto* Const = buildFactory->genConst(nullptr, 0);
+                    use(Const, GEPIns1, i++);
+                    handleExp(lVal->children[1], &expIns, false);
+                    use(expIns, GEPIns1, i++);
+
+                    Instruction *loadInstruction = buildFactory->genInstruction(lVal, InstructionType::Load, true);
+                    use(GEPIns1, loadInstruction, 0);
+
+                    for(int i = 1; i < GEPIns1->dims.size(); ++i) {
+                        loadInstruction->addDim(GEPIns1->dims[i]);
+                    }
+
+                    *lValInstruction = loadInstruction;
+                } else {
+                    std::cout << "invalid dim" << std::endl;
+                }
+
             }
         }
-        use(symbol->value, loadInstruction, 0);
-        *lValInstruction = loadInstruction;
+
         // 找到专门的alloc指令
         // 等一下还要向其他的一样传入Value的形参
     }

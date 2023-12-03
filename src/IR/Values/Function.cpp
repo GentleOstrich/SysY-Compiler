@@ -25,7 +25,7 @@ void Function::translate() {
         if (!this->params.empty()) {
             std::string code;
             for (auto *child:this->params) {
-                code += "i" + std::to_string(child->ty) + " " + child->getName() + ", ";
+                code += child->getType() + " " + child->getName() + ", ";
             }
             code = code.substr(0,code.size()-2);
             c_ofs << code;
