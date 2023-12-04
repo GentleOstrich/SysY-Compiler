@@ -104,16 +104,17 @@ void Instruction::translate() {
         }
         code = code.substr(0, code.size() - 2);
     } else if (instructionType == InstructionType::Alloca) {
-        code += this->getName() + " = alloca " + getType();
+        code += this->getName() + " = alloca " + getType().substr(0, getType().size() - 1);
     } else if (instructionType == InstructionType::Store) {
         code += "store ";
         code += operands[0]->value->getType() + " " + operands[0]->value->getName() + ", ";
-        code += operands[1]->value->getType() + "* " + this->operands[1]->value->getName();
+        code += operands[1]->value->getType() + " " + this->operands[1]->value->getName();
     } else if (instructionType == InstructionType::Load) {
         code += this->getName() + " = load ";
         for (auto *child: operands) {
             Value *value = child->value;
-            code += value->getType() + ", " + value->getType() + "* " + value->getName();
+            code += value->getType().substr(0, value->getType().size() - 1) + ", " + value->getType() + " " +
+                    value->getName();
         }
     } else if (instructionType == InstructionType::Call) {
         std::string ret;
@@ -124,7 +125,8 @@ void Instruction::translate() {
             code += "call " + ret + " " + this->operands[0]->value->getName() + "(";
             // 函数的ty要么是 i32 要么是 void
             for (int i = 1; i < this->operands.size(); ++i) {
-                code += "i" + std::to_string(this->operands[i]->value->ty) + " " + this->operands[i]->value->getName();
+
+                code += this->operands[i]->value->getType() + " " + this->operands[i]->value->getName();
                 code += ", ";
             }
             if (this->operands.size() > 1) { code = code.substr(0, code.size() - 2); }
@@ -132,7 +134,7 @@ void Instruction::translate() {
         } else {
             code += this->getName() + " = " + "call " + ret + " " + this->operands[0]->value->getName() + "(";
             for (int i = 1; i < this->operands.size(); ++i) {
-                code += "i" + std::to_string(this->operands[i]->value->ty) + " " + this->operands[i]->value->getName();
+                code += this->operands[i]->value->getType() + " " + this->operands[i]->value->getName();
                 code += ", ";
             }
             if (this->operands.size() > 1) { code = code.substr(0, code.size() - 2); }
@@ -155,12 +157,13 @@ void Instruction::translate() {
     } else if (instructionType == InstructionType::Zext) {
         code += this->getName() + " = zext i1 " + this->operands[0]->value->getName() + " to i32";
     } else if (instructionType == InstructionType::GEP) {
-        code += this->getName() + " = getelementptr " + this->operands[0]->value->getType() + ", " +
-                this->operands[0]->value->getType() + "* " + this->operands[0]->value->getName() + ", ";
+        code += this->getName() + " = getelementptr " +
+                this->operands[0]->value->getType().substr(0, this->operands[0]->value->getType().size() - 1) + ", " +
+                this->operands[0]->value->getType() + " " + this->operands[0]->value->getName() + ", ";
         for (int i = 1; i < this->operands.size(); ++i) {
             code += operands[i]->value->getType() + " " + operands[i]->value->getName() + ", ";
         }
-        code = code.substr(0, code.size()-2);
+        code = code.substr(0, code.size() - 2);
     }
     c_ofs << code << std::endl;
 }
@@ -175,25 +178,17 @@ void Instruction::addDim(int dim) {
 
 std::string Instruction::getType() {
     std::string code;
-
-    if (!dims.empty() && dims[0] == 0) {
-        if (dims.empty()) {
-            code += "i" + std::to_string(ty);
-        } else if (dims.size() == 1) {
-            code += "i" + std::to_string(ty) + "*";
-        } else if (dims.size() == 2) {
-            code += "[" + std::to_string(dims[1]) + " x " + "i" + std::to_string(ty) + "]" + "*";
-        } else {
-            std::cout << "invalid dim" << std::endl;
-        }
-    } else {
-        for (auto dim: dims) {
+    for (auto dim: dims) {
+        if (dim > 0)
             code += "[" + std::to_string(dim) + " x ";
-        }
-        code += "i" + std::to_string(ty);
-        for (int i = 0; i < dims.size(); ++i) {
+    }
+    code += "i" + std::to_string(ty);
+    for (int dim : dims) {
+        if (dim > 0)
             code += "]";
-        }
+    }
+    if (instructionType == InstructionType::GEP || instructionType == InstructionType::Alloca) {
+        code += "*";
     }
     return code;
 }
