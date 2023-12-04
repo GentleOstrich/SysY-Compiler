@@ -58,9 +58,9 @@ void Visitor::handleVarDef(Node *varDef, bool isGlobal) {
                     } else {
                         // 是数组
                         auto *GEPIns = buildFactory->genInstruction(nullptr, InstructionType::GEP, true);
-                        for (auto dim:allocInstruction->dims) {
-                            GEPIns->addDim(dim);
-                        }
+//                        for (auto dim:allocInstruction->dims) {
+//                            GEPIns->addDim(dim);
+//                        }
 
                         use(allocInstruction, GEPIns, 0);
                         auto *Const1 = buildFactory->genConst(nullptr, 0);
@@ -124,19 +124,50 @@ void Visitor::handleConstDef(Node *constDef, bool isGlobal) {
         auto *symbol = new Symbol(constDef->getWord(), allocInstruction);
         symbolTable->addSymbol(symbol, constDef->getLineNum());
         symbolTable->symbolId--;
+
         for (auto *child: constDef->children) {
             if (child->getNodeType() == NodeType::ConstInitVal) {
-                std::vector<Value *> constInitVals;
-                handleConstInitVal(child, &constInitVals, isGlobal);
-                for (auto constInitVal: constInitVals) {
-                    auto *storeInstruction = buildFactory->genInstruction(constDef, InstructionType::Store, false);
-                    use(constInitVal, storeInstruction, 0);
-                    use(allocInstruction, storeInstruction, 1);
+                std::vector<Value *> initVals;
+                handleConstInitVal(child, &initVals, isGlobal);
+                int i = 0;
+                for (auto initVal: initVals) {
+                    if (allocInstruction->dims.size() < 1) {
+                        // 不是数组 不需要GEP
+                        auto *storeInstruction = buildFactory->genInstruction(constDef, InstructionType::Store, false);
+                        use(initVal, storeInstruction, 0);
+                        use(allocInstruction, storeInstruction, 1);
+                    } else {
+                        // 是数组
+                        auto *GEPIns = buildFactory->genInstruction(nullptr, InstructionType::GEP, true);
+//                        for (auto dim:allocInstruction->dims) {
+//                            GEPIns->addDim(dim);
+//                        }
+
+                        use(allocInstruction, GEPIns, 0);
+                        auto *Const1 = buildFactory->genConst(nullptr, 0);
+                        use(Const1, GEPIns, 1); // 此处第一个移动数都是0 （整体不移动）
+
+                        if (allocInstruction->dims.size() == 1) {
+                            Const1 = buildFactory->genConst(nullptr, i);
+                            use(Const1, GEPIns, 2);
+                        } else if (allocInstruction->dims.size() == 2) {
+                            Const1 = buildFactory->genConst(nullptr, i / allocInstruction->dims[1]);
+                            use(Const1, GEPIns, 2);
+                            Const1 = buildFactory->genConst(nullptr, i % allocInstruction->dims[1]);
+                            use(Const1, GEPIns, 3);
+                        }
+
+                        auto *storeInstruction = buildFactory->genInstruction(constDef, InstructionType::Store, false);
+                        use(initVal, storeInstruction, 0);
+                        use(GEPIns, storeInstruction, 1);
+                    }
+                    i++;
                 }
             } else if (child->getNodeType() == NodeType::ConstExp) {
                 // 各维的长度
                 Value *Const = nullptr;
                 handleConstExp(child, &Const, isGlobal);
+                // 设定alloca的维度
                 allocInstruction->addDim(atoi(Const->getName().c_str()));
             }
         }
