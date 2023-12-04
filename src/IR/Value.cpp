@@ -29,3 +29,7 @@ std::string Value::getType() {
 std::string Value::getInit() {
     return std::string();
 }
+
+std::string Value::getContent() {
+    return std::string();
+}

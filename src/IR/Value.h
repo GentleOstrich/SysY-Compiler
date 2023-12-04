@@ -24,6 +24,7 @@ public:
     virtual std::string getName();
     virtual std::string getType();
     virtual std::string getInit();
+    virtual std::string getContent();
 };
 
 

@@ -104,16 +104,16 @@ void Instruction::translate() {
         }
         code = code.substr(0, code.size() - 2);
     } else if (instructionType == InstructionType::Alloca) {
-        code += this->getName() + " = alloca " + getType().substr(0, getType().size() - 1);
+        code += this->getName() + " = alloca " + getType();
     } else if (instructionType == InstructionType::Store) {
         code += "store ";
         code += operands[0]->value->getType() + " " + operands[0]->value->getName() + ", ";
-        code += operands[1]->value->getType() + " " + this->operands[1]->value->getName();
+        code += operands[1]->value->getType() + "* " + this->operands[1]->value->getName();
     } else if (instructionType == InstructionType::Load) {
         code += this->getName() + " = load ";
         for (auto *child: operands) {
             Value *value = child->value;
-            code += value->getType().substr(0, value->getType().size() - 1) + ", " + value->getType() + " " +
+            code += value->getType() + ", " + value->getType() + "* " +
                     value->getName();
         }
     } else if (instructionType == InstructionType::Call) {
@@ -158,8 +158,8 @@ void Instruction::translate() {
         code += this->getName() + " = zext i1 " + this->operands[0]->value->getName() + " to i32";
     } else if (instructionType == InstructionType::GEP) {
         code += this->getName() + " = getelementptr " +
-                this->operands[0]->value->getType().substr(0, this->operands[0]->value->getType().size() - 1) + ", " +
-                this->operands[0]->value->getType() + " " + this->operands[0]->value->getName() + ", ";
+                this->operands[0]->value->getType() + ", " +
+                this->operands[0]->value->getType() + "* " + this->operands[0]->value->getName() + ", ";
         for (int i = 1; i < this->operands.size(); ++i) {
             code += operands[i]->value->getType() + " " + operands[i]->value->getName() + ", ";
         }
@@ -183,12 +183,35 @@ std::string Instruction::getType() {
             code += "[" + std::to_string(dim) + " x ";
     }
     code += "i" + std::to_string(ty);
-    for (int dim : dims) {
+    for (int dim: dims) {
         if (dim > 0)
             code += "]";
     }
-    if (instructionType == InstructionType::GEP || instructionType == InstructionType::Alloca) {
+    if (!dims.empty() && dims[0] == 0) {
         code += "*";
+    }
+    return code;
+}
+
+std::string Instruction::getContent() {
+    std::string code;
+    if (dims.empty()) {
+        return std::to_string(ty);
+    } else {
+
+        for (auto dim: dims) {
+            if (dim > 0)
+                code += "[" + std::to_string(dim) + " x ";
+        }
+        code += "i" + std::to_string(ty);
+        for (int dim: dims) {
+            if (dim > 0)
+                code += "]";
+        }
+        if (instructionType == InstructionType::GEP || instructionType == InstructionType::Alloca) {
+            code += "*";
+        }
+
     }
     return code;
 }

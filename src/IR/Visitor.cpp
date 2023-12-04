@@ -430,7 +430,8 @@ int Visitor::handleLVal(Node *lVal, Value **lValInstruction) {
                 Value *expIns = nullptr;
                 handleExp(lVal->children[i], &expIns, false);
                 use(expIns, userIns, 2);
-                userIns->dims[i] = 0;
+                userIns->dims.erase(userIns->dims.begin());
+//                userIns->dims[i] = 0;
                 valueIns = userIns;
                 i++;
             }
@@ -448,8 +449,8 @@ int Visitor::handleLVal(Node *lVal, Value **lValInstruction) {
                 use(Const, userIns, 1);
                 Value *expIns = buildFactory->genConst(nullptr, 0);
                 use(expIns, userIns, 2);
-                userIns->dims[i] = 0;
-
+                userIns->dims[0] = 0;
+//                userIns->dims.erase(userIns->dims.begin());
                 *lValInstruction = userIns;
             }
         }
@@ -469,40 +470,46 @@ int Visitor::handleLVal(Node *lVal, Value **lValInstruction) {
             *lValInstruction = loadInstruction;
         } else {
             auto *valueIns = symbol->value;
-            Instruction *userIns = nullptr;
-            int i = 0;
-            while (i < lVal->children.size()) {
-                userIns = buildFactory->genInstruction(nullptr, InstructionType::GEP, true);
-                use(valueIns, userIns, 0);
-                for (auto dim : ((Instruction *) valueIns)->dims) {
-                    userIns->dims.push_back(dim);
-                }
-                auto *Const = buildFactory->genConst(nullptr, 0);
-                use(Const, userIns, 1);
-                Value *expIns = nullptr;
-                handleExp(lVal->children[i], &expIns, false);
-                use(expIns, userIns, 2);
-                userIns->dims[i] = 0;
-                valueIns = userIns;
-                i++;
-            }
-            if (i >= ((Instruction *) (symbol->value))->dims.size()) {
-                Instruction *loadInstruction = buildFactory->genInstruction(lVal, InstructionType::Load, true);
-                use(userIns, loadInstruction, 0);
-                *lValInstruction = loadInstruction;
+            if (((Instruction*)(valueIns))->dims[0] == 0) {
+                //TODO
+                // 函数中的处理
             } else {
-                userIns = buildFactory->genInstruction(nullptr, InstructionType::GEP, true);
-                use(valueIns, userIns, 0);
-                for (auto dim : ((Instruction *) valueIns)->dims) {
-                    userIns->dims.push_back(dim);
+                Instruction *userIns = nullptr;
+                int i = 0;
+                while (i < lVal->children.size()) {
+                    userIns = buildFactory->genInstruction(nullptr, InstructionType::GEP, true);
+                    use(valueIns, userIns, 0);
+                    for (auto dim : ((Instruction *) valueIns)->dims) {
+                        userIns->dims.push_back(dim);
+                    }
+                    auto *Const = buildFactory->genConst(nullptr, 0);
+                    use(Const, userIns, 1);
+                    Value *expIns = nullptr;
+                    handleExp(lVal->children[i], &expIns, false);
+                    use(expIns, userIns, 2);
+//                userIns->dims[i] = 0;
+                    userIns->dims.erase(userIns->dims.begin());
+                    valueIns = userIns;
+                    i++;
                 }
-                auto *Const = buildFactory->genConst(nullptr, 0);
-                use(Const, userIns, 1);
-                Value *expIns = buildFactory->genConst(nullptr, 0);
-                use(expIns, userIns, 2);
-                userIns->dims[i] = 0;
-
-                *lValInstruction = userIns;
+                if (i >= ((Instruction *) (symbol->value))->dims.size()) {
+                    Instruction *loadInstruction = buildFactory->genInstruction(lVal, InstructionType::Load, true);
+                    use(userIns, loadInstruction, 0);
+                    *lValInstruction = loadInstruction;
+                } else {
+                    userIns = buildFactory->genInstruction(nullptr, InstructionType::GEP, true);
+                    use(valueIns, userIns, 0);
+                    for (auto dim : ((Instruction *) valueIns)->dims) {
+                        userIns->dims.push_back(dim);
+                    }
+                    auto *Const = buildFactory->genConst(nullptr, 0);
+                    use(Const, userIns, 1);
+                    Value *expIns = buildFactory->genConst(nullptr, 0);
+                    use(expIns, userIns, 2);
+                    userIns->dims[0] = 0;
+//                userIns->dims.erase(userIns->dims.begin());
+                    *lValInstruction = userIns;
+                }
             }
         }
 //        else {

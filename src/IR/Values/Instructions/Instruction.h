@@ -28,6 +28,10 @@ public:
 
     std::string getType() override;
 
+    std::string getContent() override;
+
+
+
 };
 
 
