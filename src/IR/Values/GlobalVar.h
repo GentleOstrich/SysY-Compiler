@@ -29,6 +29,8 @@ public:
 
     std::string getInit() override;
 
+    std::string getContent() override ;
+
 };
 
 

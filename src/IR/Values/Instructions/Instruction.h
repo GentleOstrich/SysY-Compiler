@@ -16,6 +16,8 @@ public:
 
     InstructionType instructionType;
 
+    bool isPtr = false;
+
     std::vector<int> dims;
 
     Instruction(const std::string &name, ValueType valueType, BasicBlock *basicBlock, InstructionType instructionType);
@@ -29,8 +31,6 @@ public:
     std::string getType() override;
 
     std::string getContent() override;
-
-
 
 };
 

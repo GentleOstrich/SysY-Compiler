@@ -18,6 +18,9 @@ Instruction::Instruction(const std::string &name, ValueType valueType, BasicBloc
         instructionType == InstructionType::Gt || instructionType == InstructionType::Eq) {
         this->ty = 1;
     }
+    if (instructionType == InstructionType::Alloca || instructionType == InstructionType::GEP) {
+        this->isPtr = true;
+    }
 }
 
 void Instruction::translate() {
@@ -104,16 +107,16 @@ void Instruction::translate() {
         }
         code = code.substr(0, code.size() - 2);
     } else if (instructionType == InstructionType::Alloca) {
-        code += this->getName() + " = alloca " + getType();
+        code += this->getName() + " = alloca " + getContent();
     } else if (instructionType == InstructionType::Store) {
         code += "store ";
         code += operands[0]->value->getType() + " " + operands[0]->value->getName() + ", ";
-        code += operands[1]->value->getType() + "* " + this->operands[1]->value->getName();
+        code += operands[1]->value->getType() + " " + this->operands[1]->value->getName();
     } else if (instructionType == InstructionType::Load) {
         code += this->getName() + " = load ";
         for (auto *child: operands) {
             Value *value = child->value;
-            code += value->getType() + ", " + value->getType() + "* " +
+            code += value->getContent() + ", " + value->getType() + " " +
                     value->getName();
         }
     } else if (instructionType == InstructionType::Call) {
@@ -158,8 +161,8 @@ void Instruction::translate() {
         code += this->getName() + " = zext i1 " + this->operands[0]->value->getName() + " to i32";
     } else if (instructionType == InstructionType::GEP) {
         code += this->getName() + " = getelementptr " +
-                this->operands[0]->value->getType() + ", " +
-                this->operands[0]->value->getType() + "* " + this->operands[0]->value->getName() + ", ";
+                this->operands[0]->value->getContent() + ", " +
+                this->operands[0]->value->getType() + " " + this->operands[0]->value->getName() + ", ";
         for (int i = 1; i < this->operands.size(); ++i) {
             code += operands[i]->value->getType() + " " + operands[i]->value->getName() + ", ";
         }
@@ -187,7 +190,12 @@ std::string Instruction::getType() {
         if (dim > 0)
             code += "]";
     }
-    if (!dims.empty() && dims[0] == 0) {
+    for (auto dim:dims) {
+        if (dim == 0) {
+            code += "*";
+        }
+    }
+    if (isPtr) {
         code += "*";
     }
     return code;
@@ -196,9 +204,8 @@ std::string Instruction::getType() {
 std::string Instruction::getContent() {
     std::string code;
     if (dims.empty()) {
-        return std::to_string(ty);
+        code += "i" + std::to_string(ty);
     } else {
-
         for (auto dim: dims) {
             if (dim > 0)
                 code += "[" + std::to_string(dim) + " x ";
@@ -208,10 +215,11 @@ std::string Instruction::getContent() {
             if (dim > 0)
                 code += "]";
         }
-        if (instructionType == InstructionType::GEP || instructionType == InstructionType::Alloca) {
-            code += "*";
+        for (auto dim:dims) {
+            if (dim == 0) {
+                code += "*";
+            }
         }
-
     }
     return code;
 }

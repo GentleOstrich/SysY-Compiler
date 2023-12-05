@@ -10,10 +10,18 @@ extern std::ofstream c_ofs;
 
 void GlobalVar::translate() {
     std::string code;
-    if (this->isConst) {
-        code += this->getName() + " = dso_local constant " + getType() + " " + getInit();
+    if (dims.empty()) {
+        if (this->isConst) {
+            code += this->getName() + " = dso_local constant " + getInit();
+        } else {
+            code += this->getName() + " = dso_local global " + getInit();
+        }
     } else {
-        code += this->getName() + " = dso_local global " + getType() + " " + getInit();
+        if (this->isConst) {
+            code += this->getName() + " = dso_local constant " + getContent() + " " + getInit();
+        } else {
+            code += this->getName() + " = dso_local global " + getContent() + " " + getInit();
+        }
     }
     c_ofs << code << std::endl;
 }
@@ -35,12 +43,20 @@ void GlobalVar::addDim(int dim) {
 std::string GlobalVar::getType() {
     std::string code;
     for (auto dim: dims) {
-        code += "[" + std::to_string(dim) + " x ";
+        if (dim > 0)
+            code += "[" + std::to_string(dim) + " x ";
     }
     code += "i" + std::to_string(ty);
-    for (int i = 0; i < dims.size(); ++i) {
-        code += "]";
+    for (int dim: dims) {
+        if (dim > 0)
+            code += "]";
     }
+    for (auto dim:dims) {
+        if (dim == 0) {
+            code += "*";
+        }
+    }
+    code += "*";
     return code;
 }
 
@@ -126,6 +142,29 @@ std::string GlobalVar::getInit() {
                 code += "]";
             } else {
                 std::cout << "inValid Dim!" << std::endl;
+            }
+        }
+    }
+    return code;
+}
+
+std::string GlobalVar::getContent() {
+    std::string code;
+    if (dims.empty()) {
+        code += "i" + std::to_string(ty);
+    } else {
+        for (auto dim: dims) {
+            if (dim > 0)
+                code += "[" + std::to_string(dim) + " x ";
+        }
+        code += "i" + std::to_string(ty);
+        for (int dim: dims) {
+            if (dim > 0)
+                code += "]";
+        }
+        for (auto dim:dims) {
+            if (dim == 0) {
+                code += "*";
             }
         }
     }

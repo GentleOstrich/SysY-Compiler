@@ -420,18 +420,17 @@ int Visitor::handleLVal(Node *lVal, Value **lValInstruction) {
             Instruction *userIns = nullptr;
             int i = 0;
             while (i < lVal->children.size()) {
+                auto *Const = buildFactory->genConst(nullptr, 0);
+                Value *expIns = nullptr;
+                handleExp(lVal->children[i], &expIns, false);
                 userIns = buildFactory->genInstruction(nullptr, InstructionType::GEP, true);
                 use(valueIns, userIns, 0);
                 for (auto dim : ((Instruction *) valueIns)->dims) {
                     userIns->dims.push_back(dim);
                 }
-                auto *Const = buildFactory->genConst(nullptr, 0);
                 use(Const, userIns, 1);
-                Value *expIns = nullptr;
-                handleExp(lVal->children[i], &expIns, false);
                 use(expIns, userIns, 2);
                 userIns->dims.erase(userIns->dims.begin());
-//                userIns->dims[i] = 0;
                 valueIns = userIns;
                 i++;
             }
@@ -449,7 +448,7 @@ int Visitor::handleLVal(Node *lVal, Value **lValInstruction) {
                 use(Const, userIns, 1);
                 Value *expIns = buildFactory->genConst(nullptr, 0);
                 use(expIns, userIns, 2);
-                userIns->dims[0] = 0;
+                userIns->dims.erase(userIns->dims.begin());
 //                userIns->dims.erase(userIns->dims.begin());
                 *lValInstruction = userIns;
             }
@@ -470,13 +469,50 @@ int Visitor::handleLVal(Node *lVal, Value **lValInstruction) {
             *lValInstruction = loadInstruction;
         } else {
             auto *valueIns = symbol->value;
-            if (((Instruction*)(valueIns))->dims[0] == 0) {
+            if (((Instruction *) (valueIns))->dims[0] == 0) {
                 //TODO
                 // 函数中的处理
+                auto *loadIns = buildFactory->genInstruction(nullptr, InstructionType::Load, true);
+                use(valueIns, loadIns, 0);
+                loadIns->isPtr = true;
+                for (auto dim:((Instruction *) (valueIns))->dims) {
+                    loadIns->addDim(dim);
+                }
+                loadIns->dims.erase(loadIns->dims.begin());
+                if (!lVal->children.empty()) {
+                    Instruction *userIns = nullptr;
+                    Instruction *valueIns = loadIns;
+                    for (int i = 0; i < lVal->children.size(); ++i) {
+                        Value *expIns = nullptr;
+                        handleExp(lVal->children[i], &expIns, false);
+                        userIns = buildFactory->genInstruction(nullptr, InstructionType::GEP, true);
+                        use(valueIns, userIns, 0);
+                        for (auto dim:((Instruction *) (valueIns))->dims) {
+                            userIns->addDim(dim);
+                        }
+                        if (i == 0) {
+                            use(expIns, userIns, 1);
+                        } else {
+                            auto *Const = buildFactory->genConst(nullptr, 0);
+                            use(Const, userIns, 1);
+                            userIns->dims.erase(userIns->dims.begin());
+                            use(expIns, userIns, 2);
+                        }
+                        valueIns = userIns;
+                    }
+                    loadIns = buildFactory->genInstruction(nullptr, InstructionType::Load, true);
+                    use(valueIns, loadIns, 0);
+                    *lValInstruction = loadIns;
+                } else {
+                    *lValInstruction = loadIns;
+                }
+
             } else {
                 Instruction *userIns = nullptr;
                 int i = 0;
                 while (i < lVal->children.size()) {
+                    Value *expIns = nullptr;
+                    handleExp(lVal->children[i], &expIns, false);
                     userIns = buildFactory->genInstruction(nullptr, InstructionType::GEP, true);
                     use(valueIns, userIns, 0);
                     for (auto dim : ((Instruction *) valueIns)->dims) {
@@ -484,10 +520,7 @@ int Visitor::handleLVal(Node *lVal, Value **lValInstruction) {
                     }
                     auto *Const = buildFactory->genConst(nullptr, 0);
                     use(Const, userIns, 1);
-                    Value *expIns = nullptr;
-                    handleExp(lVal->children[i], &expIns, false);
                     use(expIns, userIns, 2);
-//                userIns->dims[i] = 0;
                     userIns->dims.erase(userIns->dims.begin());
                     valueIns = userIns;
                     i++;
@@ -506,7 +539,7 @@ int Visitor::handleLVal(Node *lVal, Value **lValInstruction) {
                     use(Const, userIns, 1);
                     Value *expIns = buildFactory->genConst(nullptr, 0);
                     use(expIns, userIns, 2);
-                    userIns->dims[0] = 0;
+                    userIns->dims.erase(userIns->dims.begin());
 //                userIns->dims.erase(userIns->dims.begin());
                     *lValInstruction = userIns;
                 }
@@ -660,7 +693,7 @@ int Visitor::handleUnaryExp(Node *unaryExp, Value **unaryInstruction, bool isGlo
             handleUnaryExp(unaryExp->children[1], unaryInstruction, isGlobal);
             if ((*unaryInstruction)->valueType == ValueType::Const) {
                 //一定是
-                ((Const *) (*unaryInstruction))->val *= op;
+                ((Const *) (*unaryInstruction))->val *= sign;
             }
         }
     } else {
@@ -795,6 +828,7 @@ int Visitor::handleMulExp(Node *mulExp, Value **mulInstruction, bool isGlobal) {
 std::vector<Instruction *> brs;
 std::vector<Instruction *> brs_;
 std::vector<Instruction *> break_brs;
+std::vector<BasicBlock *> beforeConds;
 int inFor = 0;
 
 void Visitor::handleStmt(Node *stmt) {
@@ -856,7 +890,6 @@ void Visitor::handleStmt(Node *stmt) {
                 auto *putch = symbolTable->getSymbol("putch", true, true)->value;
                 use(putch, call, 0);
                 use(Const, ((Instruction *) call), 0);
-                j++;
                 i++;
             } else {
                 auto *Const = buildFactory->genConst(stmt, (int) str[i]);
@@ -898,6 +931,8 @@ void Visitor::handleStmt(Node *stmt) {
     } else if (stmt->getType() == 1) {
         // if
         // 进入条件判断的跳转
+        int t = brs.size();
+
         auto *br0 = buildFactory->genInstruction(nullptr, InstructionType::Br, false);
 
         buildFactory->genBasicBlock(nullptr);
@@ -912,8 +947,10 @@ void Visitor::handleStmt(Node *stmt) {
         buildFactory->genBasicBlock(nullptr);
 
         // 条件语句不成立，不执行if语句的label2
-        for (auto *child: brs) {
-            use(buildFactory->curBasicBlock, child, 2);
+
+        for (int i = brs.size() - 1; i >= t; --i) {
+            use(buildFactory->curBasicBlock, brs[i], 2);
+            brs.pop_back();
         }
 
         if (stmt->children.size() > 2) {
@@ -938,6 +975,7 @@ void Visitor::handleStmt(Node *stmt) {
         auto *br0 = buildFactory->genInstruction(nullptr, InstructionType::Br, false);
 
         auto *beforCondLabel = buildFactory->genBasicBlock(nullptr);
+        beforeConds.push_back(beforCondLabel);
         use(buildFactory->curBasicBlock, br0, 0);
         Value *cond = nullptr;
         Instruction *br = nullptr;
@@ -949,6 +987,7 @@ void Visitor::handleStmt(Node *stmt) {
         if (forStmt->forStmt2 != nullptr) {
             handleForStmt(forStmt->forStmt2);
         }
+        beforeConds.pop_back();
 
         auto *endBr = buildFactory->genInstruction(nullptr, InstructionType::Br, false);
         use(beforCondLabel, endBr, 0);
@@ -973,8 +1012,9 @@ void Visitor::handleStmt(Node *stmt) {
     } else if (stmt->getType() == 4) {
         //continue
         if (inFor) {
-            auto *br = buildFactory->genInstruction(nullptr, InstructionType::Br, false);
-            brs.push_back(br);
+            auto *br = buildFactory->genInstruction(nullptr, InstructionType::Br, false);;
+            use(beforeConds.at(beforeConds.size() - 1), br, 0);
+            //brs.push_back(br);
         }
     } else if (stmt->getType() == 3) {
         // break
