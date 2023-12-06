@@ -52,7 +52,7 @@ public:
 
     void handleBlock(Node *block);
 
-    void handleBlockItem(Node *blockItem);
+    int handleBlockItem(Node *blockItem);
 
     void handleStmt(Node *stmt);
 

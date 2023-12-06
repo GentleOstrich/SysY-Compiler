@@ -88,7 +88,7 @@ std::string GlobalVar::getInit() {
                 bool checkAllZero = true;
                 bool allzero = true;
                 for (int i = 0; i < operands.size(); ++i) {
-                    if (i % dims[0] == 0) {
+                    if (i % dims[1] == 0) {
                         code += subType + " " + "[";
                         checkAllZero = true;
                         allzero = true;
@@ -108,7 +108,7 @@ std::string GlobalVar::getInit() {
                         i = i + dims[1] - 1;
                     } else {
                         code += "i32 " + operands[i]->value->getName() + ", ";
-                        if ((i + 1) % dims[0] == 0) {
+                        if ((i + 1) % dims[1] == 0) {
                             code = code.substr(0, code.size() - 2);
                             code += "], ";
                         }
@@ -131,7 +131,7 @@ std::string GlobalVar::getInit() {
                 code += "[";
                 int len = dims[0] * dims[1];
                 for (int i = 0; i < len; ++i) {
-                    if (i % dims[0] == 0) {
+                    if (i % dims[1] == 0) {
                         code += subType + " ";
                     }
                     code = code.substr(0, code.size() - 1);

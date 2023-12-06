@@ -85,7 +85,7 @@ void Visitor::handleVarDef(Node *varDef, bool isGlobal) {
             } else if (child->getNodeType() == NodeType::ConstExp) {
                 // 各维的长度
                 Value *Const = nullptr;
-                handleConstExp(child, &Const, isGlobal);
+                handleConstExp(child, &Const, true);
                 // 设定alloca的维度
                 allocInstruction->addDim(atoi(Const->getName().c_str()));
             }
@@ -166,7 +166,7 @@ void Visitor::handleConstDef(Node *constDef, bool isGlobal) {
             } else if (child->getNodeType() == NodeType::ConstExp) {
                 // 各维的长度
                 Value *Const = nullptr;
-                handleConstExp(child, &Const, isGlobal);
+                handleConstExp(child, &Const, true);
                 // 设定alloca的维度
                 allocInstruction->addDim(atoi(Const->getName().c_str()));
             }
@@ -230,7 +230,7 @@ int Visitor::handleFuncFParams(Node *funcFParams) {
         use(params[i], store, 0);
         use(allocas[i], store, 1);
         // 设定alloc的维度
-        for (auto dim:((Param *) params[i])->dims) {
+        for (auto dim: ((Param *) params[i])->dims) {
             ((Instruction *) allocas[i])->addDim(dim);
         }
     }
@@ -244,12 +244,12 @@ void Visitor::handleFuncFParam(Node *funcFParam, Value **param) {
     if (funcFParam->getType() > 0) {
         param1->addDim(0);
     }
-    for (auto *child:funcFParam->children) {
+    for (auto *child: funcFParam->children) {
         if (child->getNodeType() == NodeType::BType) {
             handleBType(child);
         } else if (child->getNodeType() == NodeType::ConstExp) {
             Value *Const = nullptr;
-            handleConstExp(child, &Const, false);
+            handleConstExp(child, &Const, true);
 
             param1->addDim(atoi(Const->getName().c_str()));
         }
@@ -347,19 +347,25 @@ int Visitor::handleFuncType(Node *funcType) {
 
 void Visitor::handleBlock(Node *block) {
     for (auto *child: block->children) {
-        handleBlockItem(child);
+        if (handleBlockItem(child) == 1) {
+            break;
+        }
     }
     symbolTable->deleteSymbolTable();
 }
 
-void Visitor::handleBlockItem(Node *blockItem) {
+int Visitor::handleBlockItem(Node *blockItem) {
     for (auto *child: blockItem->children) {
         if (child->nodeType == NodeType::Decl) {
             handleDecl(child, false);
         } else {
             handleStmt(child);
+            if (child->getType() == 3 || child->getType() == 4) {
+                return 1;
+            }
         }
     }
+    return 0;
 }
 
 void Visitor::handleForStmt(Node *forStmt) {
@@ -405,120 +411,52 @@ int Visitor::handleLVal(Node *lVal, Value **lValInstruction) {
 
     string word = lVal->getWord();
     Symbol *symbol = symbolTable->getSymbol(word, false, true); // 找这个数先不用考虑函数
-    if (symbol->value->valueType == ValueType::Global) {
-        if (((Instruction *) (symbol->value))->dims.empty()) {
-            Instruction *loadInstruction = buildFactory->genInstruction(lVal, InstructionType::Load, true);
-            if (symbol->value->valueType == ValueType::Instruction) {
-                for (auto dim:((Instruction *) symbol->value)->dims) {
-                    loadInstruction->addDim(dim);
-                }
-            }
-            use(symbol->value, loadInstruction, 0);
-            *lValInstruction = loadInstruction;
+    if (buildFactory->curFunction == nullptr) {
+        auto *value = symbol->value;
+        if (((GlobalVar *) value)->dims.empty()) {
+            *lValInstruction = ((GlobalVar *) value)->operands[0]->value;
         } else {
-            auto *valueIns = symbol->value;
-            Instruction *userIns = nullptr;
-            int i = 0;
-            while (i < lVal->children.size()) {
-                auto *Const = buildFactory->genConst(nullptr, 0);
+            if (lVal->children.empty()) {
+
+            } else if (lVal->children.size() == 1) {
                 Value *expIns = nullptr;
-                handleExp(lVal->children[i], &expIns, false);
-                userIns = buildFactory->genInstruction(nullptr, InstructionType::GEP, true);
-                use(valueIns, userIns, 0);
-                for (auto dim : ((Instruction *) valueIns)->dims) {
-                    userIns->dims.push_back(dim);
-                }
-                use(Const, userIns, 1);
-                use(expIns, userIns, 2);
-                userIns->dims.erase(userIns->dims.begin());
-                valueIns = userIns;
-                i++;
-            }
-            if (i >= ((Instruction *) (symbol->value))->dims.size()) {
-                Instruction *loadInstruction = buildFactory->genInstruction(lVal, InstructionType::Load, true);
-                use(userIns, loadInstruction, 0);
-                *lValInstruction = loadInstruction;
+                handleExp(lVal->children[0], &expIns, true);
+                *lValInstruction = ((GlobalVar *) value)->operands[atoi(expIns->getName().c_str())]->value;
+            } else if (lVal->children.size() == 2) {
+                Value *expIns1 = nullptr;
+                Value *expIns2 = nullptr;
+                handleExp(lVal->children[0], &expIns1, true);
+                handleExp(lVal->children[0], &expIns2, true);
+                *lValInstruction = ((GlobalVar *) value)->operands[atoi(expIns1->getName().c_str()) *
+                                                                   atoi(expIns2->getName().c_str())]->value;
             } else {
-                userIns = buildFactory->genInstruction(nullptr, InstructionType::GEP, true);
-                use(valueIns, userIns, 0);
-                for (auto dim : ((Instruction *) valueIns)->dims) {
-                    userIns->dims.push_back(dim);
-                }
-                auto *Const = buildFactory->genConst(nullptr, 0);
-                use(Const, userIns, 1);
-                Value *expIns = buildFactory->genConst(nullptr, 0);
-                use(expIns, userIns, 2);
-                userIns->dims.erase(userIns->dims.begin());
-//                userIns->dims.erase(userIns->dims.begin());
-                *lValInstruction = userIns;
+
             }
         }
-        //TODO
-        // 左值先返回0
-        return 0;
-    } else if (symbol->value->valueType == ValueType::Instruction) {
-        if (((Instruction *) (symbol->value))->dims.empty()) {
-            // 不是数组
-            Instruction *loadInstruction = buildFactory->genInstruction(lVal, InstructionType::Load, true);
-            if (symbol->value->valueType == ValueType::Instruction) {
-                for (auto dim:((Instruction *) symbol->value)->dims) {
-                    loadInstruction->addDim(dim);
-                }
-            }
-            use(symbol->value, loadInstruction, 0);
-            *lValInstruction = loadInstruction;
-        } else {
-            auto *valueIns = symbol->value;
-            if (((Instruction *) (valueIns))->dims[0] == 0) {
-                //TODO
-                // 函数中的处理
-                auto *loadIns = buildFactory->genInstruction(nullptr, InstructionType::Load, true);
-                use(valueIns, loadIns, 0);
-                loadIns->isPtr = true;
-                for (auto dim:((Instruction *) (valueIns))->dims) {
-                    loadIns->addDim(dim);
-                }
-                loadIns->dims.erase(loadIns->dims.begin());
-                if (!lVal->children.empty()) {
-                    Instruction *userIns = nullptr;
-                    Instruction *valueIns = loadIns;
-                    for (int i = 0; i < lVal->children.size(); ++i) {
-                        Value *expIns = nullptr;
-                        handleExp(lVal->children[i], &expIns, false);
-                        userIns = buildFactory->genInstruction(nullptr, InstructionType::GEP, true);
-                        use(valueIns, userIns, 0);
-                        for (auto dim:((Instruction *) (valueIns))->dims) {
-                            userIns->addDim(dim);
-                        }
-                        if (i == 0) {
-                            use(expIns, userIns, 1);
-                        } else {
-                            auto *Const = buildFactory->genConst(nullptr, 0);
-                            use(Const, userIns, 1);
-                            userIns->dims.erase(userIns->dims.begin());
-                            use(expIns, userIns, 2);
-                        }
-                        valueIns = userIns;
+    } else {
+        if (symbol->value->valueType == ValueType::Global) {
+            if (((Instruction *) (symbol->value))->dims.empty()) {
+                Instruction *loadInstruction = buildFactory->genInstruction(lVal, InstructionType::Load, true);
+                if (symbol->value->valueType == ValueType::Instruction) {
+                    for (auto dim: ((Instruction *) symbol->value)->dims) {
+                        loadInstruction->addDim(dim);
                     }
-                    loadIns = buildFactory->genInstruction(nullptr, InstructionType::Load, true);
-                    use(valueIns, loadIns, 0);
-                    *lValInstruction = loadIns;
-                } else {
-                    *lValInstruction = loadIns;
                 }
-
+                use(symbol->value, loadInstruction, 0);
+                *lValInstruction = loadInstruction;
             } else {
+                auto *valueIns = symbol->value;
                 Instruction *userIns = nullptr;
                 int i = 0;
                 while (i < lVal->children.size()) {
+                    auto *Const = buildFactory->genConst(nullptr, 0);
                     Value *expIns = nullptr;
                     handleExp(lVal->children[i], &expIns, false);
                     userIns = buildFactory->genInstruction(nullptr, InstructionType::GEP, true);
                     use(valueIns, userIns, 0);
-                    for (auto dim : ((Instruction *) valueIns)->dims) {
+                    for (auto dim: ((Instruction *) valueIns)->dims) {
                         userIns->dims.push_back(dim);
                     }
-                    auto *Const = buildFactory->genConst(nullptr, 0);
                     use(Const, userIns, 1);
                     use(expIns, userIns, 2);
                     userIns->dims.erase(userIns->dims.begin());
@@ -532,7 +470,7 @@ int Visitor::handleLVal(Node *lVal, Value **lValInstruction) {
                 } else {
                     userIns = buildFactory->genInstruction(nullptr, InstructionType::GEP, true);
                     use(valueIns, userIns, 0);
-                    for (auto dim : ((Instruction *) valueIns)->dims) {
+                    for (auto dim: ((Instruction *) valueIns)->dims) {
                         userIns->dims.push_back(dim);
                     }
                     auto *Const = buildFactory->genConst(nullptr, 0);
@@ -544,7 +482,146 @@ int Visitor::handleLVal(Node *lVal, Value **lValInstruction) {
                     *lValInstruction = userIns;
                 }
             }
-        }
+            //TODO
+            // 左值先返回0
+            return 0;
+        } else if (symbol->value->valueType == ValueType::Instruction) {
+            if (((Instruction *) (symbol->value))->dims.empty()) {
+                // 不是数组
+                Instruction *loadInstruction = buildFactory->genInstruction(lVal, InstructionType::Load, true);
+                if (symbol->value->valueType == ValueType::Instruction) {
+                    for (auto dim: ((Instruction *) symbol->value)->dims) {
+                        loadInstruction->addDim(dim);
+                    }
+                }
+                use(symbol->value, loadInstruction, 0);
+                *lValInstruction = loadInstruction;
+            } else {
+                auto *valueIns = symbol->value;
+                if (((Instruction *) (valueIns))->dims[0] == 0) {
+                    //TODO
+                    // 函数中的处理
+                    auto *loadIns = buildFactory->genInstruction(nullptr, InstructionType::Load, true);
+                    use(valueIns, loadIns, 0);
+                    loadIns->isPtr = true;
+                    for (auto dim: ((Instruction *) (valueIns))->dims) {
+                        loadIns->addDim(dim);
+                    }
+                    loadIns->dims.erase(loadIns->dims.begin());
+                    if (!lVal->children.empty()) {
+                        valueIns = loadIns;
+                        if (lVal->children.size() == 1) {
+                            if (((Instruction *) valueIns)->dims.empty()) {
+                                Value *expIns = nullptr;
+                                handleExp(lVal->children[0], &expIns, false);
+                                Instruction *userIns = buildFactory->genInstruction(nullptr, InstructionType::GEP,
+                                                                                    true);
+
+                                use(valueIns, userIns, 0);
+                                use(expIns, userIns, 1);
+                                valueIns = userIns;
+                                userIns = nullptr;
+                            } else {
+                                Value *expIns = nullptr;
+                                handleExp(lVal->children[0], &expIns, false);
+                                Instruction *userIns = buildFactory->genInstruction(nullptr, InstructionType::GEP,
+                                                                                    true);
+                                for (auto dim: ((Instruction *) valueIns)->dims) {
+                                    userIns->addDim(dim);
+                                }
+                                use(valueIns, userIns, 0);
+                                use(expIns, userIns, 1);
+
+                                valueIns = userIns;
+                                userIns = buildFactory->genInstruction(nullptr, InstructionType::GEP, true);
+                                use(valueIns, userIns, 0);
+                                for (auto dim: ((Instruction *) valueIns)->dims) {
+                                    userIns->addDim(dim);
+                                }
+                                userIns->dims.erase(userIns->dims.begin());
+                                auto *Const = buildFactory->genConst(nullptr, 0);
+                                use(Const, userIns, 1);
+                                use(Const, userIns, 2);
+                                valueIns = userIns;
+                                userIns = nullptr;
+
+
+                            }
+                        } else if (lVal->children.size() == 2) {
+                            Value *expIns = nullptr;
+                            handleExp(lVal->children[0], &expIns, false);
+                            Instruction *userIns = buildFactory->genInstruction(nullptr, InstructionType::GEP, true);
+                            for (auto dim: ((Instruction *) valueIns)->dims) {
+                                userIns->addDim(dim);
+                            }
+                            use(valueIns, userIns, 0);
+                            use(expIns, userIns, 1);
+                            valueIns = userIns;
+                            handleExp(lVal->children[1], &expIns, false);
+                            userIns = buildFactory->genInstruction(nullptr, InstructionType::GEP, true);
+                            for (auto dim: ((Instruction *) valueIns)->dims) {
+                                userIns->addDim(dim);
+                            }
+                            userIns->dims.erase(userIns->dims.begin());
+                            use(valueIns, userIns, 0);
+                            auto *Const = buildFactory->genConst(nullptr, 0);
+                            use(Const, userIns, 1);
+                            use(expIns, userIns, 2);
+                            valueIns = userIns;
+                            userIns = nullptr;
+                        }
+                        if (((Instruction *) (symbol->value))->dims.size() == lVal->children.size()) {
+                            loadIns = buildFactory->genInstruction(nullptr, InstructionType::Load, true);
+                            use(valueIns, loadIns, 0);
+                            for (auto dim: ((Instruction *) valueIns)->dims) {
+                                loadIns->addDim(dim);
+                            }
+                            *lValInstruction = loadIns;
+                        } else {
+                            *lValInstruction = valueIns;
+                        }
+                    } else {
+                        *lValInstruction = loadIns;
+                    }
+
+                } else {
+                    Instruction *userIns = nullptr;
+                    int i = 0;
+                    while (i < lVal->children.size()) {
+                        Value *expIns = nullptr;
+                        handleExp(lVal->children[i], &expIns, false);
+                        userIns = buildFactory->genInstruction(nullptr, InstructionType::GEP, true);
+                        use(valueIns, userIns, 0);
+                        for (auto dim: ((Instruction *) valueIns)->dims) {
+                            userIns->dims.push_back(dim);
+                        }
+                        auto *Const = buildFactory->genConst(nullptr, 0);
+                        use(Const, userIns, 1);
+                        use(expIns, userIns, 2);
+                        userIns->dims.erase(userIns->dims.begin());
+                        valueIns = userIns;
+                        i++;
+                    }
+                    if (i >= ((Instruction *) (symbol->value))->dims.size()) {
+                        Instruction *loadInstruction = buildFactory->genInstruction(lVal, InstructionType::Load, true);
+                        use(userIns, loadInstruction, 0);
+                        *lValInstruction = loadInstruction;
+                    } else {
+                        userIns = buildFactory->genInstruction(nullptr, InstructionType::GEP, true);
+                        use(valueIns, userIns, 0);
+                        for (auto dim: ((Instruction *) valueIns)->dims) {
+                            userIns->dims.push_back(dim);
+                        }
+                        auto *Const = buildFactory->genConst(nullptr, 0);
+                        use(Const, userIns, 1);
+                        Value *expIns = buildFactory->genConst(nullptr, 0);
+                        use(expIns, userIns, 2);
+                        userIns->dims.erase(userIns->dims.begin());
+//                userIns->dims.erase(userIns->dims.begin());
+                        *lValInstruction = userIns;
+                    }
+                }
+            }
 //        else {
 //            if (((Instruction *) (symbol->value))->dims[0] != 0) {
 //                auto *GEPIns = buildFactory->genInstruction(nullptr, InstructionType::GEP, true);
@@ -635,8 +712,9 @@ int Visitor::handleLVal(Node *lVal, Value **lValInstruction) {
 //            }
 //        }
 
-        // 找到专门的alloc指令
-        // 等一下还要向其他的一样传入Value的形参
+            // 找到专门的alloc指令
+            // 等一下还要向其他的一样传入Value的形参
+        }
     }
     return -114514;
 }
@@ -751,7 +829,6 @@ int Visitor::handleUnaryExp(Node *unaryExp, Value **unaryInstruction, bool isGlo
             }
         }
     }
-
     return -114514;
 }
 
@@ -829,6 +906,7 @@ std::vector<Instruction *> brs;
 std::vector<Instruction *> brs_;
 std::vector<Instruction *> break_brs;
 std::vector<BasicBlock *> beforeConds;
+std::vector<Instruction *> continues;
 int inFor = 0;
 
 void Visitor::handleStmt(Node *stmt) {
@@ -967,6 +1045,7 @@ void Visitor::handleStmt(Node *stmt) {
         // for
         inFor++;
         int t = brs.size();
+        int c_t = continues.size();
         int b_t = break_brs.size();
         Stmt *forStmt = (Stmt *) stmt;
         if (forStmt->forStmt1 != nullptr) {
@@ -984,13 +1063,21 @@ void Visitor::handleStmt(Node *stmt) {
         }
 
         handleStmt(forStmt->children[0]);
+
+        auto *br1 = buildFactory->genInstruction(nullptr, InstructionType::Br, false);
+        buildFactory->genBasicBlock(nullptr);
+        use(buildFactory->curBasicBlock, br1, 0);
+        for (int i = continues.size() - 1; i >= c_t; i--) {
+            use(buildFactory->curBasicBlock, continues[i], 0);
+            continues.pop_back();
+        }
+
         if (forStmt->forStmt2 != nullptr) {
             handleForStmt(forStmt->forStmt2);
         }
+        auto *br2 = buildFactory->genInstruction(nullptr, InstructionType::Br, false);
+        use(beforeConds[beforeConds.size() - 1], br2, 0);
         beforeConds.pop_back();
-
-        auto *endBr = buildFactory->genInstruction(nullptr, InstructionType::Br, false);
-        use(beforCondLabel, endBr, 0);
 
         buildFactory->genBasicBlock(nullptr);
         // 跳出for循环的位置 break 产生的br跳出的位置
@@ -1013,8 +1100,7 @@ void Visitor::handleStmt(Node *stmt) {
         //continue
         if (inFor) {
             auto *br = buildFactory->genInstruction(nullptr, InstructionType::Br, false);;
-            use(beforeConds.at(beforeConds.size() - 1), br, 0);
-            //brs.push_back(br);
+            continues.push_back(br);
         }
     } else if (stmt->getType() == 3) {
         // break
@@ -1096,6 +1182,14 @@ Instruction *Visitor::handleEqExp(Node *eqExp, Value **eq, bool isBr) {
             rel = zext;
         }
         *eq = rel;
+        if (NOT == 1 && !isBr) {
+            InstructionType instructionType = (NOT == -1) ? InstructionType::Ne : InstructionType::Eq;
+            auto *ne = buildFactory->genInstruction(nullptr, instructionType, true);
+            auto *Const = buildFactory->genConst(nullptr, 0);
+            use(Const, ne, 0);
+            use((*eq), ne, 1);
+            *eq = ne;
+        }
         if (isBr) {
             InstructionType instructionType = (NOT == -1) ? InstructionType::Ne : InstructionType::Eq;
             auto *ne = buildFactory->genInstruction(nullptr, instructionType, true);
@@ -1221,7 +1315,7 @@ int Visitor::handleConstExp(Node *constExp, Value **constExpInstruction, bool is
     Value *addInstruction = nullptr;
     for (auto *child: constExp->children) {
         if (child->nodeType == NodeType::AddExp) {
-            handleAddExp(child, &addInstruction, false);
+            handleAddExp(child, &addInstruction, isGlobal);
         }
     }
     *constExpInstruction = addInstruction;
