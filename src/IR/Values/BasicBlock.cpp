@@ -9,11 +9,15 @@
 extern std::ofstream c_ofs;
 
 BasicBlock::BasicBlock(const std::string &name, ValueType valueType, Function *function) : Value(name, valueType),
-                                                                                                 function(function) {}
+                                                                                           function(function) {}
 
 void BasicBlock::translate() {
-    for (auto* child : instructions) {
+    for (auto *child : instructions) {
         child->translate();
+        if (((Instruction *) child)->instructionType == InstructionType::Ret ||
+            ((Instruction *) child)->instructionType == InstructionType::Br) {
+            break;
+        }
     }
 }
 
