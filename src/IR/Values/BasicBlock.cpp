@@ -12,14 +12,14 @@ BasicBlock::BasicBlock(const std::string &name, ValueType valueType, Function *f
                                                                                            function(function) {}
 
 void BasicBlock::translate() {
-    for (auto* child : instructions) {
+    for (auto *child : instructions) {
         child->translate();
         if (((Instruction *) child)->instructionType == InstructionType::Ret ||
             ((Instruction *) child)->instructionType == InstructionType::Br) {
             return;
         }
     }
-    c_ofs << "    "  << "ret void" << std::endl;
+    c_ofs << "    " << "ret void" << std::endl;
 }
 
 void BasicBlock::addInstruction(Instruction *instruction) {

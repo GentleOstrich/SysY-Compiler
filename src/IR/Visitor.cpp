@@ -1202,21 +1202,34 @@ Instruction *Visitor::handleEqExp(Node *eqExp, Value **eq, bool isBr) {
         Value *leftEq = nullptr;
         Value *righRel = nullptr;
         handleEqExp(eqExp->children[0], &leftEq, false);
+
+
+        NOT = -1;
         handleRelExp(eqExp->children[1], &righRel);
+        if (NOT == 1) {
+            InstructionType instructionType = (NOT == -1) ? InstructionType::Ne : InstructionType::Eq;
+            auto *ne = buildFactory->genInstruction(nullptr, instructionType, true);
+            auto *Const = buildFactory->genConst(nullptr, 0);
+            use(Const, ne, 0);
+            use(righRel, ne, 1);
+            righRel = ne;
+        }
+
 
         InstructionType instructionType = (eqExp->getOp() == 0) ? InstructionType::Eq : InstructionType::Ne;
 
-        if (leftEq->ty != righRel->ty) {
-            if (leftEq->ty == 1) {
-                auto *zext = buildFactory->genInstruction(nullptr, InstructionType::Zext, true);
-                use(leftEq, zext, 0);
-                leftEq = zext;
-            } else if (righRel->ty == 1) {
-                auto *zext = buildFactory->genInstruction(nullptr, InstructionType::Zext, true);
-                use(righRel, zext, 0);
-                righRel = zext;
-            }
+
+        if (leftEq->ty == 1) {
+            auto *zext = buildFactory->genInstruction(nullptr, InstructionType::Zext, true);
+            use(leftEq, zext, 0);
+            leftEq = zext;
         }
+        if (righRel->ty == 1) {
+            auto *zext = buildFactory->genInstruction(nullptr, InstructionType::Zext, true);
+            use(righRel, zext, 0);
+            righRel = zext;
+        }
+
 
         *eq = buildFactory->genInstruction(eqExp, instructionType, true);
         use(leftEq, ((Instruction *) (*eq)), 0);
@@ -1245,8 +1258,26 @@ void Visitor::handleRelExp(Node *relExp, Value **rel) {
         //要产生add指令了
         Value *leftRel = nullptr;
         Value *righAdd = nullptr;
+        NOT = -1;
         handleRelExp(relExp->children[0], &leftRel);
+        if (NOT == 1) {
+            InstructionType instructionType = (NOT == -1) ? InstructionType::Ne : InstructionType::Eq;
+            auto *ne = buildFactory->genInstruction(nullptr, instructionType, true);
+            auto *Const = buildFactory->genConst(nullptr, 0);
+            use(Const, ne, 0);
+            use(leftRel, ne, 1);
+            leftRel = ne;
+        }
+        NOT = -1;
         handleAddExp(relExp->children[1], &righAdd, false);
+        if (NOT == 1) {
+            InstructionType instructionType = (NOT == -1) ? InstructionType::Ne : InstructionType::Eq;
+            auto *ne = buildFactory->genInstruction(nullptr, instructionType, true);
+            auto *Const = buildFactory->genConst(nullptr, 0);
+            use(Const, ne, 0);
+            use(righAdd, ne, 1);
+            righAdd = ne;
+        }
 
         InstructionType instructionType = (relExp->getOp() == 1) ? InstructionType::Ge :
                                           (relExp->getOp() == 0) ? InstructionType::Gt :
