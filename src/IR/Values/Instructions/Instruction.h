@@ -26,7 +26,7 @@ public:
 
     std::string getName() override;
 
-    void addDim(int dim);
+    void addDim(int dim); // 
 
     std::string getType() override;
 

@@ -16,9 +16,10 @@ void BasicBlock::translate() {
         child->translate();
         if (((Instruction *) child)->instructionType == InstructionType::Ret ||
             ((Instruction *) child)->instructionType == InstructionType::Br) {
-            return;
+            return; // 每个基本块的结尾的ret或br之后就不再有指令了
         }
     }
+    // 一直没有ret或br的话输出void
     c_ofs << "    " << "ret void" << std::endl;
 }
 

@@ -7,12 +7,6 @@
 
 enum class ValueType {
     Function,
-    Integer,
-    Label,
-    None,
-    Pointer,
-    Void,
-    Array,
     Instruction,
     BasicBlock,
     Const,

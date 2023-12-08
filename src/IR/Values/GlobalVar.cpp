@@ -42,31 +42,18 @@ void GlobalVar::addDim(int dim) {
 
 std::string GlobalVar::getType() {
     std::string code;
-    for (auto dim: dims) {
-        if (dim > 0)
-            code += "[" + std::to_string(dim) + " x ";
-    }
-    code += "i" + std::to_string(ty);
-    for (int dim: dims) {
-        if (dim > 0)
-            code += "]";
-    }
-    for (auto dim:dims) {
-        if (dim == 0) {
-            code += "*";
-        }
-    }
+    code += getContent();
     code += "*";
     return code;
 }
 
 std::string GlobalVar::getInit() {
     std::string code;
-    if (!operands.empty()) {
-        if (dims.empty()) {
+    if (!operands.empty()) { // 有初始数字
+        if (dims.empty()) { // 没有维度
             code += "i32 " + operands[0]->value->getName();
         } else {
-            if (dims.size() == 1) {
+            if (dims.size() == 1) { // 一维
                 code += "[";
                 bool allzero = true;
                 for (auto *use: operands) {
@@ -82,27 +69,27 @@ std::string GlobalVar::getInit() {
                     code = code.substr(0, code.size() - 2);
                     code += "]";
                 }
-            } else if (dims.size() == 2) {
+            } else if (dims.size() == 2) { // 二维 [[3 x i32] [xxx, xxx, xxx], ....]
                 std::string subType = "[" + std::to_string(dims[1]) + " x " + "i32" + "]";
                 code += "[";
-                bool checkAllZero = true;
-                bool allzero = true;
+                bool checkAllZero = true; // 需要检查全0
+                bool allZero = true; // 是全0
                 for (int i = 0; i < operands.size(); ++i) {
                     if (i % dims[1] == 0) {
                         code += subType + " " + "[";
                         checkAllZero = true;
-                        allzero = true;
+                        allZero = true;
                     }
                     if (checkAllZero) {
                         for (int j = i; j < i + dims[1]; ++j) {
                             if (operands[j]->value->getName() != "0") {
-                                allzero = false;
+                                allZero = false;
                                 break;
                             }
                         }
                         checkAllZero = false;
                     }
-                    if (allzero) {
+                    if (allZero) {
                         code = code.substr(0, code.size() - 1);
                         code += "zeroinitializer, ";
                         i = i + dims[1] - 1;
@@ -116,20 +103,20 @@ std::string GlobalVar::getInit() {
                 }
                 code = code.substr(0, code.size() - 2);
                 code += "]";
-            } else {
+            } else { // 维度超过二维
                 std::cout << "inValid Dim!" << std::endl;
             }
         }
-    } else {
-        if (dims.empty()) {
+    } else { // 没有初始数字
+        if (dims.empty()) { // 没有维度
             code += "i32 0";
         } else {
-            if (dims.size() == 1) {
+            if (dims.size() == 1) { // 一维
                 code += "zeroinitializer";
-            } else if (dims.size() == 2) {
-                std::string subType = "[" + std::to_string(dims[1]) + " x " + "i32" + "]";
+            } else if (dims.size() == 2) { // 二维 [[3 x i32] [xxx, xxx, xxx], ....]
+                std::string subType = "[" + std::to_string(dims[1]) + " x " + "i32" + "]"; //
                 code += "[";
-                int len = dims[0] * dims[1];
+                int len = dims[0] * dims[1]; // 数字的个数
                 for (int i = 0; i < len; ++i) {
                     if (i % dims[1] == 0) {
                         code += subType + " ";
@@ -140,7 +127,7 @@ std::string GlobalVar::getInit() {
                 }
                 code = code.substr(0, code.size() - 2);
                 code += "]";
-            } else {
+            } else { // 维度超过二维
                 std::cout << "inValid Dim!" << std::endl;
             }
         }
@@ -150,22 +137,18 @@ std::string GlobalVar::getInit() {
 
 std::string GlobalVar::getContent() {
     std::string code;
-    if (dims.empty()) {
-        code += "i" + std::to_string(ty);
-    } else {
-        for (auto dim: dims) {
-            if (dim > 0)
-                code += "[" + std::to_string(dim) + " x ";
-        }
-        code += "i" + std::to_string(ty);
-        for (int dim: dims) {
-            if (dim > 0)
-                code += "]";
-        }
-        for (auto dim:dims) {
-            if (dim == 0) {
-                code += "*";
-            }
+    for (auto dim: dims) {
+        if (dim > 0) // 只有在函数里dim会等于0
+            code += "[" + std::to_string(dim) + " x ";
+    }
+    code += "i" + std::to_string(ty);
+    for (int dim: dims) {
+        if (dim > 0) // 只有在函数里dim会等于0
+            code += "]";
+    }
+    for (auto dim : dims) {
+        if (dim == 0) { // 表示存的是指针
+            code += "*";
         }
     }
     return code;

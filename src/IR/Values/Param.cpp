@@ -17,13 +17,13 @@ void Param::addDim(int dim) {
 
 std::string Param::getType() {
     std::string code;
-    if (dims.empty()) {
+    if (dims.empty()) { // 一个数
         code += "i" + std::to_string(ty);
-    } else if (dims.size() == 1) {
+    } else if (dims.size() == 1) { // 一维 a[]
         code += "i" + std::to_string(ty) + "*";
-    } else if (dims.size() == 2) {
+    } else if (dims.size() == 2) { // 二维 a[][2]
         code += "[" + std::to_string(dims[1]) + " x " + "i" + std::to_string(ty) + "]" + "*";
-    } else {
+    } else { // 超过二维
         std::cout << "invalid dim" << std::endl;
     }
     return code;
