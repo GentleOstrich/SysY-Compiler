@@ -18,7 +18,7 @@ public:
 
     bool isPtr = false;
 
-    std::vector<int> dims;
+    std::vector<int> dims; // 表示装的是什么 dims[0] = 0 就是指针 1维指针 2维指针
 
     Instruction(const std::string &name, ValueType valueType, BasicBlock *basicBlock, InstructionType instructionType);
 

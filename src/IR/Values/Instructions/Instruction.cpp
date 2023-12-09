@@ -32,7 +32,7 @@ void Instruction::translate() {
         } else {
             for (auto *child: operands) {
                 Value *value = child->value;
-                code += "i" + std::to_string(value->ty) + " " + value->getName() + " ";
+                code += "i" + std::to_string(value->ty) + " " + value->getName() + " "; // 只能返回i32所以无需考虑返回的类型
             }
         }
     } else if (instructionType == InstructionType::Add) {
@@ -63,7 +63,7 @@ void Instruction::translate() {
             code += value->getName() + ", ";
         }
         code = code.substr(0, code.size() - 2);
-    } // 还缺一个mod
+    } // mod 生成三个指令 先除 再乘 再减
     else if (instructionType == InstructionType::Eq) {
         code += this->getName() + " = icmp eq " + "i" + std::to_string(this->operands[0]->value->ty) + " ";
         for (auto *child: operands) {
@@ -107,7 +107,7 @@ void Instruction::translate() {
         }
         code = code.substr(0, code.size() - 2);
     } else if (instructionType == InstructionType::Alloca) {
-        code += this->getName() + " = alloca " + getContent();
+        code += this->getName() + " = alloca " + getContent(); // 每个alloca实际上都是指针，这里输出装的是什么
     } else if (instructionType == InstructionType::Store) {
         code += "store ";
         code += operands[0]->value->getType() + " " + operands[0]->value->getName() + ", ";
@@ -117,7 +117,7 @@ void Instruction::translate() {
         for (auto *child: operands) {
             Value *value = child->value;
             code += value->getContent() + ", " + value->getType() + " " +
-                    value->getName();
+                    value->getName(); // 只会从指针里load，所以前一个是指针里装的是什么，后一个是指针的类型（装的是什么 + *）
         }
     } else if (instructionType == InstructionType::Call) {
         std::string ret;
@@ -128,11 +128,10 @@ void Instruction::translate() {
             code += "call " + ret + " " + this->operands[0]->value->getName() + "(";
             // 函数的ty要么是 i32 要么是 void
             for (int i = 1; i < this->operands.size(); ++i) {
-
                 code += this->operands[i]->value->getType() + " " + this->operands[i]->value->getName();
                 code += ", ";
             }
-            if (this->operands.size() > 1) { code = code.substr(0, code.size() - 2); }
+            if (this->operands.size() > 1) code = code.substr(0, code.size() - 2);
             code += ")";
         } else {
             code += this->getName() + " = " + "call " + ret + " " + this->operands[0]->value->getName() + "(";
@@ -144,15 +143,15 @@ void Instruction::translate() {
             code += ")";
         }
     } else if (instructionType == InstructionType::Br) {
-        // 待施工
         if (this->operands.size() == 1) {
+            // 直接跳
             code += "br label " + this->operands[0]->value->getName();
         } else {
+            // 条件跳
             std::string label1 = (this->operands[1]->pos == 1) ? this->operands[1]->value->getName()
                                                                : this->operands[2]->value->getName();
             std::string label2 = (this->operands[2]->pos == 2) ? this->operands[2]->value->getName()
                                                                : this->operands[1]->value->getName();
-
             code += "br i" + std::to_string(this->operands[0]->value->ty) + " " +
                     this->operands[0]->value->getName() +
                     ", label " + label1 + ", label " + label2;
@@ -180,21 +179,21 @@ void Instruction::addDim(int dim) {
 }
 
 std::string Instruction::getType() {
-    std::string code;
-    for (auto dim: dims) {
-        if (dim > 0)
-            code += "[" + std::to_string(dim) + " x ";
-    }
-    code += "i" + std::to_string(ty);
-    for (int dim: dims) {
-        if (dim > 0)
-            code += "]";
-    }
-    for (auto dim:dims) {
-        if (dim == 0) {
-            code += "*";
-        }
-    }
+    std::string code = getContent();
+//    for (auto dim: dims) {
+//        if (dim > 0)
+//            code += "[" + std::to_string(dim) + " x ";
+//    }
+//    code += "i" + std::to_string(ty);
+//    for (int dim: dims) {
+//        if (dim > 0)
+//            code += "]";
+//    }
+//    for (auto dim: dims) {
+//        if (dim == 0) {
+//            code += "*";
+//        }
+//    }
     if (isPtr) {
         code += "*";
     }
@@ -215,7 +214,7 @@ std::string Instruction::getContent() {
             if (dim > 0)
                 code += "]";
         }
-        for (auto dim:dims) {
+        for (auto dim: dims) {
             if (dim == 0) {
                 code += "*";
             }
