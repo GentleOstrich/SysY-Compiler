@@ -8,7 +8,6 @@
 #include <unordered_map>
 #include <string>
 #include <vector>
-#include "Func.h"
 #include "../Value.h"
 
 class Symbol

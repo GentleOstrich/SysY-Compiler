@@ -21,7 +21,7 @@ void Visitor::handleVarDef(Node *varDef, bool isGlobal) {
     //TODO
     // 数组相关
     if (isGlobal) {
-        auto *globalVar = buildFactory->genGlobalVar(varDef, 0, false);
+        auto *globalVar = buildFactory->genGlobalVar(varDef, false);
         auto *symbol = new Symbol(varDef->getWord(), globalVar);
         symbolTable->addSymbol(symbol, varDef->getLineNum());
         for (auto *child: varDef->children) {
@@ -40,7 +40,7 @@ void Visitor::handleVarDef(Node *varDef, bool isGlobal) {
             }
         }
     } else {
-        auto *allocInstruction = buildFactory->genInstruction(varDef, InstructionType::Alloca, true);
+        auto *allocInstruction = buildFactory->genInstruction(InstructionType::Alloca, true);
         auto *symbol = new Symbol(varDef->getWord(), allocInstruction);
         symbolTable->addSymbol(symbol, varDef->getLineNum());
         symbolTable->symbolId--;
@@ -52,31 +52,31 @@ void Visitor::handleVarDef(Node *varDef, bool isGlobal) {
                 for (auto initVal: initVals) {
                     if (allocInstruction->dims.size() < 1) {
                         // 不是数组 不需要GEP
-                        auto *storeInstruction = buildFactory->genInstruction(varDef, InstructionType::Store, false);
+                        auto *storeInstruction = buildFactory->genInstruction(InstructionType::Store, false);
                         use(initVal, storeInstruction, 0);
                         use(allocInstruction, storeInstruction, 1);
                     } else {
                         // 是数组
-                        auto *GEPIns = buildFactory->genInstruction(nullptr, InstructionType::GEP, true);
+                        auto *GEPIns = buildFactory->genInstruction(InstructionType::GEP, true);
 //                        for (auto dim:allocInstruction->dims) {
 //                            GEPIns->addDim(dim);
 //                        }
 
                         use(allocInstruction, GEPIns, 0);
-                        auto *Const1 = buildFactory->genConst(nullptr, 0);
+                        auto *Const1 = buildFactory->genConst(0);
                         use(Const1, GEPIns, 1); // 此处第一个移动数都是0 （整体不移动）
 
                         if (allocInstruction->dims.size() == 1) {
-                            Const1 = buildFactory->genConst(nullptr, i);
+                            Const1 = buildFactory->genConst(i);
                             use(Const1, GEPIns, 2);
                         } else if (allocInstruction->dims.size() == 2) {
-                            Const1 = buildFactory->genConst(nullptr, i / allocInstruction->dims[1]);
+                            Const1 = buildFactory->genConst(i / allocInstruction->dims[1]);
                             use(Const1, GEPIns, 2);
-                            Const1 = buildFactory->genConst(nullptr, i % allocInstruction->dims[1]);
+                            Const1 = buildFactory->genConst(i % allocInstruction->dims[1]);
                             use(Const1, GEPIns, 3);
                         }
 
-                        auto *storeInstruction = buildFactory->genInstruction(varDef, InstructionType::Store, false);
+                        auto *storeInstruction = buildFactory->genInstruction(InstructionType::Store, false);
                         use(initVal, storeInstruction, 0);
                         use(GEPIns, storeInstruction, 1);
                     }
@@ -100,7 +100,7 @@ void Visitor::handleConstDef(Node *constDef, bool isGlobal) {
     // 数组相关
     // 需要加符号表了
     if (isGlobal) {
-        auto *globalVar = buildFactory->genGlobalVar(constDef, 0, true);
+        auto *globalVar = buildFactory->genGlobalVar(constDef, true);
         auto *symbol = new Symbol(constDef->getWord(), globalVar);
         symbolTable->addSymbol(symbol, constDef->getLineNum());
         for (auto *child: constDef->children) {
@@ -120,7 +120,7 @@ void Visitor::handleConstDef(Node *constDef, bool isGlobal) {
             }
         }
     } else {
-        auto *allocInstruction = buildFactory->genInstruction(constDef, InstructionType::Alloca, true);
+        auto *allocInstruction = buildFactory->genInstruction(InstructionType::Alloca, true);
         auto *symbol = new Symbol(constDef->getWord(), allocInstruction);
         symbolTable->addSymbol(symbol, constDef->getLineNum());
         symbolTable->symbolId--;
@@ -133,31 +133,31 @@ void Visitor::handleConstDef(Node *constDef, bool isGlobal) {
                 for (auto initVal: initVals) {
                     if (allocInstruction->dims.size() < 1) {
                         // 不是数组 不需要GEP
-                        auto *storeInstruction = buildFactory->genInstruction(constDef, InstructionType::Store, false);
+                        auto *storeInstruction = buildFactory->genInstruction(InstructionType::Store, false);
                         use(initVal, storeInstruction, 0);
                         use(allocInstruction, storeInstruction, 1);
                     } else {
                         // 是数组
-                        auto *GEPIns = buildFactory->genInstruction(nullptr, InstructionType::GEP, true);
+                        auto *GEPIns = buildFactory->genInstruction(InstructionType::GEP, true);
 //                        for (auto dim:allocInstruction->dims) {
 //                            GEPIns->addDim(dim);
 //                        }
 
                         use(allocInstruction, GEPIns, 0);
-                        auto *Const1 = buildFactory->genConst(nullptr, 0);
+                        auto *Const1 = buildFactory->genConst(0);
                         use(Const1, GEPIns, 1); // 此处第一个移动数都是0 （整体不移动）
 
                         if (allocInstruction->dims.size() == 1) {
-                            Const1 = buildFactory->genConst(nullptr, i);
+                            Const1 = buildFactory->genConst(i);
                             use(Const1, GEPIns, 2);
                         } else if (allocInstruction->dims.size() == 2) {
-                            Const1 = buildFactory->genConst(nullptr, i / allocInstruction->dims[1]);
+                            Const1 = buildFactory->genConst(i / allocInstruction->dims[1]);
                             use(Const1, GEPIns, 2);
-                            Const1 = buildFactory->genConst(nullptr, i % allocInstruction->dims[1]);
+                            Const1 = buildFactory->genConst(i % allocInstruction->dims[1]);
                             use(Const1, GEPIns, 3);
                         }
 
-                        auto *storeInstruction = buildFactory->genInstruction(constDef, InstructionType::Store, false);
+                        auto *storeInstruction = buildFactory->genInstruction(InstructionType::Store, false);
                         use(initVal, storeInstruction, 0);
                         use(GEPIns, storeInstruction, 1);
                     }
@@ -219,14 +219,14 @@ int Visitor::handleFuncFParams(Node *funcFParams) {
     // 把参数都先存起来
     // 分配 alloca
     for (int i = 0; i < params.size(); ++i) {
-        Instruction *alloca = buildFactory->genInstruction(funcFParams, InstructionType::Alloca, true);
+        Instruction *alloca = buildFactory->genInstruction(InstructionType::Alloca, true);
         auto *symbol = new Symbol(funcFParams->children[i]->getWord(), alloca);
         symbolTable->addSymbol(symbol, funcFParams->getLineNum());
         allocas.push_back(alloca);
     }
     // 存储 store
     for (int i = 0; i < params.size(); ++i) {
-        Instruction *store = buildFactory->genInstruction(funcFParams, InstructionType::Store, false);
+        Instruction *store = buildFactory->genInstruction(InstructionType::Store, false);
         use(params[i], store, 0);
         use(allocas[i], store, 1);
         // 设定alloc的维度
@@ -240,7 +240,7 @@ int Visitor::handleFuncFParams(Node *funcFParams) {
 void Visitor::handleFuncFParam(Node *funcFParam, Value **param) {
     //TODO
     // 数组相关
-    auto *param1 = buildFactory->genParam(funcFParam);
+    auto *param1 = buildFactory->genParam();
     if (funcFParam->getType() > 0) {
         param1->addDim(0);
     }
@@ -380,7 +380,7 @@ void Visitor::handleForStmt(Node *forStmt) {
         Value *expInstruction = nullptr;
         handleExp(forStmt->children[1], &expInstruction, false);
 
-        Instruction *storeInstruction = buildFactory->genInstruction(forStmt, InstructionType::Store, false);
+        Instruction *storeInstruction = buildFactory->genInstruction(InstructionType::Store, false);
         // 添加use
         use(expInstruction, storeInstruction, 0);
         use(allocInstruction, storeInstruction, 1);
@@ -436,7 +436,7 @@ int Visitor::handleLVal(Node *lVal, Value **lValInstruction) {
     } else {
         if (symbol->value->valueType == ValueType::Global) {
             if (((Instruction *) (symbol->value))->dims.empty()) {
-                Instruction *loadInstruction = buildFactory->genInstruction(lVal, InstructionType::Load, true);
+                Instruction *loadInstruction = buildFactory->genInstruction(InstructionType::Load, true);
                 if (symbol->value->valueType == ValueType::Instruction) {
                     for (auto dim: ((Instruction *) symbol->value)->dims) {
                         loadInstruction->addDim(dim);
@@ -449,10 +449,10 @@ int Visitor::handleLVal(Node *lVal, Value **lValInstruction) {
                 Instruction *userIns = nullptr;
                 int i = 0;
                 while (i < lVal->children.size()) {
-                    auto *Const = buildFactory->genConst(nullptr, 0);
+                    auto *Const = buildFactory->genConst(0);
                     Value *expIns = nullptr;
                     handleExp(lVal->children[i], &expIns, false);
-                    userIns = buildFactory->genInstruction(nullptr, InstructionType::GEP, true);
+                    userIns = buildFactory->genInstruction(InstructionType::GEP, true);
                     use(valueIns, userIns, 0);
                     for (auto dim: ((Instruction *) valueIns)->dims) {
                         userIns->dims.push_back(dim);
@@ -464,18 +464,18 @@ int Visitor::handleLVal(Node *lVal, Value **lValInstruction) {
                     i++;
                 }
                 if (i >= ((Instruction *) (symbol->value))->dims.size()) {
-                    Instruction *loadInstruction = buildFactory->genInstruction(lVal, InstructionType::Load, true);
+                    Instruction *loadInstruction = buildFactory->genInstruction(InstructionType::Load, true);
                     use(userIns, loadInstruction, 0);
                     *lValInstruction = loadInstruction;
                 } else {
-                    userIns = buildFactory->genInstruction(nullptr, InstructionType::GEP, true);
+                    userIns = buildFactory->genInstruction(InstructionType::GEP, true);
                     use(valueIns, userIns, 0);
                     for (auto dim: ((Instruction *) valueIns)->dims) {
                         userIns->dims.push_back(dim);
                     }
-                    auto *Const = buildFactory->genConst(nullptr, 0);
+                    auto *Const = buildFactory->genConst(0);
                     use(Const, userIns, 1);
-                    Value *expIns = buildFactory->genConst(nullptr, 0);
+                    Value *expIns = buildFactory->genConst(0);
                     use(expIns, userIns, 2);
                     userIns->dims.erase(userIns->dims.begin());
 //                userIns->dims.erase(userIns->dims.begin());
@@ -488,7 +488,7 @@ int Visitor::handleLVal(Node *lVal, Value **lValInstruction) {
         } else if (symbol->value->valueType == ValueType::Instruction) {
             if (((Instruction *) (symbol->value))->dims.empty()) {
                 // 不是数组
-                Instruction *loadInstruction = buildFactory->genInstruction(lVal, InstructionType::Load, true);
+                Instruction *loadInstruction = buildFactory->genInstruction(InstructionType::Load, true);
                 if (symbol->value->valueType == ValueType::Instruction) {
                     for (auto dim: ((Instruction *) symbol->value)->dims) {
                         loadInstruction->addDim(dim);
@@ -501,7 +501,7 @@ int Visitor::handleLVal(Node *lVal, Value **lValInstruction) {
                 if (((Instruction *) (valueIns))->dims[0] == 0) {
                     //TODO
                     // 函数中的处理
-                    auto *loadIns = buildFactory->genInstruction(nullptr, InstructionType::Load, true);
+                    auto *loadIns = buildFactory->genInstruction(InstructionType::Load, true);
                     use(valueIns, loadIns, 0);
                     loadIns->isPtr = true;
                     for (auto dim: ((Instruction *) (valueIns))->dims) {
@@ -514,8 +514,7 @@ int Visitor::handleLVal(Node *lVal, Value **lValInstruction) {
                             if (((Instruction *) valueIns)->dims.empty()) {
                                 Value *expIns = nullptr;
                                 handleExp(lVal->children[0], &expIns, false);
-                                Instruction *userIns = buildFactory->genInstruction(nullptr, InstructionType::GEP,
-                                                                                    true);
+                                Instruction *userIns = buildFactory->genInstruction(InstructionType::GEP, true);
 
                                 use(valueIns, userIns, 0);
                                 use(expIns, userIns, 1);
@@ -524,8 +523,7 @@ int Visitor::handleLVal(Node *lVal, Value **lValInstruction) {
                             } else {
                                 Value *expIns = nullptr;
                                 handleExp(lVal->children[0], &expIns, false);
-                                Instruction *userIns = buildFactory->genInstruction(nullptr, InstructionType::GEP,
-                                                                                    true);
+                                Instruction *userIns = buildFactory->genInstruction(InstructionType::GEP, true);
                                 for (auto dim: ((Instruction *) valueIns)->dims) {
                                     userIns->addDim(dim);
                                 }
@@ -533,13 +531,13 @@ int Visitor::handleLVal(Node *lVal, Value **lValInstruction) {
                                 use(expIns, userIns, 1);
 
                                 valueIns = userIns;
-                                userIns = buildFactory->genInstruction(nullptr, InstructionType::GEP, true);
+                                userIns = buildFactory->genInstruction(InstructionType::GEP, true);
                                 use(valueIns, userIns, 0);
                                 for (auto dim: ((Instruction *) valueIns)->dims) {
                                     userIns->addDim(dim);
                                 }
                                 userIns->dims.erase(userIns->dims.begin());
-                                auto *Const = buildFactory->genConst(nullptr, 0);
+                                auto *Const = buildFactory->genConst(0);
                                 use(Const, userIns, 1);
                                 use(Const, userIns, 2);
                                 valueIns = userIns;
@@ -550,7 +548,7 @@ int Visitor::handleLVal(Node *lVal, Value **lValInstruction) {
                         } else if (lVal->children.size() == 2) {
                             Value *expIns = nullptr;
                             handleExp(lVal->children[0], &expIns, false);
-                            Instruction *userIns = buildFactory->genInstruction(nullptr, InstructionType::GEP, true);
+                            Instruction *userIns = buildFactory->genInstruction(InstructionType::GEP, true);
                             for (auto dim: ((Instruction *) valueIns)->dims) {
                                 userIns->addDim(dim);
                             }
@@ -558,20 +556,20 @@ int Visitor::handleLVal(Node *lVal, Value **lValInstruction) {
                             use(expIns, userIns, 1);
                             valueIns = userIns;
                             handleExp(lVal->children[1], &expIns, false);
-                            userIns = buildFactory->genInstruction(nullptr, InstructionType::GEP, true);
+                            userIns = buildFactory->genInstruction(InstructionType::GEP, true);
                             for (auto dim: ((Instruction *) valueIns)->dims) {
                                 userIns->addDim(dim);
                             }
                             userIns->dims.erase(userIns->dims.begin());
                             use(valueIns, userIns, 0);
-                            auto *Const = buildFactory->genConst(nullptr, 0);
+                            auto *Const = buildFactory->genConst(0);
                             use(Const, userIns, 1);
                             use(expIns, userIns, 2);
                             valueIns = userIns;
                             userIns = nullptr;
                         }
                         if (((Instruction *) (symbol->value))->dims.size() == lVal->children.size()) {
-                            loadIns = buildFactory->genInstruction(nullptr, InstructionType::Load, true);
+                            loadIns = buildFactory->genInstruction(InstructionType::Load, true);
                             use(valueIns, loadIns, 0);
                             for (auto dim: ((Instruction *) valueIns)->dims) {
                                 loadIns->addDim(dim);
@@ -590,12 +588,12 @@ int Visitor::handleLVal(Node *lVal, Value **lValInstruction) {
                     while (i < lVal->children.size()) {
                         Value *expIns = nullptr;
                         handleExp(lVal->children[i], &expIns, false);
-                        userIns = buildFactory->genInstruction(nullptr, InstructionType::GEP, true);
+                        userIns = buildFactory->genInstruction(InstructionType::GEP, true);
                         use(valueIns, userIns, 0);
                         for (auto dim: ((Instruction *) valueIns)->dims) {
                             userIns->dims.push_back(dim);
                         }
-                        auto *Const = buildFactory->genConst(nullptr, 0);
+                        auto *Const = buildFactory->genConst(0);
                         use(Const, userIns, 1);
                         use(expIns, userIns, 2);
                         userIns->dims.erase(userIns->dims.begin());
@@ -603,18 +601,18 @@ int Visitor::handleLVal(Node *lVal, Value **lValInstruction) {
                         i++;
                     }
                     if (i >= ((Instruction *) (symbol->value))->dims.size()) {
-                        Instruction *loadInstruction = buildFactory->genInstruction(lVal, InstructionType::Load, true);
+                        Instruction *loadInstruction = buildFactory->genInstruction(InstructionType::Load, true);
                         use(userIns, loadInstruction, 0);
                         *lValInstruction = loadInstruction;
                     } else {
-                        userIns = buildFactory->genInstruction(nullptr, InstructionType::GEP, true);
+                        userIns = buildFactory->genInstruction(InstructionType::GEP, true);
                         use(valueIns, userIns, 0);
                         for (auto dim: ((Instruction *) valueIns)->dims) {
                             userIns->dims.push_back(dim);
                         }
-                        auto *Const = buildFactory->genConst(nullptr, 0);
+                        auto *Const = buildFactory->genConst(0);
                         use(Const, userIns, 1);
-                        Value *expIns = buildFactory->genConst(nullptr, 0);
+                        Value *expIns = buildFactory->genConst(0);
                         use(expIns, userIns, 2);
                         userIns->dims.erase(userIns->dims.begin());
 //                userIns->dims.erase(userIns->dims.begin());
@@ -728,7 +726,7 @@ int Visitor::handlePrimaryExp(Node *primaryExp, Value **primaryInstruction, bool
             return handleLVal(primaryExp->children[0], primaryInstruction); // 寻找值的倒数第二个终结点
         } else if (primaryExp->children[0]->nodeType == NodeType::Number) {
             // 例如 return 0 应该直接返回0这个值
-            *primaryInstruction = buildFactory->genConst(nullptr, primaryExp->children[0]->getVal()); // 寻找值的终结点
+            *primaryInstruction = buildFactory->genConst(primaryExp->children[0]->getVal()); // 寻找值的终结点
         }
     } else {
         if (primaryExp->children[0]->nodeType == NodeType::Exp) {
@@ -742,7 +740,7 @@ int Visitor::handlePrimaryExp(Node *primaryExp, Value **primaryInstruction, bool
         } else if (primaryExp->children[0]->nodeType == NodeType::Number) {
             // 例如 return 0 应该直接返回0这个值
             int a = primaryExp->children[0]->getVal();
-            *primaryInstruction = buildFactory->genConst(primaryExp, a);
+            *primaryInstruction = buildFactory->genConst(a);
         }
     }
     return -114514;
@@ -777,8 +775,7 @@ int Visitor::handleUnaryExp(Node *unaryExp, Value **unaryInstruction, bool isGlo
     } else {
         if (unaryExp->children.size() == 0) {
             Value *function = symbolTable->getSymbol(unaryExp->getWord(), true, true)->value;
-            Instruction *call = buildFactory->genInstruction(unaryExp, InstructionType::Call,
-                                                             ((Function *) function)->ret == 1);
+            Instruction *call = buildFactory->genInstruction(InstructionType::Call, ((Function *) function)->ret == 1);
             use(function, call, 0);
             *unaryInstruction = call;
             // 函数调用
@@ -795,7 +792,7 @@ int Visitor::handleUnaryExp(Node *unaryExp, Value **unaryInstruction, bool isGlo
                     Value *right;
                     handleUnaryExp(unaryExp->children[1], &right, isGlobal);
 
-                    Instruction *subInstruction = buildFactory->genInstruction(unaryExp, InstructionType::Sub, true);
+                    Instruction *subInstruction = buildFactory->genInstruction(InstructionType::Sub, true);
 
 
                     use(c, subInstruction, 0);
@@ -819,8 +816,7 @@ int Visitor::handleUnaryExp(Node *unaryExp, Value **unaryInstruction, bool isGlo
                     }
                 }
                 Value *function = symbolTable->getSymbol(unaryExp->getWord(), true, true)->value;
-                Value *call = buildFactory->genInstruction(unaryExp, InstructionType::Call,
-                                                           ((Function *) function)->ret == 1);
+                Value *call = buildFactory->genInstruction(InstructionType::Call, ((Function *) function)->ret == 1);
                 use(function, ((Instruction *) call), 0);
                 for (auto *child: exps) {
                     use(child, ((Instruction *) call), 0);
@@ -855,7 +851,7 @@ int Visitor::handleMulExp(Node *mulExp, Value **mulInstruction, bool isGlobal) {
             int m2 = atoi(mul2->getName().c_str());
             int val = (mulExp->getOp() == 0) ? m1 * m2 :
                       (mulExp->getOp() == 1) ? m1 / m2 : m1 % m2;
-            *mulInstruction = buildFactory->genConst(nullptr, val);
+            *mulInstruction = buildFactory->genConst(val);
         }
     } else {
         if (mulExp->children.size() == 1) {
@@ -876,23 +872,23 @@ int Visitor::handleMulExp(Node *mulExp, Value **mulInstruction, bool isGlobal) {
 
             if (instructionType == InstructionType::Mod) {
                 // 先除再乘再减
-                auto *instruction1 = buildFactory->genInstruction(mulExp, InstructionType::Div, true);
+                auto *instruction1 = buildFactory->genInstruction(InstructionType::Div, true);
 
                 use(leftMulInstruction, instruction1, 0);
                 use(rightUnaryInstruction, instruction1, 1);
 
-                auto *instruction2 = buildFactory->genInstruction(mulExp, InstructionType::Mul, true);
+                auto *instruction2 = buildFactory->genInstruction(InstructionType::Mul, true);
                 use(rightUnaryInstruction, instruction2, 0);
                 use(instruction1, instruction2, 1);
 
-                auto *instruction3 = buildFactory->genInstruction(mulExp, InstructionType::Sub, true);
+                auto *instruction3 = buildFactory->genInstruction(InstructionType::Sub, true);
                 use(leftMulInstruction, instruction3, 0);
                 use(instruction2, instruction3, 1);
 
                 *mulInstruction = instruction3;
 
             } else {
-                *mulInstruction = buildFactory->genInstruction(mulExp, instructionType, true);
+                *mulInstruction = buildFactory->genInstruction(instructionType, true);
                 use(leftMulInstruction, ((Instruction *) (*mulInstruction)), 0);
                 use(rightUnaryInstruction, ((Instruction *) (*mulInstruction)), 1);
             }
@@ -918,7 +914,7 @@ void Visitor::handleStmt(Node *stmt) {
             handleExp(child, &expInstruction, false);
             // 需要得到装着返回值的寄存器号 那是一个 Instruction
         }
-        Instruction *instruction = buildFactory->genInstruction(stmt, InstructionType::Ret, false);
+        Instruction *instruction = buildFactory->genInstruction(InstructionType::Ret, false);
         if (!stmt->children.empty()) {
             use(expInstruction, instruction, 0);
         }
@@ -937,11 +933,11 @@ void Visitor::handleStmt(Node *stmt) {
         Value *lVal = nullptr;
         handleLVal(stmt->children[0], &lVal);
         Value *alloca = ((User *) lVal)->operands[0]->value;
-        auto *call = buildFactory->genInstruction(stmt, InstructionType::Call, true);
+        auto *call = buildFactory->genInstruction(InstructionType::Call, true);
         auto *getint = symbolTable->getSymbol("getint", true, true)->value;
         use(getint, call, 0);
 
-        auto *store = buildFactory->genInstruction(stmt, InstructionType::Store, false);
+        auto *store = buildFactory->genInstruction(InstructionType::Store, false);
         use(call, store, 0);
         use(alloca, store, 1);
     } else if (stmt->getType() == 7) {
@@ -956,22 +952,22 @@ void Visitor::handleStmt(Node *stmt) {
         }
         for (int i = 1; i < str.size() - 1; ++i) {
             if (str[i] == '%' && str[i + 1] == 'd') {
-                auto *call = buildFactory->genInstruction(stmt, InstructionType::Call, false);
+                auto *call = buildFactory->genInstruction(InstructionType::Call, false);
                 auto *putint = symbolTable->getSymbol("putint", true, true)->value;
                 use(putint, call, 0);
                 use(values[j], ((Instruction *) call), 0);
                 j++;
                 i++;
             } else if (str[i] == '\\' && str[i + 1] == 'n') {
-                auto *Const = buildFactory->genConst(stmt, (int) '\n');
-                auto *call = buildFactory->genInstruction(stmt, InstructionType::Call, false);
+                auto *Const = buildFactory->genConst((int) '\n');
+                auto *call = buildFactory->genInstruction(InstructionType::Call, false);
                 auto *putch = symbolTable->getSymbol("putch", true, true)->value;
                 use(putch, call, 0);
                 use(Const, ((Instruction *) call), 0);
                 i++;
             } else {
-                auto *Const = buildFactory->genConst(stmt, (int) str[i]);
-                auto *call = buildFactory->genInstruction(stmt, InstructionType::Call, false);
+                auto *Const = buildFactory->genConst((int) str[i]);
+                auto *call = buildFactory->genInstruction(InstructionType::Call, false);
                 auto *putch = symbolTable->getSymbol("putch", true, true)->value;
                 use(putch, call, 0);
                 use(Const, ((Instruction *) call), 0);
@@ -994,7 +990,7 @@ void Visitor::handleStmt(Node *stmt) {
                     Value *expInstruction = nullptr;
                     handleExp(stmt->children[1], &expInstruction, false);
 
-                    Instruction *storeInstruction = buildFactory->genInstruction(stmt, InstructionType::Store, false);
+                    Instruction *storeInstruction = buildFactory->genInstruction(InstructionType::Store, false);
                     // 添加use
                     use(expInstruction, storeInstruction, 0);
                     use(allocInstruction, storeInstruction, 1);
@@ -1011,7 +1007,7 @@ void Visitor::handleStmt(Node *stmt) {
         // 进入条件判断的跳转
         int t = brs.size();
 
-        auto *br0 = buildFactory->genInstruction(nullptr, InstructionType::Br, false);
+        auto *br0 = buildFactory->genInstruction(InstructionType::Br, false);
 
         buildFactory->genBasicBlock(nullptr);
         use(buildFactory->curBasicBlock, br0, 0);
@@ -1020,7 +1016,7 @@ void Visitor::handleStmt(Node *stmt) {
         handleStmt(stmt->children[1]);
 
         // 跳出if语句的跳转
-        auto *br1 = buildFactory->genInstruction(nullptr, InstructionType::Br, false);
+        auto *br1 = buildFactory->genInstruction(InstructionType::Br, false);
 
         buildFactory->genBasicBlock(nullptr);
 
@@ -1033,7 +1029,7 @@ void Visitor::handleStmt(Node *stmt) {
 
         if (stmt->children.size() > 2) {
             handleStmt(stmt->children[2]); // 如果有else的话
-            auto *br2 = buildFactory->genInstruction(nullptr, InstructionType::Br, false);
+            auto *br2 = buildFactory->genInstruction(InstructionType::Br, false);
 
             buildFactory->genBasicBlock(nullptr);
             use(buildFactory->curBasicBlock, br1, 0);
@@ -1051,7 +1047,7 @@ void Visitor::handleStmt(Node *stmt) {
         if (forStmt->forStmt1 != nullptr) {
             handleForStmt(forStmt->forStmt1);
         }
-        auto *br0 = buildFactory->genInstruction(nullptr, InstructionType::Br, false);
+        auto *br0 = buildFactory->genInstruction(InstructionType::Br, false);
 
         auto *beforCondLabel = buildFactory->genBasicBlock(nullptr);
         beforeConds.push_back(beforCondLabel);
@@ -1064,7 +1060,7 @@ void Visitor::handleStmt(Node *stmt) {
 
         handleStmt(forStmt->children[0]);
 
-        auto *br1 = buildFactory->genInstruction(nullptr, InstructionType::Br, false);
+        auto *br1 = buildFactory->genInstruction(InstructionType::Br, false);
         buildFactory->genBasicBlock(nullptr);
         use(buildFactory->curBasicBlock, br1, 0);
         for (int i = continues.size() - 1; i >= c_t; i--) {
@@ -1075,7 +1071,7 @@ void Visitor::handleStmt(Node *stmt) {
         if (forStmt->forStmt2 != nullptr) {
             handleForStmt(forStmt->forStmt2);
         }
-        auto *br2 = buildFactory->genInstruction(nullptr, InstructionType::Br, false);
+        auto *br2 = buildFactory->genInstruction(InstructionType::Br, false);
         use(beforeConds[beforeConds.size() - 1], br2, 0);
         beforeConds.pop_back();
 
@@ -1099,13 +1095,13 @@ void Visitor::handleStmt(Node *stmt) {
     } else if (stmt->getType() == 4) {
         //continue
         if (inFor) {
-            auto *br = buildFactory->genInstruction(nullptr, InstructionType::Br, false);;
+            auto *br = buildFactory->genInstruction(InstructionType::Br, false);;
             continues.push_back(br);
         }
     } else if (stmt->getType() == 3) {
         // break
         if (inFor) {
-            auto *br = buildFactory->genInstruction(nullptr, InstructionType::Br, false);
+            auto *br = buildFactory->genInstruction(InstructionType::Br, false);
             break_brs.push_back(br);
         }
     }
@@ -1177,23 +1173,23 @@ Instruction *Visitor::handleEqExp(Node *eqExp, Value **eq, bool isBr) {
         NOT = -1;
         handleRelExp(eqExp->children[0], &rel);
         if (rel->ty != 32) {
-            auto *zext = buildFactory->genInstruction(nullptr, InstructionType::Zext, true);
+            auto *zext = buildFactory->genInstruction(InstructionType::Zext, true);
             use(rel, zext, 0);
             rel = zext;
         }
         *eq = rel;
         if (NOT == 1 && !isBr) {
             InstructionType instructionType = (NOT == -1) ? InstructionType::Ne : InstructionType::Eq;
-            auto *ne = buildFactory->genInstruction(nullptr, instructionType, true);
-            auto *Const = buildFactory->genConst(nullptr, 0);
+            auto *ne = buildFactory->genInstruction(instructionType, true);
+            auto *Const = buildFactory->genConst(0);
             use(Const, ne, 0);
             use((*eq), ne, 1);
             *eq = ne;
         }
         if (isBr) {
             InstructionType instructionType = (NOT == -1) ? InstructionType::Ne : InstructionType::Eq;
-            auto *ne = buildFactory->genInstruction(nullptr, instructionType, true);
-            auto *Const = buildFactory->genConst(nullptr, 0);
+            auto *ne = buildFactory->genInstruction(instructionType, true);
+            auto *Const = buildFactory->genConst(0);
             use(Const, ne, 0);
             use((*eq), ne, 1);
             *eq = ne;
@@ -1208,8 +1204,8 @@ Instruction *Visitor::handleEqExp(Node *eqExp, Value **eq, bool isBr) {
         handleRelExp(eqExp->children[1], &righRel);
         if (NOT == 1) {
             InstructionType instructionType = (NOT == -1) ? InstructionType::Ne : InstructionType::Eq;
-            auto *ne = buildFactory->genInstruction(nullptr, instructionType, true);
-            auto *Const = buildFactory->genConst(nullptr, 0);
+            auto *ne = buildFactory->genInstruction(instructionType, true);
+            auto *Const = buildFactory->genConst(0);
             use(Const, ne, 0);
             use(righRel, ne, 1);
             righRel = ne;
@@ -1220,24 +1216,24 @@ Instruction *Visitor::handleEqExp(Node *eqExp, Value **eq, bool isBr) {
 
 
         if (leftEq->ty == 1) {
-            auto *zext = buildFactory->genInstruction(nullptr, InstructionType::Zext, true);
+            auto *zext = buildFactory->genInstruction(InstructionType::Zext, true);
             use(leftEq, zext, 0);
             leftEq = zext;
         }
         if (righRel->ty == 1) {
-            auto *zext = buildFactory->genInstruction(nullptr, InstructionType::Zext, true);
+            auto *zext = buildFactory->genInstruction(InstructionType::Zext, true);
             use(righRel, zext, 0);
             righRel = zext;
         }
 
 
-        *eq = buildFactory->genInstruction(eqExp, instructionType, true);
+        *eq = buildFactory->genInstruction(instructionType, true);
         use(leftEq, ((Instruction *) (*eq)), 0);
         use(righRel, ((Instruction *) (*eq)), 0);
     }
     // 这里才是最小的，产生新的br指令,并与使用*eq
     if (isBr) {
-        auto *br = buildFactory->genInstruction(nullptr, InstructionType::Br, false);
+        auto *br = buildFactory->genInstruction(InstructionType::Br, false);
         use((*eq), br, 0);
         // 此时的br还不知道自己要跳到哪里，但回到handleAnd中将会知道label1，即成立时要跳到哪里
         brs.push_back(br);
@@ -1262,8 +1258,8 @@ void Visitor::handleRelExp(Node *relExp, Value **rel) {
         handleRelExp(relExp->children[0], &leftRel);
         if (NOT == 1) {
             InstructionType instructionType = (NOT == -1) ? InstructionType::Ne : InstructionType::Eq;
-            auto *ne = buildFactory->genInstruction(nullptr, instructionType, true);
-            auto *Const = buildFactory->genConst(nullptr, 0);
+            auto *ne = buildFactory->genInstruction(instructionType, true);
+            auto *Const = buildFactory->genConst(0);
             use(Const, ne, 0);
             use(leftRel, ne, 1);
             leftRel = ne;
@@ -1272,8 +1268,8 @@ void Visitor::handleRelExp(Node *relExp, Value **rel) {
         handleAddExp(relExp->children[1], &righAdd, false);
         if (NOT == 1) {
             InstructionType instructionType = (NOT == -1) ? InstructionType::Ne : InstructionType::Eq;
-            auto *ne = buildFactory->genInstruction(nullptr, instructionType, true);
-            auto *Const = buildFactory->genConst(nullptr, 0);
+            auto *ne = buildFactory->genInstruction(instructionType, true);
+            auto *Const = buildFactory->genConst(0);
             use(Const, ne, 0);
             use(righAdd, ne, 1);
             righAdd = ne;
@@ -1285,17 +1281,17 @@ void Visitor::handleRelExp(Node *relExp, Value **rel) {
 
         if (leftRel->ty != righAdd->ty) {
             if (leftRel->ty == 1) {
-                auto *zext = buildFactory->genInstruction(nullptr, InstructionType::Zext, true);
+                auto *zext = buildFactory->genInstruction(InstructionType::Zext, true);
                 use(leftRel, zext, 0);
                 leftRel = zext;
             } else if (righAdd->ty == 1) {
-                auto *zext = buildFactory->genInstruction(nullptr, InstructionType::Zext, true);
+                auto *zext = buildFactory->genInstruction(InstructionType::Zext, true);
                 use(righAdd, zext, 0);
                 righAdd = zext;
             }
         }
 
-        *rel = buildFactory->genInstruction(relExp, instructionType, true);
+        *rel = buildFactory->genInstruction(instructionType, true);
         use(leftRel, ((Instruction *) (*rel)), 0);
         use(righAdd, ((Instruction *) (*rel)), 1);
 
@@ -1314,7 +1310,7 @@ int Visitor::handleAddExp(Node *addExp, Value **addInstruction, bool isGlobal) {
             int a1 = atoi(add1->getName().c_str());
             int a2 = atoi(add2->getName().c_str());
             int val = (addExp->getOp() == 1) ? (a1 - a2) : (a1 + a2);
-            *addInstruction = buildFactory->genConst(nullptr, val);
+            *addInstruction = buildFactory->genConst(val);
         }
     } else {
         if (addExp->children.size() == 1) {
@@ -1331,7 +1327,7 @@ int Visitor::handleAddExp(Node *addExp, Value **addInstruction, bool isGlobal) {
 
             InstructionType instructionType = (addExp->getOp() == 0) ? InstructionType::Add : InstructionType::Sub;
 
-            *addInstruction = buildFactory->genInstruction(addExp, instructionType, true);
+            *addInstruction = buildFactory->genInstruction(instructionType, true);
             use(leftAddInstruction, ((Instruction *) (*addInstruction)), 0);
             use(rightMulInstruction, ((Instruction *) (*addInstruction)), 1);
         }

@@ -11,7 +11,6 @@ Value::Value(std::string name, ValueType valueType) :
 
 void Value::addUse(Use *use) {
     this->uses.push_back(use);
-
 }
 
 void Value::translate() {

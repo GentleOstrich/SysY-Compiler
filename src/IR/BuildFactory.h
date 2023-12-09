@@ -37,13 +37,13 @@ public:
 
     BasicBlock *genBasicBlock(Node *node);
 
-    Instruction *genInstruction(Node *node, InstructionType instructionType, bool needReg);
+    Instruction *genInstruction(InstructionType instructionType, bool needReg);
 
-    Const* genConst(Node *node, int val);
+    Const *genConst(int val);
 
-    GlobalVar* genGlobalVar(Node *node, int val, bool isConst);
+    GlobalVar *genGlobalVar(Node *node, bool isConst);
 
-    Param* genParam(Node* node); // used by function
+    Param *genParam();
 };
 
 #endif //SYSY_COMPILER_BUILDFACTORY_H

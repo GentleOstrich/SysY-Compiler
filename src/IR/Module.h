@@ -4,6 +4,7 @@
 
 #ifndef SYSY_COMPILER_MODULE_H
 #define SYSY_COMPILER_MODULE_H
+
 #include <vector>
 #include "Values/Function.h"
 #include "Values/Instructions/Instruction.h"
@@ -11,10 +12,13 @@
 
 class Module {
 public:
-    std::vector<Function*> functions;
-    std::vector<GlobalVar*> globalVars;
-    void addFunction(Function* function);
-    void addGlobalVar(GlobalVar* globalVar);
+    std::vector<Function *> functions;
+    std::vector<GlobalVar *> globalVars;
+
+    void addFunction(Function *function);
+
+    void addGlobalVar(GlobalVar *globalVar);
+
     void output();
 
     Module();

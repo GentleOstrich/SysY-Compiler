@@ -23,36 +23,19 @@ void SymbolTable::createSymbolTable() {
     table.push(this->symbolId);
 }
 
-void SymbolTable::addSymbol(Symbol* symbol, int lineNum) {
-    this->symbols.insert(symbols.begin()+symbolId, symbol);
+void SymbolTable::addSymbol(Symbol *symbol, int lineNum) {
+    this->symbols.insert(symbols.begin() + symbolId, symbol);
     symbolId++;
 //    if (!findSymbol(symbol->word, symbol->type == -1, false)) {
 //        symbols.insert(symbols.begin() + symbolId, symbol);
 //        symbolId++;
 //    } else {
 #ifdef ERROR_CHECK
-        printError(lineNum, "b");
+    printError(lineNum, "b");
 #endif
-        return;
-    }
-
-
-bool SymbolTable::findSymbol(const std::string& word, bool isFunc, bool all) {
-    int end=(all)?0:table.top();
-    for (int i = this->symbolId-1;i>=end;--i) {
-        if (symbols[i]->word == word && ((isFunc && symbols[i]->value->valueType == ValueType::Function) ||
-                (!isFunc && symbols[i]->value->valueType != ValueType::Function))) {
-            return true;
-        }
-    }
-//    int end = (all) ? 0 : table.top();
-//    for (int i = this->symbolId - 1; i >= end; --i) {
-//        if (symbols[i]->word == word && ((isFunc && symbols[i]->type == -1) || (!isFunc && symbols[i]->type != -1))) {
-//            return true;
-//        }
-//    }
-    return false;
+    return;
 }
+
 
 void SymbolTable::deleteSymbolTable() {
     symbolId = table.top();
@@ -60,14 +43,14 @@ void SymbolTable::deleteSymbolTable() {
 }
 
 SymbolTable::SymbolTable() {
-    symbolId=0;
+    symbolId = 0;
 }
 
-Symbol* SymbolTable::getSymbol(const std::string& word, bool isFunc, bool all) {
+Symbol *SymbolTable::getSymbol(const std::string &word, bool isFunc, bool all) {
     int end = (all) ? 0 : table.top();
     for (int i = this->symbolId - 1; i >= end; --i) {
         if (symbols[i]->word == word && ((isFunc && symbols[i]->value->valueType == ValueType::Function) ||
-                (!isFunc && symbols[i]->value->valueType != ValueType::Function))) {
+                                         (!isFunc && symbols[i]->value->valueType != ValueType::Function))) {
             return symbols[i];
         }
     }

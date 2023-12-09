@@ -146,7 +146,7 @@ std::string GlobalVar::getContent() {
         if (dim > 0) // 只有在函数里dim会等于0
             code += "]";
     }
-    for (auto dim : dims) {
+    for (auto dim: dims) {
         if (dim == 0) { // 表示存的是指针
             code += "*";
         }

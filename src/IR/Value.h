@@ -14,7 +14,6 @@ class Value {
 public:
     std::string name;
     ValueType valueType;
-    //int valNumber = -1;
     std::vector<Use*> uses;
     int ty = 32;
     Value(std::string name, ValueType valueType);

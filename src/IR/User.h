@@ -13,11 +13,11 @@ class User : public Value {
 public:
     int opNum; // 操作数数量
 
-    std::vector<Use*> operands;
+    std::vector<Use *> operands;
 
     User(const std::string &name, ValueType valueType);
 
-    void addOperand(Use* use);
+    void addOperand(Use *use);
 
 };
 

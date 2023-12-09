@@ -81,8 +81,6 @@ add_executable(
         src/Frontend/NonterminalCharacter/VarDef.h
         src/Frontend/Parser/Parser.cpp
         src/Frontend/Parser/Parser.h
-        src/IR/SymbolManager/Func.cpp
-        src/IR/SymbolManager/Func.h
         src/IR/SymbolManager/Symbol.cpp
         src/IR/SymbolManager/Symbol.h
         src/Frontend/Lexer/Token.cpp src/Frontend/Lexer/Token.h

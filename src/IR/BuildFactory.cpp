@@ -32,39 +32,22 @@ BasicBlock *BuildFactory::genBasicBlock(Node *node) {
     return basicBlock;
 }
 
-Instruction *BuildFactory::genInstruction(Node *node, InstructionType instructionType, bool needReg) {
+Instruction *BuildFactory::genInstruction(InstructionType instructionType, bool needReg) {
     int reg = (needReg) ? curFunction->allocReg() : -1;
     auto *instruction = new Instruction(std::to_string(reg), ValueType::Instruction,
                                         this->curBasicBlock, instructionType);
     this->curBasicBlock->addInstruction(instruction);
     return instruction;
-    if (instructionType == InstructionType::Alloca) {
-        auto *instruction = new Instruction("%" + std::to_string(curFunction->allocReg()), ValueType::Instruction,
-                                            this->curBasicBlock, InstructionType::Alloca);
-        this->curBasicBlock->addInstruction(instruction);
-        return instruction;
-    } else if (instructionType == InstructionType::Ret) {
-        auto *instruction = new Instruction(node->getWord(), ValueType::Instruction, this->curBasicBlock,
-                                            InstructionType::Ret);
-        this->curBasicBlock->addInstruction(instruction);
-        return instruction;
-    } else if (instructionType == InstructionType::Add) {
-        auto *instruction = new Instruction("%" + std::to_string(curFunction->allocReg()), ValueType::Instruction,
-                                            this->curBasicBlock, InstructionType::Add);
-        this->curBasicBlock->addInstruction(instruction);
-        return instruction;
-    }
-    return nullptr;
 }
 
-Const *BuildFactory::genConst(Node *node, int val) {
+Const *BuildFactory::genConst(int val) {
     return new Const("", ValueType::Const, val);
 }
 
-GlobalVar *BuildFactory::genGlobalVar(Node *node, int val, bool isConst) {
-    auto* globalVar = new GlobalVar(node->getWord(), ValueType::Global, this->module, isConst);
+GlobalVar *BuildFactory::genGlobalVar(Node *node, bool isConst) {
+    auto *globalVar = new GlobalVar(node->getWord(), ValueType::Global, this->module, isConst);
     this->module->addGlobalVar(globalVar);
-    this->curBasicBlock= nullptr;
+    this->curBasicBlock = nullptr;
     return globalVar;
 }
 
@@ -72,14 +55,12 @@ Function *BuildFactory::genFunction(std::string name, int paraNum) {
     // 为了建立库函数
     auto *function = new Function(name, ValueType::Function, this->module, paraNum);
     // 函数的参数数量先设置为0
-    //this->curFunction = function;
     this->module->addFunction(function);
-    //curBasicBlock = genBasicBlock(node, curFunction);
     return function;
 }
 
-Param *BuildFactory::genParam(Node *node) {
-    auto* param = new Param(std::to_string(curFunction->allocReg()), ValueType ::Param,curFunction->paramPos());
+Param *BuildFactory::genParam() {
+    auto *param = new Param(std::to_string(curFunction->allocReg()), ValueType::Param, curFunction->paramPos());
     curFunction->addParam(param);
     return param;
 }

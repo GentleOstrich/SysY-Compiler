@@ -10,11 +10,11 @@ extern std::ofstream c_ofs;
 
 void Module::output() {
     c_ofs << "declare i32 @getint()\n" <<
-             "declare void @putint(i32)\n" <<
-             "declare void @putch(i32)\n" <<
-             "declare void @putstr(i8*)" << std::endl;
+          "declare void @putint(i32)\n" <<
+          "declare void @putch(i32)\n" <<
+          "declare void @putstr(i8*)" << std::endl;
 
-    for (auto *child : globalVars) {
+    for (auto *child: globalVars) {
         child->translate();
     }
 
@@ -26,7 +26,7 @@ void Module::output() {
         c_ofs << std::endl;
     }
 
-    functions[functions.size()-1]->translate();
+    functions[functions.size() - 1]->translate();
 }
 
 void Module::addGlobalVar(GlobalVar *globalVar) {

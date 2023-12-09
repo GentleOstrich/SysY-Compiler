@@ -180,20 +180,6 @@ void Instruction::addDim(int dim) {
 
 std::string Instruction::getType() {
     std::string code = getContent();
-//    for (auto dim: dims) {
-//        if (dim > 0)
-//            code += "[" + std::to_string(dim) + " x ";
-//    }
-//    code += "i" + std::to_string(ty);
-//    for (int dim: dims) {
-//        if (dim > 0)
-//            code += "]";
-//    }
-//    for (auto dim: dims) {
-//        if (dim == 0) {
-//            code += "*";
-//        }
-//    }
     if (isPtr) {
         code += "*";
     }
