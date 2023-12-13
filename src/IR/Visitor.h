@@ -22,71 +22,73 @@ public:
 
     Visitor();
 
-    void handleCompUnit(Node *compUnit);
+    void visitCompUnit(Node *compUnit);
 
-    void handleVarDef(Node *varDef, bool isGlobal);
+    void visitVarDef(Node *varDef, bool isGlobal);
 
-    void handleConstDef(Node *constDef, bool isGlobal);
+    void visitConstDef(Node *constDef, bool isGlobal);
 
-    void handleFuncDef(Node *funcDef);
+    void visitFuncDef(Node *funcDef);
 
-    void handleFuncFParam(Node *funcFParam, Value **param);
+    void visitFuncFParam(Node *funcFParam, Value **param);
 
-    void handleDecl(Node *funcFParam, bool isGlobal);
+    void visitDecl(Node *funcFParam, bool isGlobal);
 
-    void handleMainFuncDef(Node *mainFuncFParam);
+    void visitMainFuncDef(Node *mainFuncFParam);
 
-    void handleConstDecl(Node *constDecl, bool isGlobal);
+    void visitConstDecl(Node *constDecl, bool isGlobal);
 
-    void handleVarDecl(Node *varDecl, bool isGlobal);
+    void visitVarDecl(Node *varDecl, bool isGlobal);
 
-    void handleBType(Node *BType);
+    void visitBType(Node *BType);
 
-    int handleConstInitVal(Node *constInitVal, std::vector<Value *> *constInitVals, bool isGlobal);
+    int visitConstInitVal(Node *constInitVal, std::vector<Value *> *constInitVals, bool needNum);
 
-    int handleInitVal(Node *initVal, std::vector<Value *> *initVals, bool isGlobal);
+    int visitInitVal(Node *initVal, std::vector<Value *> *initVals, bool needNum);
 
-    int handleFuncFParams(Node *funcFParams);
+    int visitFuncFParams(Node *funcFParams);
 
-    int handleFuncType(Node *funcType);
+    int visitFuncType(Node *funcType);
 
-    void handleBlock(Node *block);
+    void visitBlock(Node *block);
 
-    int handleBlockItem(Node *blockItem);
+    int visitBlockItem(Node *blockItem);
 
-    void handleStmt(Node *stmt);
+    void visitStmt(Node *stmt);
 
-    void handleForStmt(Node *forStmt);
+    void visitForStmt(Node *forStmt);
 
-    int handleExp(Node *exp, Value **expInstruction, bool isGlobal);
+    int visitExp(Node *exp, Value **expInstruction, bool needNum);
 
-    Instruction *handleCond(Node *cond, Value **c);
+    Instruction *visitCond(Node *cond, Value **c);
 
-    int handleLVal(Node *lVal, Value **lValInstruction);
+    int visitLVal(Node *lVal, Value **lValInstruction);
 
-    int handlePrimaryExp(Node *primaryExp, Value **primaryInstruction, bool isGlobal);
+    int visitPrimaryExp(Node *primaryExp, Value **primaryInstruction, bool needNum);
 
     void handleNumber(Node *number);
 
-    int handleUnaryExp(Node *unaryExp, Value **unaryInstruction, bool isGlobal);
+    int visitUnaryExp(Node *unaryExp, Value **unaryInstruction, bool needNum);
 
-    int handleUnaryOp(Node *unaryOp);
+    int visitUnaryOp(Node *unaryOp);
 
     void handleFuncRParams(Node *funcRParams, Value **callInstruction);
 
-    int handleMulExp(Node *mulExp, Value **mulInstruction, bool isGlobal);
+    int visitMulExp(Node *mulExp, Value **mulInstruction, bool needNum);
 
-    int handleAddExp(Node *addExp, Value **addInstruction, bool isGlobal);
+    int visitAddExp(Node *addExp, Value **addInstruction, bool isGlobal);
 
-    void handleRelExp(Node *relExp, Value **rel);
+    void visitRelExp(Node *relExp, Value **rel);
 
-    Instruction *handleEqExp(Node *eqExp, Value **eq, bool isBr); // 返回生成的br指令
+    Instruction *visitEqExp(Node *eqExp, Value **eq, bool isBr); // 返回生成的br指令
 
-    Instruction *handleLAndExp(Node *lAndExp);
+    Instruction *visitLAndExp(Node *lAndExp);
 
-    Instruction *handleLOrExp(Node *lOrExp);
+    Instruction *visitLOrExp(Node *lOrExp);
 
-    int handleConstExp(Node *constExp, Value **constExpInstruction, bool isGlobal);
+    int visitConstExp(Node *constExp, Value **constExpInstruction, bool needNum);
+
+    Module *getModule();
 };
 
 #endif // SYSY_COMPILER_VISITOR_H

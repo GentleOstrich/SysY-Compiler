@@ -8,7 +8,7 @@
 
 extern std::ofstream c_ofs;
 
-void Module::output() {
+void Module::translate() {
     c_ofs << "declare i32 @getint()\n" <<
           "declare void @putint(i32)\n" <<
           "declare void @putch(i32)\n" <<

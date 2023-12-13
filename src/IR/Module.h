@@ -19,7 +19,7 @@ public:
 
     void addGlobalVar(GlobalVar *globalVar);
 
-    void output();
+    void translate();
 
     Module();
 };

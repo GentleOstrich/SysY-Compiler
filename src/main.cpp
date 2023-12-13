@@ -8,23 +8,27 @@
 #include "Frontend/NonterminalCharacter/Nonterminals.h"
 #include "IR/SymbolManager/SymbolTable.h"
 #include "IR/Visitor.h"
+#include "Backend/Handler.h"
 
 std::string INFILEPATH = "testfile.txt";
 std::string OUTFILEPATH = "translate.txt";
 std::string ERROR_OUTFILEPATH = "error.txt";
 std::string GENERATE_CODE = "llvm_ir.txt";
+std::string MIPS = "mips.txt";
 
 std::string source;
 Parser parser;
 
-CompUnit* compUnit;
+CompUnit *compUnit;
 Visitor visitor;
+Handler handler;
 
 
 std::ifstream ifs(INFILEPATH);
 std::ofstream ofs(OUTFILEPATH);
 std::ofstream e_ofs(ERROR_OUTFILEPATH);
 std::ofstream c_ofs(GENERATE_CODE);
+std::ofstream m_ofs(MIPS);
 
 
 //#define ERROR_CHECK
@@ -41,11 +45,14 @@ bool cmp(Error error1, Error error2) {
     return error1.line < error2.line;
 }
 #endif
+
 int main() {
-    if (ifs.is_open() && ofs.is_open() && e_ofs.is_open() && c_ofs.is_open()) {
+    if (ifs.is_open() && ofs.is_open() && e_ofs.is_open() && c_ofs.is_open() && m_ofs.is_open()) {
         source = std::string((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
         compUnit = parser.parseCompUnit();
-        visitor.handleCompUnit(compUnit);
+        visitor.visitCompUnit(compUnit);
+        handler.handleModule(visitor.getModule());
+
 #ifdef ERROR_CHECK
         stable_sort(errors, errors + e, cmp);
         for (int i = 0; i < e; ++i) {

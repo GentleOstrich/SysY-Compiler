@@ -13,24 +13,18 @@ enum class InstructionType {
     Mul,// *
     Div,// /
     Mod,// %
-    /* Logic Binary */
     Lt, // <
     Le, // <=
     Ge, // >=
     Gt, // >
     Eq, // ==
     Ne, // !=
-    And,// &
-    Or, // |
-    /* Terminator */
     Br,
     Call,
     Ret,
-    /* mem op */
     Alloca,
     Load,
     Store,
     GEP, // Get Element Ptr
     Zext,
-    Phi,//用于 mem2reg
 };

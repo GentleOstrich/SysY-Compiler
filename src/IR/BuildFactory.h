@@ -35,7 +35,7 @@ public:
 
     Function *genFunction(std::string name, int paramNum);
 
-    BasicBlock *genBasicBlock(Node *node);
+    BasicBlock *genBasicBlock();
 
     Instruction *genInstruction(InstructionType instructionType, bool needReg);
 
@@ -44,6 +44,8 @@ public:
     GlobalVar *genGlobalVar(Node *node, bool isConst);
 
     Param *genParam();
+
+    void removeIns();
 };
 
 #endif //SYSY_COMPILER_BUILDFACTORY_H

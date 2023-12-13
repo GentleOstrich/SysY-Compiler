@@ -24,6 +24,9 @@ Instruction::Instruction(const std::string &name, ValueType valueType, BasicBloc
 }
 
 void Instruction::translate() {
+    if (useless) {
+        return;
+    }
     std::string code = "    ";
     if (instructionType == InstructionType::Ret) {
         code += "ret ";

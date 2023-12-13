@@ -6,12 +6,11 @@
 
 BuildFactory::BuildFactory() {
     this->module = new Module();
-    this->curBasicBlock = nullptr;
-    this->curBasicBlock = nullptr;
+    this->curFunction = nullptr;
 }
 
 Module *BuildFactory::genIRModule() {
-    return module;
+    return this->module;
 }
 
 Function *BuildFactory::genFunction(Node *node) {
@@ -23,7 +22,7 @@ Function *BuildFactory::genFunction(Node *node) {
     return function;
 }
 
-BasicBlock *BuildFactory::genBasicBlock(Node *node) {
+BasicBlock *BuildFactory::genBasicBlock() {
     int reg = curFunction->allocReg();
     auto *basicBlock = new BasicBlock(std::to_string(reg), ValueType::BasicBlock, this->curFunction);
     basicBlock->function = curFunction;
@@ -63,6 +62,11 @@ Param *BuildFactory::genParam() {
     auto *param = new Param(std::to_string(curFunction->allocReg()), ValueType::Param, curFunction->paramPos());
     curFunction->addParam(param);
     return param;
+}
+
+void BuildFactory::removeIns() {
+    this->curBasicBlock->instructions.pop_back();
+    this->curFunction->r--;
 }
 
 
