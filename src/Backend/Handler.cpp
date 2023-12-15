@@ -35,7 +35,7 @@
 #include "MipsInstructions/La.h"
 
 int Handler::findReg(Value *value) {
-    for (auto &it:value2reg) {
+    for (auto &it: value2reg) {
         if (value->getName() == it.first->getName()) {
             return it.second;
         }
@@ -47,7 +47,7 @@ int Handler::findReg(Value *value) {
 int Handler::allocaReg(Value *value, bool *isAllocated) {
     if (value->valueType == ValueType::Instruction) {
         auto *ins = (Instruction *) value;
-        for (auto &it : value2reg) {
+        for (auto &it: value2reg) {
             // 防止load多次
             if (ins->instructionType == InstructionType::Load && it.first->valueType == ValueType::Instruction) {
                 auto *ins1 = ((Instruction *) it.first);
@@ -82,15 +82,16 @@ int Handler::findOffset(Value *value, std::string *glob) {
     } else {
         return value2offset[value];
     }
+    return 114514;
 }
 
 void Handler::handleModule(Module *module) {
-    for (auto *globalVar : module->globalVars) {
+    for (auto *globalVar: module->globalVars) {
         handleGlobalVar(globalVar);
     }
 //    J* j = new J("main");
 //    this->mipsBuilder->genInstruction(j);
-    for (auto *function : module->functions) {
+    for (auto *function: module->functions) {
         this->curOffSet = 0;
         handleFunction(function);
     }
@@ -100,7 +101,7 @@ void Handler::handleModule(Module *module) {
 void Handler::handleAlloca(Instruction *child) {
     this->value2offset[child] = this->curOffSet;
     int x = 1;
-    for (auto dim : child->dims) {
+    for (auto dim: child->dims) {
         x *= dim;
     }
     for (int i = 0; i < x; ++i) {
@@ -113,7 +114,7 @@ void Handler::handleGlobalVar(GlobalVar *globalVar) {
     std::string name = globalVar->name;
     int type = 0;
     std::string val;
-    for (auto *child : globalVar->operands) {
+    for (auto *child: globalVar->operands) {
         val += child->value->getName();
         val += ", ";
     }
@@ -132,14 +133,14 @@ void Handler::handleFunction(Function *function) {
         return;
     }
     mipsBuilder->genMipsText(function->getName().substr(1, function->getName().size() - 1));
-    for (auto *param : function->params) {
+    for (auto *param: function->params) {
         this->value2offset[param] = this->curOffSet;
         this->curOffSet -= 4;
     }
-    for (auto *child : function->basicBlocks) {
+    for (auto *child: function->basicBlocks) {
         handleBasicBlock(child);
     }
-    for (int &reg : regs) {
+    for (int &reg: regs) {
         reg = 0;
     }
     value2reg.clear();
@@ -157,8 +158,10 @@ int oldSp = 0;
 bool saved = false;
 
 void Handler::handleBasicBlock(BasicBlock *basicBlock) {
+    std::cout << basicBlock->getName() << std::endl;
     mipsBuilder->genMipsBasicBlock(basicBlock->getName());
-    for (auto *child : basicBlock->instructions) {
+    for (auto *child: basicBlock->instructions) {
+        std::cout << child->getName() << std::endl;
         if (child->useless) {
             continue;
         }
@@ -224,9 +227,30 @@ void Handler::handleBasicBlock(BasicBlock *basicBlock) {
 
 
 void Handler::handleLoad(Instruction *child) {
+
     std::string glob;
+
+
     int offset = findOffset(child->operands[0]->value, &glob);
-    if (offset <= 0) {
+
+
+    if (!glob.empty()) {
+
+        bool isAllocated = false;
+        int reg = allocaReg(child, &isAllocated);
+        if (!isAllocated) {
+            Lw *lw = new Lw(reg, 114514, 29); // 全局特有的偏移量
+            if (!glob.empty()) {
+                lw->glob = glob;
+            }
+            this->mipsBuilder->genInstruction(lw);
+        } else {
+            this->value2reg[child] = reg;
+        }
+
+    } else if (offset <= 0) {
+
+
         bool isAllocated = false;
         int reg = allocaReg(child, &isAllocated);
         if (!isAllocated) {
@@ -240,12 +264,22 @@ void Handler::handleLoad(Instruction *child) {
         }
     } else {
         // 不在内存中
+
         int reg = findReg(child->operands[0]->value);
+// 全局也不再寄存器里
+
         bool foo;
+
         Lw *lw = new Lw(allocaReg(child, &foo), 0, reg);
+
         removeReg(child->operands[0]->value);
+        std::cout << "here" << std::endl;
+
         this->mipsBuilder->genInstruction(lw);
+
+
     }
+
 
 }
 
@@ -276,7 +310,11 @@ void Handler::handleStore(Instruction *child) {
     }
     std::string glob;
     int offset = findOffset(op1, &glob);
-    if (offset <= 0) {
+    if (!glob.empty()) {
+        Sw *sw = new Sw(reg, 114514, 29);
+        this->mipsBuilder->genInstruction(sw);
+        sw->glob = glob;
+    } else if (offset <= 0) {
         // 已在内存中
         Sw *sw = new Sw(reg, offset, 29);
         if (!glob.empty()) {
@@ -460,7 +498,7 @@ void Handler::handleDiv(Instruction *child, int *reg) {
 
 void Handler::removeReg(Value *value) {
     int reg = -1;
-    for (auto &it:this->value2reg) {
+    for (auto &it: this->value2reg) {
         if (it.first->getName() == value->getName()) {
             reg = it.second;
             this->value2reg.erase(it.first);
@@ -468,7 +506,7 @@ void Handler::removeReg(Value *value) {
         }
     }
     bool flag = false;
-    for (auto &it1:this->value2reg) {
+    for (auto &it1: this->value2reg) {
         if (it1.second == reg) {
             flag = true;
             break;
@@ -724,7 +762,7 @@ void Handler::save() {
     this->mipsBuilder->genInstruction(new Annotation("# 保存现场"));
     // 将寄存器里现在的值统统装入内存中
     oldSp = curOffSet;
-    for (auto &it:value2reg) {
+    for (auto &it: value2reg) {
         this->value2offset[it.first] = this->curOffSet;
         Sw *sw = new Sw(it.second, this->curOffSet, 29);
         this->mipsBuilder->genInstruction(sw);
@@ -786,7 +824,7 @@ void Handler::handleCall(Instruction *child) {
         return;
     }
 
-    for (auto *use : child->operands) {
+    for (auto *use: child->operands) {
         auto *value = use->value;
         if (value->valueType == ValueType::Const) {
             this->mipsBuilder->genInstruction(new Annotation("# 把数字参数放入内存中"));
@@ -845,7 +883,7 @@ void Handler::handleCall(Instruction *child) {
 
 
     this->mipsBuilder->genInstruction(new Annotation("# 恢复现场"));
-    for (auto &it:value2offset) {
+    for (auto &it: value2offset) {
         if (it.second <= oldSp && it.second > curOffSet + 4) {
             if (it.first == nullptr) {
                 this->mipsBuilder->genInstruction(new Annotation("# 恢复ra"));
