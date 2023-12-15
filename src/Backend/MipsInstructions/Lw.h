@@ -10,13 +10,14 @@
 
 class Lw : public MipsInstruction {
 public:
-    int reg;
+    int reg0;
     int offset;
+    int reg1;
     std::string glob = "";
 
     std::string translate();
 
-    Lw(int reg, int offset);
+    Lw(int reg0, int offset, int reg1);
 };
 
 

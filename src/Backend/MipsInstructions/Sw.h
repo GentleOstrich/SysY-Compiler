@@ -10,14 +10,15 @@
 
 class Sw : public MipsInstruction {
 public:
-    int reg;
+    int reg0;
     int offset;
+    int reg1;
 
     std::string translate() override ;
 
     std::string glob;
 
-    Sw(int reg, int offset);
+    Sw(int reg0, int offset, int reg1);
 };
 
 

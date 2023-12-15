@@ -71,7 +71,7 @@ public:
 
     void handleStore(Instruction *child);
 
-    void handleGEP();
+    void handleGEP(Instruction *child);
 
     void handleZext(Instruction *child);
 
