@@ -33,6 +33,7 @@
 #include "MipsInstructions/Annotation.h"
 #include "MipsInstructions/Syscall.h"
 #include "MipsInstructions/La.h"
+#include "MipsInstructions/Sll.h"
 
 int Handler::findReg(Value *value) {
     for (auto &it: value2reg) {
@@ -493,18 +494,21 @@ void Handler::handleDiv(Instruction *child, int *reg) {
         this->mipsBuilder->genInstruction(div);
     }
 
-
 }
 
 void Handler::removeReg(Value *value) {
     int reg = -1;
-    for (auto &it: this->value2reg) {
-        if (it.first->getName() == value->getName()) {
-            reg = it.second;
-            this->value2reg.erase(it.first);
+
+    for (auto it = value2reg.begin(); it != value2reg.end();) {
+        if (it->first->getName() == value->getName()) {
+            reg = it->second;
+            this->value2reg.erase(it++);
             break;
+        } else {
+            it++;
         }
     }
+
     bool flag = false;
     for (auto &it1: this->value2reg) {
         if (it1.second == reg) {
@@ -883,23 +887,27 @@ void Handler::handleCall(Instruction *child) {
 
 
     this->mipsBuilder->genInstruction(new Annotation("# 恢复现场"));
-    for (auto &it: value2offset) {
-        if (it.second <= oldSp && it.second > curOffSet + 4) {
-            if (it.first == nullptr) {
+
+    for (auto it = value2offset.begin(); it != value2offset.end();) {
+        if (it->second <= oldSp && it->second > curOffSet + 4) {
+            if (it->first == nullptr) {
                 this->mipsBuilder->genInstruction(new Annotation("# 恢复ra"));
                 int reg = 31;
-                Lw *lw = new Lw(reg, it.second, 29);
+                Lw *lw = new Lw(reg, it->second, 29);
                 this->mipsBuilder->genInstruction(lw);
                 this->mipsBuilder->genInstruction(new Annotation("# ------\n"));
             } else {
                 bool foo;
-                int reg = allocaReg(it.first, &foo);
-                Lw *lw = new Lw(reg, it.second, 29);
+                int reg = allocaReg(it->first, &foo);
+                Lw *lw = new Lw(reg, it->second, 29);
                 this->mipsBuilder->genInstruction(lw);
             }
-            value2offset.erase(it.first);
+            value2offset.erase(it++);
+        } else {
+            it++;
         }
     }
+
     this->mipsBuilder->genInstruction(new Annotation("# ------\n"));
 
     saved = false;
@@ -908,76 +916,140 @@ void Handler::handleCall(Instruction *child) {
 }
 
 void Handler::handleGEP(Instruction *child) {
-    int temp = 0;
-    for (int i = 1; i < child->operands.size(); ++i) {
-        if (child->operands[i]->value->valueType == ValueType::Const) {
-            if (((Instruction *) child->operands[0]->value)->dims.size() >= i) {
-                temp += (atoi(child->operands[i]->value->getName().c_str()) << 2) *
-                        ((Instruction *) child->operands[0]->value)->dims[i - 1];
-            } else {
-                temp += (atoi(child->operands[i]->value->getName().c_str()) << 2);
-            }
-        } else {
 
+    auto *value_foo = new Value("", ValueType::Instruction);
+    bool foo;
+    int aimReg = allocaReg(value_foo, &foo);
+    auto *li = new Li(aimReg, 0);
+    this->mipsBuilder->genInstruction(li);
+
+    // 还没考虑全局变量
+
+    int temp = 1;
+    for (int dim: ((Instruction *) child->operands[0]->value)->dims) {
+        temp *= dim;
+    }
+    int j = 0;
+
+    for (int i = 1; i < child->operands.size(); ++i) {
+
+        if (child->operands[i]->value->valueType == ValueType::Const) {
+            int t = (atoi(child->operands[i]->value->getName().c_str()) << 2) * temp;
+            auto *addiu = new Addiu(aimReg, aimReg, -t);
+            this->mipsBuilder->genInstruction(addiu);
+
+            if (j < ((Instruction *) child->operands[0]->value)->dims.size()) {
+                temp /= ((Instruction *) child->operands[0]->value)->dims[j++];
+            }
+
+        } else {
+            // 偏移量不是常数时
+            int reg0 = findReg(child->operands[i]->value);
+            std::cout << reg0 << " " << child->operands[i]->value->getName() << std::endl;
+
+            auto *sll = new Sll(reg0, reg0, 2);
+            this->mipsBuilder->genInstruction(sll);
+
+            auto *v_foo = new Value("", ValueType::Const);
+            bool foo;
+            int reg1 = allocaReg(v_foo, &foo);
+
+            auto *li = new Li(reg1, temp);
+            this->mipsBuilder->genInstruction(li);
+
+            auto *mult = new Mult(reg0, reg1);
+            this->mipsBuilder->genInstruction(mult);
+            removeReg(v_foo);
+
+            auto *mflo = new Mflo(reg0);
+            this->mipsBuilder->genInstruction(mflo);
+
+            auto *sub = new Sub(aimReg, aimReg, reg0);
+            this->mipsBuilder->genInstruction(sub);
+            removeReg(child->operands[i]->value);
+
+            if (j < ((Instruction *) child->operands[0]->value)->dims.size()) {
+                temp /= ((Instruction *) child->operands[0]->value)->dims[j++];
+            }
         }
     }
+
     if (((Instruction *) child->operands[0]->value)->instructionType == InstructionType::Alloca) {
         std::string name;
         int offset = findOffset(child->operands[0]->value, &name);
-        if (offset <= 0) {
-            // 在内存中
-            temp = 0 - temp + offset;
-        }
-        bool foo;
-        auto *value_foo = new Value("", ValueType::Const);
-        int reg0 = allocaReg(value_foo, &foo);
-        Li *li = new Li(reg0, temp);
-        this->mipsBuilder->genInstruction(li);
+        //if (offset <= 0) {
+        // 在内存中
+        auto *addiu = new Addiu(aimReg, aimReg, offset);
+        this->mipsBuilder->genInstruction(addiu);
+        //}
 
         int reg1 = allocaReg(child, &foo);
-        auto *add = new Add(reg1, reg0, 29);
+        auto *add = new Add(reg1, aimReg, 29);
         this->mipsBuilder->genInstruction(add);
         removeReg(value_foo);
 
     } else if (((Instruction *) child->operands[0]->value)->instructionType == InstructionType::Load) {
         // 在寄存器中
-
         int reg0 = findReg(child->operands[0]->value);
-        bool foo;
-        auto *value_foo = new Value("", ValueType::Const);
-        // 寄存器里的偏移量减去temp
-        int reg1 = allocaReg(value_foo, &foo);
-        auto *addiu = new Addiu(reg1, reg0, -temp);
-        this->mipsBuilder->genInstruction(addiu);
+
+        auto *add = new Add(aimReg, aimReg, reg0);
+        this->mipsBuilder->genInstruction(add);
+
         removeReg(child->operands[0]->value);
+
         if (((Instruction *) child->operands[0]->value)->isPtr) {
             int reg2 = allocaReg(child, &foo);
-            auto *move = new Move(reg2, reg1);
+            auto *move = new Move(reg2, aimReg);
             this->mipsBuilder->genInstruction(move);
             removeReg(value_foo);
         } else {
             int reg2 = allocaReg(child, &foo);
-            auto *add = new Add(reg2, reg1, 29);
+            auto *add = new Add(reg2, aimReg, 29);
             this->mipsBuilder->genInstruction(add);
             removeReg(value_foo);
         }
     } else if (child->operands[0]->value->valueType == ValueType::Global) {
         std::cout << "gep的操作对象为全局" << std::endl;
-        auto *value_foo = new Value("", ValueType::Const);
+        auto *value_foo1 = new Value("", ValueType::Const);
         bool foo;
-        int reg = allocaReg(value_foo, &foo);
+
+        int reg = allocaReg(value_foo1, &foo);
         La *la = new La(reg, child->operands[0]->value->getName().substr(1,
                                                                          child->operands[0]->value->getName().size() -
                                                                          1));
         this->mipsBuilder->genInstruction(la);
 
         int reg2 = allocaReg(child, &foo);
-        auto *addiu = new Addiu(reg2, reg, temp);
-        this->mipsBuilder->genInstruction(addiu);
+        auto *add = new Add(reg2, reg, aimReg);
+        this->mipsBuilder->genInstruction(add);
+        removeReg(value_foo1);
         removeReg(value_foo);
 
+    } else if (((Instruction *) child->operands[0]->value)->instructionType == InstructionType::GEP) {
+        std::cout << "..." << std::endl;
+        int reg0 = findReg(child->operands[0]->value);
+
+        auto *add = new Add(aimReg, aimReg, reg0);
+        this->mipsBuilder->genInstruction(add);
+
+        removeReg(child->operands[0]->value);
+
+        if (((Instruction *) child->operands[0]->value)->isPtr) {
+            int reg2 = allocaReg(child, &foo);
+            auto *move = new Move(reg2, aimReg);
+            this->mipsBuilder->genInstruction(move);
+            removeReg(value_foo);
+        } else {
+            int reg2 = allocaReg(child, &foo);
+            auto *add = new Add(reg2, aimReg, 29);
+            this->mipsBuilder->genInstruction(add);
+            removeReg(value_foo);
+        }
     }
-    std::cout << "gep的偏移量是[" << temp << "]" << std::endl;
+
+    //std::cout << "gep的偏移量是[" << temp << "]" << std::endl;
+
+
 }
 
 
