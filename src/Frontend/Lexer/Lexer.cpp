@@ -6,7 +6,7 @@
 extern std::string source;
 extern std::ofstream e_ofs;
 
-//#define ERROR_CHECK
+#define ERROR_CHECK
 
 #ifdef ERROR_CHECK
 
@@ -27,6 +27,8 @@ std::string reserveWords[RESERVEWORDS_NUM] = {
 
 Lexer lexer;
 
+bool changeLastLineNum = true;
+
 int Lexer::isReserveWord(const std::string &word) {
     for(int i = 0; i < RESERVEWORDS_NUM; ++i) {
         if (reserveWords[i] == word) {
@@ -37,6 +39,10 @@ int Lexer::isReserveWord(const std::string &word) {
 }
 
 int Lexer::next() {
+    if (changeLastLineNum) {
+        lastLineNum = lineNum;
+    }
+    changeLastLineNum = true;
     word.clear();
     lexType = LexType::NONE;
     //处理完毕
@@ -275,6 +281,7 @@ int Lexer::next() {
     }
     // 注释
     if (source[curPos] == '/') {
+        changeLastLineNum = false;
         if (curPos < source.length() && source[curPos + 1] == '/') {
             curPos += 2;
             while (curPos < source.length() && source[curPos] != '\n') {
@@ -384,6 +391,10 @@ int Lexer::getLineNum() const {
 
 int Lexer::getNumber() const {
     return this->number;
+}
+
+int Lexer::getLastLineNum() const {
+    return this->lastLineNum;
 }
 
 

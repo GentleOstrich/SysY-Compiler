@@ -3,8 +3,9 @@
 //
 
 #include "SymbolTable.h"
+#include "../Values/Instructions/Instruction.h"
 
-//#define ERROR_CHECK
+#define ERROR_CHECK
 
 #ifdef ERROR_CHECK
 
@@ -24,16 +25,22 @@ void SymbolTable::createSymbolTable() {
 }
 
 void SymbolTable::addSymbol(Symbol *symbol, int lineNum) {
-    this->symbols.insert(symbols.begin() + symbolId, symbol);
-    symbolId++;
-//    if (!findSymbol(symbol->word, symbol->type == -1, false)) {
-//        symbols.insert(symbols.begin() + symbolId, symbol);
-//        symbolId++;
-//    } else {
+    // if (symbol->word == "getint" || symbol->word == "putint" || symbol->word == "putch" || symbol->word == "putstr") {
+    //     this->symbols.insert(symbols.begin() + symbolId, symbol);
+    //     symbolId++;
+    //     return;
+    // }
+    // this->symbols.insert(symbols.begin() + symbolId, symbol);
+    // symbolId++;
+    auto *sym = getSymbol(symbol->word, symbol->value->valueType == ValueType::Function, false);
+    if (sym->word != "int") {
 #ifdef ERROR_CHECK
-    printError(lineNum, "b");
+        printError(lineNum, "b");
 #endif
-    return;
+    } else {
+        symbols.insert(symbols.begin() + symbolId, symbol);
+        symbolId++;
+    }
 }
 
 
@@ -54,5 +61,7 @@ Symbol *SymbolTable::getSymbol(const std::string &word, bool isFunc, bool all) {
             return symbols[i];
         }
     }
-    return nullptr;
+    auto *fooValue = new Instruction("int", ValueType::Instruction, nullptr, InstructionType::Zext);
+    auto *fooSymbol = new Symbol("int", fooValue);
+    return fooSymbol;
 }

@@ -12,7 +12,7 @@
 #define preRead lexer.nnext()
 #define prePreRead lexer.nnnext()
 
-// #define ERROR_CHECK
+#define ERROR_CHECK
 
 #ifdef ERROR_CHECK
 
@@ -85,7 +85,7 @@ ConstDecl *Parser::parseConstDecl() {
             readTk;
         } else {
 #ifdef ERROR_CHECK
-            printError(constDecl ->getLineNum(), "i");
+            printError(lexer.getLastLineNum(), "i");
 #endif
         }
     }
@@ -119,7 +119,7 @@ ConstDef *Parser::parseConstDef() {
                 readTk;
             } else {
 #ifdef ERROR_CHECK
-                printError(constDef ->getLineNum(), "k");
+                printError(lexer.getLastLineNum(), "k");
 #endif
             }
         }
@@ -174,7 +174,7 @@ VarDecl *Parser::parseVarDecl() {
         readTk;
     } else {
 #ifdef ERROR_CHECK
-        printError(varDecl ->getLineNum(), "i");
+        printError(lexer.getLastLineNum(), "i");
 #endif
     }
     ofs << "<VarDecl>" << std::endl;
@@ -197,7 +197,7 @@ VarDef *Parser::parseVarDef() {
                 readTk;
             } else {
 #ifdef ERROR_CHECK
-                printError(varDef ->getLineNum(), "k");
+                printError(lexer.getLastLineNum(), "k");
 #endif
             }
         }
@@ -259,7 +259,7 @@ FuncDef *Parser::parseFuncDef() {
                     readTk;
                 } else {
 #ifdef ERROR_CHECK
-                    printError(funcDef ->getLineNum(), "j");
+                    printError(lexer.getLastLineNum(), "j");
 #endif
                 }
             }
@@ -287,7 +287,7 @@ MainFuncDef *Parser::parseMainFuncDef() {
                     readTk;
                 } else {
 #ifdef ERROR_CHECK
-                    printError(mainFuncDef ->getLineNum(), "j");
+                    printError(lexer.getLastLineNum(), "j");
 #endif
                 }
                 mainFuncDef->addChild(parseBlock());
@@ -341,7 +341,7 @@ FuncFParam *Parser::parseFuncFParam() {
                 readTk;
             } else {
 #ifdef ERROR_CHECK
-                printError(funcFParam ->getLineNum(), "k");
+                printError(lexer.getLastLineNum(), "k");
 #endif
             }
             while (tkType == LexType::LBRACK) {
@@ -407,7 +407,7 @@ Stmt *Parser::parseStmt() {
                 readTk;
             } else {
 #ifdef ERROR_CHECK
-                printError(stmt ->getLineNum(), "j");
+                printError(lexer.getLastLineNum(), "j");
 #endif
             }
             stmt->addChild(parseStmt());
@@ -462,7 +462,7 @@ Stmt *Parser::parseStmt() {
             readTk;
         } else {
 #ifdef ERROR_CHECK
-            printError(stmt ->getLineNum(), "i");
+            printError(lexer.getLastLineNum(), "i");
 #endif
         }
     } else if (tkType == LexType::CONTINUETK) {
@@ -474,7 +474,7 @@ Stmt *Parser::parseStmt() {
             readTk;
         } else {
 #ifdef ERROR_CHECK
-            printError(stmt ->getLineNum(), "i");
+            printError(lexer.getLastLineNum(), "i");
 #endif
         }
     } else if (tkType == LexType::RETURNTK) {
@@ -516,7 +516,7 @@ Stmt *Parser::parseStmt() {
                     readTk;
                 } else {
 #ifdef ERROR_CHECK
-                    printError(stmt ->getLineNum(), "j");
+                    printError(lexer.getLastLineNum(), "j");
 #endif
                 }
                 if (tkType == LexType::SEMICN) {
@@ -524,7 +524,7 @@ Stmt *Parser::parseStmt() {
                     readTk;
                 } else {
 #ifdef ERROR_CHECK
-                    printError(stmt ->getLineNum(), "i");
+                    printError(lexer.getLastLineNum(), "i");
 #endif
                 }
             }
@@ -552,7 +552,7 @@ Stmt *Parser::parseStmt() {
                             readTk;
                         } else {
 #ifdef ERROR_CHECK
-                            printError(stmt ->getLineNum(), "j");
+                            printError(lexer.getLastLineNum(), "j");
 #endif
                         }
                         if (tkType == LexType::SEMICN) {
@@ -560,7 +560,7 @@ Stmt *Parser::parseStmt() {
                             readTk;
                         } else {
 #ifdef ERROR_CHECK
-                            printError(stmt ->getLineNum(), "i");
+                            printError(lexer.getLastLineNum(), "i");
 #endif
                         }
                     }
@@ -571,7 +571,7 @@ Stmt *Parser::parseStmt() {
                         readTk;
                     } else {
 #ifdef ERROR_CHECK
-                        printError(stmt ->getLineNum(), "i");
+                        printError(lexer.getLastLineNum(), "i");
 #endif
                     }
                 }
@@ -583,7 +583,7 @@ Stmt *Parser::parseStmt() {
                 readTk;
             } else {
 #ifdef ERROR_CHECK
-                printError(stmt ->getLineNum(), "i");
+                printError(lexer.getLastLineNum(), "i");
 #endif
             }
         }
@@ -634,7 +634,7 @@ LVal *Parser::parseLVal() {
                 readTk;
             } else {
 #ifdef ERROR_CHECK
-                printError(lVal ->getLineNum(), "k");
+                printError(lexer.getLastLineNum(), "k");
 #endif
             }
         }
@@ -697,7 +697,7 @@ UnaryExp *Parser::parseUnaryExp() {
                     readTk;
                 } else {
 #ifdef ERROR_CHECK
-                    printError(unaryExp ->getLineNum(), "j");
+                    printError(lexer.getLastLineNum(), "j");
 #endif
                 }
             }
@@ -881,3 +881,4 @@ ConstExp *Parser::parseConstExp() {
     ofs << "<ConstExp>" << std::endl;
     return constExp;
 }
+

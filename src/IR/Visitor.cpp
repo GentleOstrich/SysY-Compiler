@@ -1,10 +1,29 @@
 #include "Visitor.h"
 
-#define use(a, b, pos) use = new Use(a,b,pos); a->addUse(use); b->addOperand(use)
+#define use(a, b, pos)      \
+  use = new Use(a, b, pos); \
+  a->addUse(use);           \
+  b->addOperand(use)
+
+#define ERROR_CHECK
+
+#ifdef ERROR_CHECK
+
+struct Error {
+    int line;
+    char c;
+};
+extern Error errors[1000];
+extern int e;
+
+#define printError(lineNum, type) errors[e++] = {lineNum, type[0]}
+
+#endif
+
 Use *use = nullptr;
 
 void Visitor::visitCompUnit(Node *compUnit) {
-    for (auto *child: compUnit->children) {
+    for (auto *child : compUnit->children) {
         if (child->nodeType == NodeType::Decl) {
             visitDecl(child, true);
         } else if (child->nodeType == NodeType::FuncDef) {
@@ -20,47 +39,52 @@ void Visitor::visitCompUnit(Node *compUnit) {
 void Visitor::visitVarDef(Node *varDef, bool isGlobal) {
     if (isGlobal) {
         // 全局变量 数 数组
-        auto *globalVar = buildFactory->genGlobalVar(varDef, false); // 不是const
+        auto *globalVar = buildFactory->genGlobalVar(varDef, false);  // 不是const
         auto *symbol = new Symbol(varDef->getWord(), globalVar);
         symbolTable->addSymbol(symbol, varDef->getLineNum());
-        for (auto *child: varDef->children) {
+        for (auto *child : varDef->children) {
             if (child->getNodeType() == NodeType::InitVal) {
                 std::vector<Value *> initVals;
                 // 返回具体数字 isGlobal?
-                visitInitVal(child, &initVals, isGlobal); // TODO 全局变量的初始值一定能算出来---数
+                visitInitVal(child, &initVals,
+                             isGlobal);  // TODO 全局变量的初始值一定能算出来---数
                 for (int i = 0; i < initVals.size(); ++i) {
                     use(initVals[i], globalVar, i);
                 }
             } else if (child->getNodeType() == NodeType::ConstExp) {
                 // 数组:各维的长度
                 Value *Const = nullptr;
-                visitConstExp(child, &Const, isGlobal); // TODO 一定是个数字
+                visitConstExp(child, &Const, isGlobal);  // TODO 一定是个数字
                 globalVar->addDim(atoi(Const->getName().c_str()));
             }
         }
     } else {
-        auto *allocIns = buildFactory->genInstruction(InstructionType::Alloca, true);
+        auto *allocIns =
+                buildFactory->genInstruction(InstructionType::Alloca, true);
         auto *symbol = new Symbol(varDef->getWord(), allocIns);
         symbolTable->addSymbol(symbol, varDef->getLineNum());
         symbolTable->symbolId--;
-        for (auto *child: varDef->children) {
+        for (auto *child : varDef->children) {
             if (child->getNodeType() == NodeType::InitVal) {
                 std::vector<Value *> initVals;
-                visitInitVal(child, &initVals, isGlobal); // TODO 这里的初始值可能不是直接的数
+                visitInitVal(child, &initVals,
+                             isGlobal);  // TODO 这里的初始值可能不是直接的数
                 int i = 0;
-                for (auto initVal: initVals) {
+                for (auto initVal : initVals) {
                     if (allocIns->dims.empty()) {
                         // 不是数组 不需要GEP
-                        auto *storeIns = buildFactory->genInstruction(InstructionType::Store, false);
+                        auto *storeIns =
+                                buildFactory->genInstruction(InstructionType::Store, false);
                         use(initVal, storeIns, 0);
                         use(allocIns, storeIns, 1);
                     } else {
                         // 是数组 需要GEP
-                        auto *GEPIns = buildFactory->genInstruction(InstructionType::GEP, true);
+                        auto *GEPIns =
+                                buildFactory->genInstruction(InstructionType::GEP, true);
 
                         use(allocIns, GEPIns, 0);
                         auto *Const = buildFactory->genConst(0);
-                        use(Const, GEPIns, 1); // 此处第一个移动数都是0 （整体不移动）
+                        use(Const, GEPIns, 1);  // 此处第一个移动数都是0 （整体不移动）
 
                         // 初始值一个一个放入数组中
                         if (allocIns->dims.size() == 1) {
@@ -74,7 +98,8 @@ void Visitor::visitVarDef(Node *varDef, bool isGlobal) {
                             Const = buildFactory->genConst(i % allocIns->dims[1]);
                             use(Const, GEPIns, 3);
                         }
-                        auto *storeIns = buildFactory->genInstruction(InstructionType::Store, false);
+                        auto *storeIns =
+                                buildFactory->genInstruction(InstructionType::Store, false);
                         use(initVal, storeIns, 0);
                         use(GEPIns, storeIns, 1);
                     }
@@ -83,7 +108,7 @@ void Visitor::visitVarDef(Node *varDef, bool isGlobal) {
             } else if (child->getNodeType() == NodeType::ConstExp) {
                 // 数组:各维的长度
                 Value *Const = nullptr;
-                visitConstExp(child, &Const, true); // TODO  一定是个数字吗？
+                visitConstExp(child, &Const, true);  // TODO  一定是个数字吗？
                 // 设定alloca的维度
                 allocIns->addDim(atoi(Const->getName().c_str()));
             }
@@ -94,51 +119,56 @@ void Visitor::visitVarDef(Node *varDef, bool isGlobal) {
 }
 
 void Visitor::visitConstDef(Node *constDef, bool isGlobal) {
-    //TODO
-    // 数组相关
-    // 需要加符号表了
+    // TODO
+    //  数组相关
+    //  需要加符号表了
     if (isGlobal) {
-        auto *globalVar = buildFactory->genGlobalVar(constDef, true); // 是const
+        auto *globalVar = buildFactory->genGlobalVar(constDef, true);  // 是const
         auto *symbol = new Symbol(constDef->getWord(), globalVar);
         symbolTable->addSymbol(symbol, constDef->getLineNum());
-        for (auto *child: constDef->children) {
+        for (auto *child : constDef->children) {
             if (child->getNodeType() == NodeType::ConstInitVal) {
                 std::vector<Value *> initVals;
-                visitConstInitVal(child, &initVals, isGlobal);  // TODO 全局变量的初始值一定能算出来---数
+                visitConstInitVal(child, &initVals,
+                                  isGlobal);  // TODO 全局变量的初始值一定能算出来---数
                 for (int i = 0; i < initVals.size(); ++i) {
                     use(initVals[i], globalVar, i);
                 }
             } else if (child->getNodeType() == NodeType::ConstExp) {
                 // 数组:各维的长度
                 Value *Const = nullptr;
-                visitConstExp(child, &Const, isGlobal); // TODO 一定是个数字
+                visitConstExp(child, &Const, isGlobal);  // TODO 一定是个数字
                 globalVar->addDim(atoi(Const->getName().c_str()));
             }
         }
     } else {
-        auto *allocIns = buildFactory->genInstruction(InstructionType::Alloca, true);
+        auto *allocIns =
+                buildFactory->genInstruction(InstructionType::Alloca, true);
         auto *symbol = new Symbol(constDef->getWord(), allocIns);
         symbolTable->addSymbol(symbol, constDef->getLineNum());
         symbolTable->symbolId--;
 
-        for (auto *child: constDef->children) {
+        for (auto *child : constDef->children) {
             if (child->getNodeType() == NodeType::ConstInitVal) {
                 std::vector<Value *> initVals;
-                visitConstInitVal(child, &initVals, isGlobal); // TODO 这里的初始值可能不是直接的数
+                visitConstInitVal(child, &initVals,
+                                  isGlobal);  // TODO 这里的初始值可能不是直接的数
                 int i = 0;
-                for (auto initVal: initVals) {
+                for (auto initVal : initVals) {
                     if (allocIns->dims.size() < 1) {
                         // 不是数组 不需要GEP
-                        auto *storeInstruction = buildFactory->genInstruction(InstructionType::Store, false);
+                        auto *storeInstruction =
+                                buildFactory->genInstruction(InstructionType::Store, false);
                         use(initVal, storeInstruction, 0);
                         use(allocIns, storeInstruction, 1);
                     } else {
                         // 是数组 需要GEP
-                        auto *GEPIns = buildFactory->genInstruction(InstructionType::GEP, true);
+                        auto *GEPIns =
+                                buildFactory->genInstruction(InstructionType::GEP, true);
 
                         use(allocIns, GEPIns, 0);
                         auto *Const = buildFactory->genConst(0);
-                        use(Const, GEPIns, 1); // 此处第一个移动数都是0 （整体不移动）
+                        use(Const, GEPIns, 1);  // 此处第一个移动数都是0 （整体不移动）
 
                         if (allocIns->dims.size() == 1) {
                             Const = buildFactory->genConst(i);
@@ -149,7 +179,8 @@ void Visitor::visitConstDef(Node *constDef, bool isGlobal) {
                             Const = buildFactory->genConst(i % allocIns->dims[1]);
                             use(Const, GEPIns, 3);
                         }
-                        auto *storeIns = buildFactory->genInstruction(InstructionType::Store, false);
+                        auto *storeIns =
+                                buildFactory->genInstruction(InstructionType::Store, false);
                         use(initVal, storeIns, 0);
                         use(GEPIns, storeIns, 1);
                     }
@@ -194,7 +225,7 @@ int Visitor::visitFuncFParams(Node *funcFParams) {
     // 返回形参个数
     int ret = 0;
     vector<Value *> params;
-    for (auto *child: funcFParams->children) {
+    for (auto *child : funcFParams->children) {
         if (child->nodeType == NodeType::FuncFParam) {
             // 这里是形参，要添加形参转换实参的alloca和store
             Value *param = nullptr;
@@ -206,22 +237,23 @@ int Visitor::visitFuncFParams(Node *funcFParams) {
     buildFactory->genBasicBlock();
     vector<Value *> allocas;
 
-
     // 把参数都先存起来
     // 分配 alloca
     for (int i = 0; i < params.size(); ++i) {
-        Instruction *allocaIns = buildFactory->genInstruction(InstructionType::Alloca, true);
+        Instruction *allocaIns =
+                buildFactory->genInstruction(InstructionType::Alloca, true);
         auto *symbol = new Symbol(funcFParams->children[i]->getWord(), allocaIns);
         symbolTable->addSymbol(symbol, funcFParams->getLineNum());
         allocas.push_back(allocaIns);
     }
     // 存储 store
     for (int i = 0; i < params.size(); ++i) {
-        Instruction *storeIns = buildFactory->genInstruction(InstructionType::Store, false);
+        Instruction *storeIns =
+                buildFactory->genInstruction(InstructionType::Store, false);
         use(params[i], storeIns, 0);
         use(allocas[i], storeIns, 1);
         // TODO 设定alloc的维度 指针
-        for (auto dim: ((Param *) params[i])->dims) {
+        for (auto dim : ((Param *) params[i])->dims) {
             ((Instruction *) allocas[i])->addDim(dim);
         }
     }
@@ -233,22 +265,21 @@ void Visitor::visitFuncFParam(Node *funcFParam, Value **param) {
     if (funcFParam->getType() > 0) {
         param1->addDim(0);
     }
-    for (auto *child: funcFParam->children) {
+    for (auto *child : funcFParam->children) {
         if (child->getNodeType() == NodeType::BType) {
             visitBType(child);
         } else if (child->getNodeType() == NodeType::ConstExp) {
             Value *Const = nullptr;
-            visitConstExp(child, &Const, true); // TODO 一定能算出来的具体数
+            visitConstExp(child, &Const, true);  // TODO 一定能算出来的具体数
 
             param1->addDim(atoi(Const->getName().c_str()));
         }
     }
     *param = param1;
-
 }
 
 void Visitor::visitDecl(Node *funcFParam, bool isGlobal) {
-    for (auto *child: funcFParam->children) {
+    for (auto *child : funcFParam->children) {
         if (child->nodeType == NodeType::ConstDecl) {
             visitConstDecl(child, isGlobal);
         } else if (child->nodeType == NodeType::VarDecl) {
@@ -260,7 +291,7 @@ void Visitor::visitDecl(Node *funcFParam, bool isGlobal) {
 void Visitor::visitMainFuncDef(Node *mainFuncFParam) {
     auto *f = buildFactory->genFunction(mainFuncFParam);
     f->ret = 1;
-    for (auto *child: mainFuncFParam->children) {
+    for (auto *child : mainFuncFParam->children) {
         symbolTable->createSymbolTable();
         buildFactory->genBasicBlock();
         visitBlock(child);
@@ -268,7 +299,7 @@ void Visitor::visitMainFuncDef(Node *mainFuncFParam) {
 }
 
 void Visitor::visitConstDecl(Node *constDecl, bool isGlobal) {
-    for (auto *child: constDecl->children) {
+    for (auto *child : constDecl->children) {
         if (child->nodeType == NodeType::BType) {
             visitBType(child);
         } else if (child->nodeType == NodeType::ConstDef) {
@@ -278,7 +309,7 @@ void Visitor::visitConstDecl(Node *constDecl, bool isGlobal) {
 }
 
 void Visitor::visitVarDecl(Node *varDecl, bool isGlobal) {
-    for (auto *child: varDecl->children) {
+    for (auto *child : varDecl->children) {
         if (child->nodeType == NodeType::BType) {
             visitBType(child);
         } else if (child->nodeType == NodeType::VarDef) {
@@ -287,36 +318,41 @@ void Visitor::visitVarDecl(Node *varDecl, bool isGlobal) {
     }
 }
 
-void Visitor::visitBType(Node *BType) {
+void Visitor::visitBType(Node *BType) {}
 
-}
-
-int Visitor::visitConstInitVal(Node *constInitVal, std::vector<Value *> *constInitVals, bool needNum) {
-    for (auto *child: constInitVal->children) {
+int Visitor::visitConstInitVal(Node *constInitVal,
+                               std::vector<Value *> *constInitVals,
+                               bool needNum) {
+    for (auto *child : constInitVal->children) {
         if (child->nodeType == NodeType::ConstInitVal) {
-            visitConstInitVal(child, constInitVals, needNum); // TODO isGlobal决定是否是具体数字了
+            visitConstInitVal(child, constInitVals,
+                              needNum);  // TODO isGlobal决定是否是具体数字了
         } else if (child->nodeType == NodeType::ConstExp) {
             Value *constInitValue = nullptr;
             visitConstExp(child, &constInitValue, needNum);
-            (*constInitVals).push_back(constInitValue); // TODO isGlobal决定是否是具体数字了
+            (*constInitVals)
+                    .push_back(constInitValue);  // TODO isGlobal决定是否是具体数字了
         }
     }
-    return -114514;
+    return 114514;
 }
 
-int Visitor::visitInitVal(Node *initVal, std::vector<Value *> *initVals, bool needNum) {
-    for (auto *child: initVal->children) {
+int Visitor::visitInitVal(Node *initVal, std::vector<Value *> *initVals,
+                          bool needNum) {
+    for (auto *child : initVal->children) {
         if (child->nodeType == NodeType::InitVal) {
-            visitInitVal(child, initVals, needNum); // TODO isGlobal决定是否是具体数字了
+            visitInitVal(child, initVals,
+                         needNum);  // TODO isGlobal决定是否是具体数字了
         } else if (child->nodeType == NodeType::Exp) {
             Value *initValValue = nullptr;
-            visitExp(child, &initValValue, needNum); // TODO isGlobal决定是否是具体数字了
+            visitExp(child, &initValValue,
+                     needNum);  // TODO isGlobal决定是否是具体数字了
+
             (*initVals).push_back(initValValue);
         }
     }
-    return -114514;
+    return 114514;
 }
-
 
 int Visitor::visitFuncType(Node *funcType) {
     // funcType->getType() 0-int 1-void
@@ -328,8 +364,8 @@ int Visitor::visitFuncType(Node *funcType) {
 }
 
 void Visitor::visitBlock(Node *block) {
-    for (auto *child: block->children) {
-        if (visitBlockItem(child) == 1) { // TODO ?
+    for (auto *child : block->children) {
+        if (visitBlockItem(child) == 1) {  // TODO ?
             break;
         }
     }
@@ -337,13 +373,13 @@ void Visitor::visitBlock(Node *block) {
 }
 
 int Visitor::visitBlockItem(Node *blockItem) {
-    for (auto *child: blockItem->children) {
+    for (auto *child : blockItem->children) {
         if (child->nodeType == NodeType::Decl) {
             visitDecl(child, false);
         } else {
             visitStmt(child);
             if (child->getType() == 3 || child->getType() == 4) {
-                return 1; // TODO ?
+                return 1;  // TODO ?
             }
         }
     }
@@ -357,69 +393,82 @@ void Visitor::visitForStmt(Node *forStmt) {
 
     // 得到的其实是一个 load 指令 他的operand才是alloc
     // 生成一个store指令
-    if (lValIns->valueType == ValueType::Instruction) {
-//        ((Instruction *) lValIns)->useless = true;
+    if (lValIns != nullptr && lValIns->valueType == ValueType::Instruction) {
+        //        ((Instruction *) lValIns)->useless = true;
         buildFactory->removeIns();
         Value *allocaIns = ((Instruction *) lValIns)->operands[0]->value;
 
         Value *expIns = nullptr;
         visitExp(forStmt->children[1], &expIns, false);
 
-        Instruction *storeIns = buildFactory->genInstruction(InstructionType::Store, false);
+        Instruction *storeIns =
+                buildFactory->genInstruction(InstructionType::Store, false);
         // 添加use
         use(expIns, storeIns, 0);
         use(allocaIns, storeIns, 1);
     }
-
 }
 
 int Visitor::visitExp(Node *exp, Value **expIns, bool needNum) {
     // 待施工 无需产生指令
     if (needNum) {
         // expIns将会是一个const
-        return visitAddExp(exp->children[0], expIns, needNum); // TODO isGlobal决定是否具体数字？
+        return visitAddExp(exp->children[0], expIns,
+                           needNum);  // TODO isGlobal决定是否具体数字？
     }
+
     Value *addIns = nullptr;
-    for (auto *child: exp->children) {
+    for (auto *child : exp->children) {
         if (child->nodeType == NodeType::AddExp) {
             visitAddExp(child, &addIns, false);
         }
     }
     *expIns = addIns;
-    return -114514;
+    return 114514;
 }
-
 
 int Visitor::visitLVal(Node *lVal, Value **lValInstruction) {
     string word = lVal->getWord();
-    Symbol *symbol = symbolTable->getSymbol(word, false, true); // 找这个数先不用考虑函数
-    if (buildFactory->curFunction == nullptr) { // 全局状态
+    Symbol *symbol = symbolTable->getSymbol(
+            word, false, true);  // 找这个数先不用考虑函数（不会是函数？）
+#ifdef ERROR_CHECK
+    if (symbol->word == "int") {
+        printError(lVal->getLineNum(), "c");
+    }
+#endif
+    if (buildFactory->curFunction == nullptr) {  // 全局状态
         auto *value = symbol->value;
         if (((GlobalVar *) value)->dims.empty()) {
             *lValInstruction = ((GlobalVar *) value)->operands[0]->value;
         } else {
             if (lVal->children.empty()) {
-
             } else if (lVal->children.size() == 1) {
                 Value *expIns = nullptr;
-                visitExp(lVal->children[0], &expIns, true); // TODO isGlobal决定是否具体数字
-                *lValInstruction = ((GlobalVar *) value)->operands[atoi(expIns->getName().c_str())]->value;
+                visitExp(lVal->children[0], &expIns,
+                         true);  // TODO isGlobal决定是否具体数字
+                *lValInstruction = ((GlobalVar *) value)
+                        ->operands[atoi(expIns->getName().c_str())]
+                        ->value;
             } else if (lVal->children.size() == 2) {
                 Value *expIns1 = nullptr;
                 Value *expIns2 = nullptr;
-                visitExp(lVal->children[0], &expIns1, true); // TODO isGlobal决定是否具体数字
-                visitExp(lVal->children[1], &expIns2, true); // TODO isGlobal决定是否具体数字
-                *lValInstruction = ((GlobalVar *) value)->operands[
-                        atoi(expIns1->getName().c_str()) * ((GlobalVar *) value)->dims[1] +
-                        atoi(expIns2->getName().c_str())]->value;
+                visitExp(lVal->children[0], &expIns1,
+                         true);  // TODO isGlobal决定是否具体数字
+                visitExp(lVal->children[1], &expIns2,
+                         true);  // TODO isGlobal决定是否具体数字
+                *lValInstruction = ((GlobalVar *) value)
+                        ->operands[atoi(expIns1->getName().c_str()) *
+                                   ((GlobalVar *) value)->dims[1] +
+                                   atoi(expIns2->getName().c_str())]
+                        ->value;
             } else {
-
             }
         }
     } else {
-        if (symbol->value->valueType == ValueType::Global) { // 全局变量
+        if (symbol->value->valueType == ValueType::Global) {  // 全局变量
             if (((Instruction *) (symbol->value))->dims.empty()) {
-                Instruction *loadIns = buildFactory->genInstruction(InstructionType::Load, true);
+                Instruction *loadIns =
+                        buildFactory->genInstruction(InstructionType::Load, true);
                 use(symbol->value, loadIns, 0);
                 *lValInstruction = loadIns;
             } else {
@@ -429,11 +478,12 @@ int Visitor::visitLVal(Node *lVal, Value **lValInstruction) {
                 while (i < lVal->children.size()) {
                     auto *Const = buildFactory->genConst(0);
                     Value *expIns = nullptr;
-                    visitExp(lVal->children[i], &expIns, false); // TODO isGlobal决定是否具体数字
+                    visitExp(lVal->children[i], &expIns,
+                             false);  // TODO isGlobal决定是否具体数字
 
                     userIns = buildFactory->genInstruction(InstructionType::GEP, true);
                     use(valueIns, userIns, 0);
-                    for (auto dim: ((Instruction *) valueIns)->dims) {
+                    for (auto dim : ((Instruction *) valueIns)->dims) {
                         userIns->dims.push_back(dim);
                     }
 
@@ -444,13 +494,14 @@ int Visitor::visitLVal(Node *lVal, Value **lValInstruction) {
                     i++;
                 }
                 if (i >= ((Instruction *) (symbol->value))->dims.size()) {
-                    Instruction *loadIns = buildFactory->genInstruction(InstructionType::Load, true);
+                    Instruction *loadIns =
+                            buildFactory->genInstruction(InstructionType::Load, true);
                     use(userIns, loadIns, 0);
                     *lValInstruction = loadIns;
                 } else {
                     userIns = buildFactory->genInstruction(InstructionType::GEP, true);
                     use(valueIns, userIns, 0);
-                    for (auto dim: ((Instruction *) valueIns)->dims) {
+                    for (auto dim : ((Instruction *) valueIns)->dims) {
                         userIns->dims.push_back(dim);
                     }
                     auto *Const = buildFactory->genConst(0);
@@ -461,30 +512,35 @@ int Visitor::visitLVal(Node *lVal, Value **lValInstruction) {
                     *lValInstruction = userIns;
                 }
             }
-        } else if (symbol->value->valueType == ValueType::Instruction) { // 不是全局变量
+        } else if (symbol->value->valueType ==
+                   ValueType::Instruction) {  // 不是全局变量
             if (((Instruction *) (symbol->value))->dims.empty()) {
                 // 不是数组
-                Instruction *loadIns = buildFactory->genInstruction(InstructionType::Load, true);
+                Instruction *loadIns =
+                        buildFactory->genInstruction(InstructionType::Load, true);
                 use(symbol->value, loadIns, 0);
                 *lValInstruction = loadIns;
             } else {
                 auto *valueIns = symbol->value;
                 if (((Instruction *) (valueIns))->dims[0] == 0) {
                     // 函数中的处理
-                    auto *loadIns = buildFactory->genInstruction(InstructionType::Load, true);
+                    auto *loadIns =
+                            buildFactory->genInstruction(InstructionType::Load, true);
                     use(valueIns, loadIns, 0);
                     loadIns->isPtr = true;
-                    for (auto dim: ((Instruction *) (valueIns))->dims) {
+                    for (auto dim : ((Instruction *) (valueIns))->dims) {
                         loadIns->addDim(dim);
                     }
-                    loadIns->dims.erase(loadIns->dims.begin()); // load里装的就不是指针了
+                    loadIns->dims.erase(loadIns->dims.begin());  // load里装的就不是指针了
                     if (!lVal->children.empty()) {
                         valueIns = loadIns;
                         if (lVal->children.size() == 1) {
                             if (((Instruction *) valueIns)->dims.empty()) {
                                 Value *expIns = nullptr;
-                                visitExp(lVal->children[0], &expIns, false); // TODO isGlobal决定是否具体数字
-                                Instruction *userIns = buildFactory->genInstruction(InstructionType::GEP, true);
+                                visitExp(lVal->children[0], &expIns,
+                                         false);  // TODO isGlobal决定是否具体数字
+                                Instruction *userIns =
+                                        buildFactory->genInstruction(InstructionType::GEP, true);
 
                                 use(valueIns, userIns, 0);
                                 use(expIns, userIns, 1);
@@ -492,18 +548,21 @@ int Visitor::visitLVal(Node *lVal, Value **lValInstruction) {
                                 userIns = nullptr;
                             } else {
                                 Value *expIns = nullptr;
-                                visitExp(lVal->children[0], &expIns, false); // TODO isGlobal决定是否具体数字
-                                Instruction *userIns = buildFactory->genInstruction(InstructionType::GEP, true);
-                                for (auto dim: ((Instruction *) valueIns)->dims) {
+                                visitExp(lVal->children[0], &expIns,
+                                         false);  // TODO isGlobal决定是否具体数字
+                                Instruction *userIns =
+                                        buildFactory->genInstruction(InstructionType::GEP, true);
+                                for (auto dim : ((Instruction *) valueIns)->dims) {
                                     userIns->addDim(dim);
                                 }
                                 use(valueIns, userIns, 0);
                                 use(expIns, userIns, 1);
 
                                 valueIns = userIns;
-                                userIns = buildFactory->genInstruction(InstructionType::GEP, true);
+                                userIns =
+                                        buildFactory->genInstruction(InstructionType::GEP, true);
                                 use(valueIns, userIns, 0);
-                                for (auto dim: ((Instruction *) valueIns)->dims) {
+                                for (auto dim : ((Instruction *) valueIns)->dims) {
                                     userIns->addDim(dim);
                                 }
                                 userIns->dims.erase(userIns->dims.begin());
@@ -515,17 +574,21 @@ int Visitor::visitLVal(Node *lVal, Value **lValInstruction) {
                             }
                         } else if (lVal->children.size() == 2) {
                             Value *expIns = nullptr;
-                            visitExp(lVal->children[0], &expIns, false); // TODO isGlobal决定是否具体数字
-                            Instruction *userIns = buildFactory->genInstruction(InstructionType::GEP, true);
-                            for (auto dim: ((Instruction *) valueIns)->dims) {
+                            visitExp(lVal->children[0], &expIns,
+                                     false);  // TODO isGlobal决定是否具体数字
+                            Instruction *userIns =
+                                    buildFactory->genInstruction(InstructionType::GEP, true);
+                            for (auto dim : ((Instruction *) valueIns)->dims) {
                                 userIns->addDim(dim);
                             }
                             use(valueIns, userIns, 0);
                             use(expIns, userIns, 1);
                             valueIns = userIns;
-                            visitExp(lVal->children[1], &expIns, false); // TODO isGlobal决定是否具体数字
-                            userIns = buildFactory->genInstruction(InstructionType::GEP, true);
-                            for (auto dim: ((Instruction *) valueIns)->dims) {
+                            visitExp(lVal->children[1], &expIns,
+                                     false);  // TODO isGlobal决定是否具体数字
+                            userIns =
+                                    buildFactory->genInstruction(InstructionType::GEP, true);
+                            for (auto dim : ((Instruction *) valueIns)->dims) {
                                 userIns->addDim(dim);
                             }
                             userIns->dims.erase(userIns->dims.begin());
@@ -536,10 +599,12 @@ int Visitor::visitLVal(Node *lVal, Value **lValInstruction) {
                             valueIns = userIns;
                             userIns = nullptr;
                         }
-                        if (((Instruction *) (symbol->value))->dims.size() == lVal->children.size()) {
-                            loadIns = buildFactory->genInstruction(InstructionType::Load, true);
+                        if (((Instruction *) (symbol->value))->dims.size() ==
+                            lVal->children.size()) {
+                            loadIns =
+                                    buildFactory->genInstruction(InstructionType::Load, true);
                             use(valueIns, loadIns, 0);
-                            for (auto dim: ((Instruction *) valueIns)->dims) {
+                            for (auto dim : ((Instruction *) valueIns)->dims) {
                                 loadIns->addDim(dim);
                             }
                             *lValInstruction = loadIns;
@@ -549,17 +614,17 @@ int Visitor::visitLVal(Node *lVal, Value **lValInstruction) {
                     } else {
                         *lValInstruction = loadIns;
                     }
-
                 } else {
                     // 不是在函数中参数（存的不是指针）
                     Instruction *userIns = nullptr;
                     int i = 0;
                     while (i < lVal->children.size()) {
                         Value *expIns = nullptr;
-                        visitExp(lVal->children[i], &expIns, false); // TODO isGlobal决定是否具体数字
+                        visitExp(lVal->children[i], &expIns,
+                                 false);  // TODO isGlobal决定是否具体数字
                         userIns = buildFactory->genInstruction(InstructionType::GEP, true);
                         use(valueIns, userIns, 0);
-                        for (auto dim: ((Instruction *) valueIns)->dims) {
+                        for (auto dim : ((Instruction *) valueIns)->dims) {
                             userIns->dims.push_back(dim);
                         }
                         auto *Const = buildFactory->genConst(0);
@@ -570,13 +635,14 @@ int Visitor::visitLVal(Node *lVal, Value **lValInstruction) {
                         i++;
                     }
                     if (i >= ((Instruction *) (symbol->value))->dims.size()) {
-                        Instruction *loadInstruction = buildFactory->genInstruction(InstructionType::Load, true);
+                        Instruction *loadInstruction =
+                                buildFactory->genInstruction(InstructionType::Load, true);
                         use(userIns, loadInstruction, 0);
                         *lValInstruction = loadInstruction;
                     } else {
                         userIns = buildFactory->genInstruction(InstructionType::GEP, true);
                         use(valueIns, userIns, 0);
-                        for (auto dim: ((Instruction *) valueIns)->dims) {
+                        for (auto dim : ((Instruction *) valueIns)->dims) {
                             userIns->dims.push_back(dim);
                         }
 
@@ -592,24 +658,29 @@ int Visitor::visitLVal(Node *lVal, Value **lValInstruction) {
             }
         }
     }
-    return -114514;
+    return 114514;
 }
 
-int Visitor::visitPrimaryExp(Node *primaryExp, Value **primaryInstruction, bool needNum) {  // TODO isGlobal决定是否具体数字
+int Visitor::visitPrimaryExp(Node *primaryExp, Value **primaryInstruction,
+                             bool needNum) {  // TODO isGlobal决定是否具体数字
     // 要生成指令了
-    if (needNum) { // 就想要这个数 产生那个const
+    if (needNum) {  // 就想要这个数 产生那个const
         if (primaryExp->children[0]->nodeType == NodeType::Exp) {
-            return visitExp(primaryExp->children[0], primaryInstruction, needNum);  // TODO isGlobal决定是否具体数字
+            return visitExp(primaryExp->children[0], primaryInstruction,
+                            needNum);  // TODO isGlobal决定是否具体数字
         } else if (primaryExp->children[0]->nodeType == NodeType::LVal) {
-            return visitLVal(primaryExp->children[0], primaryInstruction); // 寻找值的倒数第二个终结点
+            return visitLVal(primaryExp->children[0],
+                             primaryInstruction);  // 寻找值的倒数第二个终结点
         } else if (primaryExp->children[0]->nodeType == NodeType::Number) {
             // 例如 return 0 应该直接返回0这个值
-            *primaryInstruction = buildFactory->genConst(primaryExp->children[0]->getVal()); // 寻找值的终结点
+            *primaryInstruction = buildFactory->genConst(
+                    primaryExp->children[0]->getVal());  // 寻找值的终结点
         }
     } else {
         if (primaryExp->children[0]->nodeType == NodeType::Exp) {
             Value *expInstruction = nullptr;
-            visitExp(primaryExp->children[0], &expInstruction, needNum);  // TODO isGlobal决定是否具体数字
+            visitExp(primaryExp->children[0], &expInstruction,
+                     needNum);  // TODO isGlobal决定是否具体数字
             *primaryInstruction = expInstruction;
         } else if (primaryExp->children[0]->nodeType == NodeType::LVal) {
             Value *lValInstruction = nullptr;
@@ -621,29 +692,30 @@ int Visitor::visitPrimaryExp(Node *primaryExp, Value **primaryInstruction, bool 
             *primaryInstruction = buildFactory->genConst(a);
         }
     }
-    return -114514;
+    return 114514;
 }
 
-void Visitor::handleNumber(Node *number) {
-
-}
+void Visitor::handleNumber(Node *number) {}
 
 int NOT = -1;
 
-int Visitor::visitUnaryExp(Node *unaryExp, Value **unaryInstruction, bool needNum) {  // TODO isGlobal决定是否具体数字
+int Visitor::visitUnaryExp(Node *unaryExp, Value **unaryInstruction,
+                           bool needNum) {  // TODO isGlobal决定是否具体数字
     if (needNum) {
         if (unaryExp->children[0]->nodeType == NodeType::PrimaryExp) {
             // unaryIns是一个Const
-            return visitPrimaryExp(unaryExp->children[0], unaryInstruction, needNum);  // TODO isGlobal决定是否具体数字
+            return visitPrimaryExp(unaryExp->children[0], unaryInstruction,
+                                   needNum);  // TODO isGlobal决定是否具体数字
         } else if (unaryExp->children[0]->nodeType == NodeType::UnaryOp) {
             int sign = 1;
             int op = visitUnaryOp(unaryExp->children[0]);
-            if (op == 1) { // -1
+            if (op == 1) {  // -1
                 sign *= -1;
-            } else if (op == 2) { // !
+            } else if (op == 2) {  // !
                 NOT *= -1;
             }
-            visitUnaryExp(unaryExp->children[1], unaryInstruction, needNum);  // TODO isGlobal决定是否具体数字
+            visitUnaryExp(unaryExp->children[1], unaryInstruction,
+                          needNum);  // TODO isGlobal决定是否具体数字
             if ((*unaryInstruction)->valueType == ValueType::Const) {
                 // 一定是
                 ((Const *) (*unaryInstruction))->val *= sign;
@@ -651,66 +723,111 @@ int Visitor::visitUnaryExp(Node *unaryExp, Value **unaryInstruction, bool needNu
         }
     } else {
         if (unaryExp->children.empty()) {
-            Value *function = symbolTable->getSymbol(unaryExp->getWord(), true, true)->value;
-            Instruction *call = buildFactory->genInstruction(InstructionType::Call, ((Function *) function)->ret == 1);
+            // 无参数的调用
+            Symbol *sym = symbolTable->getSymbol(unaryExp->getWord(), true, true);
+#ifdef ERROR_CHECK
+            if (sym->word == "int") {
+                printError(unaryExp->getLineNum(), "c");
+            } else {
+                if (!((Function *) sym->value)->params.empty()) {
+                    printError(unaryExp->getLineNum(), "d");
+                }
+            }
+#endif
+            Value *function = sym->value;
+
+            Instruction *call = buildFactory->genInstruction(
+                    InstructionType::Call, ((Function *) function)->ret == 1);
             use(function, call, 0);
             *unaryInstruction = call;
             // 函数调用
         } else {
             if (unaryExp->children[0]->nodeType == NodeType::PrimaryExp) {
                 Value *primaryIns = nullptr;
-                visitPrimaryExp(unaryExp->children[0], &primaryIns, needNum); // TODO isGlobal决定是否具体数字
+                visitPrimaryExp(unaryExp->children[0], &primaryIns,
+                                needNum);  // TODO isGlobal决定是否具体数字
                 *unaryInstruction = primaryIns;
             } else if (unaryExp->children[0]->nodeType == NodeType::UnaryOp) {
                 int op = visitUnaryOp(unaryExp->children[0]);
                 if (op == 1) {
                     // -用0减
                     auto *c = new Const("", ValueType::Const, 0);
-                    Value *right;
-                    visitUnaryExp(unaryExp->children[1], &right, needNum);  // TODO isGlobal决定是否具体数字
-                    Instruction *subInstruction = buildFactory->genInstruction(InstructionType::Sub, true);
+                    Value *right = nullptr;
+                    visitUnaryExp(unaryExp->children[1], &right,
+                                  needNum);  // TODO isGlobal决定是否具体数字
+                    Instruction *subInstruction =
+                            buildFactory->genInstruction(InstructionType::Sub, true);
                     use(c, subInstruction, 0);
                     use(right, subInstruction, 1);
                     *unaryInstruction = subInstruction;
                 } else {
                     // !
                     if (op == 2) NOT *= -1;
-                    visitUnaryExp(unaryExp->children[1], unaryInstruction, needNum); // TODO isGlobal决定是否具体数字
+                    visitUnaryExp(unaryExp->children[1], unaryInstruction,
+                                  needNum);  // TODO isGlobal决定是否具体数字
                 }
             } else {
+                // 有参数的调用
                 // Ident ()  调用函数
                 vector<Value *> exps;
-                for (auto *child: unaryExp->children) {
-                    for (auto *child_: child->children) {
+                for (auto *child : unaryExp->children) {
+                    for (auto *child_ : child->children) {
                         Value *exp = nullptr;
                         visitExp(child_, &exp, needNum);
                         exps.push_back(exp);
                     }
                 }
-                Value *function = symbolTable->getSymbol(unaryExp->getWord(), true, true)->value;
-                Value *call = buildFactory->genInstruction(InstructionType::Call, ((Function *) function)->ret == 1);
+                Symbol *sym = symbolTable->getSymbol(unaryExp->getWord(), true, true);
+#ifdef ERROR_CHECK
+                if (sym->word == "int") {
+                    printError(unaryExp->getLineNum(), "c");
+                } else {
+                    if (exps.size() != ((Function *) sym->value)->params.size()) {
+                        printError(unaryExp->getLineNum(), "d");
+                    }
+                }
+#endif
+                Value *function = sym->value;
+                Value *call = buildFactory->genInstruction(
+                        InstructionType::Call, ((Function *) function)->ret == 1);
                 use(function, ((Instruction *) call), 0);
-                for (auto *child: exps) {
+                int x = 0;
+                for (auto *child : exps) {
+#ifdef ERROR_CHECK
+                    if (child->valueType == ValueType::Instruction) {
+                        auto *insChild = (Instruction *) child;
+                        if (insChild->isPtr) {
+                            if (!((insChild->dims.empty() &&
+                                   ((Function *) function)->params[x++]->dims.size() == 1) ||
+                                  (insChild->dims.size() == 1 &&
+                                   ((Function *) function)->params[x++]->dims.size() == 2))) {
+                                printError(unaryExp->getLineNum(), "e");
+                            }
+                        } else {
+                            if (!((Function *) function)->params[x++]->dims.empty()) {
+                                printError(unaryExp->getLineNum(), "e");
+                            }
+                        }
+                    }
+
+#endif
                     use(child, ((Instruction *) call), 0);
                 }
                 *unaryInstruction = call;
             }
         }
     }
-    return -114514;
+    return 114514;
 }
 
 void Visitor::handleFuncRParams(Node *funcRParams, Value **call) {
     // 不用这个了
 }
 
+int Visitor::visitUnaryOp(Node *unaryOp) { return unaryOp->getType(); }
 
-int Visitor::visitUnaryOp(Node *unaryOp) {
-    return unaryOp->getType();
-}
-
-
-int Visitor::visitMulExp(Node *mulExp, Value **mulInstruction, bool needNum) {  // TODO isGlobal决定是否具体数字
+int Visitor::visitMulExp(Node *mulExp, Value **mulInstruction,
+                         bool needNum) {  // TODO isGlobal决定是否具体数字
     if (needNum) {
         // mulIns将会是一个Const
         if (mulExp->children.size() == 1) {
@@ -721,40 +838,45 @@ int Visitor::visitMulExp(Node *mulExp, Value **mulInstruction, bool needNum) {  
             visitUnaryExp(mulExp->children[1], &mul2, needNum);
             int m1 = atoi(mul1->getName().c_str());
             int m2 = atoi(mul2->getName().c_str());
-            int val = (mulExp->getOp() == 0) ? m1 * m2 :
-                      (mulExp->getOp() == 1) ? m1 / m2 : m1 % m2;
+            int val = (mulExp->getOp() == 0) ? m1 * m2
+                                             : (mulExp->getOp() == 1) ? m1 / m2
+                                                                      : m1 % m2;
             *mulInstruction = buildFactory->genConst(val);
         }
     } else {
         if (mulExp->children.size() == 1) {
             Value *unaryInstruction = nullptr;
-            //先不产生mul指令
+            // 先不产生mul指令
             visitUnaryExp(mulExp->children[0], &unaryInstruction, needNum);
             *mulInstruction = unaryInstruction;
         } else if (mulExp->children.size() > 1) {
-            //要产生mul指令了
+            // 要产生mul指令了
             Value *leftMulInstruction = nullptr;
             Value *rightUnaryInstruction = nullptr;
             visitMulExp(mulExp->children[0], &leftMulInstruction, needNum);
             visitUnaryExp(mulExp->children[1], &rightUnaryInstruction, needNum);
 
-            InstructionType instructionType = (mulExp->getOp() == 0) ? InstructionType::Mul :
-                                              (mulExp->getOp() == 1) ? InstructionType::Div :
-                                              InstructionType::Mod;
+            InstructionType instructionType =
+                    (mulExp->getOp() == 0) ? InstructionType::Mul
+                                           : (mulExp->getOp() == 1) ? InstructionType::Div
+                                                                    : InstructionType::Mod;
 
             if (instructionType == InstructionType::Mod) {
                 // 先除再乘再减
-                auto *instruction1 = buildFactory->genInstruction(InstructionType::Div, true);
+                auto *instruction1 =
+                        buildFactory->genInstruction(InstructionType::Div, true);
                 instruction1->isMod = true;
                 use(leftMulInstruction, instruction1, 0);
                 use(rightUnaryInstruction, instruction1, 1);
 
-                auto *instruction2 = buildFactory->genInstruction(InstructionType::Mul, true);
+                auto *instruction2 =
+                        buildFactory->genInstruction(InstructionType::Mul, true);
                 instruction2->isMod = true;
                 use(rightUnaryInstruction, instruction2, 0);
                 use(instruction1, instruction2, 1);
 
-                auto *instruction3 = buildFactory->genInstruction(InstructionType::Sub, true);
+                auto *instruction3 =
+                        buildFactory->genInstruction(InstructionType::Sub, true);
                 instruction3->isMod = true;
                 use(leftMulInstruction, instruction3, 0);
                 use(instruction2, instruction3, 1);
@@ -765,12 +887,10 @@ int Visitor::visitMulExp(Node *mulExp, Value **mulInstruction, bool needNum) {  
                 use(leftMulInstruction, ((Instruction *) (*mulInstruction)), 0);
                 use(rightUnaryInstruction, ((Instruction *) (*mulInstruction)), 1);
             }
-
         }
     }
-    return -114514;
+    return 114514;
 }
-
 
 std::vector<Instruction *> brs;
 std::vector<Instruction *> brs_;
@@ -783,12 +903,13 @@ void Visitor::visitStmt(Node *stmt) {
     if (stmt->getType() == 5) {
         // 是return语句
         Value *expIns = nullptr;
-        for (auto *child: stmt->children) {
+        for (auto *child : stmt->children) {
             // 只可能是exp
             visitExp(child, &expIns, false);
             // 需要得到装着返回值的寄存器号 那是一个 Instruction
         }
-        Instruction *retIns = buildFactory->genInstruction(InstructionType::Ret, false);
+        Instruction *retIns =
+                buildFactory->genInstruction(InstructionType::Ret, false);
         if (!stmt->children.empty()) {
             use(expIns, retIns, 0);
         }
@@ -796,32 +917,33 @@ void Visitor::visitStmt(Node *stmt) {
         // ret 语句不需要加入符号表
         // 返回一个值 或 void 这个值来自于 visitExp
     } else if (stmt->getType() == 6) {
-//        // getint
-//        // 第一次先定义getint这个库函数
-//        static int gt = 0;
-//        if (gt != 1) {
-//            buildFactory->genFunction("getint", 0);
-//            gt = 1;
-//        }
+        //        // getint
+        //        // 第一次先定义getint这个库函数
+        //        static int gt = 0;
+        //        if (gt != 1) {
+        //            buildFactory->genFunction("getint", 0);
+        //            gt = 1;
+        //        }
         // 先处理printf中的exp，利用load获取他们的值
         Value *lVal = nullptr;
         visitLVal(stmt->children[0], &lVal);
-//        ((Instruction *) lVal)->useless = true;
-        buildFactory->removeIns();
-        Value *alloca = ((User *) lVal)->operands[0]->value;
-        auto *call = buildFactory->genInstruction(InstructionType::Call, true);
-        auto *getint = symbolTable->getSymbol("getint", true, true)->value;
-        use(getint, call, 0);
+        if (lVal != nullptr) {
+            buildFactory->removeIns();
+            Value *alloca = ((User *) lVal)->operands[0]->value;
+            auto *call = buildFactory->genInstruction(InstructionType::Call, true);
+            auto *getint = symbolTable->getSymbol("getint", true, true)->value;
+            use(getint, call, 0);
 
-        auto *store = buildFactory->genInstruction(InstructionType::Store, false);
-        use(call, store, 0);
-        use(alloca, store, 1);
+            auto *store = buildFactory->genInstruction(InstructionType::Store, false);
+            use(call, store, 0);
+            use(alloca, store, 1);
+        }
     } else if (stmt->getType() == 7) {
         // printf
         int j = 0;
         std::string str = stmt->getStr();
         vector<Value *> values;
-        for (auto *child: stmt->children) {
+        for (auto *child : stmt->children) {
             Value *value = nullptr;
             visitExp(child, &value, false);
             values.push_back(value);
@@ -834,7 +956,8 @@ void Visitor::visitStmt(Node *stmt) {
                 use(values[j], ((Instruction *) call), 0);
                 j++;
                 i++;
-            } else if (str[i] == '\\' && str[i + 1] == 'n') { // TODO 只有\n一种情况？
+            } else if (str[i] == '\\' &&
+                       str[i + 1] == 'n') {  // TODO 只有\n一种情况？
                 auto *Const = buildFactory->genConst((int) '\n');
                 auto *call = buildFactory->genInstruction(InstructionType::Call, false);
                 auto *putch = symbolTable->getSymbol("putch", true, true)->value;
@@ -851,7 +974,7 @@ void Visitor::visitStmt(Node *stmt) {
         }
     } else if (stmt->getType() == 0) {
         if (!stmt->children.empty()) {
-            if (stmt->children[0]->getNodeType() == NodeType::Block) { // 是 block
+            if (stmt->children[0]->getNodeType() == NodeType::Block) {  // 是 block
                 symbolTable->createSymbolTable();
                 visitBlock(stmt->children[0]);
             } else if (stmt->children[0]->getNodeType() == NodeType::LVal) {
@@ -860,15 +983,18 @@ void Visitor::visitStmt(Node *stmt) {
                 visitLVal(stmt->children[0], &lValIns);
                 // 得到的其实是一个 load 指令 他的operand才是alloc
                 // 生成一个store指令
-                if (lValIns->valueType == ValueType::Instruction) {
-//                    ((Instruction *) lValIns)->useless = true;
+                if (lValIns != nullptr &&
+                    lValIns->valueType == ValueType::Instruction) {
+                    //                    ((Instruction *) lValIns)->useless = true;
                     buildFactory->removeIns();
                     Value *allocaIns = ((Instruction *) lValIns)->operands[0]->value;
 
                     Value *expIns = nullptr;
-                    visitExp(stmt->children[1], &expIns, false);  // TODO isGlobal决定是否具体数字 这里不是具体数字
+                    visitExp(stmt->children[1], &expIns,
+                             false);  // TODO isGlobal决定是否具体数字 这里不是具体数字
 
-                    Instruction *storeIns = buildFactory->genInstruction(InstructionType::Store, false);
+                    Instruction *storeIns =
+                            buildFactory->genInstruction(InstructionType::Store, false);
                     // 添加use
                     use(expIns, storeIns, 0);
                     use(allocaIns, storeIns, 1);
@@ -876,27 +1002,27 @@ void Visitor::visitStmt(Node *stmt) {
             } else {
                 if (!stmt->children.empty()) {
                     Value *value;
-                    visitExp(stmt->children[0], &value, false);  // TODO isGlobal决定是否具体数字 这里不是具体数字
+                    visitExp(stmt->children[0], &value,
+                             false);  // TODO isGlobal决定是否具体数字 这里不是具体数字
                 }
             }
         }
     } else if (stmt->getType() == 1) {
-
         // if
         int t = brs.size();
 
-        auto *br0 = buildFactory->genInstruction(InstructionType::Br, false); // 跳入第一个基本块（条件判断）
+        auto *br0 = buildFactory->genInstruction(
+                InstructionType::Br, false);  // 跳入第一个基本块（条件判断）
         buildFactory->genBasicBlock();
         use(buildFactory->curBasicBlock, br0, 0);
 
-
         Value *cond = nullptr;
-        auto *br = visitCond(stmt->children[0], &cond); // 产生两条指令 icmp 和 br
+        auto *br = visitCond(stmt->children[0], &cond);  // 产生两条指令 icmp 和 br
 
-        visitStmt(stmt->children[1]); // if语句块内的内容
+        visitStmt(stmt->children[1]);  // if语句块内的内容
 
-
-        auto *br1 = buildFactory->genInstruction(InstructionType::Br, false); // 跳出if语句块
+        auto *br1 = buildFactory->genInstruction(InstructionType::Br,
+                                                 false);  // 跳出if语句块
 
         buildFactory->genBasicBlock();
 
@@ -907,9 +1033,10 @@ void Visitor::visitStmt(Node *stmt) {
             brs.pop_back();
         }
 
-        if (stmt->children.size() > 2) { // 有else
-            visitStmt(stmt->children[2]); // else语句块内的内容
-            auto *br2 = buildFactory->genInstruction(InstructionType::Br, false); // 跳出else语句
+        if (stmt->children.size() > 2) {  // 有else
+            visitStmt(stmt->children[2]);   // else语句块内的内容
+            auto *br2 = buildFactory->genInstruction(InstructionType::Br,
+                                                     false);  // 跳出else语句
 
             buildFactory->genBasicBlock();
             use(buildFactory->curBasicBlock, br1, 0);
@@ -964,7 +1091,7 @@ void Visitor::visitStmt(Node *stmt) {
         }
 
         if (!break_brs.empty()) {
-            //buildFactory->genBasicBlock(nullptr);
+            // buildFactory->genBasicBlock(nullptr);
             for (int i = break_brs.size() - 1; i >= b_t; --i) {
                 use(buildFactory->curBasicBlock, break_brs[i], 0);
                 break_brs.pop_back();
@@ -973,7 +1100,7 @@ void Visitor::visitStmt(Node *stmt) {
 
         inFor--;
     } else if (stmt->getType() == 4) {
-        //continue
+        // continue
         if (inFor) {
             auto *br = buildFactory->genInstruction(InstructionType::Br, false);;
             continues.push_back(br);
@@ -987,12 +1114,11 @@ void Visitor::visitStmt(Node *stmt) {
     }
 }
 
-
 Instruction *Visitor::visitCond(Node *cond, Value **c) {
     brs_.clear();
     Instruction *br = visitLOrExp(cond->children[0]);
     buildFactory->genBasicBlock();
-    for (auto *child: brs_) {
+    for (auto *child : brs_) {
         use(buildFactory->curBasicBlock, child, 1);
     }
     brs_.clear();
@@ -1000,24 +1126,23 @@ Instruction *Visitor::visitCond(Node *cond, Value **c) {
     // 生成一条跳转指令，进入条件的判断
 }
 
-
 Instruction *Visitor::visitLOrExp(Node *lOrExp) {
     int t = brs.size();
     if (lOrExp->children.size() == 1) {
         return visitLAndExp(lOrExp->children[0]);
     } else {
-//        brs.clear();
+        //        brs.clear();
         visitLOrExp(lOrExp->children[0]);
         buildFactory->genBasicBlock();
         // 现在它们知道label2了
-//        for (auto *child: brs) {
-//            use(buildFactory->curBasicBlock, child, 2);
-//        }
+        //        for (auto *child: brs) {
+        //            use(buildFactory->curBasicBlock, child, 2);
+        //        }
         for (int i = brs.size() - 1; i >= t; --i) {
             use(buildFactory->curBasicBlock, brs[i], 2);
             brs.pop_back();
         }
-//        brs.clear();
+        //        brs.clear();
         return visitLAndExp(lOrExp->children[1]);
     }
 }
@@ -1045,11 +1170,10 @@ Instruction *Visitor::visitLAndExp(Node *lAndExp) {
     return br;
 }
 
-
 Instruction *Visitor::visitEqExp(Node *eqExp, Value **eq, bool isBr) {
     if (eqExp->children.size() == 1) {
         Value *rel = nullptr;
-        //先不产生add指令
+        // 先不产生add指令
         NOT = -1;
         visitRelExp(eqExp->children[0], &rel);
         if (rel->ty != 32) {
@@ -1059,7 +1183,8 @@ Instruction *Visitor::visitEqExp(Node *eqExp, Value **eq, bool isBr) {
         }
         *eq = rel;
         if (NOT == 1 && !isBr) {
-            InstructionType instructionType = (NOT == -1) ? InstructionType::Ne : InstructionType::Eq;
+            InstructionType instructionType =
+                    (NOT == -1) ? InstructionType::Ne : InstructionType::Eq;
             auto *ne = buildFactory->genInstruction(instructionType, true);
             auto *Const = buildFactory->genConst(0);
             use(Const, ne, 0);
@@ -1068,7 +1193,8 @@ Instruction *Visitor::visitEqExp(Node *eqExp, Value **eq, bool isBr) {
         }
 
         if (isBr) {
-            InstructionType instructionType = (NOT == -1) ? InstructionType::Ne : InstructionType::Eq;
+            InstructionType instructionType =
+                    (NOT == -1) ? InstructionType::Ne : InstructionType::Eq;
             auto *ne = buildFactory->genInstruction(instructionType, true);
             auto *Const = buildFactory->genConst(0);
             use(Const, ne, 0);
@@ -1080,11 +1206,11 @@ Instruction *Visitor::visitEqExp(Node *eqExp, Value **eq, bool isBr) {
         Value *rightRel = nullptr;
         visitEqExp(eqExp->children[0], &leftEq, false);
 
-
         NOT = -1;
         visitRelExp(eqExp->children[1], &rightRel);
         if (NOT == 1) {
-            InstructionType instructionType = (NOT == -1) ? InstructionType::Ne : InstructionType::Eq;
+            InstructionType instructionType =
+                    (NOT == -1) ? InstructionType::Ne : InstructionType::Eq;
             auto *ne = buildFactory->genInstruction(instructionType, true);
             auto *Const = buildFactory->genConst(0);
             use(Const, ne, 0);
@@ -1092,9 +1218,8 @@ Instruction *Visitor::visitEqExp(Node *eqExp, Value **eq, bool isBr) {
             rightRel = ne;
         }
 
-
-        InstructionType instructionType = (eqExp->getOp() == 0) ? InstructionType::Eq : InstructionType::Ne;
-
+        InstructionType instructionType =
+                (eqExp->getOp() == 0) ? InstructionType::Eq : InstructionType::Ne;
 
         if (leftEq->ty == 1) {
             auto *zext = buildFactory->genInstruction(InstructionType::Zext, true);
@@ -1106,7 +1231,6 @@ Instruction *Visitor::visitEqExp(Node *eqExp, Value **eq, bool isBr) {
             use(rightRel, zext, 0);
             rightRel = zext;
         }
-
 
         *eq = buildFactory->genInstruction(instructionType, true);
         use(leftEq, ((Instruction *) (*eq)), 0);
@@ -1123,7 +1247,6 @@ Instruction *Visitor::visitEqExp(Node *eqExp, Value **eq, bool isBr) {
     } else {
         return nullptr;
     }
-
 }
 
 void Visitor::visitRelExp(Node *relExp, Value **rel) {
@@ -1132,13 +1255,14 @@ void Visitor::visitRelExp(Node *relExp, Value **rel) {
         visitAddExp(relExp->children[0], &add, false);
         *rel = add;
     } else if (relExp->children.size() > 1) {
-        //要产生add指令了
+        // 要产生add指令了
         Value *leftRel = nullptr;
         Value *righAdd = nullptr;
         NOT = -1;
         visitRelExp(relExp->children[0], &leftRel);
         if (NOT == 1) {
-            InstructionType instructionType = (NOT == -1) ? InstructionType::Ne : InstructionType::Eq;
+            InstructionType instructionType =
+                    (NOT == -1) ? InstructionType::Ne : InstructionType::Eq;
             auto *ne = buildFactory->genInstruction(instructionType, true);
             auto *Const = buildFactory->genConst(0);
             use(Const, ne, 0);
@@ -1148,7 +1272,8 @@ void Visitor::visitRelExp(Node *relExp, Value **rel) {
         NOT = -1;
         visitAddExp(relExp->children[1], &righAdd, false);
         if (NOT == 1) {
-            InstructionType instructionType = (NOT == -1) ? InstructionType::Ne : InstructionType::Eq;
+            InstructionType instructionType =
+                    (NOT == -1) ? InstructionType::Ne : InstructionType::Eq;
             auto *ne = buildFactory->genInstruction(instructionType, true);
             auto *Const = buildFactory->genConst(0);
             use(Const, ne, 0);
@@ -1156,9 +1281,11 @@ void Visitor::visitRelExp(Node *relExp, Value **rel) {
             righAdd = ne;
         }
 
-        InstructionType instructionType = (relExp->getOp() == 1) ? InstructionType::Ge :
-                                          (relExp->getOp() == 0) ? InstructionType::Gt :
-                                          (relExp->getOp() == 2) ? InstructionType::Lt : InstructionType::Le;
+        InstructionType instructionType =
+                (relExp->getOp() == 1) ? InstructionType::Ge
+                                       : (relExp->getOp() == 0) ? InstructionType::Gt
+                                                                : (relExp->getOp() == 2) ? InstructionType::Lt
+                                                                                         : InstructionType::Le;
 
         if (leftRel->ty != righAdd->ty) {
             if (leftRel->ty == 1) {
@@ -1175,7 +1302,6 @@ void Visitor::visitRelExp(Node *relExp, Value **rel) {
         *rel = buildFactory->genInstruction(instructionType, true);
         use(leftRel, ((Instruction *) (*rel)), 0);
         use(righAdd, ((Instruction *) (*rel)), 1);
-
     }
 }
 
@@ -1196,43 +1322,46 @@ int Visitor::visitAddExp(Node *addExp, Value **addInstruction, bool isGlobal) {
     } else {
         if (addExp->children.size() == 1) {
             Value *mulInstruction = nullptr;
-            //先不产生add指令
+            // 先不产生add指令
             visitMulExp(addExp->children[0], &mulInstruction, isGlobal);
             *addInstruction = mulInstruction;
         } else if (addExp->children.size() > 1) {
-            //要产生add指令了
+            // 要产生add指令了
             Value *leftAddInstruction = nullptr;
             Value *rightMulInstruction = nullptr;
             visitAddExp(addExp->children[0], &leftAddInstruction, isGlobal);
             visitMulExp(addExp->children[1], &rightMulInstruction, isGlobal);
 
-            InstructionType instructionType = (addExp->getOp() == 0) ? InstructionType::Add : InstructionType::Sub;
+            InstructionType instructionType =
+                    (addExp->getOp() == 0) ? InstructionType::Add : InstructionType::Sub;
 
             *addInstruction = buildFactory->genInstruction(instructionType, true);
             use(leftAddInstruction, ((Instruction *) (*addInstruction)), 0);
             use(rightMulInstruction, ((Instruction *) (*addInstruction)), 1);
         }
     }
-    return -114514;
+    return 114514;
 }
 
-int Visitor::visitConstExp(Node *constExp, Value **constExpInstruction, bool isGlobal) {  // TODO isGlobal决定是否具体数字
+int Visitor::visitConstExp(Node *constExp, Value **constExpInstruction,
+                           bool isGlobal) {  // TODO isGlobal决定是否具体数字
     if (isGlobal) {
         return visitAddExp(constExp->children[0], constExpInstruction, isGlobal);
     }
     Value *addInstruction = nullptr;
-    for (auto *child: constExp->children) {
+    for (auto *child : constExp->children) {
         if (child->nodeType == NodeType::AddExp) {
             visitAddExp(child, &addInstruction, isGlobal);
         }
     }
     *constExpInstruction = addInstruction;
-    return -114514;
+    return 114514;
 }
 
 Visitor::Visitor() {
     this->buildFactory = new BuildFactory();
     this->symbolTable = new SymbolTable();
+    symbolTable->createSymbolTable();
     auto *getint = buildFactory->genFunction("getint", 0);
     getint->ret = 1;
     auto *putint = buildFactory->genFunction("putint", 1);
@@ -1251,8 +1380,4 @@ Visitor::Visitor() {
     symbolTable->addSymbol(symbol3, 0);
 }
 
-Module *Visitor::getModule() {
-    return this->buildFactory->genIRModule();
-}
-
-
+Module *Visitor::getModule() { return this->buildFactory->genIRModule(); }

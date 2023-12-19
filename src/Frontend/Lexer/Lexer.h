@@ -20,6 +20,7 @@ private:
     std::string word;
     LexType lexType = LexType::NONE;
     int lineNum = 1;
+    int lastLineNum = -1;
     int number = 114514;
 
     static int isReserveWord(const std::string &word);
@@ -38,6 +39,8 @@ public:
     [[nodiscard]] int getLineNum() const;
 
     [[nodiscard]] int getNumber() const;
+
+    [[nodiscard]] int getLastLineNum() const;
 };
 
 

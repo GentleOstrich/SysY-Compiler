@@ -31,7 +31,7 @@ std::ofstream c_ofs(GENERATE_CODE);
 std::ofstream m_ofs(MIPS);
 
 
-//#define ERROR_CHECK
+#define ERROR_CHECK
 #ifdef ERROR_CHECK
 struct Error {
     int line;
@@ -51,7 +51,7 @@ int main() {
         source = std::string((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
         compUnit = parser.parseCompUnit();
         visitor.visitCompUnit(compUnit);
-        handler.handleModule(visitor.getModule());
+        //handler.handleModule(visitor.getModule());
 
 #ifdef ERROR_CHECK
         stable_sort(errors, errors + e, cmp);

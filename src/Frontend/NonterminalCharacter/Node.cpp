@@ -50,6 +50,8 @@ int Node::getLineNum() {
         return this->lineNum;
     }
     return this->children[this->children.size() - 1]->lineNum;
+
+    return this->lineNum;
 }
 
 int Node::getLastLine() {
