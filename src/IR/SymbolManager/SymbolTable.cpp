@@ -21,7 +21,9 @@ extern int e;
 #endif
 
 void SymbolTable::createSymbolTable() {
-    table.push(this->symbolId);
+    if (working) {
+        table.push(this->symbolId);
+    }
 }
 
 void SymbolTable::addSymbol(Symbol *symbol, int lineNum) {
@@ -31,8 +33,10 @@ void SymbolTable::addSymbol(Symbol *symbol, int lineNum) {
         printError(lineNum, "b");
 #endif
     } else {
-        symbols.insert(symbols.begin() + symbolId, symbol);
-        symbolId++;
+        if (working) {
+            symbols.insert(symbols.begin() + symbolId, symbol);
+            symbolId++;
+        }
     }
 }
 
@@ -44,6 +48,7 @@ void SymbolTable::deleteSymbolTable() {
 
 SymbolTable::SymbolTable() {
     symbolId = 0;
+    working = true;
 }
 
 Symbol *SymbolTable::getSymbol(const std::string &word, bool isFunc, bool all) {

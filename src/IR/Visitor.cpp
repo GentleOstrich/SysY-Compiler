@@ -28,8 +28,10 @@ void Visitor::visitCompUnit(Node *compUnit) {
         if (child->nodeType == NodeType::Decl) {
             visitDecl(child, true);
         } else if (child->nodeType == NodeType::FuncDef) {
+            hasNoRet_ = false;
             visitFuncDef(child);
         } else if (child->nodeType == NodeType::MainFuncDef) {
+            hasNoRet_ = false;
             visitMainFuncDef(child);
         }
     }
@@ -195,6 +197,10 @@ void Visitor::visitFuncDef(Node *funcDef) {
     auto *symbol = new Symbol(funcDef->getWord(), function);
     symbolTable->addSymbol(symbol, funcDef->getLineNum());
 
+    if (funcDef->children[0]->getType() == 1) {
+        hasNoRet_ = true;
+    }
+
     function->ret = visitFuncType(funcDef->children[0]);
     symbolTable->createSymbolTable();
 
@@ -351,9 +357,13 @@ int Visitor::visitFuncType(Node *funcType) {
 void Visitor::visitBlock(Node *block) {
     for (auto *child: block->children) {
         if (visitBlockItem(child) == 1) { // TODO ?
-            break;
+//            break;
+            buildFactory->working = false;
+            symbolTable->working = false;
         }
     }
+    buildFactory->working = true;
+    symbolTable->working = true;
     symbolTable->deleteSymbolTable();
 }
 
@@ -414,6 +424,11 @@ int Visitor::visitExp(Node *exp, Value **expIns, bool needNum) {
 int Visitor::visitLVal(Node *lVal, Value **lValInstruction) {
     string word = lVal->getWord();
     Symbol *symbol = symbolTable->getSymbol(word, false, true); // 找这个数先不用考虑函数
+#ifdef ERROR_CHECK
+    if (symbol->word == "int") {
+        printError(lVal->getLineNum(), "c");
+    }
+#endif
     if (buildFactory->curFunction == nullptr) { // 全局状态
         auto *value = symbol->value;
         if (((GlobalVar *) value)->dims.empty()) {
@@ -736,21 +751,39 @@ int Visitor::visitUnaryExp(Node *unaryExp, Value **unaryInstruction, bool needNu
                     use(child, ((Instruction *) call), 0);
 #ifdef ERROR_CHECK
                     if (child->valueType == ValueType::Instruction) {
-                        auto *insChild = (Instruction *) child;
-                        if (insChild->isPtr) {
-                            if (!((insChild->dims.empty() &&
-                                   ((Function *) function)->params[x]->dims.size() == 1) ||
-                                  (insChild->dims.size() == 1 &&
-                                   ((Function *) function)->params[x]->dims.size() == 2))) {
-                                printError(unaryExp->getLineNum(), "e");
+                        if (((Instruction *) child)->instructionType == InstructionType::Call) {
+                            if (((Instruction *) child)->operands[0]->value->valueType == ValueType::Function) {
+                                auto *func = ((Function *) ((Instruction *) child)->operands[0]->value);
+                                if (func->ret == 1 && x < ((Function *) function)->params.size() &&
+                                    ((Function *) function)->params[x]->dims.empty()) {
+                                    continue;
+                                } else {
+                                    printError(unaryExp->getLineNum(), "e");
+                                }
                             }
                         } else {
-                            if (!((Function *) function)->params[x]->dims.empty()) {
-                                printError(unaryExp->getLineNum(), "e");
+                            auto *insChild = (Instruction *) child;
+                            if (insChild->isPtr) {
+                                if (!((insChild->dims.empty() && x < ((Function *) function)->params.size() &&
+                                       ((Function *) function)->params[x]->dims.size() == 1) ||
+                                      (insChild->dims.size() == 1 && x < ((Function *) function)->params.size() &&
+                                       ((Function *) function)->params[x]->dims.size() == 2))) {
+                                    printError(unaryExp->getLineNum(), "e");
+                                }
+                            } else {
+                                if (x < ((Function *) function)->params.size() &&
+                                    !((Function *) function)->params[x]->dims.empty()) {
+                                    printError(unaryExp->getLineNum(), "e");
+                                }
                             }
                         }
-                        x++;
+                    } else if (child->valueType == ValueType::Const) {
+                        if (x < ((Function *) function)->params.size() &&
+                            !((Function *) function)->params[x]->dims.empty()) {
+                            printError(unaryExp->getLineNum(), "e");
+                        }
                     }
+                    x++;
 #endif
                 }
                 *unaryInstruction = call;
@@ -898,12 +931,16 @@ void Visitor::visitStmt(Node *stmt) {
             visitExp(child, &value, false);
             values.push_back(value);
         }
+
         for (int i = 1; i < str.size() - 1; ++i) {
             if (str[i] == '%' && str[i + 1] == 'd') {
-                auto *call = buildFactory->genInstruction(InstructionType::Call, false);
-                auto *putint = symbolTable->getSymbol("putint", true, true)->value;
-                use(putint, call, 0);
-                use(values[j], ((Instruction *) call), 0);
+                if (j < values.size()) {
+                    auto *call = buildFactory->genInstruction(InstructionType::Call, false);
+                    auto *putint = symbolTable->getSymbol("putint", true, true)->value;
+                    use(putint, call, 0);
+                    use(values[j], ((Instruction *) call), 0);
+                }
+
                 j++;
                 i++;
             } else if (str[i] == '\\' && str[i + 1] == 'n') { // TODO 只有\n一种情况？
@@ -921,6 +958,11 @@ void Visitor::visitStmt(Node *stmt) {
                 use(Const, ((Instruction *) call), 0);
             }
         }
+#ifdef ERROR_CHECK
+        if (j != values.size()) {
+            printError(stmt->getLineNum(), "l");
+        }
+#endif
     } else if (stmt->getType() == 0) {
         if (!stmt->children.empty()) {
             if (stmt->children[0]->getNodeType() == NodeType::Block) { // 是 block
@@ -1065,12 +1107,22 @@ void Visitor::visitStmt(Node *stmt) {
             auto *br = buildFactory->genInstruction(InstructionType::Br, false);;
             continues.push_back(br);
         }
+#ifdef ERROR_CHECK
+        else {
+            printError(stmt->getLineNum(), "m");
+        }
+#endif
     } else if (stmt->getType() == 3) {
         // break
         if (inFor) {
             auto *br = buildFactory->genInstruction(InstructionType::Br, false);
             break_brs.push_back(br);
         }
+#ifdef ERROR_CHECK
+        else {
+            printError(stmt->getLineNum(), "m");
+        }
+#endif
     }
 }
 

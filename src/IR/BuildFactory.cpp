@@ -7,6 +7,7 @@
 BuildFactory::BuildFactory() {
     this->module = new Module();
     this->curFunction = nullptr;
+    working = true;
 }
 
 Module *BuildFactory::genIRModule() {
@@ -23,20 +24,30 @@ Function *BuildFactory::genFunction(Node *node) {
 }
 
 BasicBlock *BuildFactory::genBasicBlock() {
-    int reg = curFunction->allocReg();
-    auto *basicBlock = new BasicBlock(std::to_string(reg), ValueType::BasicBlock, this->curFunction);
-    basicBlock->function = curFunction;
-    this->curFunction->addBasicBlock(basicBlock);
-    this->curBasicBlock = basicBlock;
-    return basicBlock;
+    if (working) {
+        int reg = curFunction->allocReg();
+        auto *basicBlock = new BasicBlock(std::to_string(reg), ValueType::BasicBlock, this->curFunction);
+        basicBlock->function = curFunction;
+        this->curFunction->addBasicBlock(basicBlock);
+        this->curBasicBlock = basicBlock;
+        return basicBlock;
+    } else {
+        return new BasicBlock("foo", ValueType::BasicBlock, nullptr);
+    }
+
 }
 
 Instruction *BuildFactory::genInstruction(InstructionType instructionType, bool needReg) {
-    int reg = (needReg) ? curFunction->allocReg() : -1;
-    auto *instruction = new Instruction(std::to_string(reg), ValueType::Instruction,
-                                        this->curBasicBlock, instructionType);
-    this->curBasicBlock->addInstruction(instruction);
-    return instruction;
+    if (working) {
+        int reg = (needReg) ? curFunction->allocReg() : -1;
+        auto *instruction = new Instruction(std::to_string(reg), ValueType::Instruction,
+                                            this->curBasicBlock, instructionType);
+        this->curBasicBlock->addInstruction(instruction);
+        return instruction;
+    } else {
+        return new Instruction("foo", ValueType::Instruction, nullptr, InstructionType::Zext);
+    }
+
 }
 
 Const *BuildFactory::genConst(int val) {
@@ -59,14 +70,17 @@ Function *BuildFactory::genFunction(std::string name, int paraNum) {
 }
 
 Param *BuildFactory::genParam() {
+
     auto *param = new Param(std::to_string(curFunction->allocReg()), ValueType::Param, curFunction->paramPos());
     curFunction->addParam(param);
     return param;
 }
 
 void BuildFactory::removeIns() {
-    this->curBasicBlock->instructions.pop_back();
-    this->curFunction->r--;
+    if (working) {
+        this->curBasicBlock->instructions.pop_back();
+        this->curFunction->r--;
+    }
 }
 
 

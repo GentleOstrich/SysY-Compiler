@@ -16,6 +16,7 @@ public:
     std::stack<int> table;
     std::vector<Symbol *> symbols;
     int symbolId;
+    bool working;
 
     SymbolTable();
 

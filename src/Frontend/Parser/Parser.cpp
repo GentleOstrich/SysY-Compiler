@@ -711,7 +711,11 @@ UnaryExp *Parser::parseUnaryExp() {
                 printTk;
                 readTk;
             } else {
-                unaryExp->addChild(parseFuncRParams());
+//                unaryExp->addChild(parseFuncRParams());
+                if (tkType == LexType::IDENFR || tkType == LexType::INTCON || tkType == LexType::LPARENT ||
+                    tkType == LexType::PLUS || tkType == LexType::MINU) {
+                    unaryExp->addChild(parseFuncRParams());
+                }
                 if (tkType == LexType::RPARENT) {
                     printTk;
                     readTk;

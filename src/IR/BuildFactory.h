@@ -29,6 +29,8 @@ public:
 
     Function *curFunction;
 
+    bool working ;
+
     Module *genIRModule();
 
     Function *genFunction(Node *node);
