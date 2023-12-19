@@ -16,8 +16,7 @@
 
 #ifdef ERROR_CHECK
 
-struct Error
-{
+struct Error {
     int line;
     char c;
 };
@@ -32,6 +31,7 @@ extern Lexer lexer;
 extern std::ifstream ifs;
 extern std::ofstream ofs;
 Token token;
+bool hasNoRet = false;
 
 // 正常返回 0 错误返回 -1
 CompUnit *Parser::parseCompUnit() {
@@ -42,9 +42,11 @@ CompUnit *Parser::parseCompUnit() {
             compUnit->addChild(parseDecl());
         } else if (tkType == LexType::INTTK) {
             if (preRead == LexType::MAINTK) {
+                hasNoRet = false;
                 compUnit->addChild(parseMainFuncDef());
             } else if (preRead == LexType::IDENFR) {
                 if (prePreRead == LexType::LPARENT) {
+                    hasNoRet = false;
                     compUnit->addChild(parseFuncDef());
                 } else {
                     compUnit->addChild(parseDecl());
@@ -239,7 +241,10 @@ InitVal *Parser::parseInitVal() {
     return initVal;
 }
 
+bool isRet = false;
+
 FuncDef *Parser::parseFuncDef() {
+    hasNoRet = false;
     auto funcDef = new FuncDef(NodeType::FuncDef, lexer.getLineNum());
     funcDef->addChild(parseFuncType());
     if (tkType == LexType::IDENFR) {
@@ -266,6 +271,11 @@ FuncDef *Parser::parseFuncDef() {
             funcDef->addChild(parseBlock());
         }
     }
+#ifdef ERROR_CHECK
+    if (!hasNoRet && !isRet) {
+        printError(lexer.getLastLineNum(), "g");
+    }
+#endif
     ofs << "<FuncDef>" << std::endl;
     return funcDef;
 }
@@ -294,6 +304,11 @@ MainFuncDef *Parser::parseMainFuncDef() {
             }
         }
     }
+#ifdef ERROR_CHECK
+    if (!hasNoRet && !isRet) {
+        printError(lexer.getLastLineNum(), "g");
+    }
+#endif
     ofs << "<MainFuncDef>" << std::endl;
     return mainFuncDef;
 }
@@ -301,10 +316,12 @@ MainFuncDef *Parser::parseMainFuncDef() {
 FuncType *Parser::parseFuncType() {
     auto funcType = new FuncType(NodeType::FuncType, lexer.getLineNum());
     if (tkType == LexType::INTTK) {
+        hasNoRet = false;
         funcType->type = 0;
         printTk;
         readTk;
     } else if (tkType == LexType::VOIDTK) {
+        hasNoRet = true;
         funcType->type = 1;
         printTk;
         readTk;
@@ -354,7 +371,7 @@ FuncFParam *Parser::parseFuncFParam() {
                     readTk;
                 } else {
 #ifdef ERROR_CHECK
-                    printError(funcFParam ->getLineNum(), "k");
+                    printError(funcFParam->getLineNum(), "k");
 #endif
                 }
             }
@@ -364,12 +381,14 @@ FuncFParam *Parser::parseFuncFParam() {
     return funcFParam;
 }
 
+
 Block *Parser::parseBlock() {
     auto block = new Block(NodeType::Block, lexer.getLineNum());
     if (tkType == LexType::LBRACE) {
         printTk;
         readTk;
         while (tkType != LexType::RBRACE) {
+            isRet = false;
             block->addChild(parseBlockItem());
         }
         if (tkType == LexType::RBRACE) {
@@ -425,7 +444,7 @@ Stmt *Parser::parseStmt() {
             printTk;
             readTk;
             if (tkType != LexType::SEMICN) {
-                Node* forStmt = parseForStmt();
+                Node *forStmt = parseForStmt();
                 //stmt->addChild(forStmt);
                 stmt->forStmt1 = forStmt;
             }
@@ -433,7 +452,7 @@ Stmt *Parser::parseStmt() {
                 printTk;
                 readTk;
                 if (tkType != LexType::SEMICN) {
-                    Node* cond = parseCond();
+                    Node *cond = parseCond();
                     //stmt->addChild(cond);
                     stmt->cond = cond;
                 }
@@ -441,7 +460,7 @@ Stmt *Parser::parseStmt() {
                     printTk;
                     readTk;
                     if (tkType != LexType::RPARENT) {
-                        Node* forStmt = parseForStmt();
+                        Node *forStmt = parseForStmt();
                         //stmt->addChild(forStmt);
                         stmt->forStmt2 = forStmt;
                     }
@@ -485,13 +504,14 @@ Stmt *Parser::parseStmt() {
             printTk;
             readTk;
         } else {
+            isRet = true;
             stmt->addChild(parseExp());
             if (tkType == LexType::SEMICN) {
                 printTk;
                 readTk;
             } else {
 #ifdef ERROR_CHECK
-                printError(stmt ->getLineNum(), "i");
+                printError(stmt->getLineNum(), "i");
 #endif
             }
         }

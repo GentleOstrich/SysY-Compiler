@@ -8,7 +8,6 @@
 #include "Frontend/NonterminalCharacter/Nonterminals.h"
 #include "IR/SymbolManager/SymbolTable.h"
 #include "IR/Visitor.h"
-#include "Backend/Handler.h"
 
 std::string INFILEPATH = "testfile.txt";
 std::string OUTFILEPATH = "translate.txt";
@@ -21,8 +20,6 @@ Parser parser;
 
 CompUnit *compUnit;
 Visitor visitor;
-Handler handler;
-
 
 std::ifstream ifs(INFILEPATH);
 std::ofstream ofs(OUTFILEPATH);
@@ -30,8 +27,8 @@ std::ofstream e_ofs(ERROR_OUTFILEPATH);
 std::ofstream c_ofs(GENERATE_CODE);
 std::ofstream m_ofs(MIPS);
 
-
 #define ERROR_CHECK
+
 #ifdef ERROR_CHECK
 struct Error {
     int line;
@@ -44,6 +41,7 @@ int e = 0;
 bool cmp(Error error1, Error error2) {
     return error1.line < error2.line;
 }
+
 #endif
 
 int main() {
@@ -51,7 +49,6 @@ int main() {
         source = std::string((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
         compUnit = parser.parseCompUnit();
         visitor.visitCompUnit(compUnit);
-        //handler.handleModule(visitor.getModule());
 
 #ifdef ERROR_CHECK
         stable_sort(errors, errors + e, cmp);

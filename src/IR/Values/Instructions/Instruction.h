@@ -20,6 +20,8 @@ public:
 
     bool isMod = false;
 
+    bool isConst = false;
+
     bool useless = false;
 
     std::vector<int> dims; // 表示装的是什么 dims[0] = 0 就是指针 1维指针 2维指针

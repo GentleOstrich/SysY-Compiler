@@ -25,13 +25,6 @@ void SymbolTable::createSymbolTable() {
 }
 
 void SymbolTable::addSymbol(Symbol *symbol, int lineNum) {
-    // if (symbol->word == "getint" || symbol->word == "putint" || symbol->word == "putch" || symbol->word == "putstr") {
-    //     this->symbols.insert(symbols.begin() + symbolId, symbol);
-    //     symbolId++;
-    //     return;
-    // }
-    // this->symbols.insert(symbols.begin() + symbolId, symbol);
-    // symbolId++;
     auto *sym = getSymbol(symbol->word, symbol->value->valueType == ValueType::Function, false);
     if (sym->word != "int") {
 #ifdef ERROR_CHECK
