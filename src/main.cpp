@@ -1,42 +1,40 @@
 //
 // Created by yh on 2023/9/18.
 //
-#include<algorithm>
+#include <algorithm>
 #include <iostream>
 #include <fstream>
-#include "Parser/Parser.h"
+#include "Frontend/Parser/Parser.h"
+#include "Frontend/NonterminalCharacter/Nonterminals.h"
+#include "IR/SymbolManager/SymbolTable.h"
+#include "IR/Visitor.h"
 
-using namespace std;
+std::string INFILEPATH = "testfile.txt";
+std::string OUTFILEPATH = "translate.txt";
+std::string ERROR_OUTFILEPATH = "error.txt";
+std::string GENERATE_CODE = "llvm_ir.txt";
+std::string MIPS = "mips.txt";
 
-//#define TEST
-//#define Linux
-
-#ifdef TEST
-    #ifdef Linux
-        string INFILEPATH = R"(/home/yh/SysY-Compiler/testfile.txt)";//
-        string OUTFILEPATH = R"(/home/yh/SysY-Compiler/output.txt)";//
-        string ERROR_OUTFILEPATH = R"(/home/yh/SysY-Compiler/error.txt)";//
-    #else
-        string INFILEPATH = R"(D:\University\Study\2023fall\compiler\SysY-Compiler\testfile.txt)";//
-        string OUTFILEPATH = R"(D:\University\Study\2023fall\Compiler\SysY-Compiler\output.txt)";//
-        string ERROR_OUTFILEPATH = R"(D:\University\Study\2023fall\Compiler\SysY-Compiler\error.txt)";//
-    #endif
-#else
-string INFILEPATH = "testfile.txt";
-string OUTFILEPATH = "output.txt";
-string ERROR_OUTFILEPATH = "error.txt";
-#endif
-
-string source = "";
+std::string source;
 Parser parser;
-ifstream ifs(INFILEPATH);
-ofstream ofs(OUTFILEPATH);
-ofstream e_ofs(ERROR_OUTFILEPATH);
 
+CompUnit *compUnit;
+Visitor visitor;
+
+std::ifstream ifs(INFILEPATH);
+std::ofstream ofs(OUTFILEPATH);
+std::ofstream e_ofs(ERROR_OUTFILEPATH);
+std::ofstream c_ofs(GENERATE_CODE);
+std::ofstream m_ofs(MIPS);
+
+#define ERROR_CHECK
+
+#ifdef ERROR_CHECK
 struct Error {
     int line;
     char c;
 };
+
 Error errors[1000];
 int e = 0;
 
@@ -44,15 +42,20 @@ bool cmp(Error error1, Error error2) {
     return error1.line < error2.line;
 }
 
-int main() {
-    if (ifs.is_open() && ofs.is_open() && e_ofs.is_open()) {
-        source = string((istreambuf_iterator<char>(ifs)), istreambuf_iterator<char>());
-        parser.parseCompUnit();
+#endif
 
+int main() {
+    if (ifs.is_open() && ofs.is_open() && e_ofs.is_open() && c_ofs.is_open() && m_ofs.is_open()) {
+        source = std::string((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
+        compUnit = parser.parseCompUnit();
+        visitor.visitCompUnit(compUnit);
+
+#ifdef ERROR_CHECK
         stable_sort(errors, errors + e, cmp);
         for (int i = 0; i < e; ++i) {
             e_ofs << errors[i].line << " " << errors[i].c << endl;
         }
+#endif
     }
     return 0;
 }
