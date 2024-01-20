@@ -1,4 +1,4 @@
-# SysY-Compiler
+# SysY-compiler
 
 BUAA-2023-fall-Compiler Technology 
 
